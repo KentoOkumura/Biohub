@@ -47,16 +47,35 @@ def test_expected_repository_skills_exist() -> None:
     assert actual == expected
 
 
-def test_project_starts_unconfigured() -> None:
+def test_project_is_configured_for_biohub_cell_tracking() -> None:
     project = yaml.safe_load((ROOT / "project.yml").read_text())
 
-    assert project["competition"]["name"] == "TODO"
-    assert project["competition"]["slug"] == "TODO"
-    assert project["competition"]["url"] == "TODO"
-    assert project["data"]["target_column"] == "TODO"
-    assert project["data"]["group_column"] == "TODO"
-    assert project["submission"]["id_column"] == "TODO"
-    assert project["submission"]["target_columns"] == []
+    assert project["competition"] == {
+        "name": "Biohub - Cell Tracking During Development",
+        "platform": "kaggle",
+        "slug": "biohub-cell-tracking-during-development",
+        "url": (
+            "https://www.kaggle.com/competitions/"
+            "biohub-cell-tracking-during-development"
+        ),
+        "is_code_competition": True,
+    }
+    assert project["data"]["group_column"] == "embryo_id"
+    assert project["submission"]["id_column"] == "id"
+    assert project["submission"]["target_columns"] == [
+        "node_id",
+        "t",
+        "z",
+        "y",
+        "x",
+        "source_id",
+        "target_id",
+    ]
+    assert project["runtime"]["kaggle"] == {
+        "enable_gpu": False,
+        "enable_internet": False,
+        "time_limit_hours": 12,
+    }
 
 
 def test_colab_generator_is_generic() -> None:

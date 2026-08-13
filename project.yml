@@ -1,9 +1,9 @@
 competition:
-  name: TODO
+  name: Biohub - Cell Tracking During Development
   platform: kaggle
-  slug: TODO
-  url: TODO
-  is_code_competition: false
+  slug: biohub-cell-tracking-during-development
+  url: https://www.kaggle.com/competitions/biohub-cell-tracking-during-development
+  is_code_competition: true
 
 paths:
   # Repository-relative paths used by automation. If these directories move,
@@ -19,30 +19,37 @@ data:
   train_dir: data/raw/train
   test_dir: data/raw/test
   processed_dir: data/processed
-  target_column: TODO
-  group_column: TODO
-  score_rows: TODO
+  target_column: "GEFF nodes/props/{t,z,y,x}/values and edges/ids"
+  group_column: embryo_id
+  score_rows: all predicted node and edge rows for every test dataset
 
 defaults:
   seed: 42
-  metric: TODO
-  primary_validation: TODO
+  metric: adjusted_edge_jaccard + 0.1 * division_jaccard
+  primary_validation: embryo-disjoint grouped cross-validation
   n_folds: 5
 
 submission:
   sample_file: data/raw/sample_submission.csv
   output_file: submission.csv
-  id_column: TODO
-  target_columns: []
+  id_column: id
+  target_columns:
+    - node_id
+    - t
+    - z
+    - y
+    - x
+    - source_id
+    - target_id
   allow_extra_columns: false
 
 metadata:
-  owner: TODO
-  notes: TODO
+  owner: kentookumura
+  notes: Official metadata configured without downloading competition data on 2026-08-13.
 
 runtime:
   kaggle:
     enable_gpu: false
     # Notebook package generation does not support TPU.
     enable_internet: false
-    time_limit_hours: 9
+    time_limit_hours: 12

@@ -140,7 +140,10 @@ def test_project_yml_supplies_experiment_defaults() -> None:
         project,
         "submission.sample_file",
     )
-    assert get_nested(defaults, "data.submission_target_column") is None
+    assert get_nested(defaults, "data.submission_target_column") == get_nested(
+        project,
+        "submission.target_columns",
+    )[0]
 
 
 def test_project_yml_supplies_repository_paths() -> None:

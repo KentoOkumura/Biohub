@@ -5,6 +5,11 @@
 | CV | 交差検証スコア | ローカル検証の結果。 |
 | LB | リーダーボードスコア | Kaggle の public/private スコア。 |
 | OOF | Out-of-Fold prediction | 各行を、その行が属するfoldを学習に使っていないモデルで予測した値。 |
+| Zarr v3 | chunk化したN次元arrayとmetadataをディレクトリ構造で保存する形式 | このコンペでは3D+time画像とGEFFの基盤形式。 |
+| GEFF | Graph Exchange File Format | このコンペの正解tracking graphを保存する形式。nodeの時刻・重心座標とedgeを持つ。 |
+| node | あるtimepointで検出された細胞 | `node_id,t,z,y,x`で表す。 |
+| edge | 時間方向に同一細胞または分裂後の娘細胞を結ぶ有向接続 | `source_id,target_id`で表す。 |
+| division | 1つの細胞から2つ以上の娘細胞へ分かれる事象 | 公式metricでは2本以上の出力edgeを持つ予測nodeを分裂候補として扱う。 |
 | SHA | Secure Hash Algorithmによるhash値 | 内容同一性の証拠。algorithmと圧縮前後のどちらをhashしたかを明示する。 |
 | `planned` / `running` / `debug_completed` / `scaffold_completed` / `failed` | 実験の実行状態 | `metrics.json`のstatusに記録する。 |
 | `usable` | 派生実験や提出に使える状態 | ユーザーが判断する実験status。 |

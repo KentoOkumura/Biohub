@@ -4,12 +4,12 @@
 
 ## CV 設計
 
-- Fold 作成方法:
-- グループキー:
-- 層化キー:
-- ランダムシード:
-- Fold 数:
-- メトリック:
+- Fold 作成方法: 同じ胚のサンプルをtrainとvalidationに分割しないgrouped cross-validation。具体的な分割algorithmはデータ確認後に決める。
+- グループキー: サンプルディレクトリ名の最初の`_`より前にある`embryo_id`。
+- 層化キー: 未設定。各胚のサンプル数、node/edge数、分裂数を確認してから必要性を判断する。
+- ランダムシード: 42（暫定）。
+- Fold 数: 5（暫定）。胚数とfoldごとの評価対象量を確認するまで実験契約では確定値として扱わない。
+- メトリック: `adjusted_edge_jaccard + 0.1 * division_jaccard`。
 - 主な検証コマンド:
   ```bash
   task validate-exp EXP=expXXX_title
@@ -34,4 +34,6 @@
 
 ## 検証判断
 
-- TODO
+- 公式splitが胚単位で分離されるため、同じ`embryo_id`がtrainとvalidationにまたがる分割は禁止する。
+- fold間のcombined scoreだけでなく、adjusted edge Jaccard、division Jaccard、node数の過剰予測率、edge/divisionのTP/FP/FNを別々に保存する。
+- fold数、分割algorithm、層化の採否は、コンペデータを利用できる段階で胚数と各胚の評価対象量を確認し、ユーザー承認後に確定する。
