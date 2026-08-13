@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kaggle 提出監視"
+  short_description: "特定のKaggle提出refを監視し、score確定までを記録します。"
+  default_prompt: "$kaggle-submit-monitor を使い、この実験の指定したsubmission refを監視してください。"

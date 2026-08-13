@@ -1,0 +1,4 @@
+interface:
+  display_name: "Kaggle 戦略・バックログ管理"
+  short_description: "上位仮説とKaggle戦略・アイデアbacklogを一元管理します"
+  default_prompt: "Use $kaggle-strategy to organize the current hypotheses and strategy, and update the idea backlog only when requested."

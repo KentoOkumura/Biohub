@@ -1,0 +1,94 @@
+# Repository boundary
+#
+# Keep in Git:
+# - source code, tests, configuration, and automation
+# - experiment notebooks and their lightweight records (README, result, metrics,
+#   requirements, and SESSION_NOTES)
+# - documentation, survey notes, and the submission history Markdown
+# - one-off analysis code and raw lightweight outputs under studies/, and
+#   completed analysis reports under docs/surveys/
+#
+# Keep out of Git:
+# - credentials and machine-local settings
+# - raw/derived competition data and local Python environments
+# - copied Kaggle upload packages, downloaded Kaggle outputs, feature caches,
+#   model weights, and generated prediction/submission files in the output
+#   locations ignored below
+#
+# Standard cache and credential rules below still apply inside tracked
+# directories (for example, studies/__pycache__/ remains ignored).
+
+# Python environments and caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+.coverage
+.coverage.*
+htmlcov/
+build/
+dist/
+*.egg-info/
+
+# Local agent/editor state
+/.codex/
+/.cache/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment files and credentials
+.env
+.env.*
+/.kaggle/
+/.badge-collector/
+kaggle.json
+credentials.json
+token.json
+*.pem
+*.p12
+*.pfx
+
+# Competition data and local/external tools
+/data/raw/
+/data/processed/
+/data/external/
+/tools/*
+!/tools/README.md
+
+# Per-experiment generated or copied directories. Keep directory sentinels so a
+# freshly cloned current-format experiment still passes structural validation.
+/experiments/*/artifacts/*
+!/experiments/*/artifacts/.gitkeep
+/experiments/*/submission/
+/experiments/*/kaggle/
+/submission.csv
+/experiments/*/submission.csv
+
+# Legacy generated-output locations. New outputs belong under artifacts/.
+/experiments/*/features/
+/experiments/*/variants/
+
+# One-off analysis tables and figures belong under studies/.
+/artifacts/
+
+# Generated model and array/table formats
+*.ckpt
+*.pth
+*.pt
+*.onnx
+*.pkl
+*.joblib
+*.parquet
+*.feather
+*.npy
+*.npz
+
+# Notebook runtime state
+.ipynb_checkpoints/
+
+# OS/editor
+.DS_Store
