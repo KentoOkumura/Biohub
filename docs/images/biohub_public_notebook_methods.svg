@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="920" viewBox="0 0 1600 920" role="img" aria-labelledby="title desc">
+  <title id="title">公開Notebookで進んだ細胞トラッキング手法</title>
+  <desc id="desc">Getting Started、DoG、Rule-based V14、U-NetとILP、clean dual-seed、現在のclean上位候補を二段に並べた比較図。</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#9AB1C3"/>
+    </marker>
+    <style>
+      .title { font: 700 50px "Meiryo", "Noto Sans JP", sans-serif; fill: #17324D; }
+      .sub { font: 400 25px "Meiryo", "Noto Sans JP", sans-serif; fill: #5D6B78; }
+      .card-title { font: 700 29px "Meiryo", "Noto Sans JP", sans-serif; fill: #17324D; }
+      .body { font: 400 21px "Meiryo", "Noto Sans JP", sans-serif; fill: #344B5E; }
+      .num { font: 700 25px "Meiryo", "Noto Sans JP", sans-serif; fill: white; text-anchor: middle; }
+      .score { font: 700 22px "Meiryo", "Noto Sans JP", sans-serif; fill: white; text-anchor: middle; }
+      .note { font: 700 20px "Meiryo", "Noto Sans JP", sans-serif; fill: #805A00; text-anchor: middle; }
+      .arrow { stroke: #9AB1C3; stroke-width: 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1600" height="920" fill="#F7FAFC"/>
+  <text class="title" x="72" y="75">公開Notebookで進んだトラッキング手法</text>
+  <text class="sub" x="74" y="118">古典的な画像処理から、学習済みedge scorerとglobal graph optimizationへ</text>
+
+  <line class="arrow" x1="518" y1="337" x2="550" y2="337"/>
+  <line class="arrow" x1="1030" y1="337" x2="1062" y2="337"/>
+  <line class="arrow" x1="518" y1="672" x2="550" y2="672"/>
+  <line class="arrow" x1="1030" y1="672" x2="1062" y2="672"/>
+
+  <g>
+    <rect x="70" y="165" width="445" height="285" rx="24" fill="#EEF3F6" stroke="#758B9C" stroke-width="4"/>
+    <circle cx="118" cy="215" r="30" fill="#758B9C"/>
+    <text class="num" x="118" y="224">1</text>
+    <text class="card-title" x="168" y="224">Getting Started</text>
+    <text class="body" x="100" y="302">閾値 + 3D連結成分</text>
+    <text class="body" x="100" y="343">Hungarian assignment</text>
+    <rect x="95" y="382" width="395" height="45" rx="15" fill="#758B9C"/>
+    <text class="score" x="292" y="413">LB 未記載</text>
+  </g>
+
+  <g>
+    <rect x="555" y="165" width="445" height="285" rx="24" fill="#E8F5F7" stroke="#1594A0" stroke-width="4"/>
+    <circle cx="603" cy="215" r="30" fill="#1594A0"/>
+    <text class="num" x="603" y="224">2</text>
+    <text class="card-title" x="653" y="224">DoG classical</text>
+    <text class="body" x="585" y="302">3D band-passでblob検出</text>
+    <text class="body" x="585" y="343">距離に基づく時点間対応</text>
+    <rect x="580" y="382" width="395" height="45" rx="15" fill="#1594A0"/>
+    <text class="score" x="777" y="413">LB 0.73+</text>
+  </g>
+
+  <g>
+    <rect x="1040" y="165" width="490" height="285" rx="24" fill="#F0EFFA" stroke="#7667B3" stroke-width="4"/>
+    <circle cx="1088" cy="215" r="30" fill="#7667B3"/>
+    <text class="num" x="1088" y="224">3</text>
+    <text class="card-title" x="1138" y="224">Rule-based V14</text>
+    <text class="body" x="1070" y="302">multi-scale DoG + motion</text>
+    <text class="body" x="1070" y="343">gap closing・track平滑化</text>
+    <rect x="1065" y="382" width="440" height="45" rx="15" fill="#7667B3"/>
+    <text class="score" x="1285" y="413">LB 0.857</text>
+  </g>
+
+  <g>
+    <rect x="70" y="500" width="445" height="285" rx="24" fill="#E8F2FA" stroke="#2E74B5" stroke-width="4"/>
+    <circle cx="118" cy="550" r="30" fill="#2E74B5"/>
+    <text class="num" x="118" y="559">4</text>
+    <text class="card-title" x="168" y="559">U-Net + ILP</text>
+    <text class="body" x="100" y="637">Temporal 3D U-Net</text>
+    <text class="body" x="100" y="678">edge model + 大域graph制約</text>
+    <rect x="95" y="717" width="395" height="45" rx="15" fill="#2E74B5"/>
+    <text class="score" x="292" y="748">LB 0.897</text>
+  </g>
+
+  <g>
+    <rect x="555" y="500" width="445" height="285" rx="24" fill="#E7F6F2" stroke="#178678" stroke-width="4"/>
+    <circle cx="603" cy="550" r="30" fill="#178678"/>
+    <text class="num" x="603" y="559">5</text>
+    <text class="card-title" x="653" y="559">clean dual-seed</text>
+    <text class="body" x="585" y="637">2 seedのlogit・edge evidence</text>
+    <text class="body" x="585" y="678">ILP + motion・gap repair</text>
+    <rect x="580" y="717" width="395" height="45" rx="15" fill="#178678"/>
+    <text class="score" x="777" y="748">公開page 0.911*</text>
+  </g>
+
+  <g>
+    <rect x="1040" y="500" width="490" height="285" rx="24" fill="#FDEDEA" stroke="#E86E5A" stroke-width="4"/>
+    <circle cx="1088" cy="550" r="30" fill="#E86E5A"/>
+    <text class="num" x="1088" y="559">6</text>
+    <text class="card-title" x="1138" y="559">clean上位候補</text>
+    <text class="body" x="1070" y="637">local ranker + 3-frame</text>
+    <text class="body" x="1070" y="678">acceleration lookahead</text>
+    <rect x="1065" y="717" width="440" height="45" rx="15" fill="#E86E5A"/>
+    <text class="score" x="1285" y="748">baseline 0.915 / 目標 0.916+</text>
+  </g>
+
+  <rect x="70" y="825" width="1460" height="58" rx="18" fill="#FFF6DE" stroke="#D2A642" stroke-width="2"/>
+  <text class="note" x="800" y="862">* LB表示はNotebook version依存。目標値は達成済みスコアではない。</text>
+</svg>
