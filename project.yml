@@ -26,8 +26,10 @@ data:
 defaults:
   seed: 42
   metric: adjusted_edge_jaccard + 0.1 * division_jaccard
-  primary_validation: embryo-disjoint grouped cross-validation
-  n_folds: 5
+  # The train set has only two embryo groups. Keep these unset until the user
+  # chooses between embryo-disjoint primary CV and participant-compatible diagnostics.
+  primary_validation: TODO
+  n_folds: TODO
 
 submission:
   sample_file: data/raw/sample_submission.csv

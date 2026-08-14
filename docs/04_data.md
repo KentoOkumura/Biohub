@@ -6,10 +6,10 @@
 
 | ファイル | サンプル数 | 形式 | 用途 | メモ |
 | --- | ---: | ---: | --- | --- |
-| `train/*.zarr` | 未確認 | Zarr v3、`uint16` | 学習画像 | 配列pathは`0/`、shapeは通常`(T,Z,Y,X)=(100,64,256,256)` |
-| `train/*.geff` | 未確認 | GEFF / Zarr v3 | 疎な正解tracking graph | 各`.zarr`と対になる |
-| `test/*.zarr` | 未確認 | Zarr v3、`uint16` | 公開例の推論入力 | Notebook rerun時に同規模のhidden testへ差し替えられる |
-| `sample_submission.csv` | 未確認 | CSV | 提出形式の例 | Kaggle上のファイルサイズは890 bytes。ローカルには未取得 |
+| `train/*.zarr` | 199 | Zarr v3、`uint16` | 学習画像 | 全sampleが`(T,Z,Y,X)=(100,64,256,256)` |
+| `train/*.geff` | 199 | GEFF / Zarr v3 | 疎な正解tracking graph | 全`.zarr`と1対1で対応 |
+| `test/*.zarr` | 4 | Zarr v3、`uint16` | 公開例の推論入力 | 全sampleが同じshape。Notebook rerun時にhidden testへ差し替えられる |
+| `sample_submission.csv` | 4 dataset / 20行 | CSV | 提出形式の例 | 12 node行、8 edge行。ローカルraw dataとしては未取得 |
 
 ## スキーマ
 
@@ -30,8 +30,12 @@
 
 ## EDA メモ
 
-- ユーザー指定によりコンペデータをダウンロードしていないため、サンプル数、胚数、shapeの例外、輝度分布、正解node/edge/division数は未確認。
-- Kaggle APIでは`sample_submission.csv`と`test/*.zarr`の存在のみをファイル一覧から確認した。ローカルの`data/raw/`にはデータ本体を置いていない。
+- Kaggle Notebookで画像chunkを開かずmetadataだけを監査した。trainは199 sample、胚IDは`44b6`と`6bba`の2個で、sample数はそれぞれ71と128。
+- 疎な正解は合計133,318 node、128,883 edge。sample単位ではnode数50～1,950（median 659）、edge数49～1,879（median 639）。`estimated_number_of_nodes`の合計は4,725,117。
+- train 199 sampleと公開test 4 sampleの画像shapeはすべて`(100,64,256,256)`、chunk shapeは`(1,64,256,256)`。
+- `sample_submission.csv`は10列、20行の形式例であり、本番予測の必要行数を指定するtemplateではない。
+- 輝度分布、画像内容、division数は画像・edge array本体を読んでいないため未確認。ローカルの`data/raw/`にはデータ本体を置いていない。
+- 実行証拠: [`studies/biohub_repository_setup/input_metadata_audit.json`](../studies/biohub_repository_setup/input_metadata_audit.json)。調査コードは同じディレクトリの`input_metadata_audit.py` / `.ipynb`に置く。
 
 ## データリスク
 

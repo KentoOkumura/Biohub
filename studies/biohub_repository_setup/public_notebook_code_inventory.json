@@ -1,0 +1,543 @@
+{
+  "competition_slug": "biohub-cell-tracking-during-development",
+  "notebook_count": 15,
+  "scope": "top public notebooks sorted by vote count and archived on 2026-08-14",
+  "flag_counts": {
+    "training_loop": 0,
+    "fit_call": 0,
+    "fold_api": 0,
+    "fixed_cv_datasets": 1,
+    "split_zero_checkpoint": 11,
+    "local_metric": 7,
+    "submission_schema_check": 9
+  },
+  "records": [
+    {
+      "kernel_ref": "abhijithneilabraham/solution",
+      "title": "solution",
+      "total_votes": 83,
+      "last_run_time": "2026-07-11 05:35:16.910000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/abhijithneilabraham__solution/solution.ipynb",
+      "code_cell_count": 11,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "WEIGHTS_RELATIVE = f\"weights/{METHOD}/split_0/edge_predictor_best.pth\"",
+          "has_weights_dir = (path / \"weights\" / METHOD / \"split_0\" / \"edge_predictor_best.pth\").exists()",
+          "_wdir=\"/kaggle/working/ourw/unet_transformer/split_0\"",
+          "_pcfg=str(REPO_DIR/\"weights\"/\"unet_transformer\"/\"split_0\"/\"config.json\")",
+          "WEIGHTS_RELATIVE=\"/kaggle/working/ourw/unet_transformer/split_0/edge_predictor_best.pth\"",
+          "geffs = sorted((REPO_DIR / \"predictions\").glob(f\"*/{METHOD}/split_0/*.geff\"))"
+        ],
+        "local_metric": [],
+        "submission_schema_check": [
+          "CSV_COLUMNS = [\"id\", *SUBMISSION_COLUMNS]",
+          "writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)",
+          "assert header == CSV_COLUMNS, f\"Bad CSV header: {header}\""
+        ]
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": false,
+        "submission_schema_check": true
+      }
+    },
+    {
+      "kernel_ref": "boristown/dark-agi-biohub-cell-tracking-solution",
+      "title": "Dark-AGI-Biohub Cell Tracking Solution",
+      "total_votes": 86,
+      "last_run_time": "2026-07-19 04:05:18.617000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/boristown__dark-agi-biohub-cell-tracking-solution/dark-agi-biohub-cell-tracking-solution.ipynb",
+      "code_cell_count": 7,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "\"/kaggle/input/datasets/pilkwang/biohub-tracking-support-pack-50ep-v1/weights/unet_transformer/split_0\""
+        ],
+        "local_metric": [
+          "print(metric_df[[\"edge_jaccard\",\"adj_edge_jaccard\"]])"
+        ],
+        "submission_schema_check": []
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": true,
+        "submission_schema_check": false
+      }
+    },
+    {
+      "kernel_ref": "inversion/cell-tracking-getting-started-w-nearest-neighbor",
+      "title": "Cell Tracking Getting Started w/ Nearest Neighbor",
+      "total_votes": 445,
+      "last_run_time": "2026-06-23 21:23:55.067000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/inversion__cell-tracking-getting-started-w-nearest-neighbor/cell-tracking-getting-started-w-nearest-neighbor.ipynb",
+      "code_cell_count": 4,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [],
+        "local_metric": [],
+        "submission_schema_check": []
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": false,
+        "local_metric": false,
+        "submission_schema_check": false
+      }
+    },
+    {
+      "kernel_ref": "kaiwalyaatulraut/biohub-cell-tracking-solution",
+      "title": "Biohub Cell Tracking Solution",
+      "total_votes": 187,
+      "last_run_time": "2026-07-22 05:06:14.940000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/kaiwalyaatulraut__biohub-cell-tracking-solution/biohub-cell-tracking-solution.ipynb",
+      "code_cell_count": 9,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "\"/kaggle/input/datasets/pilkwang/biohub-tracking-support-pack-50ep-v1/weights/unet_transformer/split_0\""
+        ],
+        "local_metric": [
+          "print(metric_df[[\"edge_jaccard\",\"adj_edge_jaccard\"]])"
+        ],
+        "submission_schema_check": []
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": true,
+        "submission_schema_check": false
+      }
+    },
+    {
+      "kernel_ref": "kirneo/metric-hack-last-call-update",
+      "title": "Metric_hack_last_call_update",
+      "total_votes": 118,
+      "last_run_time": "2026-07-22 09:50:39.617000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/kirneo__metric-hack-last-call-update/metric-hack-last-call-update.ipynb",
+      "code_cell_count": 9,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "\"/kaggle/input/datasets/pilkwang/biohub-tracking-support-pack-50ep-v1/weights/unet_transformer/split_0\""
+        ],
+        "local_metric": [
+          "print(metric_df[[\"edge_jaccard\",\"adj_edge_jaccard\"]])"
+        ],
+        "submission_schema_check": []
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": true,
+        "submission_schema_check": false
+      }
+    },
+    {
+      "kernel_ref": "pilkwang/biohub-cell-tracking-blend-preprocessings",
+      "title": "Biohub Cell Tracking: Blend Preprocessings",
+      "total_votes": 155,
+      "last_run_time": "2026-07-14 09:30:02.303000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/pilkwang__biohub-cell-tracking-blend-preprocessings/biohub-cell-tracking-blend-preprocessings.ipynb",
+      "code_cell_count": 6,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "WEIGHTS_RELATIVE = f\"weights/{METHOD}/split_0/edge_predictor_best.pth\"",
+          "has_weights_dir = (path / \"weights\" / METHOD / \"split_0\" / \"edge_predictor_best.pth\").exists()",
+          "geffs = sorted((REPO_DIR / \"predictions\").glob(f\"*/{METHOD}/split_0/*.geff\"))"
+        ],
+        "local_metric": [],
+        "submission_schema_check": [
+          "CSV_COLUMNS = [\"id\", *SUBMISSION_COLUMNS]",
+          "writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)",
+          "assert header == CSV_COLUMNS, f\"Bad CSV header: {header}\""
+        ]
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": false,
+        "submission_schema_check": true
+      }
+    },
+    {
+      "kernel_ref": "pilkwang/biohub-cell-tracking-data-model-eda-baseline",
+      "title": "Biohub Cell Tracking: Data Model, EDA, Baseline",
+      "total_votes": 151,
+      "last_run_time": "2026-07-01 09:15:49.707000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/pilkwang__biohub-cell-tracking-data-model-eda-baseline/biohub-cell-tracking-data-model-eda-baseline.ipynb",
+      "code_cell_count": 2,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [],
+        "local_metric": [],
+        "submission_schema_check": [
+          "CSV_COLUMNS = [\"id\", *SUBMISSION_COLUMNS]",
+          "writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)",
+          "assert header == CSV_COLUMNS, f\"bad submission header: {header}\""
+        ]
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": false,
+        "local_metric": false,
+        "submission_schema_check": true
+      }
+    },
+    {
+      "kernel_ref": "pilkwang/biohub-cell-tracking-learned-graph-w-gap-recovery",
+      "title": "Biohub Cell Tracking: Learned Graph w Gap Recovery",
+      "total_votes": 191,
+      "last_run_time": "2026-07-06 20:57:16.197000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/pilkwang__biohub-cell-tracking-learned-graph-w-gap-recovery/biohub-cell-tracking-learned-graph-w-gap-recovery.ipynb",
+      "code_cell_count": 5,
+      "markdown_mentions_training": true,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "WEIGHTS_RELATIVE = f\"weights/{METHOD}/split_0/edge_predictor_best.pth\"",
+          "has_weights_dir = (path / \"weights\" / METHOD / \"split_0\" / \"edge_predictor_best.pth\").exists()",
+          "geffs = sorted((REPO_DIR / \"predictions\").glob(f\"*/{METHOD}/split_0/*.geff\"))"
+        ],
+        "local_metric": [],
+        "submission_schema_check": [
+          "CSV_COLUMNS = [\"id\", *SUBMISSION_COLUMNS]",
+          "writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)",
+          "assert header == CSV_COLUMNS, f\"Bad CSV header: {header}\""
+        ]
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": false,
+        "submission_schema_check": true
+      }
+    },
+    {
+      "kernel_ref": "pilkwang/biohub-cell-tracking-two-seeds-logit-blend",
+      "title": "Biohub Cell Tracking: Two Seeds Logit Blend",
+      "total_votes": 185,
+      "last_run_time": "2026-07-25 06:33:27.397000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/pilkwang__biohub-cell-tracking-two-seeds-logit-blend/biohub-cell-tracking-two-seeds-logit-blend.ipynb",
+      "code_cell_count": 6,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "WEIGHTS_RELATIVE = f\"weights/{METHOD}/split_0/edge_predictor_best.pth\"",
+          "has_weights_dir = (path / \"weights\" / METHOD / \"split_0\" / \"edge_predictor_best.pth\").exists()",
+          "/ \"split_0\"",
+          "matches = sorted((REPO_DIR / \"predictions\").glob(f\"*/{method}/split_0\"))",
+          "final_dir = final_root / \"split_0\"",
+          "staging_dir = final_root / \"split_0_dual_gpu_staging\"",
+          "geffs = sorted((REPO_DIR / \"predictions\").glob(f\"*/{METHOD}/split_0/*.geff\"))"
+        ],
+        "local_metric": [],
+        "submission_schema_check": [
+          "CSV_COLUMNS = [\"id\", *SUBMISSION_COLUMNS]",
+          "writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)",
+          "assert header == CSV_COLUMNS, f\"Bad CSV header: {header}\""
+        ]
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": false,
+        "submission_schema_check": true
+      }
+    },
+    {
+      "kernel_ref": "seshurajup/lb-0-857-best-rule-base-v14",
+      "title": "[LB 0.857]Best Rule Base V14",
+      "total_votes": 93,
+      "last_run_time": "2026-07-03 23:09:15.947000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/seshurajup__lb-0-857-best-rule-base-v14/lb-0-857-best-rule-base-v14.ipynb",
+      "code_cell_count": 1,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [],
+        "local_metric": [
+          "- Per-sample adjusted edge Jaccards are weight-averaged by (TP + FP + FN).",
+          "def edge_jaccard(pred_edges, gt_edges, matches, n_pred_nodes, n_est_nodes,",
+          "edge_jaccard: float = 0.0",
+          "division_jaccard: float = 0.0",
+          "return Aggregate(edge_jaccard=edge_j, division_jaccard=div_j,",
+          "es = edge_jaccard("
+        ],
+        "submission_schema_check": []
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": false,
+        "local_metric": true,
+        "submission_schema_check": false
+      }
+    },
+    {
+      "kernel_ref": "xiaoleilian/biohub-ct-mix-divaug",
+      "title": "biohub ct mix divaug",
+      "total_votes": 204,
+      "last_run_time": "2026-07-20 07:41:33.157000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/xiaoleilian__biohub-ct-mix-divaug/biohub-ct-mix-divaug.ipynb",
+      "code_cell_count": 4,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [],
+        "local_metric": [
+          "# game division_jaccard). Public score; does NOT commit to final-2. Patchable."
+        ],
+        "submission_schema_check": []
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": false,
+        "local_metric": true,
+        "submission_schema_check": false
+      }
+    },
+    {
+      "kernel_ref": "yaroslavkholmirzayev/biohub-cell-tracking-v4-unet-ilp-reproduction",
+      "title": "Biohub Cell Tracking V4 UNet ILP Reproduction",
+      "total_votes": 130,
+      "last_run_time": "2026-07-09 10:18:56.190000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/yaroslavkholmirzayev__biohub-cell-tracking-v4-unet-ilp-reproduction/biohub-cell-tracking-v4-unet-ilp-reproduction.ipynb",
+      "code_cell_count": 5,
+      "markdown_mentions_training": true,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "WEIGHTS_RELATIVE = f\"weights/{METHOD}/split_0/edge_predictor_best.pth\"",
+          "has_weights_dir = (path / \"weights\" / METHOD / \"split_0\" / \"edge_predictor_best.pth\").exists()",
+          "geffs = sorted((REPO_DIR / \"predictions\").glob(f\"*/{METHOD}/split_0/*.geff\"))"
+        ],
+        "local_metric": [],
+        "submission_schema_check": [
+          "CSV_COLUMNS = [\"id\", *SUBMISSION_COLUMNS]",
+          "writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)",
+          "assert header == CSV_COLUMNS, f\"Bad CSV header: {header}\""
+        ]
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": false,
+        "submission_schema_check": true
+      }
+    },
+    {
+      "kernel_ref": "yusuketogashi/clean-approach-lightweight-local-cv-no-hack",
+      "title": "🧬Clean Approach + Lightweight Local CV | No Hack",
+      "total_votes": 184,
+      "last_run_time": "2026-07-23 00:37:05.277000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/yusuketogashi__clean-approach-lightweight-local-cv-no-hack/clean-approach-lightweight-local-cv-no-hack.ipynb",
+      "code_cell_count": 9,
+      "markdown_mentions_training": true,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [
+          "print(\"Submit recommendation: PROMOTE ONLY IF FIXED-8 LITE CV IMPROVES WITH CONTROLLED FP\")",
+          "CV_FIXED_DATASETS = [",
+          "'datasets': CV_FIXED_DATASETS,",
+          "CV_DATASETS_OVERRIDE = list(CV_FIXED_DATASETS)",
+          "def resolve_cv_stems(all_stems: list[str]) -> tuple[list[str], str, str]:",
+          "test_stems, CV_SPLIT_KIND, CV_SPLIT_SOURCE = resolve_cv_stems(all_train_stems)",
+          "print('Notebook 124 fixed-8 reference:', cv_status['reference_124_score'])"
+        ],
+        "split_zero_checkpoint": [
+          "WEIGHTS_RELATIVE = f\"weights/{METHOD}/split_0/edge_predictor_best.pth\"",
+          "has_weights_dir = (path / \"weights\" / METHOD / \"split_0\" / \"edge_predictor_best.pth\").exists()",
+          "geffs = sorted((REPO_DIR / \"predictions\").glob(f\"*/{METHOD}/split_0/*.geff\"))"
+        ],
+        "local_metric": [
+          "def official_spec_evaluate(pred_nodes, pred_edges, gt_nodes, gt_edges, scale=(1.625,0.40625,0.40625), max_distance_um=7.0):",
+          "\"edge_jaccard\": edge_j,",
+          "\"adj_edge_jaccard\": adjusted,",
+          "\"division_jaccard\": _jaccard(r.division_tp, r.division_fp, r.division_fn),",
+          "adj = np.array([float(r[\"adj_edge_jaccard\"]) for r in rows], dtype=float)",
+          "\"adj_edge_jaccard\": edge_adj,",
+          "\"edge_jaccard_micro\": _jaccard(etp,efp,efn),",
+          "\"division_jaccard\": div_j,"
+        ],
+        "submission_schema_check": [
+          "CSV_COLUMNS = [\"id\", *SUBMISSION_COLUMNS]",
+          "writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)",
+          "assert header == CSV_COLUMNS, f\"Bad CSV header: {header}\"",
+          "# FINAL KAGGLE SUBMISSION GUARD",
+          "raise ValueError(f\"Unexpected submission columns: {list(_submit_check.columns)}\")"
+        ]
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": true,
+        "split_zero_checkpoint": true,
+        "local_metric": true,
+        "submission_schema_check": true
+      }
+    },
+    {
+      "kernel_ref": "yusuketogashi/lb897-baseline",
+      "title": "🧬LB897  BaseLine",
+      "total_votes": 159,
+      "last_run_time": "2026-07-08 02:16:49.557000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/yusuketogashi__lb897-baseline/lb897-baseline.ipynb",
+      "code_cell_count": 10,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "WEIGHTS_RELATIVE = f\"weights/{METHOD}/split_0/edge_predictor_best.pth\"",
+          "has_weights_dir = (path / \"weights\" / METHOD / \"split_0\" / \"edge_predictor_best.pth\").exists()",
+          "geffs = sorted((REPO_DIR / \"predictions\").glob(f\"*/{METHOD}/split_0/*.geff\"))"
+        ],
+        "local_metric": [],
+        "submission_schema_check": [
+          "CSV_COLUMNS = [\"id\", *SUBMISSION_COLUMNS]",
+          "writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)",
+          "assert header == CSV_COLUMNS, f\"Bad CSV header: {header}\""
+        ]
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": false,
+        "submission_schema_check": true
+      }
+    },
+    {
+      "kernel_ref": "yusuketogashi/no-hack-biohub-cell-another-approch-3rd",
+      "title": "No-Hack | Biohub Cell Another Approch 3rd",
+      "total_votes": 141,
+      "last_run_time": "2026-08-05 13:40:18.037000",
+      "notebook_path": "docs/notebooks/biohub-cell-tracking-during-development/yusuketogashi__no-hack-biohub-cell-another-approch-3rd/no-hack-biohub-cell-another-approch-3rd.ipynb",
+      "code_cell_count": 10,
+      "markdown_mentions_training": false,
+      "evidence": {
+        "training_loop": [],
+        "fit_call": [],
+        "fold_api": [],
+        "fixed_cv_datasets": [],
+        "split_zero_checkpoint": [
+          "WEIGHTS_RELATIVE = f\"weights/{METHOD}/split_0/edge_predictor_best.pth\"",
+          "has_weights_dir = (path / \"weights\" / METHOD / \"split_0\" / \"edge_predictor_best.pth\").exists()",
+          "/ \"split_0\"",
+          "matches = sorted((REPO_DIR / \"predictions\").glob(f\"*/{method}/split_0\"))",
+          "final_dir = final_root / \"split_0\"",
+          "staging_dir = final_root / \"split_0_dual_gpu_staging\"",
+          "geffs = sorted((REPO_DIR / \"predictions\").glob(f\"*/{METHOD}/split_0/*.geff\"))"
+        ],
+        "local_metric": [
+          "Adjusted edge Jaccard: Not calculated in phase 162"
+        ],
+        "submission_schema_check": [
+          "CSV_COLUMNS = [\"id\", *SUBMISSION_COLUMNS]",
+          "writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)",
+          "assert header == CSV_COLUMNS, f\"Bad CSV header: {header}\"",
+          "required_columns = set(CSV_COLUMNS)"
+        ]
+      },
+      "flags": {
+        "training_loop": false,
+        "fit_call": false,
+        "fold_api": false,
+        "fixed_cv_datasets": false,
+        "split_zero_checkpoint": true,
+        "local_metric": true,
+        "submission_schema_check": true
+      }
+    }
+  ]
+}

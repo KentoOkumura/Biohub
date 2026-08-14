@@ -1,0 +1,25 @@
+{
+  "id": "yaroslavkholmirzayev/biohub-cell-tracking-v4-unet-ilp-reproduction",
+  "id_no": 125345693,
+  "title": "Biohub Cell Tracking V4 UNet ILP Reproduction",
+  "code_file": "biohub-cell-tracking-v4-unet-ilp-reproduction.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "pilkwang/biohub-tracking-support-pack-50ep-v1"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [
+    "biohub-cell-tracking-during-development"
+  ],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:57e612b484cf3df5026ee4dcc3cb176974b22b2bc0937fb1e16132a8be4cb13c",
+  "machine_shape": "NvidiaTeslaT4"
+}

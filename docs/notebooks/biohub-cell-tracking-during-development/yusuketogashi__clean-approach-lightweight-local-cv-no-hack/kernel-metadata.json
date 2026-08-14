@@ -1,0 +1,26 @@
+{
+  "id": "yusuketogashi/clean-approach-lightweight-local-cv-no-hack",
+  "id_no": 126305354,
+  "title": "\ud83e\uddecClean Approach + Lightweight Local CV | No Hack",
+  "code_file": "clean-approach-lightweight-local-cv-no-hack.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "pilkwang/biohub-tracking-support-pack-50ep-v1",
+    "thibautgoldsborough/cellmot-baseline-artifacts"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [
+    "biohub-cell-tracking-during-development"
+  ],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+  "machine_shape": "NvidiaTeslaT4"
+}

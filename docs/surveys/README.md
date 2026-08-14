@@ -28,7 +28,7 @@ task validate-surveys
 
 | 日付 | レポート | 種類 | 上位仮説 | 実験 | トピック | 状態 | 後継 | 一行要約 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| - | - | - | - | - | - | - | - | - |
+| 2026-08-14 | [Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) | `survey` | - | - | `validation`, `data`, `public-notebooks` | `final` | - | 入力metadata、主催者baseline、vote順上位15公開Notebookを確認し、暫定5-foldを撤回してvalidatorとmetric evaluatorの出所を整理した。 |
 
 ## 上位仮説別
 
@@ -46,11 +46,13 @@ task validate-surveys
 
 | キー | レポート |
 | --- | --- |
-| - | - |
+| `survey` | [Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 
 ## トピック別
 
 | キー | レポート |
 | --- | --- |
-| - | - |
+| `data` | [Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
+| `public-notebooks` | [Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
+| `validation` | [Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 <!-- END AUTO SURVEY INDEX -->

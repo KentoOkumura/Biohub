@@ -30,6 +30,12 @@
 - 照合結果: データをダウンロードしていないため未実施。
 - 参照した実装/ページ: [Kaggle Evaluation](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/overview/evaluation)、[metrics.md](https://github.com/royerlab/kaggle-cell-tracking-competition/blob/main/metrics.md)
 
+## 公開実装の位置付け
+
+- 主催者側のRoyer Labは、baselineとmetricの参照実装を[`royerlab/kaggle-cell-tracking-competition`](https://github.com/royerlab/kaggle-cell-tracking-competition)で公開している。
+- `scripts/evaluate.py`と`tracking_cellmot.metrics`は、正解GEFFがあるデータに対するローカル評価用である。Kaggle上でhidden testを採点するscorerそのものではない。
+- このリポジトリの`scripts/validate_submission.py`は上記repositoryから提供されたものではなく、Kaggle実験テンプレートに含まれる汎用CSV検証である。
+
 ## 提出形式の公式抜粋
 
 - ID 列: `id`。0から始まる連続整数。

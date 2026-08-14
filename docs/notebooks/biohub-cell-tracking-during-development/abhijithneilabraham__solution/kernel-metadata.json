@@ -1,0 +1,29 @@
+{
+  "id": "abhijithneilabraham/solution",
+  "id_no": 125429266,
+  "title": "solution",
+  "code_file": "solution.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": false,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "keywords": [
+    "gpu"
+  ],
+  "dataset_sources": [
+    "",
+    "pilkwang/biohub-deepcenter-unet3d-center-prior-v1",
+    "pilkwang/biohub-tracking-support-pack-50ep-v1",
+    "pilkwang/pilkwang-public-dataset-for-notebooks-figures",
+    "subinium/pytorch251-cu118-p100-wheelhouse-public"
+  ],
+  "kernel_sources": [],
+  "competition_sources": [
+    "biohub-cell-tracking-during-development"
+  ],
+  "model_sources": [],
+  "docker_image": "gcr.io/kaggle-private-byod/python@sha256:57e612b484cf3df5026ee4dcc3cb176974b22b2bc0937fb1e16132a8be4cb13c",
+  "machine_shape": "NvidiaTeslaT4"
+}

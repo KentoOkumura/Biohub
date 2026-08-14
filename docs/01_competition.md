@@ -42,8 +42,15 @@
 - `dataset`: testのフォルダ名から`.zarr`を除いた値と一致させる。
 - 公式出典: [Evaluation](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/overview/evaluation)、[Code Requirements](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/overview/code-requirements)
 
+## リポジトリ設定の確認結果
+
+- コンペデータはユーザー指定によりローカルへ未ダウンロード。Kaggle上のmetadata監査ではtrain 199 sample、胚ID 2個（`44b6`: 71、`6bba`: 128）、公開test 4 sampleを確認した。
+- このリポジトリ独自の汎用CSV検証スクリプト[`scripts/validate_submission.py`](../scripts/validate_submission.py)は、sample submissionと同じ行数・同じ`id`列を要求する。そのため、予測graphに応じて行数が変わる本コンペには未対応である。これは主催者提供のvalidatorではない。
+- 主催者が公開しているのは、評価仕様と[`tracking_cellmot.metrics`](https://github.com/royerlab/kaggle-cell-tracking-competition)を含む参照実装である。Kaggle上のhidden scorer、この参照実装、参加者のローカル再実装、当リポジトリの提出形式検証を混同しない。
+- 実行証拠: [`studies/biohub_repository_setup/input_metadata_audit.json`](../studies/biohub_repository_setup/input_metadata_audit.json)。実行したprivate Kaggle Notebookは`kentookumura/exp001-input-audit-diagnostic` version 1で、名称に当初の誤分類が残る。
+- 詳細調査: [`Biohub リポジトリ設定・validation調査`](surveys/biohub-repository-setup-validation_20260814.md)。
+
 ## 未解決の質問
 
-- コンペデータはユーザー指定により未ダウンロード。trainのサンプル数、胚数、各GEFFのnode/edge数、ローカルの`sample_submission.csv`は未確認。
-- `project.yml`の5-foldはテンプレートの暫定値。データを利用できる段階で胚数と各foldの評価対象量を確認し、fold数と分割方法をユーザーと決める。
-- 汎用の`validate_submission.py`はsample submissionと同じ行数を要求するため、可変行数のtracking graph提出には未対応。最初の提出候補を作る前にCode Competition向け検証へ拡張する。
+- 胚groupが2個しかないため、胚をtrain/validationにまたがせない5-foldは作れない。2方向のleave-one-embryo-outをprimary validationにするかはユーザー判断前であり、`project.yml`の`primary_validation`と`n_folds`は`TODO`とした。
+- 最初の提出候補を作る前に、本コンペ用の可変行数graph検証を実装する必要がある。検証契約と実装範囲は未承認。
