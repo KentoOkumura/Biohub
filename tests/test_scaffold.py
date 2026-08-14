@@ -131,6 +131,14 @@ def test_project_yml_supplies_experiment_defaults() -> None:
 
     assert get_nested(defaults, "validation.metric") == get_nested(project, "defaults.metric")
     assert get_nested(defaults, "validation.seed") == get_nested(project, "defaults.seed")
+    assert get_nested(defaults, "validation.secondary_strategy") == get_nested(
+        project,
+        "defaults.secondary_validation",
+    )
+    assert get_nested(defaults, "validation.secondary_sample_ids") == get_nested(
+        project,
+        "defaults.secondary_validation_samples",
+    )
     assert get_nested(defaults, "reproducibility.seed") == get_nested(
         project,
         "defaults.seed",

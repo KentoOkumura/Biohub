@@ -140,7 +140,7 @@ tasks:
   submit-check:
     desc: Validate a submission file and record evidence when EXP is set.
     cmds:
-      - uv run python scripts/validate_submission.py --submission "{{.SUBMISSION}}" --experiment "{{.EXP}}"
+      - uv run python scripts/validate_submission.py --submission "{{.SUBMISSION}}" --experiment "{{.EXP}}" {{.EXTRA_ARGS}}
 
   submit-code:
     desc: Submit a completed Kaggle kernel version to this Notebook-only code competition.

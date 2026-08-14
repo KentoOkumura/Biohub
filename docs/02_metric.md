@@ -24,7 +24,7 @@
 
 - 欠損予測: hidden test内の全データセットを提出に含める。node/edgeがない場合の許容形式は実装前に公式metricで確認する。
 - 重複 ID: `id`はCSV内で一意な連続整数、`node_id`は少なくとも各dataset内でedge参照を一意に解決できる必要がある。
-- 不正な値域: node座標はvoxel単位の整数。edge行の`node_id,t,z,y,x`とnode行の`source_id,target_id`には`-1`を設定する。
+- 不正な値域: node座標はvoxel単位とする。主催者の[`csv_to_geffs.py`](https://github.com/royerlab/kaggle-cell-tracking-competition/blob/main/scripts/csv_to_geffs.py)は`z,y,x`を浮動小数として受け取り、[`geffs_to_csv.py`](https://github.com/royerlab/kaggle-cell-tracking-competition/blob/main/scripts/geffs_to_csv.py)は整数へ丸める。当リポジトリの形式検証は有限な座標を許容し、test Zarr metadataがある場合は画像範囲も確認する。edge行の`node_id,t,z,y,x`とnode行の`source_id,target_id`には`-1`を設定する。
 - 同点: 公式のtie-break規則は未確認。
 
 ## 解釈

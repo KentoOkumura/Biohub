@@ -34,7 +34,7 @@
 
 - 主催者側のRoyer Labは、baselineとmetricの参照実装を[`royerlab/kaggle-cell-tracking-competition`](https://github.com/royerlab/kaggle-cell-tracking-competition)で公開している。
 - `scripts/evaluate.py`と`tracking_cellmot.metrics`は、正解GEFFがあるデータに対するローカル評価用である。Kaggle上でhidden testを採点するscorerそのものではない。
-- このリポジトリの`scripts/validate_submission.py`は上記repositoryから提供されたものではなく、Kaggle実験テンプレートに含まれる汎用CSV検証である。
+- このリポジトリの`scripts/validate_submission.py`は上記repositoryから提供されたものではなく、このリポジトリ独自の提出形式検証である。本コンペ向けの可変行数tracking graph検証を持つが、scoreは計算しない。
 
 ## 提出形式の公式抜粋
 

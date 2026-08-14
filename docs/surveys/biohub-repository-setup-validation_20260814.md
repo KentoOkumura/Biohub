@@ -19,11 +19,11 @@ summary: 入力metadata、主催者baseline、vote順上位15公開Notebookを�
 
 ## 結論
 
-- 以前「validator」と呼んだものは、このリポジトリ独自の[`scripts/validate_submission.py`](../../scripts/validate_submission.py)であり、コンペ主催者の提供物ではない。sample submissionと同じ行数・同じ`id`列を要求する汎用CSV検証なので、予測node/edge数で行数が変わる本コンペにはそのまま使えない。
+- 以前「validator」と呼んだものは、このリポジトリ独自の[`scripts/validate_submission.py`](../../scripts/validate_submission.py)であり、コンペ主催者の提供物ではない。調査時点ではsample submissionと同じ行数・同じ`id`列を要求していたが、その後、本コンペでは可変行数のtracking graphを検証するよう修正した。
 - 主催者が公開しているのは、評価仕様[`metrics.md`](https://github.com/royerlab/kaggle-cell-tracking-competition/blob/main/metrics.md)と、`tracking_cellmot.metrics` / `scripts/evaluate.py`を含むbaseline repositoryである。Kaggle hidden scorer、主催者の公開参照実装、参加者の再実装、当リポジトリの提出形式検証は別物である。
 - vote順上位15件の公開Notebookには学習ループも`KFold` / `GroupKFold`もなかった。11件は学習済み`split_0` checkpointを読む推論Notebookであり、公開Notebookだけからcheckpoint作成時の全fold構成は確定できない。
 - `Clean Approach + Lightweight Local CV`の“fixed-8”は8-foldではない。2胚から4 sampleずつ選んだ固定8 sampleを1個の`split_0` checkpointで推論し、参加者が再実装したmetricで評価する1回のholdoutである。
-- trainは2胚しかないため、embryo-disjointの5-foldは不可能である。誤解を招く暫定値5を`project.yml`から削除し、primary validationとfold数はユーザー判断まで未確定値とした。
+- trainは2胚しかないため、embryo-disjointの5-foldは不可能である。ユーザー判断により、primary validationは2方向のleave-one-embryo-out、secondary validationは公開Notebookと同じ固定8 sampleのholdoutに確定した。
 
 ## 調査目的
 
@@ -65,7 +65,7 @@ summary: 入力metadata、主催者baseline、vote順上位15公開Notebookを�
 
 - 支持されたこと: 胚をまたがないvalidationをprimary候補にするなら2方向leave-one-embryo-outしか作れない。公開Notebookのfixed-8は、公開解法とのA/B比較用の補助diagnosticとしてのみ位置付けるのが妥当である。
 - 否定されたこと: 「5-foldは胚数未確認の暫定値」という説明、および当リポジトリのCSV validatorを主催者提供物と受け取れる説明。胚数は確認済みで、5-foldはprimary候補として成立しない。
-- 未解決: primaryを2方向leave-one-embryo-outに確定するか、公開Notebook互換の固定sample holdoutをsecondary validationとして併記するか。
+- ユーザー判断: primaryを2方向leave-one-embryo-out、公開Notebook互換の固定sample holdoutをsecondary validationとする。両者のscoreは混ぜずに記録する。
 
 ## 関連ファイル
 
@@ -78,6 +78,6 @@ summary: 入力metadata、主催者baseline、vote順上位15公開Notebookを�
 
 ## 次のアクション
 
-1. 推奨: primary validationを2方向leave-one-embryo-outとし、各方向のscoreとTP/FP/FNを別々に保存する。ただし各foldの学習データが1胚だけになるため、ユーザー承認後に設定する。
-2. 必要ならsecondary validationとして、公開Notebookと同じ固定8 sampleを使う。これはembryo-disjointではない可能性を明記し、primary scoreとは混ぜない。
-3. 最初の提出候補を作る前に、当リポジトリの汎用CSV validatorを、可変行数、node/edge行の`-1`規則、dataset網羅、連続`id`、edge参照整合性を確認する本コンペ用検証へ置き換える。実装は別途ユーザー承認を得る。
+1. 対応済み: primary validationを2方向leave-one-embryo-outとし、各方向のscoreとTP/FP/FNを別々に保存する。
+2. 対応済み: secondary validationとして公開Notebookと同じ固定8 sampleを使う。これはembryo-disjointではない可能性を明記し、primary scoreとは混ぜない。
+3. 対応済み: 当リポジトリのCSV validatorを、可変行数、node/edge行の`-1`規則、連続`id`、edge参照整合性を確認する本コンペ用検証へ置き換えた。test Zarr metadataが利用可能な環境ではdataset網羅と座標範囲も確認する。

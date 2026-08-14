@@ -104,7 +104,7 @@ archive-kaggle-discussions:
 	.venv/bin/python scripts/archive_kaggle_discussions.py --competition $(RESOLVED_COMPETITION) $(EXTRA_ARGS)
 
 submit-check:
-	.venv/bin/python scripts/validate_submission.py --submission "$(SUBMISSION)" --experiment "$(EXP)"
+	.venv/bin/python scripts/validate_submission.py --submission "$(SUBMISSION)" --experiment "$(EXP)" $(EXTRA_ARGS)
 
 submit-code:
 	.venv/bin/kaggle competitions submit $(RESOLVED_COMPETITION) -k $(KERNEL) -v $(KERNEL_VERSION) -f $(OUTPUT_FILE) -m "$(MESSAGE)"

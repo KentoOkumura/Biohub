@@ -45,12 +45,13 @@
 ## リポジトリ設定の確認結果
 
 - コンペデータはユーザー指定によりローカルへ未ダウンロード。Kaggle上のmetadata監査ではtrain 199 sample、胚ID 2個（`44b6`: 71、`6bba`: 128）、公開test 4 sampleを確認した。
-- このリポジトリ独自の汎用CSV検証スクリプト[`scripts/validate_submission.py`](../scripts/validate_submission.py)は、sample submissionと同じ行数・同じ`id`列を要求する。そのため、予測graphに応じて行数が変わる本コンペには未対応である。これは主催者提供のvalidatorではない。
+- このリポジトリ独自の[`scripts/validate_submission.py`](../scripts/validate_submission.py)は、competition slugから本コンペを判別し、可変行数のtracking graphを検証する。sample submissionは列schemaの照合だけに使い、行数や`id`の内容は提出と一致させない。これは主催者提供のvalidatorではない。
+- 本コンペ用検証は、列順、連続`id`、有限な数値、node/edge行の`-1`、dataset内のnode IDとedge参照、edgeの時間方向を確認する。test `.zarr`が利用可能なら、全datasetの網羅と`t,z,y,x`の範囲も確認する。raw dataがないローカル環境では後者だけを省略する。
 - 主催者が公開しているのは、評価仕様と[`tracking_cellmot.metrics`](https://github.com/royerlab/kaggle-cell-tracking-competition)を含む参照実装である。Kaggle上のhidden scorer、この参照実装、参加者のローカル再実装、当リポジトリの提出形式検証を混同しない。
 - 実行証拠: [`studies/biohub_repository_setup/input_metadata_audit.json`](../studies/biohub_repository_setup/input_metadata_audit.json)。実行したprivate Kaggle Notebookは`kentookumura/exp001-input-audit-diagnostic` version 1で、名称に当初の誤分類が残る。
 - 詳細調査: [`Biohub リポジトリ設定・validation調査`](surveys/biohub-repository-setup-validation_20260814.md)。
 
-## 未解決の質問
+## Validation設定
 
-- 胚groupが2個しかないため、胚をtrain/validationにまたがせない5-foldは作れない。2方向のleave-one-embryo-outをprimary validationにするかはユーザー判断前であり、`project.yml`の`primary_validation`と`n_folds`は`TODO`とした。
-- 最初の提出候補を作る前に、本コンペ用の可変行数graph検証を実装する必要がある。検証契約と実装範囲は未承認。
+- primary validationは、`embryo_id`をgroupとして一方の胚で学習し、もう一方で評価する2方向のleave-one-embryo-outとする。`project.yml`では`primary_validation: leave-one-embryo-out`、`n_folds: 2`に設定した。
+- secondary validationは、公開Notebook `Clean Approach + Lightweight Local CV`と同じ固定8 sampleのholdoutとする。これは8-foldではなく、公開Notebookとの条件比較に使う補助評価である。

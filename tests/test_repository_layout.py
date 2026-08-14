@@ -61,6 +61,21 @@ def test_project_is_configured_for_biohub_cell_tracking() -> None:
         "is_code_competition": True,
     }
     assert project["data"]["group_column"] == "embryo_id"
+    assert project["defaults"]["primary_validation"] == "leave-one-embryo-out"
+    assert project["defaults"]["n_folds"] == 2
+    assert project["defaults"]["secondary_validation"] == (
+        "fixed 8-sample holdout from Clean Approach + Lightweight Local CV"
+    )
+    assert project["defaults"]["secondary_validation_samples"] == [
+        "44b6_0113de3b",
+        "44b6_0b24845f",
+        "44b6_341df25f",
+        "44b6_e57ff5c6",
+        "6bba_05b6850b",
+        "6bba_05db0fb1",
+        "6bba_969618f6",
+        "6bba_fc83837d",
+    ]
     assert project["submission"]["id_column"] == "id"
     assert project["submission"]["target_columns"] == [
         "node_id",

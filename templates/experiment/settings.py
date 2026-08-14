@@ -215,6 +215,12 @@ def project_experiment_defaults(project_config: dict[str, Any]) -> dict[str, Any
         "validation": {
             "strategy": get_nested(project_config, "defaults.primary_validation"),
             "n_folds": get_nested(project_config, "defaults.n_folds"),
+            "secondary_strategy": get_nested(
+                project_config, "defaults.secondary_validation"
+            ),
+            "secondary_sample_ids": get_nested(
+                project_config, "defaults.secondary_validation_samples"
+            ),
             "seed": seed,
             "metric": get_nested(project_config, "defaults.metric"),
             "group_column": get_nested(project_config, "data.group_column"),
