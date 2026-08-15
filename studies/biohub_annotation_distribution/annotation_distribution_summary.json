@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "captured_at_utc": "2026-08-15T00:26:55.192997+00:00",
+  "competition_slug": "biohub-cell-tracking-during-development",
+  "sample_count": 199,
+  "annotated_nodes": 133318,
+  "annotated_edges": 128883,
+  "estimated_total_nodes": 4725117,
+  "weighted_annotation_fraction": 0.0282147510844705,
+  "sample_annotation_fraction": {
+    "min": 0.0012715528203041553,
+    "q05": 0.002499887544868218,
+    "q25": 0.010378286405051765,
+    "median": 0.03555380370516358,
+    "q75": 0.11804840195825951,
+    "q95": 0.16554638154303658,
+    "max": 0.20206320615686918,
+    "mean": 0.06126075778616097
+  },
+  "active_frame_count": {
+    "min": 40.0,
+    "q05": 66.6,
+    "q25": 99.0,
+    "median": 100.0,
+    "q75": 100.0,
+    "q95": 100.0,
+    "max": 100.0,
+    "mean": 95.14070351758794
+  },
+  "annotated_t_span": {
+    "min": 40.0,
+    "q05": 70.7,
+    "q25": 100.0,
+    "median": 100.0,
+    "q75": 100.0,
+    "q95": 100.0,
+    "max": 100.0,
+    "mean": 95.65829145728644
+  },
+  "mean_nodes_per_active_frame": {
+    "min": 1.0,
+    "q05": 1.21,
+    "q25": 3.0149999999999997,
+    "median": 6.61,
+    "q75": 9.445,
+    "q95": 14.679999999999998,
+    "max": 20.052083333333332,
+    "mean": 6.887864924748958
+  },
+  "connected_component_count": {
+    "min": 1.0,
+    "q05": 2.0,
+    "q25": 6.0,
+    "median": 19.0,
+    "q75": 33.0,
+    "q95": 59.099999999999994,
+    "max": 79.0,
+    "mean": 22.28643216080402
+  },
+  "component_size_nodes": {
+    "min": 2.0,
+    "q05": 5.0,
+    "q25": 12.0,
+    "median": 21.0,
+    "q75": 39.0,
+    "q95": 93.0,
+    "max": 187.0,
+    "mean": 30.06042841037204
+  },
+  "samples_annotated_in_all_100_frames": 140,
+  "samples_with_gaps_inside_annotation_span": 25,
+  "samples_with_non_unit_edge_dt": 0,
+  "division_node_count": 151,
+  "by_embryo": {
+    "44b6": {
+      "sample_count": 71,
+      "annotated_nodes": 20197,
+      "estimated_total_nodes": 2618970,
+      "weighted_annotation_fraction": 0.007711810368198185,
+      "sample_annotation_fraction": {
+        "min": 0.0012715528203041553,
+        "q05": 0.0016401780174165406,
+        "q25": 0.003884087446992038,
+        "median": 0.00771784977115678,
+        "q75": 0.012376385447251906,
+        "q95": 0.02605405154551613,
+        "max": 0.05017826488841939,
+        "mean": 0.009852894254384424
+      },
+      "active_frame_count": {
+        "min": 40.0,
+        "q05": 51.5,
+        "q25": 84.0,
+        "median": 100.0,
+        "q75": 100.0,
+        "q95": 100.0,
+        "max": 100.0,
+        "mean": 90.04225352112677
+      }
+    },
+    "6bba": {
+      "sample_count": 128,
+      "annotated_nodes": 113121,
+      "estimated_total_nodes": 2106147,
+      "weighted_annotation_fraction": 0.053709926230220396,
+      "sample_annotation_fraction": {
+        "min": 0.009302532603373838,
+        "q05": 0.01495156589050683,
+        "q25": 0.03944378180064974,
+        "median": 0.09714868864169814,
+        "q75": 0.1340073971635789,
+        "q95": 0.17499982832693622,
+        "max": 0.20206320615686918,
+        "mean": 0.08977605708894328
+      },
+      "active_frame_count": {
+        "min": 47.0,
+        "q05": 85.4,
+        "q25": 99.0,
+        "median": 100.0,
+        "q75": 100.0,
+        "q95": 100.0,
+        "max": 100.0,
+        "mean": 97.96875
+      }
+    }
+  },
+  "spatial_bin_count": 8,
+  "interpretation_limit": "GEFF records annotated nodes and edges only. Exact locations of true but unannotated cells are not present; estimated_total_nodes supports sample-level coverage only."
+}
