@@ -17,11 +17,11 @@
 
 予測結果は、細胞検出を表す **node** と、時点間の対応を表す有向 **edge** からなるtracking graphです。分裂は特別なラベルではなく、1個のnodeから2本のedgeが出る構造として表現されます。
 
-$$
+```math
 G=(V,E),\qquad
 v_i=(t_i,z_i,y_i,x_i),\qquad
 e_{ij}=(v_i\rightarrow v_j)
-$$
+```
 
 ---
 
@@ -40,12 +40,12 @@ $$
 
 最終スコアは
 
-$$
+```math
 \mathrm{Score}
 =
 \mathrm{AdjustedEdgeJaccard}
 +0.1\,\mathrm{DivisionJaccard}
-$$
+```
 
 です。重みから分かるように、主成分は時点間edgeの正しさです。ただし分裂をすべて無視するとdivision項を失い、系譜としても不完全になります。
 
@@ -60,11 +60,11 @@ node行は1個の細胞中心、edge行は同一dataset内の2個のnodeの接�
 
 通常の系譜では、次の構造条件を満たすようにします。
 
-$$
+```math
 t_j=t_i+1,\qquad
 \deg^{-}(i)\le 1,\qquad
 \deg^{+}(i)\le 2
-$$
+```
 
 - edgeは次の時点へ進む。
 - 1個の細胞が複数の親を持つmergeは作らない。
@@ -117,13 +117,13 @@ flowchart TD
 
 sample IDは概ね
 
-$$
+```math
 \texttt{dataset\_name}
 =
 \texttt{embryo\_id}
 \texttt{\_}
 \texttt{field\_of\_view}
-$$
+```
 
 という形です。たとえば `44b6_0113de3b` なら、
 
@@ -142,52 +142,52 @@ field-of-view部分には追加の区切りを含む長い表現もあり得る�
 
 1 sampleの画像を
 
-$$
+```math
 I^{(e,r)}
 \in
 \mathbb{N}^{T\times Z\times Y\times X}
-$$
+```
 
-と書きます。ここで $e$ は胚、$r$ は撮像領域/sampleです。現在確認できているtrain画像はすべて
+と書きます。ここで $e$ は胚、 $r$ は撮像領域/sampleです。現在確認できているtrain画像はすべて
 
-$$
+```math
 (T,Z,Y,X)=(100,64,256,256)
-$$
+```
 
 です。
 
 ある時刻 $t$ のframeは
 
-$$
+```math
 I_t\in\mathbb{N}^{Z\times Y\times X}
-$$
+```
 
 という3D volumeです。その中の1枚のz断面だけを取り出すと
 
-$$
+```math
 I_{t,z}\in\mathbb{N}^{Y\times X}
-$$
+```
 
 となります。通常の動画でいう「1 frame＝1枚の2D画像」とは異なる点が重要です。
 
 空間voxelの物理サイズは異方的です。
 
-$$
+```math
 (s_z,s_y,s_x)
 =(1.625, 0.40625, 0.40625)
 \quad \mu\mathrm{m/voxel}
-$$
+```
 
 したがって、voxel座標差をそのまま距離にせず、
 
-$$
+```math
 d(i,j)=
 \sqrt{
 (1.625\Delta z)^2+
 (0.40625\Delta y)^2+
 (0.40625\Delta x)^2
 }
-$$
+```
 
 で物理距離へ変換します。
 
@@ -247,13 +247,13 @@ trainの内訳は、`44b6`が71 sample、`6bba`が128 sampleです。train全体
 
 最も単純な入口です。各3D frameを4分の1にdownsampleし、3×3×3の一様filterで平滑化します。90 percentileより明るいvoxelを二値化し、3D連結成分の重心を細胞候補にします。
 
-$$
+```math
 B_t(r)=
 \mathbb{1}
 \left[
 \mathrm{UniformFilter}(I_t)(r)>P_{90}
 \right]
-$$
+```
 
 前時点と現時点の全候補間の物理距離行列を作り、Hungarian algorithmで1対1 assignmentします。15 µmを超える対応は捨てます。
 
@@ -263,7 +263,7 @@ $$
 
 Difference of Gaussians（DoG）は、細胞らしい大きさのbright blobを強調します。
 
-$$
+```math
 D_t
 =
 G_{\sigma_s}*I_t
@@ -271,7 +271,7 @@ G_{\sigma_s}*I_t
 G_{\sigma_l}*I_t,
 \qquad
 \sigma_s<\sigma_l
-$$
+```
 
 小さいGaussianは細胞中心の局所輝度を残し、大きいGaussianは緩やかな背景を表します。差を取ることで、背景むらを抑えながらblob中心を抽出します。DoG responseの3D局所極大をnode候補とし、隣接frameを距離で接続します。
 
@@ -281,7 +281,7 @@ Getting Startedより細胞サイズを明示的に扱えるため検出が改�
 
 Rule-based V14は単一DoGをかなり強化したclassical pipelineです。
 
-1. $(1.5,4.0)$ µmと$(2.2,5.5)$ µmのmulti-scale DoGを取る。
+1. $(1.5,4.0)$ µmと $(2.2,5.5)$ µmのmulti-scale DoGを取る。
 2. 局所極大を抽出し、画像輝度重心で中心をrefineする。
 3. 6 µmのtight gate、8 µmのloose gateで2段階assignmentする。
 4. 前の移動量を使ったmotion predictionで曖昧な対応を解く。
@@ -290,36 +290,36 @@ Rule-based V14は単一DoGをかなり強化したclassical pipelineです。
 
 位置予測を
 
-$$
+```math
 \widehat q_i
 =
 q_i+\beta(q_i-q_{\mathrm{prev}(i)})
-$$
+```
 
-とし、$\widehat q_i$に近い次時点候補を優先します。学習済みモデルなしでLB 0.857まで到達した点は重要です。一方、保存済みV14の既定設定では `allow_divisions=False` であり、分裂性能の高い解法ではありません。
+とし、 $\widehat q_i$ に近い次時点候補を優先します。学習済みモデルなしでLB 0.857まで到達した点は重要です。一方、保存済みV14の既定設定では `allow_divisions=False` であり、分裂性能の高い解法ではありません。
 
 ### 3.5 U-Net + ILP
 
 学習モデルの中心となる系統です。短い時間windowをTemporal 3D U-Netへ入力し、voxelごとの特徴fieldとcell-center probabilityを得ます。
 
-$$
+```math
 F_t=h_\theta(I_{t:t+W-1})_t,
 \qquad
 p_t(r)=\sigma(q_\theta(F_t(r)))
-$$
+```
 
 local maximum suppressionでnode候補を作り、候補位置のfeatureをnode transformerへ渡して隣接frameのedge確率 $p_{ij}$ を予測します。
 
 その後、Integer Linear Programming（ILP、整数線形計画）で、局所的に高いedgeを単独で選ぶのではなく、graph全体の制約を満たす組合せを選びます。概念的には
 
-$$
+```math
 \min_{x,a,b,v}
 -
 \sum_{(i,j)\in E_0}p_{ij}x_{ij}
 +\lambda_a\sum_i a_i
 +\lambda_b\sum_i b_i
 +\lambda_v\sum_i v_i
-$$
+```
 
 です。
 
@@ -334,11 +334,11 @@ ILP後に、gap repair、短track除去、division geometry、座標平滑化な
 
 独立したseedで学習した2個のTemporalUNet3Dを使い、同じ物理volume上でdetection logitを融合します。
 
-$$
+```math
 d_t^{\mathrm{shared}}(x)
 =(1-\alpha)d_t^{(A)}(x)
 +\alpha\widetilde d_t^{(B)}(x)
-$$
+```
 
 融合fieldから共通の候補点集合を1回だけ抽出するため、モデルAとBが別々のnode IDを作って後から無理に対応させる方式ではありません。両モデルのfeature/edge evidenceを利用し、ILP、motion reassignment、gap repair、分裂の幾何条件へ渡します。
 
@@ -352,21 +352,21 @@ Notebook系統内の限定diagnosticでは、単一volumeのnode recallが0.9951
 
 前時点からの速度を使った予測位置を
 
-$$
+```math
 \widehat q_i
 =
 q_i+0.5(q_i-q_{\mathrm{prev}(i)})
-$$
+```
 
 とし、候補edgeのcostを
 
-$$
+```math
 C_{ij}
 =
 \lVert q_j-\widehat q_i\rVert_2
 +0.05\lVert q_j-q_i\rVert_2
 -p_{ij}
-$$
+```
 
 で計算します。さらに $i\rightarrow j$ の次に、同じ速度で自然に続く $j\rightarrow k$ が存在する場合だけ、最大0.20のbounded bonusを与えます。
 
@@ -413,7 +413,7 @@ $$
 
 同じ時点内で、予測nodeと正解nodeの物理距離を計算します。最大7 µm以内のpairだけを候補とし、optimal bipartite assignmentで1対1対応を作ります。
 
-$$
+```math
 M_t
 =
 \operatorname*{argmin}_{M}
@@ -421,7 +421,7 @@ M_t
 d(p,g),
 \qquad
 d(p,g)\le7\ \mu\mathrm{m}
-$$
+```
 
 これにより、複数の予測nodeが同じ正解nodeを重複して回収することを防ぎます。
 
@@ -431,18 +431,18 @@ $$
 
 疎な正解に対応するため、正解nodeへ対応しない予測edgeは原則として無視されます。ただし、annotationされたsourceまたはtargetに対して矛盾する接続を作った場合はFPになります。
 
-$$
+```math
 J_{edge}
 =
 \frac{TP_{edge}}
 {TP_{edge}+FP_{edge}+FN_{edge}}
-$$
+```
 
 ### 5.4 node数の過剰予測penalty
 
 未annotation nodeを直接FPにしない代わりに、各sampleに与えられた全細胞node数の粗い推定値 $T_{true}$ と、予測node総数 $T_{pred}$ を比較します。
 
-$$
+```math
 J_{edge}^{adj}
 =
 \max\left(
@@ -453,36 +453,36 @@ J_{edge}
 \frac{T_{pred}-T_{true}}{T_{true}}
 \right]
 \right)
-$$
+```
 
-つまり、annotationにない正常な細胞を予測しても即FPにはなりませんが、画像全体に大量の偽nodeを撒くと総数penaltyを受けます。逆に $T_{pred}<T_{true}$ のとき係数が1を超え得るため、combined scoreも1を超える場合があります。
+つまり、annotationにない正常な細胞を予測しても即FPにはなりませんが、画像全体に大量の偽nodeを撒くと総数penaltyを受けます。逆に $T_{pred}\lt T_{true}$ のとき係数が1を超え得るため、combined scoreも1を超える場合があります。
 
 ### 5.5 division metric
 
 予測graphで2本以上の出力edgeを持つnodeをpredicted forkとして扱います。
 
-$$
+```math
 F_{pred}
 =
 \{v\in V:\deg^+(v)\ge2\}
-$$
+```
 
 分裂時刻の見え方には曖昧さがあるため、正解の分裂nodeだけを1時点で完全一致させるのではなく、grandparent、parent、children、grandchildrenからなる局所windowを使います。親側anchor、異なる2本の娘枝、edge方向、mergeしていないことを確認し、GT divisionとpredicted forkを1対1matchingします。
 
-$$
+```math
 J_{div}
 =
 \frac{TP_{div}}
 {TP_{div}+FP_{div}+FN_{div}}
-$$
+```
 
 ### 5.6 sample集約
 
 adjusted edge Jaccardは、sample $i$ の
 
-$$
+```math
 w_i=TP_i+FP_i+FN_i
-$$
+```
 
 を重みとして平均します。divisionは全sampleのTP、FP、FNを先に合計してmicro-averageします。小さなsampleを多数作って平均を操作するmetricではありません。
 
