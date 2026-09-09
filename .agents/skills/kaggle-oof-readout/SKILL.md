@@ -61,6 +61,8 @@ Use `--compare-prediction-column` to compare two prediction columns. Use `--feat
 - Do not update the experiment status to a user-decision state without the user's judgment.
 - If the result becomes reusable analysis, update the relevant metadata-indexed report in `docs/surveys/` instead of creating one report per rerun.
 
+When creating or changing formulas in documents or Notebook Markdown cells, follow the [math conventions and verification steps in AGENTS.md](../../../AGENTS.md#markdown-と-notebook-の数式) for the changed files.
+
 ## Validation
 
 Before Kaggle execution:

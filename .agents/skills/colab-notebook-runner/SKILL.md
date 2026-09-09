@@ -77,6 +77,8 @@ When a Colab run produces official experiment evidence, record it in the same `m
 
 ## Validation
 
+When creating or changing formulas in documents or Notebook Markdown cells, follow the [math conventions and verification steps in AGENTS.md](../../../AGENTS.md#markdown-と-notebook-の数式) for the changed files.
+
 Before handing off a generated or adapted notebook:
 
 ```bash

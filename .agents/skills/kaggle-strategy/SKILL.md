@@ -78,6 +78,8 @@ uv run python .agents/skills/kaggle-strategy/scripts/collect_strategy_context.py
 - 次に試す手堅い実験。
 - 当たれば大きい高リスクな実験。
 
+数式を含む文書を作成・変更した場合は、[AGENTS.md の数式規約](../../../AGENTS.md#markdown-と-notebook-の数式)に従い、変更したファイルの検証を行う。
+
 ## ルール
 
 - すべての提案は、ローカルファイルのパス、Kaggle 公開情報、論文、または明示した仮定に結び付ける。

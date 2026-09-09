@@ -228,6 +228,8 @@ task update-summary
 
 完了調査レポートを新規作成する場合は、`docs/surveys/README.md`の作成・完了手順に従う。本文には、結論、証拠範囲、実験構成・モデル説明、分析結果、解釈、関連する`result.md` / `metrics.json` / `studies/`、次のアクションを記載する。調査レポートと実験の公式結果を混同しない。
 
+数式を含む実験記録・レポート・Notebook の Markdown セルを作成・変更した場合は、[AGENTS.md の数式規約](../../../AGENTS.md#markdown-と-notebook-の数式)に従い、変更したファイルの検証を行う。
+
 品質基準:
 - ユーザーが依頼した手法契約と実装の `input / target / output / loss / decode / context unit` が一致し、`faithful` / `staged-faithful` / `proxy` の分類に根拠があること。
 - `proxy` で省略した機構と検証できない主張が記録され、実装前のユーザー承認があること。

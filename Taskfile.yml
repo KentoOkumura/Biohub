@@ -41,6 +41,7 @@ tasks:
       - uv run python scripts/update_survey_index.py --check --allow-draft
       - uv run python scripts/update_experiment_summary.py --check
       - uv run python scripts/check_markdown_links.py
+      - uv run python scripts/check_markdown_math.py
 
   validate-config:
     desc: Validate project.yml strictly while allowing indexed survey drafts.
@@ -50,6 +51,12 @@ tasks:
       - uv run python scripts/update_survey_index.py --check --allow-draft
       - uv run python scripts/update_experiment_summary.py --check
       - uv run python scripts/check_markdown_links.py
+      - uv run python scripts/check_markdown_math.py
+
+  check-markdown-math:
+    desc: Check document math locally; pass explicit Markdown paths and --github to verify GitHub conversion.
+    cmds:
+      - uv run python scripts/check_markdown_math.py {{.EXTRA_ARGS}}
 
   check-strategy-docs:
     desc: Validate backlog/KAGGLE_DIRECTION.md size, hypothesis mapping, and backlog index/detail consistency.

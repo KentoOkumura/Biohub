@@ -35,6 +35,8 @@ description: "Kaggle コンペに関係する論文、過去の Kaggle 解法、
 
 このリポジトリでは、完了した外部調査レポートを`docs/surveys/`に置く。検索、draft作成、本文完成、`status: final`、索引更新、検証の順序は`docs/surveys/README.md`の作成・完了手順に従う。論文単位の読書メモは`docs/papers/`、Kaggle discussionのアーカイブは`docs/discussions/`に残し、統合した結論をsurveyレポートから参照する。
 
+数式を含む文書を作成・変更した場合は、[AGENTS.md の数式規約](../../../AGENTS.md#markdown-と-notebook-の数式)に従い、変更したファイルの検証を行う。
+
 ## 出力
 
 文献リストから始めず、最も実行価値の高い 3-5 個のアイデアを先に出す。使った情報源へのリンクを含める。事実と、転用可能性に関する仮説を分けて書く。
