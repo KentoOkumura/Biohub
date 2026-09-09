@@ -148,7 +148,7 @@ I^{(e,r)}
 \mathbb{N}^{T\times Z\times Y\times X}
 $$
 
-と書きます。ここで \(e\) は胚、\(r\) は撮像領域/sampleです。現在確認できているtrain画像はすべて
+と書きます。ここで $e$ は胚、$r$ は撮像領域/sampleです。現在確認できているtrain画像はすべて
 
 $$
 (T,Z,Y,X)=(100,64,256,256)
@@ -156,7 +156,7 @@ $$
 
 です。
 
-ある時刻 \(t\) のframeは
+ある時刻 $t$ のframeは
 
 $$
 I_t\in\mathbb{N}^{Z\times Y\times X}
@@ -281,7 +281,7 @@ Getting Startedより細胞サイズを明示的に扱えるため検出が改�
 
 Rule-based V14は単一DoGをかなり強化したclassical pipelineです。
 
-1. \((1.5,4.0)\) µmと\((2.2,5.5)\) µmのmulti-scale DoGを取る。
+1. $(1.5,4.0)$ µmと$(2.2,5.5)$ µmのmulti-scale DoGを取る。
 2. 局所極大を抽出し、画像輝度重心で中心をrefineする。
 3. 6 µmのtight gate、8 µmのloose gateで2段階assignmentする。
 4. 前の移動量を使ったmotion predictionで曖昧な対応を解く。
@@ -296,7 +296,7 @@ $$
 q_i+\beta(q_i-q_{\mathrm{prev}(i)})
 $$
 
-とし、\(\widehat q_i\)に近い次時点候補を優先します。学習済みモデルなしでLB 0.857まで到達した点は重要です。一方、保存済みV14の既定設定では `allow_divisions=False` であり、分裂性能の高い解法ではありません。
+とし、$\widehat q_i$に近い次時点候補を優先します。学習済みモデルなしでLB 0.857まで到達した点は重要です。一方、保存済みV14の既定設定では `allow_divisions=False` であり、分裂性能の高い解法ではありません。
 
 ### 3.5 U-Net + ILP
 
@@ -308,7 +308,7 @@ F_t=h_\theta(I_{t:t+W-1})_t,
 p_t(r)=\sigma(q_\theta(F_t(r)))
 $$
 
-local maximum suppressionでnode候補を作り、候補位置のfeatureをnode transformerへ渡して隣接frameのedge確率 \(p_{ij}\) を予測します。
+local maximum suppressionでnode候補を作り、候補位置のfeatureをnode transformerへ渡して隣接frameのedge確率 $p_{ij}$ を予測します。
 
 その後、Integer Linear Programming（ILP、整数線形計画）で、局所的に高いedgeを単独で選ぶのではなく、graph全体の制約を満たす組合せを選びます。概念的には
 
@@ -323,10 +323,10 @@ $$
 
 です。
 
-- \(x_{ij}\): edgeを採用するか
-- \(a_i\): trackの出現
-- \(b_i\): trackの消失
-- \(v_i\): 分裂
+- $x_{ij}$: edgeを採用するか
+- $a_i$: trackの出現
+- $b_i$: trackの消失
+- $v_i$: 分裂
 
 ILP後に、gap repair、短track除去、division geometry、座標平滑化などを行います。公開LB 0.897系は、classical detectionからlearned detection/associationへ移った大きな段階です。
 
@@ -368,7 +368,7 @@ C_{ij}
 -p_{ij}
 $$
 
-で計算します。さらに \(i\rightarrow j\) の次に、同じ速度で自然に続く \(j\rightarrow k\) が存在する場合だけ、最大0.20のbounded bonusを与えます。
+で計算します。さらに $i\rightarrow j$ の次に、同じ速度で自然に続く $j\rightarrow k$ が存在する場合だけ、最大0.20のbounded bonusを与えます。
 
 この変更は検出、ILP、gap repair、分裂条件を固定し、対応付けだけへ長い時間文脈を加える試みです。Notebookの記載は
 
@@ -440,7 +440,7 @@ $$
 
 ### 5.4 node数の過剰予測penalty
 
-未annotation nodeを直接FPにしない代わりに、各sampleに与えられた全細胞node数の粗い推定値 \(T_{true}\) と、予測node総数 \(T_{pred}\) を比較します。
+未annotation nodeを直接FPにしない代わりに、各sampleに与えられた全細胞node数の粗い推定値 $T_{true}$ と、予測node総数 $T_{pred}$ を比較します。
 
 $$
 J_{edge}^{adj}
@@ -455,7 +455,7 @@ J_{edge}
 \right)
 $$
 
-つまり、annotationにない正常な細胞を予測しても即FPにはなりませんが、画像全体に大量の偽nodeを撒くと総数penaltyを受けます。逆に \(T_{pred}<T_{true}\) のとき係数が1を超え得るため、combined scoreも1を超える場合があります。
+つまり、annotationにない正常な細胞を予測しても即FPにはなりませんが、画像全体に大量の偽nodeを撒くと総数penaltyを受けます。逆に $T_{pred}<T_{true}$ のとき係数が1を超え得るため、combined scoreも1を超える場合があります。
 
 ### 5.5 division metric
 
@@ -478,7 +478,7 @@ $$
 
 ### 5.6 sample集約
 
-adjusted edge Jaccardは、sample \(i\) の
+adjusted edge Jaccardは、sample $i$ の
 
 $$
 w_i=TP_i+FP_i+FN_i
