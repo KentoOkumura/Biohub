@@ -13,7 +13,7 @@
 
 ### 現行の比較基準
 
-実験開始前のため、比較基準はまだない。数値は各実験の`metrics.json`、証拠への参照と解釈は`result.md`を正とする。
+`exp001_temporal_unet3d_baseline`を最初の比較基準候補としてKaggleで実行したが、batch size 16のsmoke backwardでT4がOOMとなり、checkpoint、CV、LBは得られなかった。現在も比較可能な数値はない。数値は各実験の`metrics.json`、証拠への参照と解釈は`result.md`を正とする。
 
 ## アイデアバックログ
 
@@ -23,6 +23,7 @@
 
 | 仮説ID | 仮説 | 対応する未着手候補 | 対応する実験 | 残っている問い |
 | --- | --- | --- | --- | --- |
+| `HYP-20260909-01` | 主催者公開コードの `TemporalUNet3D` と `SimpleNodeTransformer` をrandom initializationから公式公開checkpointと同じ3 epochs学習し、そのcheckpointでhidden testを推論すれば、学習から再現可能な3D U-NetのPublic LB比較基準を確立できる。 | - | [`exp001_temporal_unet3d_baseline`](../experiments/exp001_temporal_unet3d_baseline/) | 3 epochsの完走可否、epoch所要時間、validation値、Public LB、checkpointとsubmissionのSHA |
 
 ### 未着手バックログ
 

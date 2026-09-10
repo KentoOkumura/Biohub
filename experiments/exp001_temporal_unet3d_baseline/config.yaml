@@ -1,0 +1,141 @@
+experiment:
+  name: "exp001_temporal_unet3d_baseline"
+  description: "Train the organizer-published TemporalUNet3D and SimpleNodeTransformer from random initialization for three epochs, then create a graph submission with the trained checkpoint."
+  route: temporal_unet3d_node_transformer
+  created_at: "2026-09-09"
+
+lineage:
+  parent: N/A
+  hypothesis_id: HYP-20260909-01
+  backlog_candidate: official_temporal_unet3d_train_submission_baseline
+  diff_summary: "First local experiment; adds seed 42 and evidence capture around the organizer-published three-epoch command."
+
+source:
+  repository: https://github.com/royerlab/kaggle-cell-tracking-competition
+  commit: 075fc5f5a52d11077f9dc2b074644618f26939e2
+  manifest: official_source/SOURCE.json
+  license: BSD-3-Clause
+
+overrides:
+  project_defaults:
+    - validation.metric
+
+validation:
+  strategy: official_seed0_sample_holdout
+  fold: 0
+  split_seed: 0
+  train_fraction: 0.9
+  expected_sample_count: 199
+  diagnostic_only: true
+  metric: edge_accuracy_times_node_recall
+
+data:
+  expected_frames_per_sample: 100
+  expected_image_shape: [100, 64, 256, 256]
+  require_geff_for_train: true
+  test_discovery: dynamic_zarr_enumeration
+
+model:
+  name: TemporalUNet3D_SimpleNodeTransformer
+  params:
+    in_channels: 1
+    unet_out_channels: 32
+    unet_layers: [32, 64, 128]
+    gradient_checkpointing: true
+    skip_fullres_temporal: true
+    window_size: 2
+    downsample: [1, 4, 4]
+  training:
+    initialization: random
+    upstream_checkpoint: null
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    batch_size: 16
+    num_workers: 8
+    det_loss_weight: 1.0
+    det_neg_weight: 0.01
+    pool_kernel_um: 5.0
+    augmentations: [brightness_augment, flip_augment]
+    checkpoint_selection: edge_accuracy_times_node_recall
+    data_parallel: true
+  smoke:
+    debug_video: first_sorted_training_sample
+    epochs: 1
+    max_iters: 2
+    runtime_gate_hours: 11
+  inference:
+    det_threshold: 0.99
+    det_tta: true
+    pool_kernel_um: 3.0
+    edge_activation: softmax
+    edge_threshold: 0.5
+    use_ilp: true
+    ilp_edge_weight: -1.0
+    ilp_appearance_weight: 0.1
+    ilp_disappearance_weight: 0.1
+    ilp_division_weight: 1.0
+    unet_batch_size: 4
+
+runtime:
+  use_amp: true
+  num_workers: 8
+  batch_size: 16
+  expected_cuda_device_count: 2
+  expected_gpu_name_substring: T4
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+    dataset_sources:
+      - thibautgoldsborough/cellmot-baseline-artifacts
+    inference:
+      kernel_sources:
+        - kentookumura/exp001-temporal-unet3d-baseline-train
+    bootstrap_files:
+      - official_source/SOURCE.json
+      - official_source/LICENSE
+      - official_source/scripts/augmentations.py
+      - official_source/scripts/dataspec.py
+      - official_source/scripts/evaluate.py
+      - official_source/scripts/train_unet_transformer.py
+      - official_source/scripts/predict_unet_transformer.py
+      - official_source/src/tracking_cellmot/__init__.py
+      - official_source/src/tracking_cellmot/io.py
+      - official_source/src/tracking_cellmot/img_proc.py
+      - official_source/src/tracking_cellmot/metrics.py
+      - official_source/src/tracking_cellmot/division_metrics.py
+      - official_source/src/tracking_cellmot/models/__init__.py
+      - official_source/src/tracking_cellmot/models/temporal_unet.py
+      - official_source/src/tracking_cellmot/models/simple_node_transformer.py
+
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_dataloader_generator
+  stochastic_components:
+    - random_initialization
+    - dataloader_shuffle
+    - brightness_augment
+    - flip_augment
+    - cuda_kernels
+  parallel_rng_policy: "DataLoader order uses a seeded torch.Generator; the pinned source creates a fresh NumPy default_rng inside each item, so augmentation draws are not byte-deterministic."
+  feature_sha_policy: decompressed_content_sha_for_gzip
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: false
+    feature_content_sha: false
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: true
+    submission_sha: true
+  notes:
+    - "The seed addition does not claim byte identity with the published checkpoint."
+    - "The official sample-level holdout may mix embryo_id and is diagnostic, not primary CV."
+
+notes:
+  - "The public checkpoint bundled in the dependency dataset is never copied or loaded."
+  - "A full training run starts only when the same-source smoke projection is at most 11 hours."
+  - "Submission requires separate explicit user approval."

@@ -1,0 +1,85 @@
+{
+  "experiment": "exp001_temporal_unet3d_baseline",
+  "status": "failed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "source": {
+      "repository": "https://github.com/royerlab/kaggle-cell-tracking-competition",
+      "commit": "075fc5f5a52d11077f9dc2b074644618f26939e2",
+      "manifest_sha": "fe4fa02c339011e995c591edf6377c75d4bfe1d2a5adc1a49dff18011c2630d7",
+      "static_hash_validation_passed": true
+    },
+    "kaggle": {
+      "kernel_id": "kentookumura/exp001-temporal-unet3d-baseline-train",
+      "kernel_version": 3,
+      "url": "https://www.kaggle.com/code/kentookumura/exp001-temporal-unet3d-baseline-train",
+      "kernel_source_ids": [],
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": 367.043,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": null,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": 0,
+      "model_shas": {},
+      "selected_mode": "smoke",
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [
+      {
+        "kernel_version": 1,
+        "outcome": "failed_before_training",
+        "reason": "NumPy/SciPy mixed after offline dependency upgrade"
+      },
+      {
+        "kernel_version": 2,
+        "outcome": "failed_before_training",
+        "reason": "Kaggle kernel preloaded NumPy before offline dependency upgrade"
+      },
+      {
+        "kernel_version": 3,
+        "outcome": "failed_smoke_oom",
+        "reason": "CUDA OOM during the first backward pass at batch size 16"
+      }
+    ]
+  },
+  "notes": "Train kernel version 3 resolved offline dependencies but failed the same-configuration smoke test during the first backward pass: GPU 0 had 14.56 GiB total, 1.75 GiB free, and could not allocate 1.84 GiB. No checkpoint was produced, so inference was not run. Competition submission is not authorized."
+}
