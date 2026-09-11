@@ -1,0 +1,355 @@
+{
+  "checked_at_utc": "2026-09-10T14:37:30.351737+00:00",
+  "scope": "Exact extracted topology/helper functions; NumPy loss arithmetic and finite differences. No full official scoring, Torch autograd, real image evaluation, or accuracy improvement is claimed.",
+  "sources": [
+    {
+      "path": "/home/kento/work/kaggle/Biohub/experiments/exp002_unet3d_expandable_segments/official_source/src/tracking_cellmot/division_metrics.py",
+      "sha256": "0635c38621a38f1eb4b55a302b4a817a88e9094930dfc2dab16faeeee60f4dc9",
+      "functions": [
+        "_is_strongly_connected_division",
+        "_bipartite_max_matching"
+      ],
+      "extracted_path": "official_division_helpers.py"
+    },
+    {
+      "path": "/tmp/biohub-baselines-20260910/dctta-source.txt",
+      "sha256": "7caae99de45dce487a869ff7e90449efdce4abc4fa19f23ad1c2675c2570df58",
+      "functions": [
+        "weakly_connected_components",
+        "compute_division_confusion"
+      ],
+      "extracted_path": "public_division_helpers.py"
+    },
+    {
+      "path": "/home/kento/work/kaggle/Biohub/experiments/exp002_unet3d_expandable_segments/official_source/scripts/predict_unet_transformer.py",
+      "sha256": "0c0f82844fa212d783bcb942a46d5b5a6cbe30a41ff08f38d22774cf0b47ff26",
+      "functions": [
+        "pool_kernel_from_um"
+      ],
+      "extracted_path": "official_pool_helper.py"
+    }
+  ],
+  "division_cases": [
+    {
+      "case": "correct_local_fork",
+      "pred_edges": [
+        [
+          10,
+          11
+        ],
+        [
+          10,
+          12
+        ]
+      ],
+      "gt_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "pred_to_gt": {
+        "10": 0,
+        "11": 1,
+        "12": 2
+      },
+      "official_checked_fork": 10,
+      "official_parent_ids": [
+        10
+      ],
+      "official_daughter_ids": [
+        [
+          11
+        ],
+        [
+          12
+        ]
+      ],
+      "public_proxy_tp_fp_fn": [
+        1,
+        0,
+        0
+      ],
+      "official_local_topology_accepts": true
+    },
+    {
+      "case": "distant_fork_and_descendants",
+      "pred_edges": [
+        [
+          10,
+          20
+        ],
+        [
+          20,
+          21
+        ],
+        [
+          21,
+          11
+        ],
+        [
+          21,
+          12
+        ]
+      ],
+      "gt_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "pred_to_gt": {
+        "10": 0,
+        "11": 5,
+        "12": 6
+      },
+      "official_checked_fork": 21,
+      "official_parent_ids": [
+        10
+      ],
+      "official_daughter_ids": [
+        [],
+        []
+      ],
+      "public_proxy_tp_fp_fn": [
+        1,
+        0,
+        0
+      ],
+      "official_local_topology_accepts": false
+    },
+    {
+      "case": "same_predicted_child_branch",
+      "pred_edges": [
+        [
+          10,
+          11
+        ],
+        [
+          10,
+          12
+        ],
+        [
+          11,
+          13
+        ],
+        [
+          11,
+          14
+        ]
+      ],
+      "gt_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          3,
+          5
+        ],
+        [
+          4,
+          6
+        ]
+      ],
+      "pred_to_gt": {
+        "10": 0,
+        "13": 3,
+        "14": 4
+      },
+      "official_checked_fork": 10,
+      "official_parent_ids": [
+        10
+      ],
+      "official_daughter_ids": [
+        [
+          13
+        ],
+        [
+          14
+        ]
+      ],
+      "public_proxy_tp_fp_fn": [
+        1,
+        0,
+        0
+      ],
+      "official_local_topology_accepts": false
+    }
+  ],
+  "one_fork_two_gt_maximum_matches": 1,
+  "edge_gradients": {
+    "logits": "all zero",
+    "partly_annotated_daughter_target": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ]
+    ],
+    "current_or_mask": [
+      [
+        -0.19885786345374967,
+        0.09942893172687484
+      ],
+      [
+        0.19885786345374967,
+        -0.09942893172687484
+      ]
+    ],
+    "known_child_columns_only": [
+      [
+        -0.2982867951667467,
+        0.0
+      ],
+      [
+        0.2982867951667467,
+        0.0
+      ]
+    ],
+    "unknown_parent_target": [
+      [
+        1.0
+      ],
+      [
+        0.0
+      ],
+      [
+        0.0
+      ]
+    ],
+    "known_terms_only_softmax_all_parents": [
+      [
+        -0.3351820097308167
+      ],
+      [
+        0.204005733056567
+      ],
+      [
+        0.13117627661873854
+      ]
+    ],
+    "known_terms_and_known_denominator": [
+      [
+        -0.2982867951667467
+      ],
+      [
+        0.2982867951667467
+      ],
+      [
+        0.0
+      ]
+    ],
+    "caveat": "Removing ambiguous parents from softmax is an arithmetic diagnostic, not proof that the resulting supervision is identifiable or accurate."
+  },
+  "nearest_only_matching": {
+    "distances_um": [
+      [
+        0.1,
+        2.9
+      ],
+      [
+        1.4,
+        1.6
+      ]
+    ],
+    "greedy": [
+      [
+        0,
+        0
+      ]
+    ],
+    "maximum": {
+      "0": 1,
+      "1": 0
+    }
+  },
+  "thresholds": {
+    "train_raw_logit": 0.3,
+    "train_sigmoid_equivalent": 0.574442516811659,
+    "infer_sigmoid": 0.99,
+    "infer_logit_equivalent": 4.59511985013459,
+    "nms_kernel_after_downsampling": {
+      "3.0": [
+        3,
+        3,
+        3
+      ],
+      "5.0": [
+        3,
+        3,
+        3
+      ]
+    }
+  },
+  "feature_memory_assumptions": {
+    "spatial_shape": [
+      64,
+      64,
+      64
+    ],
+    "channels": 32,
+    "bytes_per_value": 2,
+    "frames": 100,
+    "videos": 199,
+    "frame_MiB": 16,
+    "one_feature_per_frame_GiB": 310.9375,
+    "separate_99_two_frame_windows_GiB": 615.65625,
+    "caveat": "Arithmetic only; each frame's contextual feature changes with window, so one-feature-per-frame caching is generally not equivalent. Excludes metadata, augmentation variants, disk overhead."
+  }
+}

@@ -8,5 +8,8 @@
 
 | 実験 | ルート | 親 | 状態 | CV | Public LB | Private LB | 更新日 |
 | --- | --- | --- | --- | --- | --- | --- | --- |
+| exp001_temporal_unet3d_baseline | temporal_unet3d_node_transformer | N/A | 失敗 | - | - | - | 2026-09-09 |
+| exp002_unet3d_expandable_segments | temporal_unet3d_node_transformer | exp001_temporal_unet3d_baseline | 実行中 | - | - | - | 2026-09-10 |
+| exp003_official_metric_audit | official_metric_audit | exp002_unet3d_expandable_segments | 完了 | - | - | - | 2026-09-11 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->

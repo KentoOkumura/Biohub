@@ -1,0 +1,13 @@
+{
+  "independent_pass": "validation and compute",
+  "ideas": [
+    {"id":"D01","title":"公式graph指標でcheckpointを選ぶ","hypothesis":"edge accuracyとnode recallの積や独自division proxyで選んだcheckpointより、最終graphを主催者指標で選ぶ方が改善する","test":"学習側だけに置く開発集合で候補checkpointの順位逆転を調べる。外側の評価胚は選択に使わない。","kill":"順位不変か、外側評価で両胚の一方を悪化させる。"},
+    {"id":"D02","title":"正解候補がある場合の上限を段階別に調べる","hypothesis":"検出・接続・分裂の候補集合のどこが上限かを分けると無効な手法探索を減らせる","test":"GT nodeを与える、GT edgeだけ残す、GT分裂tripletを候補に与える診断を別々に行い、実運用の正解なし選別と分離。","kill":"下流で正解を選んでも改善余地がない機構は実装しない。"},
+    {"id":"D03","title":"時系列encoder出力の再利用","hypothesis":"同一入力窓・TTA・checkpointの特徴をcacheすると、複数frameのgraph推論とより多くの教師条件を計算制約内で比較できる","test":"cacheのキーと出力一致を確認後、長時間窓の接続モデルの最終精度を測る。","kill":"高速化だけで下流精度改善がない、temporal encoderをframe独立へ変えてしまう、I/Oと容量が支配。"},
+    {"id":"D04","title":"物理距離と運動による疎な接続候補","hypothesis":"全組合せを避けて候補を疎にすると長い時間窓のattentionが可能になる","test":"候補の正解edge/分裂2枝同時coverageと最大近傍数、密集領域の時間とRAMを測る。","kill":"距離外の真の接続を落として上限が低下。"},
+    {"id":"D05","title":"高解像度再評価の領域を学習する","hypothesis":"全領域の8view平均より不確実領域に計算を集中すると同時間で精度が上がる","test":"同じ時間上限で一律TTAと不一致/位置分散による再評価を比較。","kill":"一見確信が高い誤りを見逃す、hard領域比率が増えると12hを超える。"},
+    {"id":"D06","title":"胚間の撮像条件変化を分けて検証する","hypothesis":"密度・弱い蛍光・blur・crop境界による崩れを抑えた学習が未使用胚へ汎化する","test":"学習側で各shiftを単独に加え、変形はラベルと物理単位も更新。外側胚では元画像の公式scoreを測る。","kill":"人工shiftだけ改善し実胚が悪化。"},
+    {"id":"D07","title":"分裂候補がsolverで選べるか先に確認する","hypothesis":"よい分裂scoreがあっても目的関数のpenaltyや容量で選択不能ならdecoderの修正が必要","test":"小さな正解graphで継続/分裂の全選択を列挙し、実solverと比較。score/penaltyの符号とスケールを監査。","kill":"選択不能ではなかった場合は重み変更へ飛びつかない。"},
+    {"id":"D08","title":"検出器を固定して対応部分だけを先に学習する","hypothesis":"画像encoderへの毎回のbackwardを減らすと密な候補・長い時間窓・分裂tripletの探索が可能になる","test":"学習側のOOF的候補cacheを使い対応headのみ学習し、最後に必要なら短くjoint fine-tune。","kill":"固定検出が候補上限を決めており下流変更に余地がない。"}
+  ]
+}

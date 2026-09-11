@@ -1,0 +1,4 @@
+extend = "../../pyproject.toml"
+extend-exclude = ["assets"]
+[lint.per-file-ignores]
+"exp003_official_metric_audit_audit.py" = ["E402", "E501", "I001", "UP", "B905", "B028"]

@@ -1,0 +1,497 @@
+{
+  "date": "2026-09-10",
+  "candidates": [
+    {
+      "candidate": "sparse_det_mask",
+      "original_unresolved": "確認済み背景または個数を識別できる画像目的",
+      "before_sha256": "c3a5671f664f2b3f27d16046c43f281de343e6e3e49beb7daa82fe150f657a51",
+      "after_sha256": "f2c5cf353d1b933d34917137bf509462e708dffa9697847378069217f6357174",
+      "conditional_decisions": [
+        "D5"
+      ]
+    },
+    {
+      "candidate": "partial_edge_mask",
+      "original_unresolved": "候補と注釈の一意対応、保守的な負例条件",
+      "before_sha256": "044bdd7be5b1a25f9e08c970c180569a010c18304e0af57db916f7bc3dea656c",
+      "after_sha256": "eb9c7e16c46abee5be3c16eefec3d9f812c68304ab798bb7ed08250255fd5e18",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "sample_loss_balance",
+      "original_unresolved": "中心・辺・動画のどれを集約単位にするか",
+      "before_sha256": "f491aec1f5b3d12fea32f703208846fe1f06b2ab11769cb4e068b7c7f13b3277",
+      "after_sha256": "092b5d75c6145eb8d5ac3ffc3805a2280f482b259e8beba20a4e8ede38d2e223",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "dense_region_labels",
+      "original_unresolved": "追加注釈の作業予算、対象領域、品質確認",
+      "before_sha256": "995df2755ecf1ae1a5d24b6e7b8b175f06fd3179ea38a71ed34ca14f8cfec2d8",
+      "after_sha256": "b354ae18d9b22543937ba1b6542205f8548a613ca4a17305fe0f9a8d962e6b37",
+      "conditional_decisions": [
+        "D5"
+      ]
+    },
+    {
+      "candidate": "subvoxel_offset",
+      "original_unresolved": "補正目的、補間方法、座標教師の誤差",
+      "before_sha256": "fbe827e810aa5923fc9bc5b7c5db94e8e354a96d3ab2fa9a7d0c28278b5ea6f4",
+      "after_sha256": "b4f6d6d05631ec50a1983023555e271cd44ec6e9570b90df2a30ddf7f7602a38",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "image_label_centers",
+      "original_unresolved": "画像中心の目的と注釈への補正を識別する証拠",
+      "before_sha256": "46f814a4b155deb712ac4a555bda08ac4008b66f19acd82965f2acf313aa656a",
+      "after_sha256": "3374c8a0efd97e0196660118a5aea64cc4f8ce962dcc3f78b48a3d9ede18ca5f",
+      "conditional_decisions": [
+        "D5"
+      ]
+    },
+    {
+      "candidate": "anisotropic_position",
+      "original_unresolved": "分布形式、校正方法、校正用の独立予測",
+      "before_sha256": "a7052f6463e6a490f140c488592530242028cae25c6762c5c358a39e6201c03f",
+      "after_sha256": "bf5fd6314ffe93ae3835e949da50ee8f87e53534322585ccdea90ad123d8d527",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "joint_position_edges",
+      "original_unresolved": "位置候補数、同一細胞の対応、同時選択の目的",
+      "before_sha256": "5a3e13060039910b39001eccf3bac8c93416af0fc9841853f2c82e2301105c65",
+      "after_sha256": "eb2c5942d3ed93b9fd9744340d83b5183263766704e3c676a1e659906ac0a2c7",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "match_radius_point",
+      "original_unresolved": "校正可能な位置分布と単一細胞ごとの分布対応",
+      "before_sha256": "87a6ea0fe836b1c03e097bb53296412126b0edf49381d2d2cfc4200dce0bd1c3",
+      "after_sha256": "0b9ac129ee7a477c12e4a763b489605db9451803a81c9650cb3723e87e308a25",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "division_triplets",
+      "original_unresolved": "組の教師mask、近傍候補上限、候補の同時回収率",
+      "before_sha256": "a5a1fa4c1ad37ed3bf483197c5bb781d1850a57714070d09a34375270aeb29e6",
+      "after_sha256": "41c77158a72179a4aee3a892b5535d0624600f038d7b0951a1803ed26405019e",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "division_context",
+      "original_unresolved": "窓長、窓端・片娘観測不能の教師mask",
+      "before_sha256": "af965c9d42576e4817e33cee9c2fe224882b8c34dbf1a146f975c714b796a5eb",
+      "after_sha256": "3890a0b7d134467fa8a3611b3d608a187942bc1c22f5c820c9ac941e5441dcea",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "division_time_dist",
+      "original_unresolved": "時刻の許容状態、窓端の扱い、評価器の版",
+      "before_sha256": "07729e4971075dbf4a510ae2184cb73a83d3cefdd8a4791d89c449b0bb1025ae",
+      "after_sha256": "8c2feed2467aef6ccffb9a67526d048f021793e421118dc77fc502eaf37143ef",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "division_state_model",
+      "original_unresolved": "各状態の観測条件、未知mask、状態の出力規則",
+      "before_sha256": "3e2a9600259641485e8efaefec417cdaca52af3641cddb11eeda46f9189e01a8",
+      "after_sha256": "d399ccc3d6d6a881923adce8c2e1569b2ffd4f40f4cb31626fbde3861bc4c6a9",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "division_search_gate",
+      "original_unresolved": "画像変化の計測法、追加候補の上限、選択器の学習有無",
+      "before_sha256": "50a7cc935fc7db99e50f41e712ab27dd1a75937db568a663f893f7e546e32aea",
+      "after_sha256": "8fb489b1fe513d676bcaa966f811884a1d4f4705ca0393364ae7711440f5bb7d",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "motion_reference",
+      "original_unresolved": "画像位置合わせ法、信頼度、失敗時の元座標への復帰",
+      "before_sha256": "08ffe39e4372dc30d2d2a90abb7e30396fe67c6ed46c0b24e3d8580baa8a4f81",
+      "after_sha256": "250174957e66958a23080869bb2dcd28d45b140f6ab5056c0be857cf9caeab3d",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "appearance_reference",
+      "original_unresolved": "履歴長、参照の信頼度、参照不足時の処理",
+      "before_sha256": "c38439027a6a2db7a8fa150df751002415d410782167e9307c2d990e31e115fc",
+      "after_sha256": "d8f42b0ba7a809f5fc2e1f343ef2684c7f731e75ecd6a2fe9b7a903d6d2eacbe",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "relative_neighbors",
+      "original_unresolved": "近傍の定義、近傍の見逃しと分裂の扱い",
+      "before_sha256": "34e5b8fbc77580a82ffeba8b724fae3f5a7c04cf96f1727382fb6f1687c6f7ea",
+      "after_sha256": "198ca11c62773e36473f968c5da91a69c049a6100d60321bcdcc0ef928c048e0",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "video_calibration",
+      "original_unresolved": "調整対象、統計の信頼度、範囲外での固定設定",
+      "before_sha256": "e115055ae4302af2bf77e3f0f6d2335a6d8d0e2e4c16287c4f14a86ab3aa5341",
+      "after_sha256": "1aa94d0ab7ab1572590b56325f4fca2e703ace5a9e582ef9bc5995dec7e07120",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "focus_center_teacher",
+      "original_unresolved": "外部重みの来歴、中心変換、誤教師の重み",
+      "before_sha256": "336b7837c83f2a0d34f12747bee096ee2a338342cad4afed680cffd894d8e0d4",
+      "after_sha256": "b09b6d6a83dab15dae8e70b38a1fd5d854294a91d61edf6068480c4d8be1432a",
+      "conditional_decisions": [
+        "D4",
+        "D6"
+      ]
+    },
+    {
+      "candidate": "teacher_agreement",
+      "original_unresolved": "教師の組合せ、物体対応、一致が正しさを示す条件",
+      "before_sha256": "a51bb9d6f4cb52a1b30cc2bc3bc2c06db06a73c870ed244d1296670dc116c55f",
+      "after_sha256": "f6155ba98c1c0796aa1a115d643f9ed3e8d13f99ec81a5094fb8682a201cab9f",
+      "conditional_decisions": [
+        "D4",
+        "D6"
+      ]
+    },
+    {
+      "candidate": "track_teacher",
+      "original_unresolved": "HOCTかTrackastra等の選択、領域入力、重みの来歴",
+      "before_sha256": "d0e98779de2a12a1b8a67dacda5467a1a19a2d229633d021bb417ed4ab36ea41",
+      "after_sha256": "186f9c5d3f33e35bb6956d321e89fff63338643e1aca18c9a47c9f3f95464a19",
+      "conditional_decisions": [
+        "D4"
+      ]
+    },
+    {
+      "candidate": "teacher_review_labels",
+      "original_unresolved": "人手作業の予算、確認範囲、品質管理と分割",
+      "before_sha256": "fa9d76a82c8444f1c65198c7d8eca45a6daef5b7630625cca4ca6c259b7fb65e",
+      "after_sha256": "8c618926c2542ed22148d2aede32c7be5e14a24dcaebf3b90518e964594f0dde",
+      "conditional_decisions": [
+        "D4",
+        "D5"
+      ]
+    },
+    {
+      "candidate": "flow_feature_teacher",
+      "original_unresolved": "移動場推定法、信頼度、特徴が一定になる退化の防止",
+      "before_sha256": "b04db42ef7208254a2ba9a0c757096509976d672cdf8eb4d88b3a8bbb2487ac9",
+      "after_sha256": "c9443e775f57cd490a059ad3fbfc5797401458fcbbd99e03d079c7754f30216c",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "shape_aux_teacher",
+      "original_unresolved": "形状目標、教師品質、主損失との重み",
+      "before_sha256": "64fc72f5ab79b179936be5fe2a268ae90d5bdcf7119ed61156a0bd6a3e869e53",
+      "after_sha256": "ae251837eb388739bef2837342e27b722e00983d3b189909e18fc51620f0b1cc",
+      "conditional_decisions": [
+        "D4"
+      ]
+    },
+    {
+      "candidate": "correlated_jitter",
+      "original_unresolved": "独立予測、注釈条件付き誤差分布、補正器の構成",
+      "before_sha256": "a7c67d440260cfd873be11fc41c35b6e54267ea5578c9af6c1e65f0144fbf9ae",
+      "after_sha256": "0de3a6843755e62005eda2389ef2107ca186146540e93e888e9eda44ba1025f7",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "missing_frame_noise",
+      "original_unresolved": "欠測長の分布、部分軌跡の教師mask、画像証拠の判定",
+      "before_sha256": "c7101e59105859e9797ac4766023ffac53a74dc20f4a3e4ed42175434fd2bc56",
+      "after_sha256": "3c55d08bdcb70044b684011e401c60bba75b7a3b968fb28941f6ebf24ccd5d2c",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "duplicate_swap_noise",
+      "original_unresolved": "未対応候補の真偽、人工画像か確認済み領域、誤差の範囲",
+      "before_sha256": "8c99cb40fc44a0963e44fe65654557e0b83a1a9e8b0d67618db24c1a7dc1c24c",
+      "after_sha256": "5bf4d34348a5666b8b42eb8b31937be1edb6f2b0b5ead6dc916c819676386e5d",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "real_error_finetune",
+      "original_unresolved": "先行する合成誤差条件、独立した実予測、調整量",
+      "before_sha256": "635c948e6ed9fa82229a257a48ed6fce92005079318a78c8dc9f92a55701832d",
+      "after_sha256": "a84152d34cf0c83c9406e631c915637d08988db5a8a99ecc7784fce06cac02a6",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "deformation_pairs",
+      "original_unresolved": "変形範囲、境界、変形後の教師の信頼性",
+      "before_sha256": "a8b195e71bc5269f0dcd3e3e68b098a59231c81a6e3b641963cde4aaf0083117",
+      "after_sha256": "80fb85756c7272849caacd5809c37120277e3435debdf123eee0cb457a7698c2",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "synthetic_divisions",
+      "original_unresolved": "細胞像の生成法、撮像ぼけ、実画像に近い範囲",
+      "before_sha256": "dcb5b5f68bd12ae059a2764e9c9c537be452727e3d284d14401cbb71da89c332",
+      "after_sha256": "2636e010927837b83b490b63d0ead1cb4b8fe8d37b14b467a0296a00ea357b21",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "division_lookalikes",
+      "original_unresolved": "対照事象の生成法、個数と接続の正しさ",
+      "before_sha256": "02bfc5c3f50d2b807f89b5583013d3ae9f481fb5a7ee4ad3f3a31ec13618e1e1",
+      "after_sha256": "6213dd23c10335597a5c6b49af0acfa7fb012ee80bf01516f4b179788d5d444a",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "masked_video_pretrain",
+      "original_unresolved": "隠す単位、再構成目的、下流への重み移行",
+      "before_sha256": "0b433d7735e4e5051ba1a6d672251e348f6ada6ddc881895f2ec0e59e7061a32",
+      "after_sha256": "551c461fa98c3457e0b2e8d20a17ea522877e0ed3e9c1fa34cd740a8b9358264",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "voxel_time_affinity",
+      "original_unresolved": "密な関係教師の出所、領域分離・中心化の方法",
+      "before_sha256": "11b5be12bc0df025d591552a2552388c90f9f2281d34275a2c5a137de252b7c6",
+      "after_sha256": "e72aceec0bd2ea464f1dfd7dc30c8faf43bafe7827cbe995dc9f0022b13fef5f",
+      "conditional_decisions": [
+        "D4",
+        "D5"
+      ]
+    },
+    {
+      "candidate": "trajectory_set",
+      "original_unresolved": "可変個数の識別、集合対応、存在損失、窓間接続",
+      "before_sha256": "76335525d8169e12c6383857281674a7f24a07201f1606772530a18e7ea6b236",
+      "after_sha256": "b969e048d36f4db81b082b5537fce635a436edf5c50a0ad534a252ccf01779a3",
+      "conditional_decisions": [
+        "D5"
+      ]
+    },
+    {
+      "candidate": "inverse_cell_image",
+      "original_unresolved": "生成モデルと物体数の識別、撮像モデル、最適化法",
+      "before_sha256": "ba8591bfeb15041ce5c611142c42284266a9691ca3fd45f4095ffdc0dfbe61e4",
+      "after_sha256": "1ff567cab635a182a59952e109de87df85cf7361b91df8d6395a9d60e550bc80",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "slice_3d_instances",
+      "original_unresolved": "断面教師、z方向統合、領域から注釈中心への変換",
+      "before_sha256": "c8513ced5b521796a4f88f4daf4505edfa9db5689bce54517f1f25cc6a157e7e",
+      "after_sha256": "94d258badff57097d686e2ccc8bacc691b8fb1f8d16d4db1542fa57ffadcae66",
+      "conditional_decisions": [
+        "D4",
+        "D5"
+      ]
+    },
+    {
+      "candidate": "direct_center_set",
+      "original_unresolved": "個数識別の教師または目的、集合対応、重複抑制",
+      "before_sha256": "e5dccf0c38cd93c551aa1fed758d003bbed0340cf8e41b31de107debf72fe317",
+      "after_sha256": "9c90a81d3f4784a678100000bfba8b53ccb233c33686ae8cbd71cfd77ed2032a",
+      "conditional_decisions": [
+        "D5"
+      ]
+    },
+    {
+      "candidate": "candidate_union",
+      "original_unresolved": "追加する検出源、物体対応、信頼度校正",
+      "before_sha256": "e673d8e365811255bed41f9d0cc57df2750fda4b3f658191863df31f90700f3e",
+      "after_sha256": "f02ad0087ab813fb3f79e2305f9be0d745dc57762144b35cda8724879a6baa1c",
+      "conditional_decisions": [
+        "D4"
+      ]
+    },
+    {
+      "candidate": "position_mixture",
+      "original_unresolved": "分布と物体の対応、異なる細胞を混ぜない条件",
+      "before_sha256": "2de19ac349039eb677abdd65115c9cdc1801b3c6f6f61edac389d5ff5f4c08c2",
+      "after_sha256": "fbe38127bf45d94a3de7e362893c9d603148d749721afc0ccb7574c85d4cad57",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "graph_support_fusion",
+      "original_unresolved": "graph間の物体対応、分裂組の支持集約、復号目的",
+      "before_sha256": "b463ec232b6209d16c03ae948f07210e1eb9e9bebcf678cbf2417c165221bd47",
+      "after_sha256": "8d3a6f3047793af4e5cdd4e3a1b70fdca8f2dc64de57ccf81d46c52215e6b155",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "image_condition_gate",
+      "original_unresolved": "選択特徴、校正法、条件の範囲外の処理",
+      "before_sha256": "f6763b3dc5f4e60ddf22847fa7c35e27ec2baff92f4622378d41c9c1c825ee8a",
+      "after_sha256": "52f37433da12f5cee3b38c320c969ecdf57f562b17abd278d9050f1fdf2ac49d",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "one_two_cells",
+      "original_unresolved": "1点・2点案の生成、個数判断の教師、乱発防止",
+      "before_sha256": "7c182df41ca577f1a650656cb9bc01024f8637f19d92a44feab32f5834c211cd",
+      "after_sha256": "788ae4d1394deb440fd4ee19895868443cfb42cdf20ff02045354dbe0d261a97",
+      "conditional_decisions": [
+        "D5"
+      ]
+    },
+    {
+      "candidate": "whole_graph_choice",
+      "original_unresolved": "構造が異なるgraphの作り方、選別目的、選別用分割",
+      "before_sha256": "e78006415d5ec2af32680cf742ce6b8b159771b63bd4efe543d0f8d70a64a3b6",
+      "after_sha256": "605ee83eab423b54072b29910ce0fa2a751e790a65729e49bb3ac4ce35dac3ef",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "long_window_links",
+      "original_unresolved": "窓長、近傍制限、窓境界の統合",
+      "before_sha256": "1de56710de39ec12508861cffa44dc7a6bfe6b5b62881ae05d0df1ffe8a724ff",
+      "after_sha256": "1fb76953b55a076b272e8d6bed81b6716446dc07190222fd1d907bcfa27d64f0",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "tracklet_join",
+      "original_unresolved": "軌跡の信頼度、接続候補、隣接辺への変換",
+      "before_sha256": "66d1906d200ead0481c6a8591788019998bccb955ad66f065207a2b9c9bcb618",
+      "after_sha256": "6675aba6df19148313172e38205c7a53cb514aedfae89c4cf6f6a400857a5d63",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "latent_missing_nodes",
+      "original_unresolved": "欠測状態、画像支持の基準、回収不能時の棄権",
+      "before_sha256": "75fb6e81c77af3b67b92ee2365000a6537a1ba46305704cbbccb3e037138c952",
+      "after_sha256": "8990f49e7a37b5e44c4e2505e1fd87a838940c176b55a723b96b43f1ffec3118",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "neighbor_dynamics",
+      "original_unresolved": "近傍と履歴、近傍の入れ替わり、欠測への対処",
+      "before_sha256": "db5900d5d53c21035923653b2819c916444f11ed12af1a41c1f7936e650b9b7d",
+      "after_sha256": "ea68d3765bdfcb6b9c232ac5f32d5fae7615cdfd72d74f83b5f67e34edf4a9b8",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "explicit_no_match",
+      "original_unresolved": "対応なしを確認する教師、候補外の親、未知状態",
+      "before_sha256": "4cd9bc15609795ed187054f47413a29781f138671bb0a2b4674700b17aae3460",
+      "after_sha256": "886ff921ae7dfd7ab332d02c1e45cc5ac7654d405b437aa389019b19af44cb28",
+      "conditional_decisions": [
+        "D5"
+      ]
+    },
+    {
+      "candidate": "known_parent_constraint",
+      "original_unresolved": "既存softmaxと異なる追加目的。差がなければ独立案として停止",
+      "before_sha256": "9e2a38d1d12c712cb4f89c4ebf956add7569d0654f063c198d66b352d2e89aeb",
+      "after_sha256": "3cf4beda6040b2bcad4f5b70c001d269ce46dd90f81e7a583c0991ce2f4e7d09",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "graph_cost_scale",
+      "original_unresolved": "費用の校正目的、学習側分割、探索範囲",
+      "before_sha256": "6b53e86fef54a4d7a5617d086812bd2036a6d6894a5cec827e296e20008f3d38",
+      "after_sha256": "0e87ced5f60860d2c85daba4ebbc371845c115c25099fdb7cae7fa2006ab8a13",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "image_count_prior",
+      "original_unresolved": "個数教師の出所・集計単位・誤差、推論での利用法",
+      "before_sha256": "ee8b2dec4886d606e41d3e19cfbc42855328556476b4b481803f41eb1fafdbb8",
+      "after_sha256": "8711b6777e02609c3b582a563cb57dafcf1051a4caa7a5aee7f65b384e987db7",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "exact_window_cache",
+      "original_unresolved": "再利用単位、cache key、保存容量、解禁する下流条件",
+      "before_sha256": "f242390cfbe3d6fdd76789cb720ac223358cb386136666898d3190c41a953fd6",
+      "after_sha256": "8bf3215e105209c6687fbfcca0c22c6fd2708a23a6579784f84bb5472715f95f",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "sparse_motion_graph",
+      "original_unresolved": "近傍上限、運動推定、候補外に正解がある場合の処理",
+      "before_sha256": "9dd7e483ac4b4673d72bf897168b863806a35363d0f91d1595a7a1540fe86147",
+      "after_sha256": "8db9fe462e2913ae35f9b64057f120d149eda9703037b5f042bd08512c3601ed",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "uncertain_highres",
+      "original_unresolved": "選択基準、領域数上限、境界統合、全領域が難しい場合",
+      "before_sha256": "f7072096055a6aa37cb8c35ff8bdf55da8fea77ba31d42d5bc90bf5661eea53d",
+      "after_sha256": "650827b83f3d12c29b3dae05a51883926c2a2e2896bea692894a0989e5e7ac29",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "distill_reinvest",
+      "original_unresolved": "教師来歴、生徒構成、追加処理の選択、重複誤り",
+      "before_sha256": "e52ecde93c422ca8b37d7a574fed41b3b177654b7edc851ec805488925ad5d06",
+      "after_sha256": "c3041994e59f924e3f864f07f93b063a9f71de5172b6bf3b7115dc87f5b2f0ad",
+      "conditional_decisions": [
+        "D4"
+      ]
+    },
+    {
+      "candidate": "frozen_image_encoder",
+      "original_unresolved": "固定重みと来歴、特徴の窓依存、比較する下流構成",
+      "before_sha256": "cab1d28367af837014f7bed0cf3fe370825426140dd62f3bbce03bb0b02dac91",
+      "after_sha256": "9586bb16c0a4357dfe93f5e552da657c054e5f880749b77304afcb1ee09216f6",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "anisotropic_blur",
+      "original_unresolved": "撮像ぼけの範囲、雑音モデル、学習側からの範囲推定",
+      "before_sha256": "9136d71d73455503fe62532dc9fa6253846ec6acc882d6684ff747db60dfe5a2",
+      "after_sha256": "56630337f122a77ae3e0879b521757eac13553dd066664d23259f52fb68fdc41",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "photometric_shift",
+      "original_unresolved": "既存処理との差、変化範囲、実画像との対応",
+      "before_sha256": "306ef3639381982c504eee95fc1a8941038a400c59dcb4770320484df8e24166",
+      "after_sha256": "0be35aa27a5eb52a22aaeae9ec07a6dfd70daf5966b711c01f98ebca06f1327a",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "lineage_density_aug",
+      "original_unresolved": "切り貼り元、追加細胞の系譜、衝突・遮蔽の扱い",
+      "before_sha256": "f8202bfe56c441742ffe827810257e26c2f09177478bea72ddcac47fb2d623fe",
+      "after_sha256": "b9a18a4413494a88f79b65e282459b8d3b22ffa3e09ba012324d9194e597a734",
+      "conditional_decisions": [
+        "D5"
+      ]
+    },
+    {
+      "candidate": "crop_boundary_aug",
+      "original_unresolved": "切り出し範囲、片娘が外へ出る教師、既存拡張との差",
+      "before_sha256": "7683415d1245f0716415b1d82a1e9b83ec0598ac97f32023ba70420d367037e4",
+      "after_sha256": "0a7bfd33f59e779de91eecef95cff6c1ed90ed065534aaaff4f51c7e320c25c6",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "official_metric_check",
+      "original_unresolved": "公式版と公開proxyの版、保存済み基準graph",
+      "before_sha256": "caec4043f7f1eaa652801398230ed7ac36fc8812c0ea77e9a636fbec45c243d6",
+      "after_sha256": "6cb6a8903d027128f125eb3a09db1fc90c30f0c8b47490f6512f40863c9ea603",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "graph_checkpoint",
+      "original_unresolved": "学習来歴と複数checkpoint、選択用分割、評価からの独立性",
+      "before_sha256": "ca2cc2d3dbb52709fdbb42dc54fbcc17fc4a4dfaed3a568efdcbd6e52de75ac0",
+      "after_sha256": "1f11c64e50fe82f061adc01a550b7073367945c097cb918bfb02adbbf6846cd3",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "group_error_readout",
+      "original_unresolved": "独立した基準予測、画像条件の定義、評価対象一覧",
+      "before_sha256": "2931cc64cb65ecfe417a4e1f5dd977c638ded785a0ee947cdcbdfad268a7cbaf",
+      "after_sha256": "ab0d76a888b4d74c07a65a4f0ca8d57b586412d87d7c3c2c16956cd2c87945ca",
+      "conditional_decisions": []
+    },
+    {
+      "candidate": "oracle_stage_limits",
+      "original_unresolved": "候補cache、置換後の一対一対応、診断ごとの固定範囲",
+      "before_sha256": "fd0d99f83324f41c023f9af76398f31f3e07ea056c4a203bab3d552bcf46b4bd",
+      "after_sha256": "d98b88d02b8fd46fb8a56c26a546b4fb258be1c8c563aeaf7050470785214a9f",
+      "conditional_decisions": []
+    }
+  ],
+  "verification": {
+    "candidate_count": 64,
+    "required_sections_present": true,
+    "ids_preserved": true
+  }
+}

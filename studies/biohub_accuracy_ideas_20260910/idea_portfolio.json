@@ -1,0 +1,1056 @@
+{
+  "schema_version": "2",
+  "task_summary": "Biohubの疎な3D時系列ラベルから細胞中心と継続・分裂graphを予測する。最新公開手法と現行学習コードに基づき14主仮説・64検証候補を提案する。未実行であり採用・backlog化・実験化はしない。",
+  "evidence_cutoff": "2026-09-10 JST",
+  "allowed_sources": [
+    "project.yml",
+    "docs/surveys/biohub-public-baselines_20260910.md",
+    "docs/surveys/biohub-official-annotation-distribution_20260815.md",
+    "experiments/exp002_unet3d_expandable_segments/config.yaml",
+    "experiments/exp002_unet3d_expandable_segments/official_source/",
+    "https://github.com/royerlab/kaggle-cell-tracking-competition/blob/main/metrics.md",
+    "https://github.com/royerlab/hoct",
+    "https://github.com/weigertlab/trackastra",
+    "https://github.com/royerlab/ultrack",
+    "https://huggingface.co/spaces/Qinghua-thu/FOCUS-3D",
+    "同じ会話で9月10日に取得したKaggle discussionと公開Notebook"
+  ],
+  "assumptions": [
+    "trusted baseline score/OOFはmissing。各案はcheap診断が成立して初めて実験設計できる条件付き仮説。",
+    "confidence A/B/Cは根拠の直接性を示すこのJSONの管理値で、改善確率や採用判断ではない。",
+    "外部モデルの学習来歴・利用条件と完全annotation maskは未確認。必要な案は実装前に確認。",
+    "外側2胚を繰り返し参照して選択すれば独立評価ではなくなる。",
+    "12時間のhidden全件完了は未実証。GPU残時間・追加実験予算・締切優先度はmissing。",
+    "初期6案はtask cardから作り、3agentの独立passとrootのvalidation/compute passを統合した。source-hidden評価ではない。",
+    "損失mask・中心表現など複数の変更は別の最小検証に分ける。14主仮説は1主仮説=1実験の契約ではない。64検証候補は個別に反証する選択肢。",
+    "OOFの非対応候補は真偽未知であり、疎いGTから全細胞のfalse-positive率・未注釈領域のprecisionは推定できない。"
+  ],
+  "closure_ledger": [
+    {
+      "evidence_id": "E04",
+      "closed_instantiation": "TemporalUNet3D, batch16, allocator変更なし, T4x2のsmoke backwardでOOM",
+      "not_closed": "3D U-Net全般、別memory管理、凍結encoder、局所高解像度",
+      "reason": "allocator変更のsmokeは通過しており、モデル情報自体の無効性を示さない。"
+    },
+    {
+      "evidence_id": "E04",
+      "closed_instantiation": "exp002 version1の3epochs予測42,143秒を11時間gateへ入れる運用",
+      "not_closed": "12時間内での実測完走や精度、より速い学習構成",
+      "reason": "version2は12時間gateへ変更され実行中の記録。予測時間は実測full runではない。"
+    },
+    {
+      "evidence_id": "E01",
+      "closed_instantiation": "特定投稿者が試した後処理条件で0.942停滞",
+      "not_closed": "別候補・別教師・別decoder・別検証条件の後処理",
+      "reason": "全手法の上限を測定した証拠ではない。"
+    },
+    {
+      "evidence_id": "E07",
+      "closed_instantiation": "特定実装でFOCUS-3Dを直接推論に組み込んだ時間超過",
+      "not_closed": "事前の教師作成、別検出源、曖昧領域だけ利用、蒸留",
+      "reason": "役割とcompute regimeが異なる。"
+    },
+    {
+      "evidence_id": "E01",
+      "closed_instantiation": "公開componentベースdivision proxyを現在公式scoreと同一視する比較",
+      "not_closed": "そのNotebookの画像特徴・候補・後処理自体の有用性",
+      "reason": "否定されるのはvalidation regimeでありモデルではない。"
+    },
+    {
+      "evidence_id": "E03",
+      "closed_instantiation": "現行学習はGT中心だけを対応器へ渡すという仮説",
+      "not_closed": "検出条件・ノイズ分布・欠損・候補数の学習推論差",
+      "reason": "train_epoch内でdetect_and_match→build_matched_edge_targets→predict_edgesを確認。"
+    }
+  ],
+  "idea_cards": [
+    {
+      "id": "I01",
+      "title": "未注釈の細胞と接続を負例にしない",
+      "mechanism_family": "information",
+      "origin_pass": "evidence_inversion",
+      "roles": [
+        "target",
+        "gate"
+      ],
+      "information_sources": [
+        "E02",
+        "E03"
+      ],
+      "hypothesis": "検出と対応の損失で、未注釈の実在細胞や第2娘への接続を負例として押し下げる学習を減らせば、暗い細胞・疎い注釈の胚・分裂の見逃しを改善できる。",
+      "evidence_ids": [
+        "E02",
+        "E03"
+      ],
+      "changed_mechanism": "検出とedgeを別々に、確認できた正例・確認できた負例・未知へ分ける。最小実験では検出mask変更とedge mask変更を一つずつ試す。",
+      "input_target_decode": "画像・検出候補→P=既知正例、N=独立に確認した背景/不可能な接続、U=残りの未知→Uへの負例勾配を0とするmasked損失→検出とedge score→同じgraph decode。P/N/Uは互いに重ならない。暗いだけで背景Nにはしない。親が既知の子で、別の注釈済み親だと一意に確認できた候補は保守的なedge負例にできる。出辺を一部だけ観測した親の行を丸ごと負例にしない。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "exp002の検出lossはGT以外へ小さい負例を掛ける。edge lossはactive_rows OR active_colsで、観測された出辺がある親から未注釈の第2娘への候補を負例にし得る。",
+      "exact_difference": "負例の定義を変更し、未注釈の位置をそのまま負例として扱わない。",
+      "counterevidence": "完全注釈領域のmaskがなく、暗い領域も確実な背景とは限らない。未知の無罰化だけで過検出が増える可能性がある。",
+      "cheap_test": "学習側で注釈だけを間引いた同じ画像の予測安定性を確認。1娘だけ注釈/2娘注釈/別親既知/重複検出/片娘がcrop外という小例で、負例の勾配対象を確認。背景の確認がなければ検出mask変更を保留し、edgeの保守的maskの実証を先にできる。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 同じencoder・接続器で教師maskだけを変え、未使用胚の検出漏れと公式combined scoreを比較。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。 検出maskとedge maskは別条件にし、最後に両方を比較。監督maskだけで全前景への退化を防げるとは仮定しない。",
+      "kill_criterion": "既知中心のrecallだけ上がり過剰nodeと誤edgeが増えて公式scoreが下がる、または確認済み負例がなく全前景への退化を排除できない。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "少数の完全注釈領域か、検出元に独立した背景確認を用意できる。",
+      "coverage_test": "既知中心のcoverageと推定総数比を胚・明るさ・密度別に測る。未注釈細胞全体のrecallとは呼ばない。",
+      "selectability_test": "学習側だけで決めた候補スコアと閾値で余分な候補を抑えられるか確認。疎なGT非対応候補をすべて誤検出にしない。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "学習損失変更は小。背景確認や完全注釈の工数は未見積。推論は基本的に増えない。",
+      "is_parameter_only": false,
+      "novelty_level": "role_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "検出教師を正例・確認済み負例・未知へ分ける。",
+        "一部の出辺が記録された親からの未記録edgeを、まとめて負例にしない。",
+        "注釈件数が多い動画へ損失が偏らない集約方法を比較する。",
+        "少数の完全注釈3D領域を別maskで学習し、未知領域だけの学習と比較する。"
+      ]
+    },
+    {
+      "id": "I02",
+      "title": "中心位置の誤差と接続を一緒に扱う",
+      "mechanism_family": "representation",
+      "origin_pass": "task_first",
+      "roles": [
+        "feature",
+        "candidate"
+      ],
+      "information_sources": [
+        "E01",
+        "E02",
+        "E03"
+      ],
+      "hypothesis": "中心を一度確定して固定する代わりに位置候補の分布を保持し、画像と前後の対応で補正すれば、近接細胞の誤接続を減らせる。",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03"
+      ],
+      "changed_mechanism": "中心を固定座標から局所位置分布へ変更し、位置と対応の選択を結び付ける。",
+      "input_target_decode": "局所3D画像・位置候補・前後特徴→中心offsetと異方的な位置不確実性→既知nodeのHuber損失/尤度と許可されたedge損失→画像証拠付き位置分布→一つの中心と有向接続へ確定。 接続損失で位置を学ぶには、現行の整数indexではなく座標へ勾配を返せる特徴補間が必要か検査する。各分岐は別々に比較する。7 µm球内質量による点化は中心対応確率の代理であり、公式graph指標の期待値とは同一視しない。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "公開Notebookは候補生成後にgraph補間位置を修正する。主催者特徴抽出は離散座標を使う。",
+      "exact_difference": "追加nodeだけでなく既存の中心にも位置の不確実性を残す。",
+      "counterevidence": "主催者の注釈位置と画像上の見かけの中心が一致しない可能性がある。近接した別細胞の位置を平均すると実在しない中心ができる。 画像上の中心の独立した正解はないため、別headには画像生成や教師segment等の目的を明記する必要がある。",
+      "cheap_test": "学習側予測の位置誤差とedge誤りの関係を測り、正解位置へ置換した診断で改善余地を確認。 分布を使う条件では平均・極大・7 µm球内質量最大点を同じ候補数で比べ、近接する別細胞との一対一対応の競合も測る。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 同じ候補・学習量で位置固定と位置補正を比べ、密集部の誤接続、位置誤差、公式scoreを測る。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "位置誤差だけ減って対応が悪化する、別細胞間の平均が増える、または正解位置を与えてもedge改善余地がない。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "画像上の中心と評価注釈のoffsetを別に学習できる証拠が得られる。",
+      "coverage_test": "真の中心が位置候補内に残る比率と、位置を正解へ置換したedge上限を測る。",
+      "selectability_test": "正解なしで画像patchと周辺の対応から正しい位置を選べるか、単純平均・固定座標と比較する。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "局所再評価なら中程度。全voxelの高解像度保持は大きく、曖昧領域数に比例する上限を設定する。",
+      "is_parameter_only": false,
+      "novelty_level": "representation_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "subvoxel offsetと連続的な特徴補間を学習する。",
+        "画像上の中心とKaggle注釈へ合わせる位置補正を別々の出力にする。",
+        "z方向とxy方向の位置不確実性を分ける。",
+        "複数の位置候補と接続候補を局所的に同時選択する。",
+        "位置分布から平均・極大・半径7 µm内の確率質量を最大化する点を別々に選び、一対一対応と最終接続を比較する。"
+      ]
+    },
+    {
+      "id": "I03",
+      "title": "母細胞と2娘細胞の組を直接予測する",
+      "mechanism_family": "representation",
+      "origin_pass": "task_first",
+      "roles": [
+        "feature",
+        "candidate"
+      ],
+      "information_sources": [
+        "E01",
+        "E02",
+        "E05"
+      ],
+      "hypothesis": "独立した2本のedgeではなく母細胞・2娘細胞・分裂時刻を一つの事象として学習すると、継続との混同と不正な分裂を減らせる。",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E05"
+      ],
+      "changed_mechanism": "edge単位の分裂後処理を、局所的な母と2娘の組の分類・順位付けに変更する。",
+      "input_target_decode": "分裂前後の3D patch・位置・既存候補→継続/分裂/観測不能の局所構造→確認できる事象だけで分類損失と組の順位損失→tripletと時刻score→母の継続か2娘への分裂を選択するgraph最適化。 娘の順序に不変な組として扱い、片娘の未観測・窓端・crop境界を非分裂へ強制しない。許容される状態の確率を合算するなど部分教師を使う。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "公開Notebookは独立edgeと娘細胞の距離・対称性で分裂を追加する。",
+      "exact_difference": "2娘の同時整合性と前後のappearanceを学習対象にする。",
+      "counterevidence": "151分裂しかなく、全ての非分裂候補を負例とみなせない。候補に娘が両方なければ学習しても回収できない。",
+      "cheap_test": "正解の母と両娘が候補に同時に含まれる比率、局所solverで正しい分裂を選べる上限を測る。動画と分裂を保持した少量の学習で距離だけの判定と比較。 時間変化で候補を増やす条件では、同じ候補数の無作為追加・距離だけの追加と比べ、分裂候補の回収と画像だけの選別を分ける。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 事前固定した同じ検出器でtriplet headを比較し、divisionとadjusted edgeの両方を現行仕様で測る。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。 分裂窓を増やしても151事象が独立に増えたとは扱わず、同一事象を分割間へ跨がせない。",
+      "kill_criterion": "両娘同時coverageが低い、許可された負例が不足する、分裂scoreの改善が合算scoreの悪化を伴う、または外側胚で逆効果。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "密な教師・追加注釈・改善した娘候補により学習と候補coverageが成立する。",
+      "coverage_test": "母・両娘・必要な前後時点が同時に存在する割合を分裂事象単位で測る。",
+      "selectability_test": "GTなしの画像変化・2娘の相対配置が、同じ候補集合の距離のみの順位より正しい組を上位へ置けるか測る。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "全母×全娘2個は高価。近傍候補を先に制限し、曖昧な母だけ3～5フレームを見る。最悪密度で計測が必要。",
+      "is_parameter_only": false,
+      "novelty_level": "representation_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "母と2娘のtripletを学習して継続と競合させる。",
+        "分裂前の形状変化と分裂後の2娘の持続を3～5フレームで判定する。",
+        "分裂時刻を一点でなく近接した時刻候補として扱う。",
+        "母ごとの継続・分裂・観測不能を同時に選ぶ出力へ変更する。",
+        "局所的な画像の時間変化を使い、分裂候補を追加して調べる場所を選ぶ。時間変化だけで分裂を確定しない。"
+      ]
+    },
+    {
+      "id": "I04",
+      "title": "同じ動画の運動と見た目を接続判断の基準にする",
+      "mechanism_family": "information",
+      "origin_pass": "task_first",
+      "roles": [
+        "reference",
+        "conditioner"
+      ],
+      "information_sources": [
+        "E02",
+        "E03",
+        "E06"
+      ],
+      "hypothesis": "絶対距離だけでなく、同じ動画の局所運動とその細胞自身の見た目からのずれを使えば、胚ごとに異なる移動・撮像条件に対応しやすい。",
+      "evidence_ids": [
+        "E02",
+        "E03",
+        "E06"
+      ],
+      "changed_mechanism": "同一動画の未ラベル観測を、特徴量だけでなく対応を比較する基準として使う。",
+      "input_target_decode": "対象動画の低解像度画像と信頼できる短い軌跡→局所変位・appearance referenceとcoverage→画像対応の自己教師損失/既知edge損失→基準からの残差→通常の画像・物理距離scoreへ信頼度付きで加える。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "公開後処理は運動による再接続を使う。",
+      "exact_difference": "単一速度の外挿だけでなく周囲の移動と個体のappearanceを基準化し、不足箇所を明示する。",
+      "counterevidence": "密集部で画像対応が曖昧、分裂で見た目が変化する。誤った軌跡から参照を更新すると誤りが増幅する。",
+      "cheap_test": "学習側の動画でreferenceからの位置残差・appearance差が正しい候補と誤候補を分離するか測る。coverageの低い場所は事前規則で通常scoreへ戻す。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 同じ候補集合でreferenceなし/運動だけ/appearanceだけ/両方を比較し、未使用胚と短い動画で評価。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "referenceを正解で与えた場合だけ改善、低coverageで誤りが増幅、またはGTなしの信頼度が誤referenceを検出できない。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "安定した短い軌跡や独立した画像運動推定が得られる。",
+      "coverage_test": "端・暗部・分裂付近ごとにreferenceを作れる時間と空間の範囲を測る。",
+      "selectability_test": "reference品質をforward/backward画像整合や過去の安定性で判断できるか確認し、oracleのcoverageと区別する。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "粗い画像運動は中程度。小さな履歴特徴は軽い。動画ごとに初期化し、他動画から持ち越さない。",
+      "is_parameter_only": false,
+      "novelty_level": "role_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "画像から推定した組織全体と局所の移動を差し引いて接続する。",
+        "同じ細胞の過去のappearanceを比較対象として保持する。",
+        "近傍細胞との相対位置の変化を使う。",
+        "動画内の観測可能な輝度・サイズ統計で処理を調整し、coverage不足では固定設定へ戻す。"
+      ]
+    },
+    {
+      "id": "I05",
+      "title": "密な検出・軌跡を小さなモデルの教師として使う",
+      "mechanism_family": "data_generation",
+      "origin_pass": "evidence_inversion",
+      "roles": [
+        "target",
+        "observation"
+      ],
+      "information_sources": [
+        "E01",
+        "E02",
+        "E07",
+        "E08"
+      ],
+      "hypothesis": "FOCUS-3Dなどの高価な予測を直接提出に使うより、確認可能な密な中心・短い軌跡を教師として小さなモデルへ移す方が、疎ラベルと12時間制約の両方に対応できる。",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E07",
+        "E08"
+      ],
+      "changed_mechanism": "外部検出器・trackerの出力を最終予測から学習用の不完全な教師へ移す。",
+      "input_target_decode": "学習側胚の画像→複数検出・時間整合で信頼度を付けた中心と短い軌跡→信頼度付き正例損失と既知の公式ラベル→小型検出器/対応器→画像のみから推論。 領域教師を真の細胞個数や正解中心と同一視しない別条件として、移動場による対応特徴の整合と、領域の形状特徴の補助損失も比較する。信頼度の決定と除外基準は学習側だけで固定する。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "FOCUS-3D直接推論の時間超過、密な疑似ラベル作成のdiscussion。",
+      "exact_difference": "外部モデルの失敗を直接提出性能の否定に限定し、教師としての情報を別に測る。",
+      "counterevidence": "教師同士が同じ細胞を見逃す、外部checkpointに評価胚の情報が含まれる、segment中心とKaggle座標がずれる。",
+      "cheap_test": "学習側の少数動画で既知中心・既知edgeの回収、teacher間不一致、必要時間を測る。実行前に重みの来歴と利用条件を確認。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 同じ小型モデルを公式疎ラベルだけ/確認済みの密な教師を追加で学習し、全工程から除外した胚で比較。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "疑似教師が既知ラベルでも悪い、来歴を確認できず評価が汚染、推論に重い教師を必須とする、またはstudentの公式scoreが改善しない。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "別教師、学習側だけの追加確認、座標補正、来歴の明示により信頼できる教師が得られる。",
+      "coverage_test": "単一教師と複数教師で既知の暗い細胞・密集・分裂を回収できる割合を測る。",
+      "selectability_test": "信頼度と時間整合で実際に有用な教師だけ選べるか、ランダム同数追加と比較。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "教師作成は大。初めに小範囲で測定し、学習時の一度限りの費用と提出推論を別に集計する。",
+      "is_parameter_only": false,
+      "novelty_level": "role_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "FOCUS-3Dの領域から密な中心の教師を作る。",
+        "異なるsegmenterの一致・不一致を使って教師の重みを決める。",
+        "HOCTやTrackastraの信頼できる短い軌跡を対応学習の教師にする。",
+        "教師間で異なる暗部・分裂・密集領域を優先して人手確認する。",
+        "画像間の移動場を直接の接続結果ではなく、同じ細胞像の特徴を近づける補助教師にする。",
+        "不完全な細胞領域の予測から、中心の正解とは別に形状・伸び・分離の補助教師を作る。"
+      ]
+    },
+    {
+      "id": "I06",
+      "title": "推論で生じる誤りを再現した中間予測で補正を学習する",
+      "mechanism_family": "data_generation",
+      "origin_pass": "cross_pollination",
+      "roles": [
+        "augmenter",
+        "candidate"
+      ],
+      "information_sources": [
+        "E02",
+        "E03",
+        "E04"
+      ],
+      "hypothesis": "現行学習も検出点を使うが、学習と推論の閾値・抑制範囲・TTAなどが違う。実際の推論誤差を再現した候補から修正する学習を加えると、通常の画像augmentationでは補えない誤りへ対応できる。",
+      "evidence_ids": [
+        "E02",
+        "E03",
+        "E04"
+      ],
+      "changed_mechanism": "学習側だけの独立予測で誤差振幅・bias・時間相関・欠損を測る→cleanな教師の中間入力を同様に破壊→補正モデルを事前学習→実際の学習側独立予測で短く調整→未使用胚で評価、を一つの閉じた手順にする。 推定できるのは注釈点に条件付けた位置誤差・見逃し・相関であり、全細胞のfalse-positive率ではない。GT非対応候補は真偽未知として保持し、人工生成で真偽が分かる候補とは分ける。",
+      "input_target_decode": "局所画像・壊した位置/接続/不確実性→元の確認済み中心・接続・補正不要の判断→offsetの頑健損失と信頼できるedgeの損失→修正量と信頼度→基準graphへ画像支持のある修正のみ適用。",
+      "deployment_error_simulated": "学習側だけの独立予測で誤差振幅・bias・時間相関・欠損を測る→cleanな教師の中間入力を同様に破壊→補正モデルを事前学習→実際の学習側独立予測で短く調整→未使用胚で評価、を一つの閉じた手順にする。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "exp002もdetect_and_matchで予測点を学習に使う。単純なGT点学習という仮定は誤り。",
+      "exact_difference": "現在のon-the-fly検出だけでなく、提出時条件で観測した時間相関・欠損・余分候補を再現し、補正する訓練を明示する。",
+      "counterevidence": "1胚内の疑似独立予測は未知胚の誤差分布を代表しない。壊し方を覚えるだけ、または何も変えないモデルになる可能性。",
+      "cheap_test": "学習側でgroupを分けた予測から誤差を集計し、独立した開発領域でcorruption分布を照合。無補正・単純noise・本案を比較。 現行条件、推論とそろえた条件、独立noise、相関付きcorruptionを区別する。既知の部分graphは完全なclean graphではない。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 外側評価胚の画像とラベルをteacher訓練やcorruption校正に使わず、2方向の公式評価を行う。実OOF的入力への調整を省かない。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "合成破壊でだけ改善し実予測では無効、copy-through、誤りの型や頻度が実予測と一致しない、補正が12時間を超える。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。 未一致候補を全てfalse positiveと数えてcorruption分布を作った場合も停止。",
+      "reopen_criterion": "提出条件に近い学習側独立予測と、より適切なcorruptionモデルが得られる。",
+      "coverage_test": "GTが残る候補・欠測復元可能な候補・補正対象外の候補を分けて改善上限を測る。",
+      "selectability_test": "画像と候補の信頼度から修正が必要か選べるか、何もしない出力も含めて評価。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "学習側の独立検出cache作成が大。以後の局所補正モデル訓練は比較的軽い。相関を含む誤差推定のサンプル不足が先行制約。",
+      "is_parameter_only": false,
+      "novelty_level": "role_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "時間的に相関した座標のずれ・局所的なbiasを再現する。",
+        "連続1～2フレームの見逃しと弱い観測を再現する。",
+        "余分な候補、重複、近接細胞の取り違えを再現する。",
+        "合成誤差で事前学習した補正器を実際の独立予測へ調整する。"
+      ]
+    },
+    {
+      "id": "I07",
+      "title": "対応関係が分かる画像変形と合成分裂で教師を増やす",
+      "mechanism_family": "data_generation",
+      "origin_pass": "cross_pollination",
+      "roles": [
+        "augmenter",
+        "candidate"
+      ],
+      "information_sources": [
+        "E02",
+        "E05",
+        "E07"
+      ],
+      "hypothesis": "対応関係が既知の変形画像と、画像として妥当な合成分裂を使えば、疎なedgeと少ない分裂の教師を増やせる。",
+      "evidence_ids": [
+        "E02",
+        "E05",
+        "E07"
+      ],
+      "changed_mechanism": "ラベル数を増やすために、座標・ID・時間順序を追跡可能な画像生成を行う。単なるbrightness調整とは分ける。",
+      "input_target_decode": "学習側の画像patch・既知細胞/人工形状→変形場と既知の親子IDを持つ短い動画→対応の対照損失/分裂分類損失→画像特徴と接続モデル→実画像で短く調整して推論。",
+      "deployment_error_simulated": "学習側で確認した観測劣化や変形を再現する。実胚の誤差分布との一致は未確認。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "分裂は151事象、FOCUS疑似教師や合成microscopyの公開議論がある。",
+      "exact_difference": "近接する非分裂と真の分裂を画像・時間込みで作り、教師の由来を保持する。",
+      "counterevidence": "合成画像だけで見分けられる痕跡を学習する危険、人工分裂のshapeやbrightnessが実データと違う。",
+      "cheap_test": "合成/実画像を容易に識別できないか調べ、人工教師だけの改善と実分裂での改善を分ける。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 同じ実データ量で合成なし/変形対応のみ/合成分裂追加を比較し、未使用胚の公式scoreへ結び付くか確認。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "合成だけの正解率が上がる、実分裂や暗部で悪化、合成元の評価胚が訓練へ入る、または本物らしさを確認できない。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "学習側実画像から撮像noise・ぼけ・変形分布を校正し、実予測への調整が可能になる。",
+      "coverage_test": "実データの変位・密度・分裂形状が合成例の範囲に入るかを測る。",
+      "selectability_test": "合成由来を見抜いて解くモデルではなく、実画像でも接続/分裂を選べるか独立評価。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "学習時の中程度～大。生成方式の開発費は未測定。推論は変えない。",
+      "is_parameter_only": false,
+      "novelty_level": "role_change",
+      "confidence": "C",
+      "subhypotheses": [
+        "既知の滑らかな3D変形から密な対応の教師を作る。",
+        "母から2娘へ変わる短い動画を、撮像ぼけとnoiseを含めて合成する。",
+        "分裂に似た近接・すれ違い・一時的な消失を対照例として生成する。",
+        "未ラベル動画の隠した時点や領域を予測する事前学習を対応学習と比較する。"
+      ]
+    },
+    {
+      "id": "I08",
+      "title": "画像から軌跡や領域を直接予測する別構成を試す",
+      "mechanism_family": "representation",
+      "origin_pass": "task_first",
+      "roles": [
+        "feature",
+        "candidate"
+      ],
+      "information_sources": [
+        "E02",
+        "E05",
+        "E07",
+        "E08"
+      ],
+      "hypothesis": "既存peak detectorが落とす細胞を別の予測表現で扱えば、現行graph候補集合では到達できない改善を得られる。",
+      "evidence_ids": [
+        "E02",
+        "E05",
+        "E07",
+        "E08"
+      ],
+      "changed_mechanism": "既存peakとedge候補を必須入力にせず、voxelの隣接関係・物体集合・短い軌跡を画像から直接作る。",
+      "input_target_decode": "3D時系列crop→voxel affinity/中心集合/存在付き座標列→既知部分だけの集合対応損失、画像再構成または確認済み教師→領域・軌跡候補→重複・合流を抑えnodeと隣接edgeへ変換。 unmatched queryをno-objectの負例へしない。voxel affinityも関係が確認できない対は未知。画像生成で1核を複数物体へ割る退化を先に調べる。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "現行は中心peakを先に確定してから対応を予測する。",
+      "exact_difference": "検出から既存候補に依存しない。各分岐は別実験であり一括実装しない。",
+      "counterevidence": "疎ラベルだけでは物体数と背景の識別可能性が不足し、全画像生成を正しく解いても注釈中心とずれる可能性。 中心集合の未対応出力を疎注釈だけで『物体なし』にしない。既知個数の人工画像と部分注釈で個数の識別可能性を先に調べる。",
+      "cheap_test": "十分な教師がある小さなcropまたは合成画像で、object数・位置・分裂を同時に識別できるか確認。確認済み領域がなければ保留。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 同じ計算量で独立の予測として評価し、単独scoreと既存モデルにない正解候補の追加効果を分ける。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "教師の不足で個数を識別できない、再構成だけ改善、変換したgraphが合流や不正edgeを生む、または局所cropでも計算超過。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "密な教師、実画像へ適応した合成データ、部分的に完全注釈された領域が得られる。",
+      "coverage_test": "既存peakで失った既知中心と分裂を直接生成候補が回収するか調べる。",
+      "selectability_test": "余分な物体を増やすだけでなく、画像だけで正しい物体と軌跡を選べるか確認済み領域で測る。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "開発・学習費は大。画像だけを小cropに限定した実証が先。主系列の置換判断は行わない。",
+      "is_parameter_only": false,
+      "novelty_level": "representation_change",
+      "confidence": "C",
+      "subhypotheses": [
+        "voxel間の時空間affinityから細胞領域と軌跡を作る。",
+        "画像から存在確率付きの短い軌跡集合を直接出力する。",
+        "細胞像の生成過程を仮定し、画像を説明する細胞位置と動きを推定する。",
+        "2D断面ごとの領域候補を3Dで統合し、既存3D peakと異なる検出誤りを狙う。",
+        "局所画像から可変個数の細胞中心を集合として直接出し、既存の極大値候補を使わず密集部を分離する。"
+      ]
+    },
+    {
+      "id": "I09",
+      "title": "異なる候補と不確実性を残してから統合する",
+      "mechanism_family": "fusion_uncertainty",
+      "origin_pass": "cross_pollination",
+      "roles": [
+        "candidate",
+        "gate",
+        "calibrator"
+      ],
+      "information_sources": [
+        "E01",
+        "E02",
+        "E08"
+      ],
+      "hypothesis": "同系統モデルの平均だけでなく、異なる観測・表現・接続方法が補う候補を残し、正解なしで信頼できる条件を学習すれば、単独では弱い予測も改善に使える。",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E08"
+      ],
+      "changed_mechanism": "top1中心・graphの平均から、候補位置分布・接続score・複数graphの整合性を使う統合へ変更する。",
+      "input_target_decode": "異なるdetector/運動/対応器の候補・score・画像→候補の信頼度と互換性→学習側独立予測の信頼できる教師で順位損失→位置候補とedgeの重み→排他的なgraph選択。 異なる物体の対応を先に決め、異なる細胞の中心は平均しない。各モデルのscore尺度は学習側だけで校正しraw logitを無条件平均しない。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "公開0.94前後は2seed統合と正逆方向の予測を使う。",
+      "exact_difference": "seedの違いだけでなく、検出法・画像解像度・運動・時間窓が異なる誤りを利用する。",
+      "counterevidence": "oracleの追加正解があっても判別できない、未注釈候補の誤判定、同じ誤りを持つ複数教師の確信増幅。 1/2細胞の選択は未注釈の第2細胞を負例にできず、2点の乱発を既知recallだけで正当化しない。正解なしの画像支持と重複・最終指標を確認できなければ保留する。",
+      "cheap_test": "同じ学習側予測で候補のunion coverage、各情報源だけが回収する既知正解、誤り相関を測る。その後画像だけのselectorを別領域で試す。 候補数だけ増やした単一源を対照に入れ、hard選択とsoft融合を別条件で比較する。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 同一時間・候補数予算で単一最良、単純統合、条件付き統合を比べ、未使用胚の公式scoreを確認。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "追加oracle headroomがない、正解なし選別ができない、単純統合でnode重複や誤edgeが増える、またはcomputeを同じにすると効果が消える。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "独立誤りの候補または選択に使える新しい画像証拠が得られる。",
+      "coverage_test": "各情報源の追加GT回収と母・両娘の同時coverageを、候補数を固定して測る。 1/2細胞の仮説では、抑制前に既知2中心を同時に回収できるか確認。graph全体から1つを選ぶ上限と局所部分を合法に組み合わせる上限を分ける。",
+      "selectability_test": "outerラベルを使わず訓練したselectorが単純平均/union/最良単体よりよいか測る。未一致を全負例にしない。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "中程度。候補抽出元が重い場合は学習用教師への変更も比較する。複数graphを全て保持する数は固定する。",
+      "is_parameter_only": false,
+      "novelty_level": "representation_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "peak・instance segmentation・運動予測の候補を統合する。",
+        "複数の位置候補を一点へ平均せず、画像支持とともに保持する。",
+        "複数の有効graphで支持されるedgeと競合するedgeを使い分ける。",
+        "暗さ・密度・モデル不一致に応じて情報源の重みを変える。",
+        "密集領域で『1細胞』と『2細胞』の排他的な仮説を保持し、前後画像と接続から選ぶ。",
+        "少数の構造が異なるgraphのうち1つを画像から選ぶ方法と、各graphの正しい局所部分を融合する方法を分けて比較する。"
+      ]
+    },
+    {
+      "id": "I10",
+      "title": "複数時点の軌跡として接続を決める",
+      "mechanism_family": "representation",
+      "origin_pass": "cross_pollination",
+      "roles": [
+        "feature",
+        "candidate"
+      ],
+      "information_sources": [
+        "E01",
+        "E03",
+        "E05",
+        "E08"
+      ],
+      "hypothesis": "2時点だけでは区別できない一時的な暗さ・すれ違い・分裂を、短い軌跡と前後の観測を使って決めると誤接続が減る。",
+      "evidence_ids": [
+        "E01",
+        "E03",
+        "E05",
+        "E08"
+      ],
+      "changed_mechanism": "隣接画像対の独立判断から、短い時間窓の状態と局所graphの判断へ変更する。",
+      "input_target_decode": "3～9時点の画像特徴・候補・位置→存在/継続/一時欠測/分裂の状態と対応→既知系列だけの時系列損失→trackletと候補graph→境界を整合させた隣接時点edge。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "現行のwindow_sizeは2、公開後処理はgap補間を行う。",
+      "exact_difference": "後で距離でつなぐだけでなく、前後の観測を対応予測自体に入れる。",
+      "counterevidence": "未来画像があっても細胞が全く見えなければ復元不能。局所window間の不整合や分裂の平滑化が起こる。",
+      "cheap_test": "同じ検出集合で前後特徴の追加が既知のすれ違い・欠測候補を順位改善するか調べる。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 疎な近傍または特徴cacheを使い、同じ計算上限の2時点/多時点で比較。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "2時点以上の観測で選別が改善しない、窓境界で軌跡が壊れる、分裂を平滑化する、直接dt>1 edgeを提出する。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "よりよいappearance特徴、局所候補、窓境界の整合方法が得られる。",
+      "coverage_test": "前後画像を追加すると回復可能な欠測・交差がどれだけ増えるかoracleで測る。",
+      "selectability_test": "分裂と一時欠測をGTなしで区別できるか、等速補間と比較する。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "大。全node全時間attentionを避け、時間窓・近傍・曖昧領域の上限を固定する。",
+      "is_parameter_only": false,
+      "novelty_level": "representation_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "3～9フレームの画像特徴から接続を予測する。",
+        "信頼できる短い軌跡の端同士を、appearanceと運動で接続する。",
+        "一時的な見逃しを潜在状態として扱い、観測のある中間frameで補間を確認する。",
+        "周囲の細胞との動きの関係を時系列の接続特徴へ入れる。"
+      ]
+    },
+    {
+      "id": "I11",
+      "title": "接続しない判断と構造の制約を学習する",
+      "mechanism_family": "representation",
+      "origin_pass": "evidence_inversion",
+      "roles": [
+        "feature",
+        "candidate"
+      ],
+      "information_sources": [
+        "E02",
+        "E03",
+        "E04",
+        "E05"
+      ],
+      "hypothesis": "候補親への相対scoreだけでなく、対応なし・継続・分裂を明示し、候補数やcrop境界に応じた不確実性を扱うと、無理な接続を減らせる。",
+      "evidence_ids": [
+        "E02",
+        "E03",
+        "E04",
+        "E05"
+      ],
+      "changed_mechanism": "絶対閾値の後処理に頼る一部を、no-matchと局所構造を含む学習とdecoderへ移す。",
+      "input_target_decode": "候補edge・画像・boundary・候補数→親の選択/対応なし/母の継続か分裂→親が既知の子の排他損失と確認済み事象の損失→校正済みscore→親数・娘数・時間順の制約付きgraph。 注釈軌跡の終端を真の消失としない。node数の弱教師はtrain GEFF由来の粗い推定値と画像由来の予測値を区別し、強制一致を目的にしない。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "現行は親候補方向のsoftmaxと閾値、公開はILPと分裂後処理。閾値で棄権できるため常に強制接続されるわけではない。",
+      "exact_difference": "単なるthreshold変更ではなく、対応が存在しない選択肢や事象の競合を学習する。",
+      "counterevidence": "ラベル軌跡の終点を実際の消失と誤認しやすい。分裂と継続で相互に矛盾するスコアを作る可能性。",
+      "cheap_test": "人工cropと完全に既知の小graphでno-match・継続・分裂の選択可能性を検査。候補数を変えて同じ真edgeのscore変動を測る。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 同じ候補で現在のsoftmax/新しい事象scoreを比較。boundary・分裂・高密度で公式評価。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "注釈の開始/終了を生物学的出現/消失として学習する、solver上で正解構造がそもそも選べない、またはedge改善が分裂悪化を招く。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "境界により対応がないことを確認できる人工cropや密な教師が用意できる。",
+      "coverage_test": "正解graphがdecoderの許容集合に入るかを小graphの全列挙で確認する。",
+      "selectability_test": "候補数と密度を変えても正しい親とno-matchを識別できるか、GTなしで測る。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "head変更は小～中。構造化loss/solver反復は大きくなり得るので局所候補に制限する。",
+      "is_parameter_only": false,
+      "novelty_level": "representation_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "親候補に加えて『対応なし』を明示的な出力にする。",
+        "親が既知の子について、同時に複数の親を選ばない損失を使う。",
+        "edge scoreと出現・消失・分裂の費用のスケールを学習側で整合させる。",
+        "画像から学習した粗い細胞数の推定を補助情報にし、過検出を抑える。testのGEFF値は使わない。"
+      ]
+    },
+    {
+      "id": "I12",
+      "title": "計算を再配分して高解像度と長い時間窓を使う",
+      "mechanism_family": "compute_enabler",
+      "origin_pass": "task_first",
+      "roles": [
+        "feature",
+        "candidate"
+      ],
+      "information_sources": [
+        "E03",
+        "E04"
+      ],
+      "hypothesis": "同じ計算の再実行を減らし難しい場所へ計算を割けば、12時間内で長い時間窓や高解像度を使えるようになり、最終精度を上げられる。",
+      "evidence_ids": [
+        "E03",
+        "E04"
+      ],
+      "changed_mechanism": "時間窓ごとの正確な特徴cache、疎な近傍、曖昧領域の再処理により計算の使い方を変える。",
+      "input_target_decode": "画像/重み/時間窓/augmentation→同じ中間特徴・再処理が必要な領域→特徴一致検査と下流の公式損失→追加の長時間対応/高解像度中心→全動画のgraph。 cache keyは重み、前処理、window全frame、crop、scale、padding、精度を含む。同一frameだけの再利用はしない。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "exp001はT4でOOM、exp002はallocator変更でsmoke通過。",
+      "exact_difference": "batchを減らすだけでなく、節約した計算を新しい精度改善処理へ割り当てる。",
+      "counterevidence": "temporal encoderは窓依存なのでframe単独cacheに置換するとモデルが変わる。cacheのI/O・容量が計算削減を上回る可能性。 特徴抽出器を固定しても総推論は自動では速くならない。学習費用を減らして比較可能になった接続器が最終公式指標を改善するか確認する。",
+      "cheap_test": "同じwindow・重み・変換・入力でcache前後の出力一致とsec/volume・RAMを測る。短い高密度動画を含める。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 節約分で多時点対応または局所高解像度を実行し、同時間上限の基準より公式scoreが改善することを確認。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "速くなるだけで最終精度改善がない、temporal条件の違うcacheを再利用、全hiddenを処理する前に予算超過。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "十分な反復処理や局所的な誤りが観測され、cacheと再評価で節約できると測定できる。",
+      "coverage_test": "再処理対象へ実際の誤りが入る割合と、近傍削減後の正解edge/分裂両枝coverageを測る。",
+      "selectability_test": "不一致・entropy・画像品質から再処理箇所を選べるか、同数のランダム再処理と比較。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "学習・推論のprofilingが先。hidden総動画数は不明なので秒/voxel・node・候補と最悪例を記録し、全件を捨てないfallbackを用意。",
+      "is_parameter_only": false,
+      "novelty_level": "role_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "同じ時間窓・TTA・重みの特徴を再利用する。",
+        "物理距離と運動の疎な候補で、多時点の対応予測を可能にする。",
+        "不確実な領域だけ高解像度で検出し直す。",
+        "複数モデル/TTAの出力を小さなstudentへ蒸留し、空いた計算を別処理へ回す。",
+        "画像の特徴抽出器を固定して接続・分裂部分だけを先に学習し、密な候補や長い時間窓の比較を可能にする。"
+      ]
+    },
+    {
+      "id": "I13",
+      "title": "胚や撮像条件の変化に強い学習を作る",
+      "mechanism_family": "data_generation",
+      "origin_pass": "cross_pollination",
+      "roles": [
+        "augmenter",
+        "candidate"
+      ],
+      "information_sources": [
+        "E02",
+        "E03",
+        "E06"
+      ],
+      "hypothesis": "明るさだけでなく、撮像ぼけ・密度・物理scale・crop境界を整合的に変えた学習にすると、一つの胚の撮像条件へ依存した予測を減らせる。",
+      "evidence_ids": [
+        "E02",
+        "E03",
+        "E06"
+      ],
+      "changed_mechanism": "生物学的関係を保存する変形と、観測だけを劣化させる変化を分離して学習する。",
+      "input_target_decode": "学習側画像と既知graph→物理座標とIDを更新した変形/観測劣化→同じ接続・適切に変換した位置→教師損失と変換整合損失→元座標へ戻してgraph出力。",
+      "deployment_error_simulated": "学習側で確認した観測劣化や変形を再現する。実胚の誤差分布との一致は未確認。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "現行augmentationはbrightnessとflip、胚は2つだけ。",
+      "exact_difference": "撮像・密度の変化を検証可能に分解し、位置とラベルの変換を物理単位でそろえる。",
+      "counterevidence": "人工shiftが実際の別胚を代表しない。zとxyをそのまま入れ替えると物理scaleや撮像PSFが不整合。",
+      "cheap_test": "学習側の実画像でshape・blur・noise・密度の範囲を測り、各変形でラベルと画像の整合性を確認。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 個々の変形と組み合わせを学習側で比較して固定し、未使用胚の元画像で公式scoreを評価。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。",
+      "kill_criterion": "人工劣化だけ改善し元画像や外側胚で悪化する、ラベルを更新しない、不可逆な重なりを正解として残す。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "実データの撮像差を説明する観測と、変形後の正しい教師が得られる。",
+      "coverage_test": "実際の胚・暗さ・密度・境界の分布を人工条件がどの程度含むか測る。",
+      "selectability_test": "条件による改善が特定の外側胚のラベルを見て選んだ結果でないことを固定した手順で確認。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "中。augmentationのCPU時間とデータ読み込みを計測し、独立したサンプル数が増えたとは数えない。",
+      "is_parameter_only": false,
+      "novelty_level": "role_change",
+      "confidence": "B",
+      "subhypotheses": [
+        "zとxyの撮像ぼけとnoiseを分けて変える。",
+        "実際の細胞配置を保ったbrightness・背景変化を学習する。",
+        "衝突や重複ラベルを監査しながら密度と見え方を変える。",
+        "cropの位置・形を変え、出入りする細胞の教師と境界情報を更新する。"
+      ]
+    },
+    {
+      "id": "I14",
+      "title": "公式指標で比較し、どこに改善余地があるか測る",
+      "mechanism_family": "validation",
+      "origin_pass": "evidence_inversion",
+      "roles": [
+        "calibrator",
+        "candidate"
+      ],
+      "information_sources": [
+        "E01",
+        "E02",
+        "E03",
+        "E05",
+        "E06"
+      ],
+      "hypothesis": "現在の公式指標と異なるproxyや学習内のaccuracyを基準にすると改善を取り違える。最終graph・胚分離・段階別上限に基づく比較へ変えると、意味のある改良を選びやすくなる。",
+      "evidence_ids": [
+        "E01",
+        "E02",
+        "E03",
+        "E05",
+        "E06"
+      ],
+      "changed_mechanism": "モデルの出力を変える前に、比較対象・checkpoint選択・候補の上限検査を整合させる。評価修正自体による精度向上とは区別する。",
+      "input_target_decode": "学習側の開発予測と独立胚予測→現行のnode matching・edge・division・総node調整→公式仕様と照合したcomponent metrics→開発側で固定したcheckpoint/decoder→未使用胚のgraph。",
+      "deployment_error_simulated": "not applicable: この案は誤差生成自体を変更する案ではない。実際の独立予測の誤りと分布別評価で検証する。",
+      "preserved_invariants": [
+        "空間変換時は物理scale、座標、画像とラベルを同時更新する。",
+        "有向時間、母1個から娘2個、crop出入りと一時欠測を保持する。",
+        "未注釈を自動で負例にせず、完全注釈maskの存在を推測しない。",
+        "観測のbrightnessやnoiseは変更できるが厳密な蛍光・細胞数・等速の保存を仮定しない。"
+      ],
+      "nearest_prior_attempt": "公開proxyのdivisionは弱連結成分、exp002の選択はedge accuracy×node recall。",
+      "exact_difference": "同じ名前のscoreではなく、実際の分裂判定・集約と独立性を確認する。",
+      "counterevidence": "2胚しかなく、何十案も両胚で選ぶと外側評価も開発集合になる。サンプルbootstrapでは未知胚一般化の不確実性を解消できない。",
+      "cheap_test": "小さなgraphで分裂±1frame・合流・重複・非対応nodeなどの評価差を確認。保存済み候補checkpointが得られたら学習側の最終graphで順位を比較する。",
+      "full_test": "前提: 現行の独立胚baselineとOOFは未取得。実験化後は学習側胚内だけで教師・誤差モデル・selector・設定を作り固定する。外側胚はそれらの作成に使わず2方向で評価する。学習側内部のholdoutは未知胚の再現とは呼ばない。 内側で方法を固定し、各方向で学習/教師/校正の全工程から片側胚を除外して評価。既に見た外側結果で選択した場合は探索結果と記録する。 最後にoffline推論smokeで全動画網羅・隣接edge・時間/RAMを確認する。 評価対象動画一覧を固定し、NaN・失敗・有効評価行数の減少を必ず報告する。成功動画だけを候補別に残して比較しない。",
+      "kill_criterion": "評価器の一致とcheckpointの学習来歴を確認できない、outerラベルで選択した結果を独立CVと呼ぶ、平均だけ改善し片側胚の悪化を隠す。 各段階を通過できなければ次段階へ進めない。改善幅を事前に捏造せず、評価器を固定後に実験契約で最小改善幅と許容悪化をユーザーと決める。",
+      "reopen_criterion": "再現可能な基準checkpoint・独立した予測と、版を固定した評価器が得られる。",
+      "coverage_test": "GT node/edge/分裂組を段階的に与える診断で、候補表現とdecoderで回復可能な誤りの上限を測る。",
+      "selectability_test": "GTを使う上限診断と、画像だけで方法や候補を選ぶ実験を明確に分ける。checkpoint選択は学習側の開発集合のみ。",
+      "hidden_inference_contract": "推論では対象動画の画像と利用可能な画像metadata、事前固定した重みだけを使う。GEFF、正解label、GEFFのestimated_number_of_nodesは読まない。全時間の参照は可能な仮定だが最終edgeは隣接時点に限定し、内部の欠測を直接dt>1 edgeとして出さない。動画ごとに状態を初期化。全hidden動画を動的列挙してofflineで処理し、最悪例の時間・RAMと低coverage fallbackを計測する。",
+      "compute_estimate": "最初の独立予測は大。評価・graph後処理の反復はcacheで比較的軽い。時間や精度の実測値は未取得。",
+      "is_parameter_only": false,
+      "novelty_level": "incremental",
+      "confidence": "A",
+      "subhypotheses": [
+        "現行公式仕様に一致する評価器で公開proxyとの順位差を調べる。",
+        "最終graphの指標でcheckpointを選び、accuracy×recallと比較する。",
+        "胚別・暗さ・密度・境界・分裂ごとに、改善と悪化を分ける。",
+        "GTを与える診断で検出・接続・分裂候補・solverの上限を別々に測る。"
+      ]
+    }
+  ],
+  "portfolio": [
+    {
+      "idea_id": "I14",
+      "slot": "safe",
+      "why": "既知の評価不一致を先に解消し、各改良が何を直したか判別できる基準を作る。"
+    },
+    {
+      "idea_id": "I01",
+      "slot": "exploration",
+      "why": "疎注釈と実コードの教師定義に直接根拠がある。確認済み負例を用意できるかが最初の条件。"
+    },
+    {
+      "idea_id": "I06",
+      "slot": "exploration",
+      "why": "現行の検出点学習を踏まえた上で、提出条件の実誤差を使う改善を独立に試せる。"
+    },
+    {
+      "idea_id": "I03",
+      "slot": "exploration",
+      "why": "分裂の判定対象を2本の独立edgeから母と2娘の組へ変える。候補上限を安く先に確認できる。"
+    },
+    {
+      "idea_id": "I09",
+      "slot": "orthogonal",
+      "why": "異なる情報源が補う誤りを測り、単独性能が弱い候補を正解なしに使えるか検証できる。"
+    }
+  ],
+  "rejected": [
+    {
+      "idea": "公開PROXY_SCOREで大量の案を順位付けし、その値を公式CVと呼ぶ",
+      "failed_gate": "現行division仕様との不一致・学習来歴未確認",
+      "reopen_condition": "評価器と学習集合を確認した独立予測で再採点する。"
+    },
+    {
+      "idea": "疎なGTに対応しない検出点・edgeを全て負例にする",
+      "failed_gate": "未注釈の真の細胞/接続を誤って負例にする",
+      "reopen_condition": "完全注釈mask、明示的な既知親などで負例を個別に保証する。"
+    },
+    {
+      "idea": "testのestimated_number_of_nodesを読んで閾値を最適化する",
+      "failed_gate": "hidden画像だけの入力契約に存在しないGEFF情報へ依存",
+      "reopen_condition": "学習側の画像から推定した粗い数を、評価胚のGTなしで補助情報として使う。"
+    },
+    {
+      "idea": "2胚全体で密な教師・selectorを作ってから片側をvalidationと呼ぶ",
+      "failed_gate": "外側胚の画像/labelが学習工程へ入る",
+      "reopen_condition": "teacher/selector/誤差推定を含む全工程をfoldごとにやり直す。"
+    },
+    {
+      "idea": "分裂を含む時間反転を、そのまま同じ1母2娘の教師にする",
+      "failed_gate": "逆時間では合流になり保存するgraph構造と矛盾",
+      "reopen_condition": "連続edgeだけの変形か、逆向き推定と順向きdecodeの意味を分ける。"
+    },
+    {
+      "idea": "細胞数・蛍光量・等速運動を厳密な保存則として課す",
+      "failed_gate": "分裂、crop出入り、発光変動、測定雑音に反する",
+      "reopen_condition": "学習側で成立範囲を測定し信頼度付きsoft priorへ限定する。"
+    },
+    {
+      "idea": "重い外部モデルを全hiddenで実行することを未計測で前提化する",
+      "failed_gate": "12h・offline・model provenance未確認",
+      "reopen_condition": "小範囲の最悪密度で時間/RAM/来歴確認後、教師または局所利用に限定する。"
+    },
+    {
+      "idea": "正解を見れば候補を選べることを、そのまま改善として報告する",
+      "failed_gate": "oracle coverageと画像だけによる選別の混同",
+      "reopen_condition": "学習側で作ったselectorを独立領域・胚で検証する。"
+    }
+  ],
+  "evidence_registry": {
+    "E01": {
+      "source": "docs/surveys/biohub-public-baselines_20260910.md",
+      "fact": "公開0.94前後の推論構成、proxyの相違、FOCUSと局所化のdiscussion。スコアはページ表示と自己報告を区別。"
+    },
+    "E02": {
+      "source": "docs/surveys/biohub-official-annotation-distribution_20260815.md",
+      "fact": "133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotation maskなし。"
+    },
+    "E03": {
+      "source": "experiments/exp002_unet3d_expandable_segments/official_source/scripts/train_unet_transformer.py",
+      "fact": "compute_loss55行、compute_detection_loss528行、detect_and_match620行、train_epoch794行。実学習も検出候補を使う。"
+    },
+    "E04": {
+      "source": "experiments/exp002_unet3d_expandable_segments/config.yaml; metrics.json",
+      "fact": "診断用sample holdout、3epochs、batch16、T4x2、allocator変更と時間制約。主CV/OOFは未取得。"
+    },
+    "E05": {
+      "source": "https://github.com/royerlab/kaggle-cell-tracking-competition/blob/main/metrics.md",
+      "fact": "9月10日参照の公式評価。局所分裂構造と一対一対応。"
+    },
+    "E06": {
+      "source": "docs/03_validation.md; docs/04_data.md",
+      "fact": "胚を分ける2方向評価、100x64x256x256、物理scale、hidden画像のみ。"
+    },
+    "E07": {
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/738217; https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/740145",
+      "fact": "FOCUS密教師と位置補正は参加者の研究報告。確立したKaggle改善効果とは未確認。"
+    },
+    "E08": {
+      "source": "https://github.com/royerlab/hoct; https://github.com/weigertlab/trackastra; https://github.com/royerlab/ultrack",
+      "fact": "9月10日一次実装README確認。segmentationからのtracking等の参照先。Biohubでの性能優位やcheckpoint来歴は未検証。"
+    }
+  },
+  "review_incorporated": [
+    "C01～C12を確認。損失の未知mask、注釈条件付き誤差、fold別教師、triplet境界、座標勾配、個数の識別可能性、候補数対照、referenceとskip辺、cacheキー、合成監査を追記。"
+  ],
+  "generation_provenance": {
+    "root_task_first": {
+      "artifact": "task_card.json",
+      "count": 6,
+      "limitation": "rootは同じ会話の既存調査を既に読んでおり、source-hidden生成ではない。"
+    },
+    "independent_passes": [
+      {
+        "artifact": "pass_representation.json",
+        "count": 9,
+        "role": "画像から予測する対象と出力構造"
+      },
+      {
+        "artifact": "pass_information.json",
+        "count": 10,
+        "role": "情報の役割と保存する関係"
+      },
+      {
+        "artifact": "pass_candidates.json",
+        "count": 10,
+        "role": "候補・不確実性・選別"
+      },
+      {
+        "artifact": "pass_validation_compute.json",
+        "count": 8,
+        "role": "評価と計算",
+        "limitation": "rootが役割を分けて生成"
+      }
+    ],
+    "critic": {
+      "artifact": "critic_review.json",
+      "role": "表現案のagentを批判的レビューへ切り替えた。別モデルによる独立検証ではない。",
+      "corrections": 12
+    },
+    "final_main_hypotheses": 14,
+    "final_subhypotheses": 64,
+    "candidate_mapping": {
+      "C01": [
+        "I02",
+        "I09"
+      ],
+      "C02": [
+        "I09"
+      ],
+      "C03": [
+        "I04",
+        "I09"
+      ],
+      "C04": [
+        "I03"
+      ],
+      "C05": [
+        "I10"
+      ],
+      "C06": [
+        "I09"
+      ],
+      "C07": [
+        "I04"
+      ],
+      "C08": [
+        "I02"
+      ],
+      "C09": [
+        "I09"
+      ],
+      "C10": [
+        "I12"
+      ]
+    },
+    "representation_mapping": {
+      "A01": [
+        "I08"
+      ],
+      "A02": [
+        "I08",
+        "I10"
+      ],
+      "A03": [
+        "I02",
+        "I09"
+      ],
+      "A04": [
+        "I01",
+        "I11"
+      ],
+      "A05": [
+        "I03"
+      ],
+      "A06": [
+        "I03",
+        "I10"
+      ],
+      "A07": [
+        "I02"
+      ],
+      "A08": [
+        "I08"
+      ],
+      "A09": [
+        "I04"
+      ]
+    },
+    "information_mapping": {
+      "B01": [
+        "I04"
+      ],
+      "B02": [
+        "I06"
+      ],
+      "B03": [
+        "I05"
+      ],
+      "B04": [
+        "I05"
+      ],
+      "B05": [
+        "I13"
+      ],
+      "B06": [
+        "I07"
+      ],
+      "B07": [
+        "I02"
+      ],
+      "B08": [
+        "I03"
+      ],
+      "B09": [
+        "I07"
+      ],
+      "B10": [
+        "I04",
+        "I13"
+      ]
+    },
+    "validation_mapping": {
+      "D01": [
+        "I14"
+      ],
+      "D02": [
+        "I14"
+      ],
+      "D03": [
+        "I12"
+      ],
+      "D04": [
+        "I12"
+      ],
+      "D05": [
+        "I12"
+      ],
+      "D06": [
+        "I13"
+      ],
+      "D07": [
+        "I11",
+        "I14"
+      ],
+      "D08": [
+        "I12"
+      ]
+    },
+    "additional_review": "統合末尾で加えた7 µm球内質量、1/2細胞、graph hard選択、移動/形状補助教師、分裂探索箇所、固定encoder、中心集合はrootが既存の反証条件と照合。正解なし選別・部分注釈mask・費用上限の条件を親cardへ追記した。"
+  }
+}

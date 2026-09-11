@@ -1,0 +1,222 @@
+{
+  "generated_at": "2026-09-10",
+  "reviewer_role": "独立発想 Pass A から切り替えた批判的レビュー。別モデルによる独立検証ではない。",
+  "scope": "親エージェントが提示した暫定 14 案を、比較の妥当性、部分注釈の mask、leakage、識別可能性、実行費用から確認した。実験は実行していない。",
+  "evidence": [
+    {
+      "path": "studies/biohub_accuracy_ideas_20260910/task_card.json",
+      "fact": "trusted baseline / OOF は未取得。画像由来の推論入力だけを利用し、GEFF の推定総 node 数は推論時に未知。"
+    },
+    {
+      "path": "experiments/exp002_unet3d_expandable_segments/official_source/scripts/train_unet_transformer.py",
+      "locations": [
+        "compute_loss:55-72",
+        "compute_detection_loss:528-585",
+        "detect_and_match:620-744",
+        "build_matched_edge_targets:747-775",
+        "train_epoch:794-884"
+      ],
+      "fact": "実学習でも detect_and_match を使う。検出 loss は GT 以外を弱い負例にする。辺 loss の mask は active_rows OR active_cols。"
+    },
+    {
+      "path": "experiments/exp002_unet3d_expandable_segments/official_source/scripts/train_unet_transformer.py",
+      "locations": [
+        "_index_features:447-471",
+        "get_window_data:193-239"
+      ],
+      "fact": "現在の特徴抽出は整数座標 index で座標に対して非微分。GT node が 0 個のフレームを含む window は対象から外れる。"
+    },
+    {
+      "path": "experiments/exp002_unet3d_expandable_segments/official_source/src/tracking_cellmot/metrics.py",
+      "locations": [
+        "per_sample_metrics:412-463",
+        "summarise:471-535"
+      ],
+      "fact": "推定総 node 数を使う調整、公式の集約、division 項がある。NaN を含む評価行を除外する処理があり、失敗動画の扱いを比較間で揃える必要がある。"
+    },
+    {
+      "path": "experiments/exp002_unet3d_expandable_segments/official_source/src/tracking_cellmot/models/temporal_unet.py",
+      "locations": [
+        "_TemporalAttention:29-47",
+        "TemporalUNet3D.forward:115 onward"
+      ],
+      "fact": "特徴は時間方向 attention によって窓の他フレームへ依存し、単純な frame ID だけを鍵にする cache は一般には等価でない。"
+    }
+  ],
+  "overall_judgment": "仮説集合として残せるが、現時点で実装可能と断定できる Top 5 ではない。特に案 1・3・6 は以下の mask と識別可能性の条件を埋める必要がある。案 14 は比較の前提作りとして先行し、他案の改善を証明するものとは分ける。",
+  "corrections": [
+    {
+      "id": "C01",
+      "ideas": [
+        14,
+        1,
+        3,
+        6,
+        9
+      ],
+      "severity": "実験比較の前提",
+      "issue": "現在の exp002 の diagnostic sample holdout を主評価の baseline とみなしたり、外側検証胚の公式 score で checkpoint を選ぶと、胚を跨ぐ比較が成立しない。公式評価の NaN 行除外が候補間で変わるだけでも score が動く。",
+      "concrete_change": "外側は A 胚学習→B 胚評価、B 胚学習→A 胚評価とする。checkpoint・検出閾値・融合重み・腐敗分布・早期停止は各学習胚内の分割で決め、外側は固定手順の最終評価にする。公式 scorer の版と全評価動画リストを固定し、成功動画だけの平均を主比較にしない。失敗・NaN・n_adj の減少を結果に必ず出す。2 方向の結果を使って案を選んだ場合、その結果は選択に使った結果であると明記する。",
+      "minimum_check": "保存済み baseline の予測から現行公式 scorer で再計算し、同じ動画・集約・node 数調整・division 重みが適用されることを確かめる。",
+      "reject_if": "主 baseline が存在しないまま改善量を記す、外側ラベルで選んだ checkpoint を独立評価と呼ぶ、または評価失敗動画を候補ごとに落とす。",
+      "reopen_condition": "baseline・評価対象・内外分割・選択手順・失敗時の扱いを固定した後に比較する。"
+    },
+    {
+      "id": "C02",
+      "ideas": [
+        1
+      ],
+      "severity": "Top 5 の設計条件",
+      "issue": "『未知を負例にしない』だけでは全 foreground へ出力する退化解が残る。一方、暗い voxel を『確実背景』と呼ぶと弱い細胞を再び負例にする可能性がある。現データに完全注釈 ROI はない。",
+      "concrete_change": "位置ごとの mask を P=注釈済み中心の正例、N=独立に確認された背景、U=それ以外、と明記し、P・N・U を互いに重ならないようにする。U の supervised negative gradient は 0 にする。N を輝度閾値だけで確実背景と断定しない。使うなら高信頼背景の仮定として coverage と誤除外の診断を持たせ、確認できない場所は U に戻す。中心点を Gaussian に広げる場合も周囲の shell を自動で負例にしない。完全注釈 ROI は将来の条件として分け、現時点である入力として使わない。画像整合性は退化解を自動で排除しないことを明記する。",
+      "minimum_check": "同じ画像で注釈点だけを段階的に間引き、予測個数、重複、注釈点 recall、画像から見える弱い核の残り方を測る。mask ごとに loss と gradient の対象 voxel 数を確認する。",
+      "reject_if": "N を定義できないまま positive-only loss が個数も学べるとする、画像整合性だけで全 foreground / 全 background の退化を止めたとみなす、または背景 mask が弱い核を削る。",
+      "reopen_condition": "追加ラベルを要しない識別可能な画像 objective を実証するか、確認済み N または将来の完全注釈 ROI を準備する。"
+    },
+    {
+      "id": "C03",
+      "ideas": [
+        1,
+        3,
+        11
+      ],
+      "severity": "Top 5 の mask 修正",
+      "issue": "検出 loss だけを変えても辺 loss は別に誤った負例を作り得る。現行 compute_loss の active_rows OR active_cols は、既知の出辺が 1 本ある親から未注釈の第 2 娘への辺を負例にする可能性がある。『対応なし』『継続』『非分裂』も注釈の不在だけでは教師にできない。",
+      "concrete_change": "辺ごとに正例、関係が不可能だと確定できる負例、未知を別 mask にする。正例は注釈辺へ一意に対応できた候補対。負例の保守的な例は、親が既知の子に対して、候補親が別の注釈済み細胞だと一意に確認できる場合。正解に match しない候補は同一親の重複検出の可能性もあるため、自動で負例にしない。親の出辺が一部だけ観測された行では、未観測出辺を U とする。対応なし・継続のみ・分裂なしの教師は関係の観測が十分な例に限定し、不十分なら許容する状態の確率を合算する。",
+      "minimum_check": "『1 娘だけ注釈』『2 娘注釈』『別親が既知』『GT 周囲に重複検出』『境界で片娘が外』という人工的な target / match の組で、どの logit に負の gradient が流れるかを確認する。",
+      "reject_if": "active row を丸ごと負例対象にする、未 match 候補を全て別細胞とみなす、または未注釈分裂を継続クラスへ強制する。",
+      "reopen_condition": "観測から正当化できる負例の集合と未知 mask を、検出・辺・分裂・対応なしの各損失で定義する。"
+    },
+    {
+      "id": "C04",
+      "ideas": [
+        6
+      ],
+      "severity": "Top 5 の推定可能性",
+      "issue": "OOF でも疎注釈から全誤検出率は推定できない。正解へ match しない候補には未注釈の本物が混ざる。見逃し率も注釈された細胞に条件付けた値であり、全細胞の分布と同じとは限らない。また現在も detect_and_match を使うため、『GT 点から推論点へ変える』という比較は事実と異なる。",
+      "concrete_change": "腐敗分布の推定量を『注釈点に条件付けた位置誤差・見逃し・時間相関』と『真偽未確認の余分候補数』へ分ける。余分候補を全て false positive として clean graph へ足す設計はやめ、真偽が確認された人工画像、確認済み領域、または明示的な仮定の幅を持つ感度分析で扱う。現行の検出→照合経路を比較元にし、学習・推論の閾値、抑制距離、候補密度の差を実測してから corruption を決める。各外側学習胚の中で inner OOF を作り、その誤差だけで事前学習と real-inner-OOF への適応を行う。",
+      "minimum_check": "現行条件、推論と揃えた条件、相関を壊した corruption、時間相関を保った corruption を同じ下流学習条件で比べ、copy-through と誤った修正を測る。",
+      "reject_if": "外側検証胚の誤差を corruption 設計へ使う、未 match 候補を全て誤検出と数える、または GT 点だけ学習した baseline との比較だと説明する。",
+      "reopen_condition": "観測可能な誤差と仮定した誤差を分け、学習胚内の推定と外側評価の依存関係を保存する。"
+    },
+    {
+      "id": "C05",
+      "ideas": [
+        5,
+        6,
+        9
+      ],
+      "severity": "leakage と来歴",
+      "issue": "教師モデルが両胚の正解で学習されたり、外側検証の結果で疑似ラベルの閾値を選ぶと、その教師の出力だけを使っていても外側評価へ情報が入る。外部重みの来歴が未確認なら外部教師を安全な固定情報とも断定できない。",
+      "concrete_change": "教師ごとに、元重みの来歴、追加学習に使った胚・動画、閾値を決めた分割、生成対象を保存する。外側 A→B では正解を使う教師学習と閾値決定は A のみ、B→A では B のみ。固定された公開教師を両胚の画像へ適用することと、両胚の正解で教師を更新することを分ける。評価動画自身でラベルなしの適応をする場合は、推論でも同じ方法を使う別条件として明記する。疑似ラベルは真値ではなく信頼度付き観測として扱う。",
+      "minimum_check": "各生成物から教師重みと fold を辿れる manifest を作り、外側検証ラベルの依存がないことを確認する。教師単独と生徒の失敗が同じ画像条件へ集中しないかも調べる。",
+      "reject_if": "両胚の教師出力を出所不明で混ぜる、教師の出力密度を正解個数として固定する、または検証胚で教師の採否と閾値を調整する。",
+      "reopen_condition": "fold 別教師と疑似ラベルを分離し、外部重みの利用条件・学習データ来歴が確認できる。"
+    },
+    {
+      "id": "C06",
+      "ideas": [
+        3,
+        10
+      ],
+      "severity": "Top 5 の分裂比較",
+      "issue": "5 frame の分裂窓は便利だが、分裂時刻が窓端にある、片娘が crop 外へ出る、候補が 1 フレーム欠ける条件で『非分裂』と誤って教師化しやすい。未来画像が使えることは、時間反転した分裂へ同じ 1 親 2 娘制約を適用できることを意味しない。",
+      "concrete_change": "triplet は娘順序に不変な親・2 娘の組として採点する。窓端、欠測、crop 境界は状態 mask を持ち、片娘が見えない窓を非分裂の負例にしない。分裂の前後窓を複数作る場合は同じ事象を分割間に跨がせない。時間反転は画像特徴の補助学習に使えても、有向グラフを反転するなら 2→1 になるため、元と同じ decode 制約では扱わない。通常継続の候補量と分裂候補量を揃えた比較を行う。",
+      "minimum_check": "候補中心固定で triplet の oracle coverage を測り、通常位置・窓端・境界・1 フレーム欠測の各群で学習対象になる正例と負例を数える。",
+      "reject_if": "全 151 分裂を窓複製して独立サンプル数が増えたと扱う、未観測の娘を負例化する、または reverse division に同じ有向制約を課す。",
+      "reopen_condition": "事象単位の分割と、窓外・境界・欠測に対する許容状態を固定する。"
+    },
+    {
+      "id": "C07",
+      "ideas": [
+        2
+      ],
+      "severity": "表現と学習の不一致",
+      "issue": "subvoxel 補正、位置分布、画像中心と注釈中心の別 head、接続との同時補正は異なる仮説であり、一度に入れると原因を切り分けられない。画像中心の正解は与えられていない。現行 _index_features は整数 index なので、座標出力を加えても接続 loss の gradient が座標へ流れるとは限らない。",
+      "concrete_change": "最初は物理単位での単一中心補正と、位置分布を保持した decode を別々に比較する。画像中心 head を使うなら、何を画像中心の objective とするかと注釈中心 head へ戻す規則を定義し、2 種類の独立した正解があるように書かない。接続 loss で中心を学ぶ場合は、座標に依存する特徴抽出を三線形補間などに変更する必要があるかを確認する。幅広い分布で 7 μm 内に入るだけの coverage と、最終の一対一座標選択の改善を分ける。",
+      "minimum_check": "同じ候補 ID と同じ接続 score で中心だけを変更し、位置誤差・重複・node match・最終辺の変化を確認する。座標パラメータへの gradient の有無を調べる。",
+      "reject_if": "異なる 4 変更を一つの最小実験とする、注釈のない画像中心を独立教師として扱う、または座標に流れない gradient で同時最適化できると説明する。",
+      "reopen_condition": "単独で比較する位置表現と、その objective・特徴抽出・最終座標選択を一つに固定する。"
+    },
+    {
+      "id": "C08",
+      "ideas": [
+        8,
+        11
+      ],
+      "severity": "学習可能性が未確認",
+      "issue": "voxel affinity、軌跡 query、画像生成の逆問題は一つの実装ではない。疎な中心・辺から dense affinity や存在しない物体の no-object を直接教師にできず、可変物体数も自動には識別できない。画像由来の node 数も推定値であり、正解数ではない。",
+      "concrete_change": "3 方式は同じ大枠の探索案として残してよいが、最小検証を方式ごとに分ける。affinity はどの voxel 対の関係が注釈から確実かを定義し、それ以外を U にする。query は unmatched query の no-object loss を部分注釈から作らない。画像生成は 1 核を複数物体へ分ける退化を先に検査する。node 数の教師を使うなら出所・単位・対象時間範囲・誤差を保存し、教師推定数へ強制一致させない。学習 GEFF の estimated_number_of_nodes を教師にする案は別の train-only 監督仮説として区別し、推論へ GEFF 値を渡さない。",
+      "minimum_check": "既知個数の人工画像と注釈だけを間引いた同じ画像で、物体数と位置が安定するか測る。実画像の教師個数と候補数の一致は成功条件にしない。",
+      "reject_if": "完全 mask や真の全細胞数がある前提で loss を書く、複雑さ係数だけで物体数が決まる、または教師が見逃す暗い核を存在しないと固定する。",
+      "reopen_condition": "選んだ方式の部分教師から識別できる量を示し、観測されていない量を推測で埋めない最小検証を通す。"
+    },
+    {
+      "id": "C09",
+      "ideas": [
+        9
+      ],
+      "severity": "Top 5 の公平な比較",
+      "issue": "複数 detector の候補 union は密度と計算量だけを増やして oracle coverage を改善し得るが、真の位置や親を画像から選べる証拠ではない。異なる head の logits をそのまま平均すると確率尺度の差を混ぜる。疎注釈に対する誤差非相関は全細胞についての非相関とは限らない。",
+      "concrete_change": "単独候補、候補 union の oracle、画像だけで選ぶ統合を分けて評価する。公式の一対一 node matching を意識して重複を統合し、候補数・推論時間を揃えた対照も用意する。融合重みと calibration は学習胚内の予測で決め、外側結果では調整しない。位置分布を平均する場合は異なる細胞を同じ平均位置へ潰さず、物体対応付けを先に行う。hard selection と soft fusion は同じ選択特徴で別条件にする。",
+      "minimum_check": "候補 coverage、最良候補を知る oracle、実際の選択、重複数、推論時間を一つの表で比較する。候補数を増やした単独源を対照に含める。",
+      "reject_if": "oracle の上昇だけで融合を採用する、検証胚の正解で gate を選ぶ、または raw logit の単純平均で確率融合が成立するとみなす。",
+      "reopen_condition": "候補数と費用の対照、学習胚内の重み決定、推論入力だけで候補を選ぶ証拠を用意する。"
+    },
+    {
+      "id": "C10",
+      "ideas": [
+        4,
+        10
+      ],
+      "severity": "推論条件と欠測の区別",
+      "issue": "同動画 reference や長い軌跡の入力を正解 tracklet から作ると、hidden では存在しない高品質の補助情報になる。欠測状態を導入しても、提出形式が隣接時刻辺なら t→t+2 の辺へ置き換えるだけでは出力契約を満たさない。",
+      "concrete_change": "局所運動・appearance reference・tracklet は推論画像と予測候補だけから作り、学習も同等の誤りを含む入力を使う。正解軌跡の reference は oracle 診断にだけ残す。reference の coverage・画像対応信頼度・履歴長で fallback を事前固定し、変換前の座標情報を残す。欠測は推定時の内部状態とし、隣接辺を出すには欠けた時刻の node を画像から回収して接続するか、接続を確定しない。画像証拠なく線形補間した node を正解のように追加しない。",
+      "minimum_check": "正解 reference、予測 reference、短い reference、reference なしの 4 条件を分ける。欠測を挿入した短い動画で最終 graph の時刻差と境界挙動を確認する。",
+      "reject_if": "GT tracklet の効果を hidden で得られる効果と混同する、動画間の位置対応を仮定する、または長距離の skip edge をそのまま隣接辺の提出へ使う。",
+      "reopen_condition": "推論画像からの reference 生成・fallback と、欠測を含む内部状態から合法な出力 graph への変換を定義する。"
+    },
+    {
+      "id": "C11",
+      "ideas": [
+        12,
+        9,
+        10
+      ],
+      "severity": "正確性と費用",
+      "issue": "時間 attention を通った特徴は同じ frame でも窓が異なれば変わる。frame ID だけの cache で長窓へ使い回すと別アルゴリズムになり得る。不確実領域へ高解像度処理を振り分ける案は、難しい動画で全領域が選ばれて時間上限を破る可能性がある。",
+      "concrete_change": "cache key に重み、前処理、時間窓の全 frame、crop、voxel spacing、境界 padding と数値精度を含める。reuse できるのは同一条件で決まる特徴か、時間混合前の特徴だと実証できる部分だけ。cache 有無の特徴・logit・最終 graph の等価性を小例で確認する。候補近傍化と再評価領域選択には最大量と固定 fallback を設け、下流で解禁する長時間モデルを含む全 pipeline の時間を測る。hidden 動画数が未知なら総 12 時間を断定せず、動画長・密度ごとの処理量と上限の仮定を記す。",
+      "minimum_check": "同じ frame を異なる時間窓に入れ、cache が正しく区別することを確認する。最長・最高密度・全領域不確実の例で peak memory、I/O、fallback を含めて測る。",
+      "reject_if": "cache 単体が速いだけで精度探索を解禁したとする、違う窓の特徴を等価として再利用する、または平均動画時間だけで全体制約を通したとする。",
+      "reopen_condition": "等価性を確認できる cache 単位と、最悪条件で動く上限・fallback がある。"
+    },
+    {
+      "id": "C12",
+      "ideas": [
+        7,
+        13
+      ],
+      "severity": "合成と実画像の隔たり",
+      "issue": "物理整合という記述だけでは、合成分裂や PSF 変更が実画像で有効とは限らない。PSF は点像分布関数、すなわち小さな光源が画像中で広がる形であり、未知の実値を勝手に固定できない。幾何変換、観測ノイズ、密度変更は保持する関係が異なる。",
+      "concrete_change": "幾何変換では画像・座標・voxel spacing・辺・分裂時刻・crop mask を一緒に更新する。明るさと PSF の変更は観測だけを変える処理として分け、蛍光総量保存を強制しない。細胞を追加して密度を変えるなら追加 node の系譜も生成し、既存核を単に重ねて同一細胞の分裂にしない。合成だけでの改善では止めず、同じ学習回数の実画像 augmentation を対照に置き、実画像への短い適応後に外側胚で検証する。変形範囲を検証胚の正解結果から選ばない。",
+      "minimum_check": "合成 graph と画像の対応を目視できる小例で確認し、幾何のみ、観測のみ、合成分裂の各条件を分けて実画像の固定検証へ当てる。",
+      "reject_if": "合成画像の score だけで実画像の分裂改善を主張する、分裂を時間反転して同じラベルを使う、またはラベル変換を伴わない密度操作を教師にする。",
+      "reopen_condition": "保存する量と意図的に変える量が処理別に書かれ、実画像への移行を確認する対照実験がある。"
+    }
+  ],
+  "top_five_changes": {
+    "1": "safe と断定せず、P/N/U の具体的な出所と退化抑制の cheap proxy が条件。辺・分裂 loss の mask は別の論点として追記する。",
+    "3": "正解分裂を含む候補 coverage、片娘・窓端の未知 mask、娘順序不変、通常継続対照を条件にする。",
+    "6": "現行も detect_and_match を使う事実を維持。OOF から測れるのは注釈条件付き誤差であり、未 match を誤検出と呼ばない。",
+    "9": "候補 union oracle と推論での選択を分け、候補数・費用の対照と学習胚内の calibration を必須にする。",
+    "14": "checkpoint 選択は内側、2 胚外側評価は固定手順。trusted baseline の確立を最優先の前提にする。"
+  },
+  "unavailable_information": [
+    "完全注釈 ROI または独立確認済み背景 mask",
+    "全細胞についての誤検出・見逃し分布",
+    "独立した主評価 baseline と OOF",
+    "外部教師の重みごとの来歴",
+    "hidden の総処理量と上限までの費用推定"
+  ],
+  "mutations": "このレビュー JSON だけを追加。実験・稼働中モデル・backlog は変更していない。"
+}

@@ -318,3 +318,29 @@ def test_legacy_experiment_warns_for_generated_directories(
 
     assert not errors
     assert "WARNING: legacy experiment is missing generated directories" in capsys.readouterr().out
+
+
+def test_legacy_notebook_defaults_are_preserved():
+    validator = load_validator()
+    assert validator.required_notebook_names("exp001_example", {}) == (
+        "exp001_example_train.ipynb",
+        "exp001_example_inference.ipynb",
+    )
+
+
+def test_explicit_audit_notebook_does_not_require_training():
+    validator = load_validator()
+    assert validator.required_notebook_names(
+        "exp003_example", {"experiment": {"notebooks": ["audit"]}}
+    ) == ("exp003_example_audit.ipynb",)
+
+
+def test_notebook_declaration_cannot_hide_all_notebooks_or_escape_paths():
+    import pytest
+
+    validator = load_validator()
+    for kinds in [[], "audit", ["audit", "audit"], ["../audit"], [None]]:
+        with pytest.raises(ValueError):
+            validator.required_notebook_names(
+                "exp003_example", {"experiment": {"notebooks": kinds}}
+            )

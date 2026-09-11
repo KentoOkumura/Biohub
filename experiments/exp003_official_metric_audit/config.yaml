@@ -1,0 +1,103 @@
+experiment:
+  name: exp003_official_metric_audit
+  description: Compare complete official scoring and archived public proxy on synthetic
+    and fixed predicted graphs.
+  route: official_metric_audit
+  created_at: '2026-09-11'
+  notebooks:
+  - audit
+lineage:
+  parent: exp002_unet3d_expandable_segments
+  hypothesis_id: HYP-20260910-14
+  backlog_candidate: official_metric_check
+  diff_summary: CPU-only full official scorer/proxy comparison; no model change.
+validation:
+  strategy: fixed_graph_metric_audit
+  metric: metric_component_agreement
+  seed: 42
+  n_folds: 0
+  diagnostic_only: true
+data: {}
+model:
+  name: none_metric_audit
+  params: {}
+runtime:
+  use_amp: false
+  num_workers: 1
+  batch_size: 1
+  kaggle:
+    enable_gpu: false
+    enable_internet: false
+    time_limit_hours: 12
+    dataset_sources:
+    - thibautgoldsborough/cellmot-baseline-artifacts
+    audit:
+      enable_gpu: false
+      enable_internet: false
+      kernel_sources:
+      - kentookumura/exp002-unet3d-expandable-segments-inference
+    bootstrap_files:
+    - assets/metrics.py
+    - assets/division_metrics.py
+    - assets/LICENSE
+    - assets/source_manifest.json
+    - assets/public_proxy.py
+    - assets/fixtures.json
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: fixed_fixture_no_rng
+  stochastic_components: []
+  parallel_rng_policy: sequential_no_rng
+  feature_sha_policy: decompressed_content_sha_for_gzip
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: true
+    submission_sha: true
+  notes:
+  - No model score claim; fixed CSV SHA and source SHA; CPU audit.
+  seed: 42
+notes:
+- '2026-09-11: ユーザー『すべて推奨でいいです』。推奨の順序、無料枠内・課金なし、両胚改善、外部重みは選んだ追加候補のみ、人手注釈は当面なしを承認。FOCUSの取得同意は今回の対象外。'
+- No GPU, model training, paid resources, raw-image download, or submission.
+audit:
+  max_distance_um: 7.0
+  scale_zyx_um:
+  - 1.625
+  - 0.40625
+  - 0.40625
+  fixture_scale_zyx_um:
+  - 1.0
+  - 1.0
+  - 1.0
+  source_commit: 075fc5f5a52d11077f9dc2b074644618f26939e2
+  prediction_sha256: b039062114962347aca22f1268a64196893eaabb62c1046ae0c90acbad29f223
+  sample_ids:
+  - 44b6_0113de3b
+  - 44b6_0b24845f
+  - 6bba_05b6850b
+  - 6bba_05db0fb1
+  official_adjustment_alpha: 0.1
+  official_division_weight: 0.1
+  offline_packages:
+  - bidict==0.23.1
+  - donfig==0.8.1.post1
+  - geff==1.2.0.1.1
+  - geff-spec==1.1.1
+  - ilpy==0.6.0
+  - numcodecs==0.15.1
+  - polars==1.42.0
+  - polars-runtime-32==1.42.0
+  - pyscipopt==6.2.1
+  - rustworkx==0.18.0
+  - tracksdata==0.1.0rc6.dev3+g980c2d30a
+  - zarr==3.2.1
+  fixture_count: 9
+overrides:
+  project_defaults:
+  - validation.metric
+  - validation.n_folds
