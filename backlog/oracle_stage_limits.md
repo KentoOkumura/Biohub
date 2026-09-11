@@ -11,16 +11,17 @@
 - 期待する成果: 検出・接続・分裂の上限を分けるの成立条件と反証可能な一変更の比較を具体化する。
 - 親実験 / 比較対象: [exp002の設定](../experiments/exp002_unet3d_expandable_segments/config.yaml)と[requirements](../experiments/exp002_unet3d_expandable_segments/requirements.md)を構成の参照先とする。sample holdoutは診断用であり主評価へ流用しない。構成の参照版は確定。主評価には学習から除いた胚の新しい予測が必要であり、現在の両胚を使う重みを独立予測の代用にはしない。
 - 優先度: P2
-- 優先度の理由: P1の胚を分けた基準予測と候補cacheが揃った後、誤差分析と併せて検出・接続・分裂の回収上限を確認する。
+- 優先度の理由: exp005の胚を分けた基準予測と候補cacheが揃った後、誤差分析と併せて検出・接続・分裂の回収上限を確認する。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI14、検証候補64（同節の4項目目）。
-- 先行条件 / 依存: [胚を分けた基準予測](embryo_holdout_baseline.md)の検出・接続候補、得点、最終graphと学習来歴が揃うこと。公式評価は[exp003](../experiments/exp003_official_metric_audit/result.md)の照合済み処理を使い、[誤差分析](group_error_readout.md)と同じ対象一覧を使う。
+- 先行条件 / 依存: batch size 8で再試行する[胚を分けた基準予測](../experiments/exp005_embryo_holdout_batch8/)の検出・接続候補、得点、最終graphと学習来歴が揃うこと。公式評価は[exp003](../experiments/exp003_official_metric_audit/result.md)の照合済み処理を使い、[誤差分析](group_error_readout.md)と同じ対象一覧を使う。batch size 16のexp004はOOMの実行証拠として参照するが、未生成の候補cacheを依存入力にしない。
 
 ## 2026-09-11の承認確認
 
-- 基準予測と候補cacheの生成を[`embryo_holdout_baseline`](embryo_holdout_baseline.md)へ分離した。本候補は同じ候補集合を用いた診断を担当する。正解への置換で得た上限を実際の推論改善とは呼ばない。
+- 基準予測と候補cacheの生成はbatch size 16の[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)でOOMとなったため、直接承認済みの[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)へ引き継いだ。本候補はexp005の候補集合を用いた診断を担当する。正解への置換で得た上限を実際の推論改善とは呼ばない。
+- exp002の公開4動画に対する公式評価器の診断値はcombined score 0.3588721993443214、node recall 0.3634941118024202、division Jaccard 0.0だった。ただし学習に使った胚と重なるため独立CVではなく、検出段階を優先して調べる根拠としてのみ使う。
 - 共通の推奨方針はユーザーの「すべて推奨でいいです」で承認済み。[承認済みの進め方](KAGGLE_DIRECTION.md#承認済みの進め方)を参照する。下記D2・D3等を同じ内容で再質問しない。
-- この候補の実行は承認済みの順序と依存する証拠に従う。選ばれていない64候補の一括実行は意味しない。
+- この候補の実行は承認済みの順序と依存する証拠に従う。残る未着手63候補の一括実行は意味しない。
 
 ## 2026-09-10の未決事項調査
 
@@ -34,12 +35,13 @@
 ## 観測事実と根拠
 
 - 実測済みの事実: 本候補の改善値は未取得。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
+  - [exp003の公式評価監査](../experiments/exp003_official_metric_audit/result.md): exp002の公開4動画ではcombined score 0.3588721993443214、node recall 0.3634941118024202、division Jaccard 0.0。公開データが学習胚と重なるため、独立CVや閾値選択には使えない。
   - [E01](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e01): 公開0.94前後の推論構成、proxyの相違、FOCUSと局所化のdiscussion。スコアはページ表示と自己報告を区別。
   - [E02](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02): 133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotation maskなし。
   - [E03](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03): compute_loss55行、compute_detection_loss528行、detect_and_match620行、train_epoch794行。実学習も検出候補を使う。
   - [E05](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e05): 9月10日参照の公式評価。局所分裂構造と一対一対応。
   - [E06](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e06): 胚を分ける2方向評価、100x64x256x256、物理scale、hidden画像のみ。
-- 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI14。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
+- 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI14。実験の数値は[exp002 metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)と[exp003 result](../experiments/exp003_official_metric_audit/result.md)を参照する。
 - 利用する保存済み生成物とSHA: 精度比較に使える独立予測・候補cache・重みは未取得。これらのSHAは生成・取得後に記録する作業であり、ユーザーが値を選ぶ事項ではない。人工例と静的コード調査には重みを要しない。今回の調査入力のSHAは[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)に保存する。
 - 仮定: Assumption: 現在の公式指標と異なるproxyや学習内のaccuracyを基準にすると改善を取り違える。最終graph・胚分離・段階別上限に基づく比較へ変えると、意味のある改良を選びやすくなる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。
 
@@ -71,9 +73,9 @@
 
 ## 最小の反証可能な検証
 
-- 検証方法: 中心・辺・分裂組を段階的に正解へ置換して上限と実選択を区別 成立した場合だけ、学習側で方法を固定して胚を入れ替える2方向の比較へ進む。
-- variant / config / fold / booster数: 条件は上記の対照に限定する。比較する方法は上記の案に限定し、学習量と実行数はD1・D2で確定する。外側は2胚を入れ替える2方向、選択は学習側内部だけ。booster数は0。
-- control再学習: なし。独立予測・checkpoint・候補cacheの生成は[`embryo_holdout_baseline`](embryo_holdout_baseline.md)の範囲とし、本候補へ暗黙に追加学習を含めない。
+- 検証方法: exp005の同一checkpointで、既定の検出閾値0.99と公開上位Notebookで使われている0.965を診断比較し、既知nodeの候補回収率、予測node数、接続候補の有無、公式評価の成分値を記録する。その後、中心・辺・分裂組を段階的に正解へ置換して上限と実選択を区別する。閾値比較は原因切り分けであり、外側の評価胚で閾値を選ばない。
+- variant / config / fold / booster数: 条件は上記の対照に限定する。外側は2胚を入れ替える2方向、選択は学習側内部だけ。閾値0.965の候補は、0.99で保存した候補cacheから復元せず、固定checkpointと画像から検出処理を再実行する。booster数は0。
+- control再学習: なし。独立予測・checkpoint・候補cacheの生成は[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)の範囲とし、本候補へ暗黙に追加学習を含めない。
 - 想定runtime / resource: 最初の独立予測は大。評価・graph後処理の反復はcacheで比較的軽い。時間や精度の実測値は未取得。 GPU残量の確認値と見積の限界は調査レポートを参照する。追加の利用予算はD2、最大入力での費用は実測事項。
 - 候補の回収と実選別: 正解を診断だけに使う候補上限と、推論画像だけでの選別・補正を別々に記録する。評価・集計だけの候補ではモデル改善と診断結果を区別する。
 
@@ -88,7 +90,7 @@
 
 ## 実行しないこと
 
-- 禁止する代替実装、proxy、同一OOF上の救済探索: hiddenのGEFF・正解由来の個数を読む、未対応候補を一律負例にする、外側胚で重みや条件を選ぶ、正解を使う候補上限を実際の改善と呼ぶ、を行わない。本候補を閾値調整だけの比較へ置き換えない。
+- 禁止する代替実装、proxy、同一OOF上の救済探索: hiddenのGEFF・正解由来の個数を読む、未対応候補を一律負例にする、外側胚で重みや条件を選ぶ、正解を使う候補上限を実際の改善と呼ぶ、を行わない。0.965の比較は固定した診断であり、外側胚に合わせた閾値調整や、本候補全体を閾値調整だけの比較へ置き換えることはしない。
 - 壁打ちで採らなかった案と理由: 同じ主仮説の他変更は原因を分けるためこの候補へ同時投入しない。2胚しかなく、何十案も両胚で選ぶと外側評価も開発集合になる。サンプルbootstrapでは未知胚一般化の不確実性を解消できない。 [調査の採らない前提](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#採らない前提と再検討条件)も参照する。
 
 ## リスク
@@ -108,6 +110,7 @@
 
 ## 判断履歴
 
+- 2026-09-11: exp004のOOMを受け、基準予測の依存先をbatch size 8のexp005へ更新した。exp002の低いnode recallを検出優先の根拠として追加し、固定checkpointで0.99と0.965を比較する診断を先に行う。ただし公開4動画の値を独立CVや閾値選択には使わない。
 - 2026-09-11: 胚を分けた基準予測の候補追加に合わせて依存を明記。P2を維持し、全199動画の同じ予測・候補から回収上限を測る順序とした。
 - 2026-09-10: 未決事項の先行調査依頼に基づき、確認済みの仕様・コードと測定待ち、ユーザー判断を分離した。上記の比較案は提案であり、実験化や採用の承認は含まない。
 - 2026-09-10: ユーザーのバックログ記載と続行の指示に基づき、調査のI14第4項目を1候補1ファイルへ移した。前提不足を推測で埋めず、検討メモ・設計不可として登録した。

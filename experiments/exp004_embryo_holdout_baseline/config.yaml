@@ -1,0 +1,182 @@
+experiment:
+  name: exp004_embryo_holdout_baseline
+  description: Train the fixed exp002 TemporalUNet3D pipeline in both leave-one-embryo-out directions, save one held-out prediction and candidate cache per video, and score all 199 videos with the pinned official evaluator.
+  route: temporal_unet3d_node_transformer
+  created_at: '2026-09-11'
+lineage:
+  parent: exp002_unet3d_expandable_segments
+  hypothesis_id: HYP-20260910-14
+  backlog_candidate: embryo_holdout_baseline
+  diff_summary: Replace the mixed sample holdout with two embryo-disjoint outer folds; keep the exp002 model, loss, three-epoch schedule, checkpoint selection, and decode fixed; save all held-out graphs, detection scores, edge score matrices and selection masks for official evaluation and downstream analysis.
+source:
+  repository: https://github.com/royerlab/kaggle-cell-tracking-competition
+  commit: 075fc5f5a52d11077f9dc2b074644618f26939e2
+  manifest: official_source/SOURCE.json
+  license: BSD-3-Clause
+overrides:
+  project_defaults:
+  - validation.metric
+  - validation.n_folds
+  - validation.strategy
+validation:
+  strategy: leave_one_embryo_out
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_gradient_update_count: 64
+    expected_checkpoint_selection_count: 7
+    expected_evaluation_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_gradient_update_count: 116
+    expected_checkpoint_selection_count: 12
+    expected_evaluation_count: 71
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  expected_sample_count: 199
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+  checkpoint_selection_metric: edge_accuracy_times_node_recall
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  max_matching_distance_um: 7.0
+  diagnostic_only: false
+  metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+data:
+  expected_frames_per_sample: 100
+  expected_image_shape:
+  - 100
+  - 64
+  - 256
+  - 256
+  require_geff_for_train: true
+  test_discovery: dynamic_zarr_enumeration
+model:
+  name: TemporalUNet3D_SimpleNodeTransformer
+  params:
+    in_channels: 1
+    unet_out_channels: 32
+    unet_layers:
+    - 32
+    - 64
+    - 128
+    gradient_checkpointing: true
+    skip_fullres_temporal: true
+    window_size: 2
+    downsample:
+    - 1
+    - 4
+    - 4
+  training:
+    initialization: random
+    upstream_checkpoint: null
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    batch_size: 16
+    num_workers: 8
+    det_loss_weight: 1.0
+    det_neg_weight: 0.01
+    pool_kernel_um: 5.0
+    augmentations:
+    - brightness_augment
+    - flip_augment
+    checkpoint_selection: edge_accuracy_times_node_recall
+    data_parallel: true
+  smoke:
+    debug_video: first_sorted_gradient_update_sample_per_outer_fold
+    epochs: 1
+    max_iters: 2
+    runtime_gate_hours: 12
+    runtime_projection_multiplier: 1.25
+    runtime_gate_scope: all_outer_folds
+  inference:
+    det_threshold: 0.99
+    det_tta: true
+    pool_kernel_um: 3.0
+    edge_activation: softmax
+    edge_threshold: 0.5
+    use_ilp: true
+    ilp_edge_weight: -1.0
+    ilp_appearance_weight: 0.1
+    ilp_disappearance_weight: 0.1
+    ilp_division_weight: 1.0
+    unet_batch_size: 4
+    save_detection_scores: true
+    save_all_edge_scores: true
+    save_edge_valid_mask: true
+    save_edge_threshold_mask: true
+    save_graph_input_mask: true
+    save_final_selection_mask: true
+    candidate_cache_format: npz
+    candidate_schema_version: 1
+    smoke_videos_per_fold: 1
+    runtime_gate_hours: 12
+    runtime_projection_multiplier: 1.25
+    runtime_reserve_minutes: 15
+runtime:
+  use_amp: true
+  num_workers: 8
+  batch_size: 16
+  expected_cuda_device_count: 2
+  expected_gpu_name_substring: T4
+  environment:
+    PYTORCH_ALLOC_CONF: expandable_segments:True
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+    dataset_sources:
+    - thibautgoldsborough/cellmot-baseline-artifacts
+    inference:
+      kernel_sources:
+      - kentookumura/exp004-embryo-holdout-baseline-train
+    bootstrap_files:
+    - official_source/SOURCE.json
+    - official_source/LICENSE
+    - official_source/scripts/augmentations.py
+    - official_source/scripts/dataspec.py
+    - official_source/scripts/evaluate.py
+    - official_source/scripts/train_unet_transformer.py
+    - official_source/scripts/predict_unet_transformer.py
+    - official_source/src/tracking_cellmot/__init__.py
+    - official_source/src/tracking_cellmot/io.py
+    - official_source/src/tracking_cellmot/img_proc.py
+    - official_source/src/tracking_cellmot/metrics.py
+    - official_source/src/tracking_cellmot/division_metrics.py
+    - official_source/src/tracking_cellmot/models/__init__.py
+    - official_source/src/tracking_cellmot/models/temporal_unet.py
+    - official_source/src/tracking_cellmot/models/simple_node_transformer.py
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_dataloader_generator
+  stochastic_components:
+  - random_initialization
+  - dataloader_shuffle
+  - brightness_augment
+  - flip_augment
+  - cuda_kernels
+  parallel_rng_policy: DataLoader order uses a seeded torch.Generator; the pinned source creates a fresh NumPy default_rng inside each item, so augmentation draws are not byte-deterministic.
+  feature_sha_policy: Canonical array content SHA is computed from sorted keys, dtype, shape, and contiguous bytes; NPZ file SHA is secondary because ZIP metadata can vary.
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - The seed addition does not claim byte identity with the published checkpoint.
+  - The internal sample holdout is used only to select a checkpoint inside the outer training embryo; official scoring is performed only on the other embryo.
+notes:
+- The public checkpoint bundled in the dependency dataset is never copied or loaded.
+- PYTORCH_ALLOC_CONF is set before importing Torch, as in exp002.
+- One model is trained from scratch per outer fold; the mixed-embryo exp002 control is not retrained.
+- The outer evaluation embryo is never used for gradient updates, checkpoint selection, threshold selection, or ILP cost selection.
+- The inference notebook evaluates training data only and never creates or submits a competition submission.

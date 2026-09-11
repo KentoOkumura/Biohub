@@ -1,0 +1,102 @@
+{
+  "cv": null,
+  "evidence": {
+    "artifacts": {
+      "cache_file_sha": null,
+      "decompressed_content_sha": null,
+      "feature_content_sha": null,
+      "feature_count": null,
+      "feature_schema_sha": null,
+      "group_count": null,
+      "input_file_sha": "69b828b745beb4179a753bf86a0754ee11ef4bfbfa80595c5dd170727de81db7",
+      "failed_train_log_shas": {
+        "version_1_kernel": "21fbcb433999be797b3b370fda57870f5fabc13a040dc246718dbe33fc865040",
+        "version_1_smoke_fold_0": "6d0b9543a8316cfdd52988dcd440e8f31e653d42201b69d9844be2c9fee7d38a",
+        "version_2_kernel": "02bd6a4c4ce7599d13bd4dcd0e070b21fcfddd2678baa63e15382da38baec446",
+        "version_2_smoke_fold_0": "f02fec1dfc26c2da1b181137b2fe23ce3b497518d6801d5af6633d631263e559",
+        "version_2_smoke_fold_1": "f7eace6e607d94f1405d4dcc5b795a1a61b8d772c5fc571b3437d6683d99edf8",
+        "version_3_kernel": "551de60baf22c5e75320f78565a997a1f652293184e884e08c33ae2395dc3f40",
+        "version_3_smoke_fold_0": "978f09a48cd15ac12636a734942ea72e4eaf11e4c8f1e39eba0c6e38be4a9abb",
+        "version_3_smoke_fold_1": "c21fa58e9df64c9608b993922584a6f7fd96a6af36851137af591c920a305195"
+      },
+      "model_count": 0,
+      "model_manifest_sha": null,
+      "model_shas": {},
+      "oof_prediction_sha": null,
+      "raw_gzip_sha": null,
+      "row_count": null,
+      "selected_mode": null,
+      "selected_model": null,
+      "source_manifest_sha": "fe4fa02c339011e995c591edf6377c75d4bfe1d2a5adc1a49dff18011c2630d7",
+      "split_sha": "f73778d5437eef9de9cd82d795c5f310d40bc5453eefb785fc3629e85f6bfb5e",
+      "submission_sha": null,
+      "test_prediction_content_sha": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_mean": null
+    },
+    "kaggle": {
+      "docker_image_sha": "37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+      "id_no": 133911105,
+      "internet_enabled": false,
+      "kernel_id": "kentookumura/exp004-embryo-holdout-baseline-train",
+      "kernel_source_ids": [],
+      "kernel_version": 3,
+      "notebook_runtime_seconds": null,
+      "resource": {
+        "allocator_conf": "expandable_segments:True",
+        "allocator_environment_variable": "PYTORCH_ALLOC_CONF",
+        "gpu_names": [
+          "Tesla T4",
+          "Tesla T4"
+        ],
+        "visible_gpu_count": 2
+      },
+      "url": "https://www.kaggle.com/code/kentookumura/exp004-embryo-holdout-baseline-train"
+    },
+    "reruns": [
+      {
+        "kernel_version": 1,
+        "outcome": "failed_smoke_oom",
+        "reason": "CUDA OOM during fold 0 first backward pass at fixed batch size 16; no full training or checkpoint"
+      },
+      {
+        "kernel_version": 2,
+        "outcome": "failed_fold_1_smoke_oom",
+        "reason": "Fold 0 smoke completed at fixed batch size 16; fold 1 first backward OOM before full training or checkpoint generation"
+      },
+      {
+        "kernel_version": 3,
+        "outcome": "failed_fold_1_smoke_oom_after_cleanup",
+        "reason": "Fold 0 smoke completed; fold 1 first backward still OOM after explicit model deletion, garbage collection, and CUDA cache release; fixed batch size 16 is infeasible for this fold"
+      }
+    ],
+    "submission_validation": {
+      "checked_at": null,
+      "duplicate_id_count": null,
+      "errors": [],
+      "fallback_rows": null,
+      "id_column": null,
+      "infinite_value_count": null,
+      "missing_value_count": null,
+      "passed": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_min": null,
+      "prediction_std": null,
+      "row_count": null,
+      "target_columns": [],
+      "target_statistics": {}
+    }
+  },
+  "experiment": "exp004_embryo_holdout_baseline",
+  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "notes": "Fold 1 smoke failed: OutOfMemoryError: CUDA out of memory. Tried to allocate 2.09 GiB. GPU 0 has a total capacity of 14.56 GiB of which 756.81 MiB is free. Including non-PyTorch memory, this process has 13.82 GiB memory in use. Of the allocated memory 13.43 GiB is allocated by PyTorch, and 180.74 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+  "private_lb": null,
+  "public_lb": null,
+  "status": "failed",
+  "updated_at": "2026-09-11T03:56:26.412640+00:00"
+}
