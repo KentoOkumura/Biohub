@@ -10,7 +10,8 @@
 ## 承認済みの進め方
 
 - 2026-09-11: ユーザー『すべて推奨でいいです』。推奨の順序、無料枠内・課金なし、両胚改善、外部重みは選んだ追加候補のみ、人手注釈は当面なしを承認。FOCUSの取得同意は今回の対象外。
-- 実施順: [公式評価の照合](../experiments/exp003_official_metric_audit/result.md)、[胚を分けた基準予測](embryo_holdout_baseline.md)、[誤差分析](group_error_readout.md)と[段階別回収上限の分析](oracle_stage_limits.md)、[未注釈子に対する接続損失の比較](partial_edge_mask.md)。
+- 2026-09-11: batch size 16の[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)がfold 1のsmokeでOOMとなった後、ユーザー『その方針で進めてください』により、batch sizeだけを8へ変更する[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)の実験化、実装、Kaggle Notebook実行を承認。competition submissionの承認ではない。
+- 実施順: [公式評価の照合](../experiments/exp003_official_metric_audit/result.md)、batch size 16で失敗した[胚を分けた基準予測](../experiments/exp004_embryo_holdout_baseline/)、batch size 8で再試行する[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)、[誤差分析](group_error_readout.md)と[段階別回収上限の分析](oracle_stage_limits.md)。段階別診断で検出が主な制約と確認できた場合は[検出の未知領域を負例から外す比較](sparse_det_mask.md)を先に行い、その後に[未注釈子に対する接続損失の比較](partial_edge_mask.md)へ進む。検出が主な制約でなければ、診断結果に対応する既存候補を選ぶ。
 - 計算費用: Kaggle無料枠内。課金しない。実行前の残量と小規模実測を確認し、後続の推論確認に必要な枠を残す。残量不足なら承認済み方針のまま再開可能なところまで準備し、残量を超えるrunを開始しない。
 - 精度判断: 公式指標の両胚での改善、実行失敗の増加なし、提出推論12時間以内。採否・完了は結果提示後のユーザー判断を維持する。
 - 外部重みと人手: 当面の基準予測は自前学習。外部重みは選択した追加候補に限定し、人手注釈は当面行わない。FOCUSの条件同意は必要になった時点で本人が確認する。
@@ -22,9 +23,11 @@
 
 ### 現行の比較基準
 
-公式評価の前提確認は[exp003の結果](../experiments/exp003_official_metric_audit/result.md)を参照する。人工例で公開実装との差を再現し、固定した実予測では一致した。実行証拠を回収し、2026-09-11にユーザーが本監査の完了を承認。合意済みの次段階は[胚を分けたベースライン予測の作成](embryo_holdout_baseline.md)。
+公式評価の前提確認は[exp003の結果](../experiments/exp003_official_metric_audit/result.md)を参照する。人工例で公開実装との差を再現し、固定した実予測では一致した。実行証拠を回収し、2026-09-11にユーザーが本監査の完了を承認。[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)はKaggle train versions 1-3を実行したが、固定batch size 16のfold 1 smokeがCUDA OOMとなり、full trainingと胚を分けた基準予測は未成立である。直接承認された[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)はbatch sizeだけを8へ変更した再試行として実装済みで、`metrics.json`のstatusは`planned`、CVと実行証拠は未取得である。
 
 `exp001_temporal_unet3d_baseline`はbatch size 16のsmoke backwardでT4がOOMとなった。`exp002_unet3d_expandable_segments`のversion 1はメモリ割当変更でsmokeを通過したが、時間予測が11時間gateを超えてfull trainingへ進まなかった。ユーザー承認後のversion 2は12時間gateを通過し、同じbatch size 16で3 epochsを28,488.802秒（約7時間54分49秒）で完走してcheckpointを取得した。inference version 1は実行時に列挙した4件の公開test datasetから26,580行を788.633秒で生成し、提出前検証を通過した。code submission ref `56153451`は固定監視の開始から206分後に完了し、Public LBは`0.453`だった。診断用holdoutのbest selection scoreはepoch 0の0.9016で、胚を分けた主評価用CVは未取得。数値とstatusは[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)、version別の進行は[SESSION_NOTES](../experiments/exp002_unet3d_expandable_segments/SESSION_NOTES.md)を正とする。現在のsample holdoutは診断用であり、下記の主評価用候補は学習から除いた胚の予測を別途要する。
+
+exp002の公開test 4動画を固定公式評価器で診断した値はscore `0.3588721993`、node recall `0.3634941118`、division Jaccard `0.0`だった。対象はtrainにも存在し、学習から除いた胚ではないためCVとして使わない。この観測と公開上位Notebookの検出閾値`0.965`に対し、exp002・exp005は`0.99`を使う差は、[`oracle_stage_limits`](oracle_stage_limits.md)で固定checkpointを用いた候補回収の診断対象にする。外側評価胚の正解を使った閾値選択や、この診断だけを実際の改善とすることは行わない。
 
 ## アイデアバックログ
 
@@ -48,20 +51,19 @@
 | `HYP-20260910-11` | 対応なしと観測可能な構造制約を学習・復号へ明示すると、誤接続を抑えながら正しい継続と分裂を保持できる。 | [`explicit_no_match`](explicit_no_match.md)<br>[`known_parent_constraint`](known_parent_constraint.md)<br>[`graph_cost_scale`](graph_cost_scale.md)<br>[`image_count_prior`](image_count_prior.md) | - | 棄権の教師、既存softmaxとの差、費用校正と細胞数の誤差 |
 | `HYP-20260910-12` | 等価な処理の再利用や局所的な計算配分により、高解像度・多時点・密な候補の手法を予算内で比較し最終精度を改善できる。 | [`exact_window_cache`](exact_window_cache.md)<br>[`sparse_motion_graph`](sparse_motion_graph.md)<br>[`uncertain_highres`](uncertain_highres.md)<br>[`distill_reinvest`](distill_reinvest.md)<br>[`frozen_image_encoder`](frozen_image_encoder.md) | - | 等価性、最悪時の費用、解禁した処理の最終精度 |
 | `HYP-20260910-13` | 位置と系譜を保って撮像条件や境界・密度を変える学習により、別の胚の見え方に対する性能低下を抑えられる。 | [`anisotropic_blur`](anisotropic_blur.md)<br>[`photometric_shift`](photometric_shift.md)<br>[`lineage_density_aug`](lineage_density_aug.md)<br>[`crop_boundary_aug`](crop_boundary_aug.md) | - | 実際の胚差との対応、ラベル整合、片側胚の悪化 |
-| `HYP-20260910-14` | 現行公式指標・胚を分けた評価・段階別の上限検査を用いると、独自proxyや学習内指標では見えない候補の順位差と失敗箇所を識別できる。 | [`embryo_holdout_baseline`](embryo_holdout_baseline.md)<br>[`graph_checkpoint`](graph_checkpoint.md)<br>[`group_error_readout`](group_error_readout.md)<br>[`oracle_stage_limits`](oracle_stage_limits.md) | [`exp003_official_metric_audit`](../experiments/exp003_official_metric_audit/) | 固定公式と公開実装の差はexp003で確認。基準予測の独立性、モデル順位差と候補上限は未検証 |
+| `HYP-20260910-14` | 現行公式指標・胚を分けた評価・段階別の上限検査を用いると、独自proxyや学習内指標では見えない候補の順位差と失敗箇所を識別できる。 | [`graph_checkpoint`](graph_checkpoint.md)<br>[`group_error_readout`](group_error_readout.md)<br>[`oracle_stage_limits`](oracle_stage_limits.md) | [`exp003_official_metric_audit`](../experiments/exp003_official_metric_audit/)<br>[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)<br>[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/) | 固定公式と公開実装の差はexp003で確認。exp004は固定batch size 16のfold 1 smokeがCUDA OOMで、基準予測は未成立。exp005のbatch size 8による再試行、モデル順位差、候補上限は未検証 |
 
 ### 未着手バックログ
 
-2026-09-10の[調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)から14仮説・64候補を登録した。[未決事項の先行調査](../docs/surveys/biohub-backlog-readiness_20260910.md)で全64件を確認し、各詳細の仕様確認・測定待ち・ユーザー判断を分けた。2026-09-11に共通方針と推奨順序を承認済み。公式評価照合をexp003へ移し、胚を分けた基準予測の候補を追加したため、未着手候補は64件。残る検討メモは測定・候補別条件が未充足のものを含み、すべてがユーザーの技術判断待ちという意味ではない。P1の基準予測を先に作り、P2は依存が成立した候補から進める。追加注釈・教師・識別可能な目的を要するP4は条件が揃うまで保留する。
+2026-09-10の[調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)から14仮説・64候補を登録した。[未決事項の先行調査](../docs/surveys/biohub-backlog-readiness_20260910.md)で全64件を確認し、各詳細の仕様確認・測定待ち・ユーザー判断を分けた。2026-09-11に共通方針と推奨順序を承認済み。公式評価照合をexp003へ、胚を分けた基準予測をexp004へ移したため、未着手候補は63件。exp005はexp004の失敗後に直接承認された派生実験であり、同内容の未着手候補は重複追加しない。残る検討メモは測定・候補別条件が未充足のものを含み、すべてがユーザーの技術判断待ちという意味ではない。exp005の実行証拠を得た後、依存が成立したP2候補から進める。追加注釈・教師・識別可能な目的を要するP4は条件が揃うまで保留する。
 
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
-| P1 | `HYP-20260910-14` | [`embryo_holdout_baseline`](embryo_holdout_baseline.md) | 胚を分けたベースライン予測の作成 | exp003の公式評価照合は成立済み。実行時間と無料枠を確認 | `設計可能・実験化未承認` |
-| P2 | `HYP-20260910-14` | [`group_error_readout`](group_error_readout.md) | 胚・画像条件ごとの誤りを測る | [胚を分けた基準予測](embryo_holdout_baseline.md)とexp003の固定公式評価器 | `検討メモ・設計不可` |
-| P2 | `HYP-20260910-14` | [`oracle_stage_limits`](oracle_stage_limits.md) | 検出・接続・分裂の上限を分ける | [基準予測と候補cache](embryo_holdout_baseline.md)。誤差分析と併せて実施 | `検討メモ・設計不可` |
-| P2 | `HYP-20260910-01` | [`partial_edge_mask`](partial_edge_mask.md) | 未記録の第2娘を負例にしない | [基準予測](embryo_holdout_baseline.md)、[誤差分析](group_error_readout.md)、[段階別上限](oracle_stage_limits.md) | `検討メモ・設計不可` |
+| P2 | `HYP-20260910-14` | [`group_error_readout`](group_error_readout.md) | 胚・画像条件ごとの誤りを測る | [exp005の胚を分けた基準予測](../experiments/exp005_embryo_holdout_batch8/)とexp003の固定公式評価器 | `検討メモ・設計不可` |
+| P2 | `HYP-20260910-14` | [`oracle_stage_limits`](oracle_stage_limits.md) | 検出・接続・分裂の上限を分ける | [exp005の基準予測と候補cache](../experiments/exp005_embryo_holdout_batch8/)。誤差分析と併せ、検出閾値`0.99`と`0.965`の候補回収差も診断 | `検討メモ・設計不可` |
+| P2 | `HYP-20260910-01` | [`sparse_det_mask`](sparse_det_mask.md) | 検出の未知領域を負例から外す | exp005の基準予測とoracle_stage_limitsで検出が主な制約と確認できること | `検討メモ・設計不可` |
+| P2 | `HYP-20260910-01` | [`partial_edge_mask`](partial_edge_mask.md) | 未記録の第2娘を負例にしない | [exp005の基準予測](../experiments/exp005_embryo_holdout_batch8/)、[誤差分析](group_error_readout.md)、[段階別上限](oracle_stage_limits.md)。検出が主な制約ならsparse_det_maskを先行 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-14` | [`graph_checkpoint`](graph_checkpoint.md) | 最終graph指標で重みを選ぶ | [公式評価照合の実行結果](../experiments/exp003_official_metric_audit/) | `検討メモ・設計不可` |
-| P2 | `HYP-20260910-01` | [`sparse_det_mask`](sparse_det_mask.md) | 検出の未知領域を負例から外す | [公式評価照合の実行結果](../experiments/exp003_official_metric_audit/) | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-02` | [`subvoxel_offset`](subvoxel_offset.md) | voxel未満の中心位置を補正 | oracle_stage_limits | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-03` | [`division_triplets`](division_triplets.md) | 母と2娘の組を採点する | oracle_stage_limits | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-06` | [`correlated_jitter`](correlated_jitter.md) | 時間相関のある位置誤差を学ぶ | group_error_readout | `検討メモ・設計不可` |

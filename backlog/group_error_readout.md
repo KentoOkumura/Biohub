@@ -11,16 +11,16 @@
 - 期待する成果: 胚・画像条件ごとの誤りを測るの成立条件と反証可能な一変更の比較を具体化する。
 - 親実験 / 比較対象: [exp002の設定](../experiments/exp002_unet3d_expandable_segments/config.yaml)と[requirements](../experiments/exp002_unet3d_expandable_segments/requirements.md)を構成の参照先とする。sample holdoutは診断用であり主評価へ流用しない。構成の参照版は確定。主評価には学習から除いた胚の新しい予測が必要であり、現在の両胚を使う重みを独立予測の代用にはしない。
 - 優先度: P2
-- 優先度の理由: P1の胚を分けた基準予測が揃った後、同じ予測を使って改善対象となる誤りを特定する。承認済み順序の分析段階に当たる。
+- 優先度の理由: exp005の胚を分けた基準予測が揃った後、同じ予測を使って改善対象となる誤りを特定する。承認済み順序の分析段階に当たる。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI14、検証候補63（同節の3項目目）。
-- 先行条件 / 依存: [胚を分けた基準予測](embryo_holdout_baseline.md)の全199動画と学習来歴が揃うこと。公式評価は[exp003](../experiments/exp003_official_metric_audit/result.md)で照合済みの処理を使う。
+- 先行条件 / 依存: batch size 8で再試行する[胚を分けた基準予測](../experiments/exp005_embryo_holdout_batch8/)の全199動画と学習来歴が揃うこと。公式評価は[exp003](../experiments/exp003_official_metric_audit/result.md)で照合済みの処理を使う。batch size 16のexp004はOOMの実行証拠として参照するが、未生成の予測を依存入力にしない。
 
 ## 2026-09-11の承認確認
 
-- 基準予測の生成を[`embryo_holdout_baseline`](embryo_holdout_baseline.md)へ分離した。本候補はその固定予測を分析し、追加学習は行わない。独立予測がまだないことを、同じ共通方針の承認待ちと解釈しない。
+- 基準予測の生成はbatch size 16の[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)でOOMとなったため、直接承認済みの[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)へ引き継いだ。本候補はexp005の固定予測を分析し、追加学習は行わない。独立予測がまだないことを、同じ共通方針の承認待ちと解釈しない。
 - 共通の推奨方針はユーザーの「すべて推奨でいいです」で承認済み。[承認済みの進め方](KAGGLE_DIRECTION.md#承認済みの進め方)を参照する。下記D2・D3等を同じ内容で再質問しない。
-- この候補の実行は承認済みの順序と依存する証拠に従う。選ばれていない64候補の一括実行は意味しない。
+- この候補の実行は承認済みの順序と依存する証拠に従う。残る未着手63候補の一括実行は意味しない。
 
 ## 2026-09-10の未決事項調査
 
@@ -73,7 +73,7 @@
 
 - 検証方法: 同一対象動画で条件別指標・失敗・NaN・有効件数を併記 成立した場合だけ、学習側で方法を固定して胚を入れ替える2方向の比較へ進む。
 - variant / config / fold / booster数: 条件は上記の対照に限定する。比較する方法は上記の案に限定し、学習量と実行数はD1・D2で確定する。外側は2胚を入れ替える2方向、選択は学習側内部だけ。booster数は0。
-- control再学習: なし。独立予測とcheckpointの生成は[`embryo_holdout_baseline`](embryo_holdout_baseline.md)の範囲とし、本候補へ暗黙に追加学習を含めない。
+- control再学習: なし。独立予測とcheckpointの生成は[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)の範囲とし、本候補へ暗黙に追加学習を含めない。
 - 想定runtime / resource: 最初の独立予測は大。評価・graph後処理の反復はcacheで比較的軽い。時間や精度の実測値は未取得。 GPU残量の確認値と見積の限界は調査レポートを参照する。追加の利用予算はD2、最大入力での費用は実測事項。
 - 候補の回収と実選別: 正解を診断だけに使う候補上限と、推論画像だけでの選別・補正を別々に記録する。評価・集計だけの候補ではモデル改善と診断結果を区別する。
 

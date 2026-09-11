@@ -11,16 +11,17 @@
 - 期待する成果: 未記録の第2娘を負例にしないの成立条件と反証可能な一変更の比較を具体化する。
 - 親実験 / 比較対象: [exp002の設定](../experiments/exp002_unet3d_expandable_segments/config.yaml)と[requirements](../experiments/exp002_unet3d_expandable_segments/requirements.md)を構成の参照先とする。sample holdoutは診断用であり主評価へ流用しない。構成の参照版は確定。主評価には学習から除いた胚の新しい予測が必要であり、現在の両胚を使う重みを独立予測の代用にはしない。
 - 優先度: P2
-- 優先度の理由: 承認済み順序では、胚を分けた基準予測と誤差・段階別上限の分析を先に揃える。その証拠を踏まえて最初に比較する接続損失の変更であり、基準予測作成のP1より後に位置付ける。
+- 優先度の理由: 胚を分けた基準予測と誤差・段階別上限の分析を先に揃える。exp002の診断ではnode recall不足が観測されたため、独立予測でも検出が主な制約なら`sparse_det_mask`を先に比較し、接続・分裂側の上限が大きい場合に本候補へ進む。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI01、検証候補2（同節の2項目目）。
-- 先行条件 / 依存: [胚を分けた基準予測](embryo_holdout_baseline.md)、[誤差分析](group_error_readout.md)、[段階別回収上限](oracle_stage_limits.md)の証拠を揃える。公式評価は[exp003](../experiments/exp003_official_metric_audit/result.md)の照合済み処理を使う。
+- 先行条件 / 依存: batch size 8で再試行する[胚を分けた基準予測](../experiments/exp005_embryo_holdout_batch8/)、[誤差分析](group_error_readout.md)、[段階別回収上限](oracle_stage_limits.md)の証拠を揃える。公式評価は[exp003](../experiments/exp003_official_metric_audit/result.md)の照合済み処理を使う。検出が主な制約なら`sparse_det_mask`を先行する。
 
 ## 2026-09-11の承認確認
 
-- 先行する基準予測の作成がP1として追加されたため、本候補をP2へ更新した。誤差と候補回収の分析を踏まえてから損失を比較する、承認済みの順序を優先度と依存へ反映した。
+- 先行する基準予測はexp005へ移行した。本候補はP2を維持し、誤差と候補回収の分析を踏まえてから損失を比較する承認済みの順序を優先度と依存へ反映した。
+- exp002の公開test 4動画に対する固定公式評価ではnode recallが`0.3634941118`だったが、独立した胚評価ではない。exp005と段階別診断で同じ制約を確認できた場合は検出損失を先に比較し、本候補を自動的に最優先とはしない。
 - 共通の推奨方針はユーザーの「すべて推奨でいいです」で承認済み。[承認済みの進め方](KAGGLE_DIRECTION.md#承認済みの進め方)を参照する。下記D2・D3等を同じ内容で再質問しない。
-- この候補の実行は承認済みの順序と依存する証拠に従う。選ばれていない64候補の一括実行は意味しない。
+- この候補の実行は承認済みの順序と依存する証拠に従う。残る未着手63候補の一括実行は意味しない。
 
 ## 2026-09-10の未決事項調査
 
