@@ -1,0 +1,121 @@
+experiment:
+  name: exp007_graph_checkpoint_selection
+  description: Save every epoch checkpoint from the exp005 batch-8 embryo-held-out training and compare the existing proxy selector with the fixed official graph metric on the same internal selection videos.
+  route: temporal_unet3d_node_transformer
+  created_at: '2026-09-11'
+
+lineage:
+  parent: exp005_embryo_holdout_batch8
+  hypothesis_id: HYP-20260910-14
+  backlog_candidate: graph_checkpoint
+  diff_summary: Preserve exp005 training and decode, save all three epoch checkpoints per outer fold, and select between them using both the existing edge-accuracy-times-node-recall proxy and the fixed official graph metric on the same internal selection videos.
+
+overrides:
+  project_defaults:
+  - validation.metric
+  - validation.n_folds
+  - validation.strategy
+
+validation:
+  strategy: leave_one_embryo_out
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  n_folds: 2
+  expected_sample_count: 199
+  reference_selector: edge_accuracy_times_node_recall
+  treatment_selector: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  selector_data: internal_checkpoint_selection_videos
+  outer_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  max_matching_distance_um: 7.0
+  comparison_mode: same_training_run_two_selectors
+  comparison_experiment: exp005_embryo_holdout_batch8
+
+data:
+  split_contract_source: ../exp005_embryo_holdout_batch8/config.yaml
+  test_discovery: dynamic_zarr_enumeration
+  expected_frames_per_sample: 100
+
+model:
+  name: TemporalUNet3D_SimpleNodeTransformer
+  params:
+    in_channels: 1
+    unet_out_channels: 32
+    unet_layers: [32, 64, 128]
+    gradient_checkpointing: true
+    skip_fullres_temporal: true
+    window_size: 2
+    downsample: [1, 4, 4]
+  training:
+    seed: 42
+    initialization: random
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    batch_size: 8
+    num_workers: 8
+    det_loss_weight: 1.0
+    det_neg_weight: 0.01
+    augmentations: [brightness_augment, flip_augment]
+    data_parallel: true
+    save_epoch_indices: [0, 1, 2]
+    selectors:
+    - edge_accuracy_times_node_recall
+    - official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  inference:
+    evaluate_unique_selected_checkpoints_only: true
+    det_threshold: 0.99
+    det_tta: true
+    pool_kernel_um: 3.0
+    edge_activation: softmax
+    edge_threshold: 0.5
+    use_ilp: true
+    ilp_edge_weight: -1.0
+    ilp_appearance_weight: 0.1
+    ilp_disappearance_weight: 0.1
+    ilp_division_weight: 1.0
+    unet_batch_size: 4
+
+runtime:
+  use_amp: true
+  num_workers: 8
+  batch_size: 8
+  expected_cuda_device_count: 2
+  expected_gpu_name_substring: T4
+  train_runtime_gate_hours: 11.5
+  inference_runtime_gate_hours: 11.5
+  notebook_time_limit_hours: 12
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_dataloader_generator
+  stochastic_components:
+  - random_initialization
+  - dataloader_shuffle
+  - brightness_augment
+  - flip_augment
+  - cuda_kernels
+  parallel_rng_policy: Use the exp005 seeded DataLoader generator; inherited unseeded local NumPy augmentation means cross-run bitwise identity is not claimed.
+  feature_sha_policy: Record canonical content SHA for checkpoint predictions and candidate arrays; file container SHA is secondary.
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - The primary evidence is the comparison of two selectors applied to checkpoints from the same training run.
+  - The outer evaluation embryo is never used for checkpoint selection.
+
+notes:
+- Planned only; implementation and Kaggle execution are intentionally deferred.
+- Active training variant count 1, model config count 1, outer fold count 2, booster count 0.
+- Six epoch checkpoints are planned; no separate control training run is added.

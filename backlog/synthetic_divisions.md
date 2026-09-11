@@ -47,7 +47,7 @@
 - 仮説が正しい場合に期待する観測: 本候補の変更だけで期待する誤りが減り、同じ候補数・学習量・時間など必要な対照を揃えた公式指標へ改善が残ること。改善の判定方針は調査レポートのD3で選ぶ。測定前に改善幅や誤差幅を推定せず、両方向の差と費用を記録する。
 - 仮説を棄却する観測: 合成だけの正解率が上がる、実分裂や暗部で悪化、合成元の評価胚が訓練へ入る、または本物らしさを確認できない。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: 実画像への移行、合成の識別可能性、変形と系譜の整合。別候補 [`deformation_pairs`](deformation_pairs.md)、[`division_lookalikes`](division_lookalikes.md)、[`masked_video_pretrain`](masked_video_pretrain.md) の検証が残る。
+- 上位仮説の判断に残る検証: 実画像への移行、合成の識別可能性、変形と系譜の整合。関連実験 [`deformation_pairs`](../experiments/exp008_deformation_pair_aux/)、別候補 [`division_lookalikes`](division_lookalikes.md)、[`masked_video_pretrain`](masked_video_pretrain.md) の検証が残る。
 
 ## 入力・予測対象・出力・推論方法
 

@@ -1,0 +1,138 @@
+experiment:
+  name: exp008_deformation_pair_aux
+  description: Add a training-only dense feature correspondence loss from known smooth invertible 3D image deformations while preserving the exp005 center, edge, decode, and embryo-held-out evaluation pipeline.
+  route: temporal_unet3d_node_transformer
+  created_at: '2026-09-11'
+
+lineage:
+  parent: exp005_embryo_holdout_batch8
+  hypothesis_id: HYP-20260910-07
+  backlog_candidate: deformation_pairs
+  diff_summary: Apply one fold-safe smooth 3D deformation to half of the training windows and add a weighted cosine feature-correspondence loss; keep the base targets, losses, inference, decode, and official evaluation fixed.
+
+overrides:
+  project_defaults:
+  - validation.metric
+  - validation.n_folds
+  - validation.strategy
+
+validation:
+  strategy: leave_one_embryo_out
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  n_folds: 2
+  expected_sample_count: 199
+  checkpoint_selection_metric: edge_accuracy_times_node_recall
+  metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  max_matching_distance_um: 7.0
+  comparison_experiment: exp005_embryo_holdout_batch8
+  require_both_embryos_improve: true
+
+data:
+  split_contract_source: ../exp005_embryo_holdout_batch8/config.yaml
+  test_discovery: dynamic_zarr_enumeration
+  expected_frames_per_sample: 100
+
+model:
+  name: TemporalUNet3D_SimpleNodeTransformer
+  params:
+    in_channels: 1
+    unet_out_channels: 32
+    unet_layers: [32, 64, 128]
+    gradient_checkpointing: true
+    skip_fullres_temporal: true
+    window_size: 2
+    downsample: [1, 4, 4]
+  training:
+    seed: 42
+    initialization: random
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    batch_size: 8
+    num_workers: 8
+    det_loss_weight: 1.0
+    det_neg_weight: 0.01
+    augmentations: [brightness_augment, flip_augment]
+    checkpoint_selection: edge_accuracy_times_node_recall
+    data_parallel: true
+    deformation_pair:
+      enabled: true
+      probability: 0.5
+      seed_policy: stable_sha256_per_window
+      control_grid_shape: [4, 4, 4]
+      interpolation: tricubic
+      coordinate_space: physical_um
+      max_displacement_rule: min_training_edge_displacement_p95_and_7um
+      jacobian_must_be_positive: true
+      max_displacement_halvings: 8
+      invalid_pair_rate_stop: 0.01
+      interpolation_border_voxels: 2
+    correspondence_loss:
+      feature_location: shared_3d_feature_map_before_cell_center_sampling
+      feature_sampling: trilinear
+      feature_normalization: l2
+      objective: one_minus_cosine_similarity
+      weight: 0.1
+      valid_mask_only: true
+  inference:
+    use_deformation_pair: false
+    det_threshold: 0.99
+    det_tta: true
+    pool_kernel_um: 3.0
+    edge_activation: softmax
+    edge_threshold: 0.5
+    use_ilp: true
+    ilp_edge_weight: -1.0
+    ilp_appearance_weight: 0.1
+    ilp_disappearance_weight: 0.1
+    ilp_division_weight: 1.0
+    unet_batch_size: 4
+
+runtime:
+  use_amp: true
+  num_workers: 8
+  batch_size: 8
+  expected_cuda_device_count: 2
+  expected_gpu_name_substring: T4
+  train_runtime_gate_hours: 11.5
+  inference_runtime_gate_hours: 11.5
+  notebook_time_limit_hours: 12
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_base_seed_plus_stable_sha256_per_window_deformation
+  stochastic_components:
+  - random_initialization
+  - dataloader_shuffle
+  - brightness_augment
+  - flip_augment
+  - deformation_field
+  - pair_sampling
+  - cuda_kernels
+  parallel_rng_policy: Derive a local generator seed from experiment, fold, sample, epoch, and window index; do not consume a shared global RNG in workers.
+  feature_sha_policy: Record the deformation schema and diagnostic field content SHA plus canonical candidate array content SHA.
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - Existing augmentation and CUDA kernels prevent a bitwise deterministic claim.
+  - Deformations are generated only from each outer fold's gradient-update subset and never at inference.
+
+notes:
+- Planned only; implementation and Kaggle execution are intentionally deferred.
+- Active variant count 1, model config count 1, outer fold count 2, booster count 0.
+- The exp005 saved run is the control reference and is not retrained.
+- Synthetic divisions and division labels are outside this experiment.

@@ -1,0 +1,115 @@
+experiment:
+  name: exp006_embryo_holdout_seed314159
+  description: Repeat the exp005 leave-one-embryo-out batch-8 pipeline with a second fixed training seed to measure prediction variability and create an independently trained model for a later, separate ensemble comparison.
+  route: temporal_unet3d_node_transformer
+  created_at: '2026-09-11'
+
+lineage:
+  parent: exp005_embryo_holdout_batch8
+  hypothesis_id: N/A
+  backlog_candidate: N/A
+  diff_summary: Change the model, PyTorch, and DataLoader seed from 42 to 314159; preserve the data splits, model, targets, losses, three-epoch schedule, checkpoint selector, inference, decode, and official evaluation.
+
+overrides:
+  project_defaults:
+  - validation.metric
+  - validation.n_folds
+  - validation.strategy
+  - validation.seed
+  - reproducibility.seed
+
+validation:
+  strategy: leave_one_embryo_out
+  seed: 314159
+  internal_split_seed: 0
+  n_folds: 2
+  expected_sample_count: 199
+  checkpoint_selection_metric: edge_accuracy_times_node_recall
+  metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  max_matching_distance_um: 7.0
+  comparison_experiment: exp005_embryo_holdout_batch8
+
+data:
+  split_manifest_source: ../exp005_embryo_holdout_batch8/artifacts/splits.json
+  test_discovery: dynamic_zarr_enumeration
+  expected_frames_per_sample: 100
+
+model:
+  name: TemporalUNet3D_SimpleNodeTransformer
+  params:
+    in_channels: 1
+    unet_out_channels: 32
+    unet_layers: [32, 64, 128]
+    gradient_checkpointing: true
+    skip_fullres_temporal: true
+    window_size: 2
+    downsample: [1, 4, 4]
+  training:
+    seed: 314159
+    initialization: random
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    batch_size: 8
+    num_workers: 8
+    det_loss_weight: 1.0
+    det_neg_weight: 0.01
+    augmentations: [brightness_augment, flip_augment]
+    checkpoint_selection: edge_accuracy_times_node_recall
+    data_parallel: true
+  inference:
+    det_threshold: 0.99
+    det_tta: true
+    pool_kernel_um: 3.0
+    edge_activation: softmax
+    edge_threshold: 0.5
+    use_ilp: true
+    ilp_edge_weight: -1.0
+    ilp_appearance_weight: 0.1
+    ilp_disappearance_weight: 0.1
+    ilp_division_weight: 1.0
+    unet_batch_size: 4
+
+runtime:
+  use_amp: true
+  num_workers: 8
+  batch_size: 8
+  expected_cuda_device_count: 2
+  expected_gpu_name_substring: T4
+  train_runtime_gate_hours: 7.0
+  notebook_time_limit_hours: 12
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+
+reproducibility:
+  deterministic_anchor: false
+  seed: 314159
+  seed_policy: fixed_global_seed_plus_dataloader_generator
+  stochastic_components:
+  - random_initialization
+  - dataloader_shuffle
+  - brightness_augment
+  - flip_augment
+  - cuda_kernels
+  parallel_rng_policy: DataLoader order uses a seeded torch.Generator; inherited augmentation code may create unseeded local NumPy generators, so the run is not treated as bitwise deterministic.
+  feature_sha_policy: Canonical array content SHA uses sorted keys, dtype, shape, and contiguous bytes; NPZ file SHA is secondary.
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - This experiment measures one independent rerun under seed 314159; it does not identify a population-level seed effect.
+  - No ensemble or submission is part of this experiment.
+
+notes:
+- Planned only; implementation and Kaggle execution are intentionally deferred.
+- Active variant count 1, model config count 1, outer fold count 2, booster count 0.
+- The exp005 saved run is the control reference and is not retrained.

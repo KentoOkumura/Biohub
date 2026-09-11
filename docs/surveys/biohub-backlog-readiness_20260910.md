@@ -413,7 +413,7 @@ exp002のfull training所要時間の既存予測は約10.10hだが、これはs
 
 <a id="deformation_pairs"></a>
 
-**[deformation_pairs](../../backlog/deformation_pairs.md)** — 既知の3D変形で対応教師を作る
+**[deformation_pairs](../../experiments/exp008_deformation_pair_aux/)** — 既知の3D変形で対応教師を作る
 
 - 確認結果: 画像変形と中心座標を同時に変形すれば対応は作れるが、任意の変形で分裂は生成できない。
 - 最初の比較案: 最初は滑らかな可逆3D変位場で画像と既知中心を同時変形する。領域外は未知にし、人工対応の学習を追加する。
@@ -724,7 +724,7 @@ exp002のfull training所要時間の既存予測は約10.10hだが、これはs
 
 <a id="graph_checkpoint"></a>
 
-**[graph_checkpoint](../../backlog/graph_checkpoint.md)** — 最終graph指標で重みを選ぶ
+**[graph_checkpoint](../../experiments/exp007_graph_checkpoint_selection/)** — 最終graph指標で重みを選ぶ
 
 - 確認結果: 現在の学習コードはaccuracy×recall最大の1ファイルを上書き保存し、全epochの重みは残さない。
 - 最初の比較案: 次の独立胚評価の学習でepochごとの重みを保存し、学習側の開発動画で現行選択と公式graph指標の選択を比較する。

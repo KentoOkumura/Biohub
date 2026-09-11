@@ -50,7 +50,7 @@
 - 仮説が正しい場合に期待する観測: 上記の最小検証を同一対象・同一版で再計算でき、一致点、不一致点、回復可能な誤りと未確認部分が数値と証拠で分かれること。差がない結果もそのまま記録する。
 - 仮説を棄却する観測: 評価器・対象動画・予測の学習来歴を揃えられない場合は、その比較の結論を保留する。診断で差がないことを他の手法全体の棄却へ広げない。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: 評価器の一致、基準予測の独立性、順位差と候補上限。別候補 [`official_metric_check`](../experiments/exp003_official_metric_audit/)、[`graph_checkpoint`](graph_checkpoint.md)、[`oracle_stage_limits`](oracle_stage_limits.md) の検証が残る。
+- 上位仮説の判断に残る検証: 評価器の一致、基準予測の独立性、順位差と候補上限。別候補 [`official_metric_check`](../experiments/exp003_official_metric_audit/)、[`graph_checkpoint`](../experiments/exp007_graph_checkpoint_selection/)、[`oracle_stage_limits`](oracle_stage_limits.md) の検証が残る。
 
 ## 入力・予測対象・出力・推論方法
 
