@@ -1,0 +1,209 @@
+{
+  "cv": null,
+  "diagnostic_validation": {
+    "official_seed0_sample_holdout": {
+      "best_epoch_index": 0,
+      "best_selection_score": 0.9016,
+      "diagnostic_only": true,
+      "epochs": [
+        {
+          "detection_loss": 0.0223,
+          "edge_loss": 0.0058,
+          "epoch_index": 0,
+          "n_epochs": 3,
+          "selection_score": 0.9016,
+          "train_seconds": 8823.9,
+          "validation_edge_accuracy": 0.9992,
+          "validation_edge_loss": 0.0011,
+          "validation_node_recall": 0.9023,
+          "validation_seconds": 167.4
+        },
+        {
+          "detection_loss": 0.0151,
+          "edge_loss": 0.0007,
+          "epoch_index": 1,
+          "n_epochs": 3,
+          "selection_score": 0.9016,
+          "train_seconds": 9414.1,
+          "validation_edge_accuracy": 0.9995,
+          "validation_edge_loss": 0.0008,
+          "validation_node_recall": 0.8952,
+          "validation_seconds": 163.3
+        },
+        {
+          "detection_loss": 0.014,
+          "edge_loss": 0.0005,
+          "epoch_index": 2,
+          "n_epochs": 3,
+          "selection_score": 0.9016,
+          "train_seconds": 9628.8,
+          "validation_edge_accuracy": 0.9997,
+          "validation_edge_loss": 0.0005,
+          "validation_node_recall": 0.8953,
+          "validation_seconds": 173.9
+        }
+      ]
+    },
+    "smoke": {
+      "allocator_conf": "expandable_segments:True",
+      "allocator_environment_variable": "PYTORCH_ALLOC_CONF",
+      "debug_stem": "44b6_0113de3b",
+      "debug_windows": 50,
+      "elapsed_seconds": 47.24111259199998,
+      "full_train_window_upper": 17820,
+      "full_validation_window_upper": 1881,
+      "gate_limit_seconds": 43200.0,
+      "gate_passed": true,
+      "peak_allocated_gib": 12.326934814453125,
+      "peak_allocated_gib_by_device": [
+        12.326934814453125,
+        7.866034030914307
+      ],
+      "peak_reserved_gib": 14.015625,
+      "peak_reserved_gib_by_device": [
+        14.015625,
+        10.962890625
+      ],
+      "projected_full_seconds": 36375.65669583998,
+      "smoke_train_iterations": 2,
+      "smoke_validation_batches": 4
+    }
+  },
+  "evidence": {
+    "artifacts": {
+      "cache_file_sha": null,
+      "decompressed_content_sha": null,
+      "feature_content_sha": null,
+      "feature_count": null,
+      "feature_schema_sha": null,
+      "group_count": 4,
+      "input_file_sha": "cd0eab17e481c9a9956b585230d3865fe6fb80ebd6f85472a47404fa9f9c9a8c",
+      "kernel_log_sha": "0ff5963663cc8822783572f5fec27b033b8b9281ab931f8d963d697327eb672d",
+      "model_count": 1,
+      "model_manifest_sha": "34266a6aedc3105f3e5b8269cd0f7f769d723527add4c924e4b33d4c8345e65d",
+      "model_shas": {
+        "edge_predictor_best.pth": "f078da5ee21fac59a0ed963831771ab7db7a8d05189bc1017b1ef4807f7c7a4e"
+      },
+      "oof_prediction_sha": null,
+      "raw_gzip_sha": null,
+      "row_count": 26580,
+      "selected_mode": "scratch_three_epochs",
+      "selected_model": "edge_predictor_best.pth",
+      "smoke_summary_sha": "6886ae407673d94c64d042485b774a0112fc49c96c20e76c5066137142d1fb00",
+      "smoke_training_log_sha": "ed20cd62b18d7311ad1bcb5d6c98710bc006c8d85b3a31e9e4e393a3b4a7f4ac",
+      "source_manifest_sha": "fe4fa02c339011e995c591edf6377c75d4bfe1d2a5adc1a49dff18011c2630d7",
+      "split_sha": "fca45709656ad0f0900fc5fcbf0b7f4aad3abb7d547fafcf4e022af6de1aa68e",
+      "submission_sha": "b039062114962347aca22f1268a64196893eaabb62c1046ae0c90acbad29f223",
+      "test_prediction_content_sha": "b039062114962347aca22f1268a64196893eaabb62c1046ae0c90acbad29f223",
+      "training_log_sha": "6050324c36188f263c844e996e0a434fce27896f3fc4f9fff1fd0e2e805278e9",
+      "training_summary_sha": "64eecb72560d9e38d446999c13e4a7c2f6c8ca9841c9346616d46ae9415c30b2",
+      "model_config_sha": "e9b4e396c58081bca08adf8275bd0bd1c2d3fd6eb091a1912a5116cb6de7b50a"
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_mean": null
+    },
+    "kaggle": {
+      "docker_image_sha": "37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+      "id_no": 133891118,
+      "internet_enabled": false,
+      "kernel_id": "kentookumura/exp002-unet3d-expandable-segments-inference",
+      "kernel_source_ids": [
+        "kentookumura/exp002-unet3d-expandable-segments-train"
+      ],
+      "kernel_version": 1,
+      "notebook_runtime_seconds": 788.633272669,
+      "resource": {
+        "allocator_conf": null,
+        "allocator_environment_variable": null,
+        "gpu_names": [
+          "Tesla T4",
+          "Tesla T4"
+        ],
+        "peak_allocated_gib_by_device": null,
+        "peak_reserved_gib_by_device": null,
+        "visible_gpu_count": 2
+      },
+      "url": "https://www.kaggle.com/code/kentookumura/exp002-unet3d-expandable-segments-inference"
+    },
+    "reruns": [],
+    "submission_validation": {
+      "checked_at": "2026-09-10T23:36:25.197016+00:00",
+      "duplicate_id_count": 0,
+      "errors": [],
+      "fallback_rows": null,
+      "id_column": "id",
+      "infinite_value_count": 0,
+      "missing_value_count": 0,
+      "passed": true,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_min": null,
+      "prediction_std": null,
+      "row_count": 26580,
+      "target_columns": [
+        "node_id",
+        "t",
+        "z",
+        "y",
+        "x",
+        "source_id",
+        "target_id"
+      ],
+      "target_statistics": {
+        "node_id": {
+          "min": -1.0,
+          "max": 75133.0,
+          "mean": 10007.254928517683,
+          "std": 17011.951092668074
+        },
+        "t": {
+          "min": -1.0,
+          "max": 99.0,
+          "mean": 28.551993980436418,
+          "std": 33.458298755581126
+        },
+        "z": {
+          "min": -1.0,
+          "max": 62.0,
+          "mean": 17.120015048908954,
+          "std": 20.154636530192818
+        },
+        "y": {
+          "min": -1.0,
+          "max": 252.0,
+          "mean": 70.52595936794583,
+          "std": 77.75236468427725
+        },
+        "x": {
+          "min": -1.0,
+          "max": 252.0,
+          "mean": 72.54913468773513,
+          "std": 80.45069267241239
+        },
+        "source_id": {
+          "min": -1.0,
+          "max": 74448.0,
+          "mean": 6766.312641083521,
+          "std": 14491.61301318026
+        },
+        "target_id": {
+          "min": -1.0,
+          "max": 75133.0,
+          "mean": 6895.380775018811,
+          "std": 14689.59415263211
+        }
+      }
+    }
+  },
+  "experiment": "exp002_unet3d_expandable_segments",
+  "key_idea": "Set PYTORCH_ALLOC_CONF=expandable_segments:True before Torch import while preserving the exp001 training contract.",
+  "metric": "edge_accuracy_times_node_recall",
+  "notes": "Kaggle inference version 1 completed on four runtime-discovered public test datasets; submit-check passed and submission ref 56153451 completed with Public LB 0.453.",
+  "private_lb": null,
+  "public_lb": 0.453,
+  "status": "usable",
+  "updated_at": "2026-09-11T03:47:26.273228+00:00"
+}
