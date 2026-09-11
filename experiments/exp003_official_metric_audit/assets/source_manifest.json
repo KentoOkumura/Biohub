@@ -1,0 +1,21 @@
+{
+  "commit": "075fc5f5a52d11077f9dc2b074644618f26939e2",
+  "files": {
+    "metrics.py": "cfdd596e3f8909cca14db0682889738b19ff75c3808b3773175aba9367ca7444",
+    "division_metrics.py": "0635c38621a38f1eb4b55a302b4a817a88e9094930dfc2dab16faeeee60f4dc9",
+    "LICENSE": "3910a8b578783928cbbf981c1b204591ab3368e70017dc695d6536f71d272796",
+    "public_proxy.py": "8ddb98d38da634be62c6be83c8f35e95defdc4bac9f8f5e51730fabfd78e0108"
+  },
+  "public_proxy": {
+    "kernel": "sjlee101/biohub-lf-dctta-v020",
+    "source_sha256": "7caae99de45dce487a869ff7e90449efdce4abc4fa19f23ad1c2675c2570df58",
+    "functions": [
+      "adjusted_jaccard",
+      "compute_division_confusion",
+      "compute_edge_confusion",
+      "edge_jaccard",
+      "match_nodes_bipartite",
+      "weakly_connected_components"
+    ]
+  }
+}

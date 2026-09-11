@@ -1,0 +1,40 @@
+{
+  "observed_date": "2026-09-10",
+  "recorded_at_utc": "2026-09-10T14:39:28Z",
+  "recorded_at_caveat": "記録時刻。各API応答の受信時刻を秒精度で記録したものではない。",
+  "read_only": true,
+  "kaggle_kernel": {
+    "ref": "kentookumura/exp002-unet3d-expandable-segments-train",
+    "command": "uv run kaggle kernels status kentookumura/exp002-unet3d-expandable-segments-train",
+    "observed_status": "KernelWorkerStatus.RUNNING"
+  },
+  "quota": {
+    "command": "uv run kaggle quota --format json",
+    "observed_output": [
+      {
+        "resource": "GPU",
+        "used": "3.55h",
+        "remaining": "26.45h",
+        "total": "30.00h",
+        "refreshAt": "2026-09-12T00:00:00"
+      },
+      {
+        "resource": "TPU",
+        "used": "0.00h",
+        "remaining": "20.00h",
+        "total": "20.00h",
+        "refreshAt": "2026-09-12T00:00:00"
+      }
+    ],
+    "caveats": [
+      "No timezone suffix in refreshAt; no timezone conversion claimed.",
+      "In-flight usage and usage for other work may reduce remaining quota."
+    ]
+  },
+  "external_access": {
+    "focus_hf_model_card": "https://huggingface.co/Qinghua-thu/FOCUS-3D",
+    "contact_sharing_consent_required": true,
+    "focus_paper_status": "HTTP 403",
+    "focus_dataset_page_status": "Fetch failed; no conclusion about availability or training overlap."
+  }
+}

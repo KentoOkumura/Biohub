@@ -1,0 +1,47 @@
+{
+  "retrieved_at_utc": "2026-09-10T14:37:32.530328+00:00",
+  "sources": [
+    {
+      "name": "official_head.json",
+      "url": "https://api.github.com/repos/royerlab/kaggle-cell-tracking-competition/commits/main",
+      "sha256": "b477c77114153db1a657d72a1178ca12552f004cebcdc7afa7dc54614376894e",
+      "bytes": 91493,
+      "ok": true
+    },
+    {
+      "name": "focus_readme.md.txt",
+      "url": "https://raw.githubusercontent.com/yu-lab-vt/FOCUS-3D/main/README.md",
+      "sha256": "9c260e65993e613de32f663f61a1d795f81d6f287e9f0906e15c687b6f95d6a8",
+      "bytes": 10392,
+      "ok": true
+    },
+    {
+      "name": "trackastra_pretrained.json",
+      "url": "https://raw.githubusercontent.com/weigertlab/trackastra/main/trackastra/model/pretrained.json",
+      "sha256": "829cbecf6d6e0740a8bb90b05ec7fb536ee4002d3dbe0146ba4140c4027a9530",
+      "bytes": 11078,
+      "ok": true
+    },
+    {
+      "name": "hoct_models.py",
+      "url": "https://raw.githubusercontent.com/royerlab/hoct/main/src/hoct/_models.py",
+      "sha256": "9db1a59b66012112b91f406c0ed0fd6bc8f0abd85e45f2c028c92b5521b37ab1",
+      "bytes": 3614,
+      "ok": true
+    },
+    {
+      "name": "latest_division_metrics.py",
+      "url": "https://raw.githubusercontent.com/royerlab/kaggle-cell-tracking-competition/075fc5f5a52d11077f9dc2b074644618f26939e2/src/tracking_cellmot/division_metrics.py",
+      "sha256": "0635c38621a38f1eb4b55a302b4a817a88e9094930dfc2dab16faeeee60f4dc9",
+      "bytes": 20488,
+      "ok": true
+    },
+    {
+      "name": "latest_metrics.md.txt",
+      "url": "https://raw.githubusercontent.com/royerlab/kaggle-cell-tracking-competition/075fc5f5a52d11077f9dc2b074644618f26939e2/metrics.md",
+      "sha256": "d8a2d3ff21b507242dd23e9b7c687d725261d7b4c79cff086cccb4093141d696",
+      "bytes": 6942,
+      "ok": true
+    }
+  ]
+}

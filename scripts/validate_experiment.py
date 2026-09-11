@@ -17,6 +17,7 @@ from config_utils import (
     is_todo,
     load_project_config,
     project_experiment_defaults,
+    validate_notebook_kind,
 )
 
 REQUIRED_FILES = [
@@ -327,6 +328,19 @@ def validate_metrics_record(
         errors.append(f"metrics.json has invalid status {status!r}; expected one of {allowed}")
 
 
+def required_notebook_names(experiment_name: str, config: dict[str, Any]) -> tuple[str, ...]:
+    """Use explicitly declared kinds; preserve train/inference for older experiments."""
+    kinds = get_nested(config, "experiment.notebooks")
+    if kinds is None:
+        kinds = ["train", "inference"]
+    if not isinstance(kinds, list) or not kinds or not all(isinstance(k, str) for k in kinds):
+        raise ValueError("experiment.notebooks must be a nonempty list of notebook kinds")
+    validated = [validate_notebook_kind(kind) for kind in kinds]
+    if len(set(validated)) != len(validated):
+        raise ValueError("experiment.notebooks must not contain duplicate kinds")
+    return tuple(f"{experiment_name}_{kind}.ipynb" for kind in validated)
+
+
 def main() -> None:
     args = parse_args()
     experiments_dir = configured_project_path("paths.experiments_dir", "experiments")
@@ -340,10 +354,14 @@ def main() -> None:
         if not (experiment_dir / filename).exists():
             errors.append(f"missing required file: {filename}")
 
-    for filename in (
-        f"{args.experiment}_train.ipynb",
-        f"{args.experiment}_inference.ipynb",
-    ):
+    config_path = experiment_dir / "config.yaml"
+    config = read_yaml(config_path) if config_path.exists() else {}
+    try:
+        notebook_names = required_notebook_names(args.experiment, config)
+    except ValueError as error:
+        errors.append(str(error))
+        notebook_names = ()
+    for filename in notebook_names:
         notebook_path = experiment_dir / filename
         if not notebook_path.exists():
             errors.append(f"missing required notebook: {filename}")
@@ -413,9 +431,7 @@ def main() -> None:
         errors=errors,
     )
 
-    config_path = experiment_dir / "config.yaml"
     if config_path.exists():
-        config = read_yaml(config_path)
         config_experiment_name = get_nested(config, "experiment.name")
         if config_experiment_name != args.experiment:
             errors.append(

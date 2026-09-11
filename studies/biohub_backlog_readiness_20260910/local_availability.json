@@ -1,0 +1,11 @@
+{
+  "checked_at_utc": "2026-09-10T14:37:30.354916+00:00",
+  "packages": {
+    "numpy": true,
+    "scipy": true,
+    "torch": false,
+    "polars": false,
+    "tracksdata": false
+  },
+  "local_models": []
+}
