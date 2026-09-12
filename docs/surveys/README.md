@@ -28,6 +28,7 @@ task validate-surveys
 
 | 日付 | レポート | 種類 | 上位仮説 | 実験 | トピック | 状態 | 後継 | 一行要約 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-09-13 | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md) | `survey` | `HYP-20260910-12` | `exp011` | `public-notebooks`, `baseline`, `architecture` | `final` | - | 採用した公開0.946 Notebookについて、入力、2つのTemporalUNet3D、D4 TTA、候補点検出、Node Transformer、ILP、軌跡修復、出力検証をコードに沿って解説する。 |
 | 2026-09-12 | [Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md) | `survey` | `HYP-20260910-12` | `exp011` | `public-notebooks`, `baseline`, `model-selection` | `final` | - | 公開0.946 Notebookの推論構成を参照し、Pilkwang公開dataset 3件の現行版とcheckpoint SHAを固定。2026-09-12にユーザー採用済み。 |
 | 2026-09-12 | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-02`, `HYP-20260910-03`, `HYP-20260910-04`, `HYP-20260910-05`, `HYP-20260910-06`, `HYP-20260910-07`, `HYP-20260910-08`, `HYP-20260910-09`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12`, `HYP-20260910-13`, `HYP-20260910-14`, `HYP-20260911-01` | - | `backlog`, `readiness` | `final` | - | 全64候補の状態を監査し、測定・先行成果物待ちを設計不可としていた9件を訂正。設計可能10件・設計判断が残る54件とし、全件の理由を保存。 |
 | 2026-09-10 | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-02`, `HYP-20260910-03`, `HYP-20260910-04`, `HYP-20260910-05`, `HYP-20260910-06`, `HYP-20260910-07`, `HYP-20260910-08`, `HYP-20260910-09`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12`, `HYP-20260910-13`, `HYP-20260910-14` | - | `hypotheses`, `baseline`, `validation` | `final` | - | 最新公開資料と公式学習コードから14の主仮説・64の検証候補を整理。疎注釈の損失、実予測誤差を使う補正、分裂組、異なる候補の統合を重点候補とする。 |
@@ -51,7 +52,7 @@ task validate-surveys
 | `HYP-20260910-09` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260910-10` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260910-11` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-12` | [Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-12` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260910-13` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260910-14` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260911-01` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md) |
@@ -63,25 +64,26 @@ task validate-surveys
 | `exp001` | [Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `exp002` | [Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `exp003` | [Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `exp011` | [Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md) |
+| `exp011` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md) |
 
 ## 種類別
 
 | キー | レポート |
 | --- | --- |
-| `survey` | [Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
+| `survey` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 
 ## トピック別
 
 | キー | レポート |
 | --- | --- |
 | `annotation` | [Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md) |
+| `architecture` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md) |
 | `backlog` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `baseline` | [Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md) |
+| `baseline` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md) |
 | `data` | [Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 | `hypotheses` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md) |
 | `model-selection` | [Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md) |
-| `public-notebooks` | [Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
+| `public-notebooks` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 | `readiness` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md) |
 | `validation` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 <!-- END AUTO SURVEY INDEX -->

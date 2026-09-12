@@ -90,6 +90,7 @@ primary branchは8個のD4 viewについてdetection logitsと32-channel feature
 
 - 実験の記録: [`result.md`](../../experiments/exp011_public_detector_selection/result.md)、[`metrics.json`](../../experiments/exp011_public_detector_selection/metrics.json)
 - 機械可読な選定内容: [`public_detector_selection.json`](../../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)
+- 選定Notebookの処理解説: [`biohub-cell-tracking-0946-notebook-explanation_20260913.md`](biohub-cell-tracking-0946-notebook-explanation_20260913.md)
 - 調査コード: なし。Kaggle CLIで取得し、Notebook source・metadata・manifestを静的に照合した。
 - 生の取得物: `/tmp/public_detector_selection_20260912/`。一時調査物でありGitには保存しない。
 

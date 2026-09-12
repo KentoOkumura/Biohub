@@ -16,6 +16,7 @@
 - 実行中の作業ログ: [`SESSION_NOTES.md`](SESSION_NOTES.md)
 - 選定manifest: [`assets/public_detector_selection.json`](assets/public_detector_selection.json)
 - 選定根拠: [`../../docs/surveys/biohub-public-detector-selection_20260912.md`](../../docs/surveys/biohub-public-detector-selection_20260912.md)
+- 選定Notebookの処理解説: [`../../docs/surveys/biohub-cell-tracking-0946-notebook-explanation_20260913.md`](../../docs/surveys/biohub-cell-tracking-0946-notebook-explanation_20260913.md)
 
 ## 実行入口
 
