@@ -1,0 +1,141 @@
+experiment:
+  name: exp012_group_error_readout
+  description: >-
+    exp005とexp006の固定した胚holdout予測を、胚、画像輝度、候補密度、
+    候補の画像境界距離、既知分裂の有無で再集計する診断
+  route: group_error_diagnostic
+  notebooks:
+    - diagnostic
+  created_at: "2026-09-13"
+
+lineage:
+  parent: exp011_public_detector_selection
+  hypothesis_id: HYP-20260910-14
+  backlog_candidate: group_error_readout
+  diff_summary: >-
+    予測、モデル、復号を変更せず、固定公式評価の動画別成分と固定候補・
+    画像条件を結合して条件別の誤差を再集計する
+
+validation:
+  strategy: leave_one_embryo_out
+  diagnostic_only: true
+  expected_sample_count: 199
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  max_matching_distance_um: 7.0
+  official_adjustment_alpha: 0.1
+  official_division_weight: 0.1
+
+data:
+  expected_frames_per_sample: 100
+  expected_image_shape_tzyx:
+    - 100
+    - 64
+    - 256
+    - 256
+
+model:
+  name: none_saved_prediction_diagnostic
+  params: {}
+
+diagnostic:
+  baseline_route: exp005_embryo_holdout_batch8
+  comparison_routes:
+    - exp006_embryo_holdout_seed314159
+  prediction_sources:
+    - route: exp005_embryo_holdout_batch8
+      local_artifact_dir: ../exp005_embryo_holdout_batch8/artifacts/inference_v1
+      kernel_source: kentookumura/exp005-embryo-holdout-batch8-inference
+      per_sample_metrics_sha256: f8abd34212aa200d4dd360d7f42fb5a2f27f00210359f871684117f1de523dd1
+      prediction_manifest_sha256: 588f25652a86725367366d574ce76d1d768731301904fff8a51f9b9aa5bc7956
+    - route: exp006_embryo_holdout_seed314159
+      local_artifact_dir: ../exp006_embryo_holdout_seed314159/artifacts/inference_v1
+      kernel_source: kentookumura/exp006-embryo-holdout-seed314159-inference
+      per_sample_metrics_sha256: 532dd54fd9ae6ae544c1ca6b85704dc3aa06489000b8b6c8472df128276f00ea
+      prediction_manifest_sha256: 234619c58e1ea4001b953eefec72cd226119650d4668c51cd523687b3d42f588
+  image_feature_source:
+    local_path: ../exp005_embryo_holdout_batch8/artifacts/diagnostic_v1/per_sample_candidate_image_diagnostics.csv
+    kernel_source: kentookumura/exp005-embryo-holdout-batch8-diagnostic
+    sha256: 78e1063d0fca788ddaea6acbed4134d4289bd2c2584bc101ae47f2b9bd0a5e41
+    columns:
+      id: sample
+      brightness: image_normalized_mean
+      frame_count: image_frame_count
+      scale_z: physical_scale_z
+      scale_y: physical_scale_y
+      scale_x: physical_scale_x
+  buckets:
+    quantiles:
+      - 0.25
+      - 0.5
+      - 0.75
+    threshold_source: baseline_route_opposite_embryo
+    features:
+      brightness: image_normalized_mean
+      candidate_density: candidate_nodes_per_frame
+      boundary_distance: candidate_boundary_distance_um_p50
+  boundary:
+    near_distance_um: 7.0
+    require_candidate_cache: true
+    spatial_shape_zyx:
+      - 64
+      - 256
+      - 256
+  parent_public_detector_manifest:
+    path: ../exp011_public_detector_selection/assets/public_detector_selection.json
+    sha256: 1011925da97ade09c01c936318c8e4c1232f1ba9401233506533a06df03bff03
+    selection_state: adopted
+  official_evaluator:
+    experiment: exp003_official_metric_audit
+    metrics_source_sha256: cfdd596e3f8909cca14db0682889738b19ff75c3808b3773175aba9367ca7444
+    division_source_sha256: 0635c38621a38f1eb4b55a302b4a817a88e9094930dfc2dab16faeeee60f4dc9
+  output_dir: artifacts/readout_v1
+  prohibitions:
+    - do_not_tune_from_outer_evaluation_targets
+    - do_not_change_predictions_or_decode
+    - do_not_treat_diagnostic_ground_truth_as_test_input
+    - do_not_call_readout_a_model_improvement
+
+runtime:
+  execution: saved_prediction_cpu_diagnostic
+  use_amp: false
+  num_workers: 0
+  batch_size: null
+  kaggle:
+    enable_gpu: false
+    enable_internet: false
+    machine_shape: null
+    time_limit_hours: 12
+    diagnostic:
+      enable_gpu: false
+      enable_internet: false
+      kernel_sources:
+        - kentookumura/exp005-embryo-holdout-batch8-inference
+        - kentookumura/exp006-embryo-holdout-seed314159-inference
+        - kentookumura/exp005-embryo-holdout-batch8-diagnostic
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_rng_fixed_artifact_readout
+  stochastic_components: []
+  parallel_rng_policy: sequential_no_rng
+  feature_sha_policy: uncompressed_file_and_array_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - Kaggle kernel versionを含む正式実行証拠の取得前はdeterministic anchorとして扱わない。
+    - 分位点境界は固定baseline routeの反対側の胚から決定し、評価胚の誤差や正解で選ばない。
+    - candidate cacheはmanifest記載のcontent SHAを検査し、出力表とmanifestのSHAを保存する。
+
+notes:
+  - 追加学習、推論、復号変更、competition submissionは行わない。
+  - exp011の公開構成は採用済みだが固定予測は未取得のため、今回の数値比較には含めない。

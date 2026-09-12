@@ -14,7 +14,7 @@
 - 優先度の理由: 固定公開検出器のトラッカー学習基準と優先比較の結果を得た後、対応する誤りと追加費用を確認して扱う後続候補。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI01、検証候補3（同節の3項目目）。
-- 先行条件 / 依存: 固定公開検出器のトラッカー学習基準とgroup_error_readout、動画ごとの有効窓数と接続損失の寄与。
+- 先行条件 / 依存: 固定公開検出器のトラッカー学習基準と[`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)、動画ごとの有効窓数と接続損失の寄与。
 
 
 ## 2026-09-12の方針反映

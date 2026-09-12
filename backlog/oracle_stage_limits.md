@@ -14,7 +14,7 @@
 - 優先度の理由: 固定検出器で回収できる範囲と接続・分裂の改善余地を先に確認し、学習枠の無駄を避けるため。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI14、検証候補64（同節の4項目目）。
-- 先行条件 / 依存: group_error_readoutと同じ対象一覧、固定重みの候補・得点・最終graph。採用済みの[exp011](../experiments/exp011_public_detector_selection/)による既存トラッカー推論を使う。
+- 先行条件 / 依存: [`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)と同じ対象一覧、固定重みの候補・得点・最終graph。採用済みの[exp011](../experiments/exp011_public_detector_selection/)による既存トラッカー推論を使う。
 
 
 ## 2026-09-12の方針反映
@@ -54,7 +54,7 @@
 - 仮説が正しい場合に期待する観測: 上記の最小検証を同一対象・同一版で再計算でき、一致点、不一致点、回復可能な誤りと未確認部分が数値と証拠で分かれること。差がない結果もそのまま記録する。
 - 仮説を棄却する観測: 評価器・対象動画・予測の学習来歴を揃えられない場合は、その比較の結論を保留する。診断で差がないことを他の手法全体の棄却へ広げない。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: 評価器の一致、基準予測の独立性、順位差と候補上限。別候補 [`official_metric_check`](../experiments/exp003_official_metric_audit/)、[`graph_checkpoint`](../experiments/exp007_graph_checkpoint_selection/)、[`group_error_readout`](group_error_readout.md) の検証が残る。
+- 上位仮説の判断に残る検証: 評価器の一致、基準予測の独立性、順位差と候補上限。[`official_metric_check`](../experiments/exp003_official_metric_audit/)、[`graph_checkpoint`](../experiments/exp007_graph_checkpoint_selection/)、[`exp012_group_error_readout`](../experiments/exp012_group_error_readout/) の検証が残る。
 
 ## 入力・予測対象・出力・推論方法
 

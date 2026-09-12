@@ -733,7 +733,7 @@ exp002のfull training所要時間の既存予測は約10.10hだが、これはs
 
 <a id="group_error_readout"></a>
 
-**[group_error_readout](../../backlog/group_error_readout.md)** — 胚・画像条件ごとの誤りを測る
+**[group_error_readout](../../experiments/exp012_group_error_readout/)** — 胚・画像条件ごとの誤りを測る
 
 - 確認結果: 保存済みmetadataから胚44b6が71動画、6bbaが128動画と確認済み。主評価の分割方針は既定だが独立予測は未取得。
 - 最初の比較案: 既定の2方向の予測に対し、胚・輝度分位点・候補密度・境界距離・既知分裂で集計する。全対象、失敗、NaN、有効件数を保持する。

@@ -14,7 +14,7 @@
 - 優先度の理由: 固定候補を使い教師maskの一変更を比較できる。検出器再学習への依存を外し、基準成立後に優先する。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI01、検証候補2（同節の2項目目）。
-- 先行条件 / 依存: 固定公開検出器のトラッカー学習基準と教師mask監査、group_error_readout・oracle_stage_limits。sparse_det_maskの実行は不要。
+- 先行条件 / 依存: 固定公開検出器のトラッカー学習基準と教師mask監査、[`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)・oracle_stage_limits。sparse_det_maskの実行は不要。
 
 
 ## 2026-09-12の方針反映
