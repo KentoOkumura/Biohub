@@ -65,29 +65,29 @@
 
 ### 未着手バックログ
 
-2026-09-12に全63候補を公開検出器固定の方針で見直した後、公開モデルの選定を独立候補として追加し、現在は64件。P1は診断・特徴保存・トラッカー学習基準の準備、P2はその後の優先比較、P3は誤りと費用の証拠を要する後続、P4は再開条件が揃うまで保留とする。公開モデルの選定調査は対象・方法・成果・制約が定義済みのため設計可能とする。重みの版や来歴はその調査で確認する事項。具体的な重みや教師・対照が設計に必要な後続候補は、それぞれの未決事項を解消してから状態を更新する。
+2026-09-12に全63候補を公開検出器固定の方針で見直した後、公開モデルの選定を独立候補として追加し、現在は64件。P1は診断・特徴保存・トラッカー学習基準の準備、P2はその後の優先比較、P3は誤りと費用の証拠を要する後続、P4は再開条件が揃うまで保留とする。全64候補の[状態監査](../docs/surveys/biohub-backlog-status-audit_20260912.md)で測定待ちと設計判断を分離し、9候補を設計可能へ訂正した。現在は設計可能10件、設計上の未決事項が残る候補54件。先行成果物待ちは実行の依存として扱い、優先度と設計状態を混同しない。
 
 公開重み選定は[`public_detector_selection`](public_detector_selection.md)をP1先頭で扱い、具体的な版・特徴取得方法を後続へ渡す。既存トラッカーの基準推論は選定後の診断・学習比較の入力として扱う。診断・cacheの候補はトラッカー再学習の成功を待たない。`partial_edge_mask`から`sparse_det_mask`への依存を外し、同一検出器で複数トラッカーを比較できる融合案も`candidate_union`への依存を外した。検出・画像モデルの学習や未取得の領域教師が必要な原案は、代替処理へ読み替えずP4に保存する。
 
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
 | P1 | `HYP-20260910-12` | [`public_detector_selection`](public_detector_selection.md) | ベースの公開Notebook・検出重みを選定 | 保存済み公開調査が入口。公開コード・重みの版と来歴は本候補で確認する。特徴保存・トラッカー学習の完了には依存しない。 | `設計可能・実験化未承認` |
-| P1 | `HYP-20260910-14` | [`group_error_readout`](group_error_readout.md) | 胚・画像条件ごとの誤りを測る | [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果とexp003の公式評価器。公開基準の診断は[`public_detector_selection`](public_detector_selection.md)後に行う。自前予測の集計は選定を待たずに進められる。 | `検討メモ・設計不可` |
-| P1 | `HYP-20260910-14` | [`oracle_stage_limits`](oracle_stage_limits.md) | 検出・接続・分裂の上限を分ける | group_error_readoutと同じ対象一覧、固定重みの候補・得点・最終graph。公開基準の診断は[`public_detector_selection`](public_detector_selection.md)後の既存トラッカー推論を使い、再学習前に行う。 | `検討メモ・設計不可` |
-| P1 | `HYP-20260910-12` | [`exact_window_cache`](exact_window_cache.md) | 固定公開モデルの候補点特徴を窓ごとに保存 | [`public_detector_selection`](public_detector_selection.md)で公開重み・元の時間窓・抽出層と来歴を特定する。未加工推論との等価性・容量・読み込み費用を本候補で測る。トラッカー再学習は先行条件にしない。 | `検討メモ・設計不可` |
+| P1 | `HYP-20260910-14` | [`group_error_readout`](group_error_readout.md) | 胚・画像条件ごとの誤りを測る | [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果とexp003の公式評価器。公開基準の診断は[`public_detector_selection`](public_detector_selection.md)後に行う。自前予測の集計は選定を待たずに進められる。 | `設計可能・実験化未承認` |
+| P1 | `HYP-20260910-14` | [`oracle_stage_limits`](oracle_stage_limits.md) | 検出・接続・分裂の上限を分ける | group_error_readoutと同じ対象一覧、固定重みの候補・得点・最終graph。公開基準の診断は[`public_detector_selection`](public_detector_selection.md)後の既存トラッカー推論を使い、再学習前に行う。 | `設計可能・実験化未承認` |
+| P1 | `HYP-20260910-12` | [`exact_window_cache`](exact_window_cache.md) | 固定公開モデルの候補点特徴を窓ごとに保存 | [`public_detector_selection`](public_detector_selection.md)で公開重み・元の時間窓・抽出層と来歴を特定する。未加工推論との等価性・容量・読み込み費用を本候補で測る。トラッカー再学習は先行条件にしない。 | `設計可能・実験化未承認` |
 | P1 | `HYP-20260910-12` | [`frozen_image_encoder`](frozen_image_encoder.md) | 公開検出器を固定し接続・分裂を学習 | [`public_detector_selection`](public_detector_selection.md)の選定結果、公開構成の基準予測、exact_window_cacheの等価性と費用、group_error_readoutとoracle_stage_limitsの初期診断。 | `検討メモ・設計不可` |
-| P2 | `HYP-20260910-01` | [`partial_edge_mask`](partial_edge_mask.md) | 未記録の第2娘を負例にしない | 固定公開検出器のトラッカー学習基準と教師mask監査、group_error_readout・oracle_stage_limits。sparse_det_maskの実行は不要。 | `検討メモ・設計不可` |
+| P2 | `HYP-20260910-01` | [`partial_edge_mask`](partial_edge_mask.md) | 未記録の第2娘を負例にしない | 固定公開検出器のトラッカー学習基準と教師mask監査、group_error_readout・oracle_stage_limits。sparse_det_maskの実行は不要。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-03` | [`division_triplets`](division_triplets.md) | 母と2娘の組を採点する | 固定公開検出器のトラッカー学習基準とoracle_stage_limitsでの母・2娘の同時回収、既知分裂教師。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-12` | [`sparse_motion_graph`](sparse_motion_graph.md) | 近傍候補で多時点予測を可能に | 固定公開検出候補の親候補数・時間・メモリ実測とoracle_stage_limits。学習の費用超過が見えた場合は初回学習の前に候補制限を診断。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-11` | [`graph_cost_scale`](graph_cost_scale.md) | 接続と出現・分裂の費用を整合 | oracle_stage_limitsと固定公開検出器・トラッカーの学習側の候補得点。初回校正はトラッカー再学習の完了を待たずに可能。 | `検討メモ・設計不可` |
-| P3 | `HYP-20260910-02` | [`subvoxel_offset`](subvoxel_offset.md) | voxel未満の中心位置を補正 | oracle_stage_limits。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
+| P3 | `HYP-20260910-02` | [`subvoxel_offset`](subvoxel_offset.md) | voxel未満の中心位置を補正 | oracle_stage_limits。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `設計可能・実験化未承認` |
 | P3 | `HYP-20260910-06` | [`correlated_jitter`](correlated_jitter.md) | 時間相関のある位置誤差を学ぶ | group_error_readout。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-06` | [`missing_frame_noise`](missing_frame_noise.md) | 連続する見逃しから補正を学ぶ | group_error_readout。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
-| P3 | `HYP-20260910-06` | [`real_error_finetune`](real_error_finetune.md) | 合成誤差の補正器を実予測へ調整 | correlated_jitter。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
+| P3 | `HYP-20260910-06` | [`real_error_finetune`](real_error_finetune.md) | 合成誤差の補正器を実予測へ調整 | correlated_jitter。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `設計可能・実験化未承認` |
 | P3 | `HYP-20260910-12` | [`uncertain_highres`](uncertain_highres.md) | 曖昧な領域だけ高解像度化 | group_error_readout。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
-| P3 | `HYP-20260910-01` | [`sample_loss_balance`](sample_loss_balance.md) | トラッカー損失の動画間の寄与を揃える | 固定公開検出器のトラッカー学習基準とgroup_error_readout、動画ごとの有効窓数と接続損失の寄与。 | `検討メモ・設計不可` |
-| P3 | `HYP-20260910-02` | [`anisotropic_position`](anisotropic_position.md) | zとxyの位置不確実性を分ける | oracle_stage_limits。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
-| P3 | `HYP-20260910-02` | [`match_radius_point`](match_radius_point.md) | 7µm対応を意識して点を選ぶ | anisotropic_position。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
+| P3 | `HYP-20260910-01` | [`sample_loss_balance`](sample_loss_balance.md) | トラッカー損失の動画間の寄与を揃える | 固定公開検出器のトラッカー学習基準とgroup_error_readout、動画ごとの有効窓数と接続損失の寄与。 | `設計可能・実験化未承認` |
+| P3 | `HYP-20260910-02` | [`anisotropic_position`](anisotropic_position.md) | zとxyの位置不確実性を分ける | oracle_stage_limits。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `設計可能・実験化未承認` |
+| P3 | `HYP-20260910-02` | [`match_radius_point`](match_radius_point.md) | 7µm対応を意識して点を選ぶ | anisotropic_position。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `設計可能・実験化未承認` |
 | P3 | `HYP-20260910-03` | [`division_time_dist`](division_time_dist.md) | 分裂時刻の複数候補を残す | division_triplets。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-03` | [`division_state_model`](division_state_model.md) | 継続・分裂・観測不能を選ぶ | division_triplets。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-03` | [`division_search_gate`](division_search_gate.md) | 画像変化で分裂探索箇所を選ぶ | oracle_stage_limits。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |

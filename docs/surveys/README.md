@@ -28,6 +28,7 @@ task validate-surveys
 
 | 日付 | レポート | 種類 | 上位仮説 | 実験 | トピック | 状態 | 後継 | 一行要約 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-09-12 | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-02`, `HYP-20260910-03`, `HYP-20260910-04`, `HYP-20260910-05`, `HYP-20260910-06`, `HYP-20260910-07`, `HYP-20260910-08`, `HYP-20260910-09`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12`, `HYP-20260910-13`, `HYP-20260910-14`, `HYP-20260911-01` | - | `backlog`, `readiness` | `final` | - | 全64候補の状態を監査し、測定・先行成果物待ちを設計不可としていた9件を訂正。設計可能10件・設計判断が残る54件とし、全件の理由を保存。 |
 | 2026-09-10 | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-02`, `HYP-20260910-03`, `HYP-20260910-04`, `HYP-20260910-05`, `HYP-20260910-06`, `HYP-20260910-07`, `HYP-20260910-08`, `HYP-20260910-09`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12`, `HYP-20260910-13`, `HYP-20260910-14` | - | `hypotheses`, `baseline`, `validation` | `final` | - | 最新公開資料と公式学習コードから14の主仮説・64の検証候補を整理。疎注釈の損失、実予測誤差を使う補正、分裂組、異なる候補の統合を重点候補とする。 |
 | 2026-09-10 | [Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md) | `survey` | - | `exp001`, `exp002` | `public-notebooks`, `baseline`, `validation` | `final` | - | 公開比較対象はTemporalUNet3D・Node Transformerに複数モデルとTTA・graph補正を加えた0.94前後。0.946報告もあるが、最新スコアと独自proxyの扱いに注意が必要。 |
 | 2026-09-10 | [Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-02`, `HYP-20260910-03`, `HYP-20260910-04`, `HYP-20260910-05`, `HYP-20260910-06`, `HYP-20260910-07`, `HYP-20260910-08`, `HYP-20260910-09`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12`, `HYP-20260910-13`, `HYP-20260910-14` | `exp001`, `exp002`, `exp003` | `backlog`, `validation` | `final` | - | 64候補の仕様・測定待ち・ユーザー判断を分離。公式分裂評価と公開proxyの局所差、未知候補への勾配、checkpoint保存と既存正規化を確認。 |
@@ -38,20 +39,21 @@ task validate-surveys
 
 | キー | レポート |
 | --- | --- |
-| `HYP-20260910-01` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-02` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-03` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-04` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-05` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-06` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-07` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-08` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-09` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-10` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-11` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-12` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-13` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-14` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-01` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-02` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-03` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-04` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-05` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-06` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-07` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-08` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-09` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-10` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-11` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-12` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-13` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-14` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260911-01` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md) |
 
 ## 実験番号別
 
@@ -65,17 +67,18 @@ task validate-surveys
 
 | キー | レポート |
 | --- | --- |
-| `survey` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
+| `survey` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 
 ## トピック別
 
 | キー | レポート |
 | --- | --- |
 | `annotation` | [Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md) |
-| `backlog` | [Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `backlog` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `baseline` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md) |
 | `data` | [Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 | `hypotheses` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md) |
 | `public-notebooks` | [Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
+| `readiness` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md) |
 | `validation` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 <!-- END AUTO SURVEY INDEX -->
