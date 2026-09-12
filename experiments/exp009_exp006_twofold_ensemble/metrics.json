@@ -2,7 +2,7 @@
   "experiment": "exp009_exp006_twofold_ensemble",
   "status": "debug_completed",
   "cv": null,
-  "public_lb": null,
+  "public_lb": 0.693,
   "private_lb": null,
   "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
   "evidence": {
@@ -125,5 +125,6 @@
     },
     "reruns": []
   },
-  "notes": "Kaggle inference version 1 and repository submit-check completed. The validated artifact was submitted as submission ref 56182729 and scoring is being monitored."
+  "notes": "Kaggle inference version 1 and repository submit-check completed. Submission ref 56182729 completed with Public LB 0.693; scoring_elapsed_minutes=231.",
+  "updated_at": "2026-09-12T13:39:38.755457+00:00"
 }

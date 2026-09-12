@@ -6,9 +6,9 @@ exp006の2fold checkpointをhidden testの全動画へ適用し、検出確率�
 
 ## 現在の作業
 
-- 作業内容: Kaggle inference version 1をsubmission ref `56182729`として提出し、採点を監視中。
-- ブロック要因: なし。採点待ちと並行してexp006の再現性実験へ進む。
-- 次: ref `56182729`のscore確定後にLBを記録する。並行して再現性実験を実装・実行する。
+- 作業内容: Kaggle inference version 1のsubmission ref `56182729`は採点完了し、Public LB `0.693`を記録済み。
+- ブロック要因: なし。
+- 次: exp006の再現性実験を継続し、exp009の採否はユーザー判断を待つ。
 
 ## コマンドログ
 
@@ -24,6 +24,7 @@ exp006の2fold checkpointをhidden testの全動画へ適用し、検出確率�
 - 2026-09-12: 提出前一覧の既存submission refは56153451。exp009のsubmitコマンドは安全審査で、exp009としての明示承認がないため停止された。submission refは作成されていない。
 - 2026-09-12: ユーザーの「提出していいです」でexp009 version 1のcompetition submissionを明示承認された。
 - 2026-09-12 09:22:45.757 UTC: `make submit-code`で検証済み`submission.csv`を提出。Kaggle submission refは`56182729`、messageは`exp009 exp006 twofold probability ensemble`、初期statusは`pending`。同refを固定した監視を開始した。
+- 2026-09-12 13:18:05 UTC: submission ref `56182729`のstatus `complete`とPublic LB `0.693`を確認。提出から採点確定まで231分。`make record-exp`で先に`metrics.json`へPublic LBを記録し、続いて`make record-submission`で`SUBMISSIONS.md`の`v002`へ記録した。Private LBは未公表。
 
 ### 予定
 
@@ -48,5 +49,5 @@ make submit-check EXP=exp009_exp006_twofold_ensemble SUBMISSION=/tmp/kaggle-outp
 
 ## 次のアクション
 
-1. submission ref `56182729`の採点を監視し、score確定後に記録する。
-2. exp006の決定論的な後継実験を作成・実行する。
+1. exp006の決定論的な後継実験を継続する。
+2. exp009の採用・保留・不採用はユーザー判断を待つ。
