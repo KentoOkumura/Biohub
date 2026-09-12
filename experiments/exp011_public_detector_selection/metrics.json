@@ -1,0 +1,69 @@
+{
+  "experiment": "exp011_public_detector_selection",
+  "status": "usable",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": null,
+      "kernel_version": null,
+      "url": null,
+      "kernel_source_ids": [
+        "reyhanksatria/biohub-cell-tracking-0-946-lb"
+      ],
+      "resource": null,
+      "notebook_runtime_seconds": null,
+      "internet_enabled": null
+    },
+    "artifacts": {
+      "input_file_sha": "ae8e01a262211045161984e469e8be23e3386bab9140fe12df503dc6a1e010e6",
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": null,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "1011925da97ade09c01c936318c8e4c1232f1ba9401233506533a06df03bff03",
+      "model_count": 3,
+      "model_shas": {
+        "primary_temporal_unet3d_tracker": "12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771",
+        "secondary_temporal_unet3d_tracker": "9bac2fa0dadc4a6fc1899e0caf187f4b553e0a7cd90ba1261a68b35ffe9e305f",
+        "deepcenter_repair_gate": "8040999a92f6b7bbd98fa8cf458141e045c0f9ad7c936bdb3b18e1f7edafe2a0"
+      },
+      "selected_mode": "adopted",
+      "selected_model": "reyhanksatria/biohub-cell-tracking-0-946-lb@kernel_id_no=133199516",
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": []
+  },
+  "notes": "Static selection and checksum audit finished; the user adopted this selection on 2026-09-12. No Kaggle run, model training, prediction, or submission happened."
+}

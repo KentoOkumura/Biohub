@@ -11,7 +11,7 @@
 
 - **公開検出器を固定し、トラッカーを学習する。** 2026-09-12のユーザー依頼により、今後の提案・候補設計・新規実験の標準とする。検出器と画像特徴抽出器の重み・正規化の統計を固定し、接続・分裂を予測する下流部分を学習する。公開モデルが検出と追跡を同時学習した重みであっても、この段階で同時学習し直すことを必須にしない。
 - **計算環境はKaggle Notebookのみ、GPUは週30時間以内、課金なし。** Colabや外部GPUを前提にしない。初回の検出・特徴抽出、トラッカー学習、検証、提出用推論を予算に含め、実行前の残量と小規模実測で実行数を決める。保存済み予測の集計・graphの再選択は可能ならCPU Notebookで行う。Notebook経過時間と実際のGPU割当消費は区別し、未実測の所要時間を保証しない。
-- 最初に使用する公開Notebook・モデル版・checkpoint・ライセンス等の利用条件・学習来歴を特定する。**具体的な公開重みとトラッカー初期値は未選定**で、[`public_detector_selection`](public_detector_selection.md)で扱う。過去の自前重みを「公開検出器」と読み替えない。公開の既存トラッカーを基準とし、同じ固定検出器でトラッカーを学習した結果を比較する。後続案も同じ固定検出器下のトラッカー同士で比較し、自前検出器の再学習や全層更新の対照を必須にしない。
+- 最初に使用する公開Notebook・モデル版・checkpoint・ライセンス等の利用条件・学習来歴は[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)で選定し、2026-09-12にユーザーが採用した。過去の自前重みを「公開検出器」と読み替えない。公開の既存トラッカーを基準とし、同じ固定検出器でトラッカーを学習した結果を比較する。後続案も同じ固定検出器下のトラッカー同士で比較し、自前検出器の再学習や全層更新の対照を必須にしない。
 - 検出候補・物理座標・検出得点・必要な画像特徴を保存して再利用する。時間を扱う画像モデルの特徴は入力窓に依存するため、元の全時間窓・前処理・crop・変形・padding・精度・抽出座標・重みの版を対応付ける。初回は候補点特徴を中心に等価性と容量を測り、全voxel特徴の一括保存やframe単独の特徴への置換を前提にしない。画像・窓・候補座標等を変える比較は必要な特徴を再抽出し、費用に含める。
 - トラッカーの入力は固定検出器の予測と画像特徴、正解の根拠は主催者のGEFFに記録された中心・接続・分裂とする。予測候補を既知注釈に対応付けて教師を作り、検出予測自体を正解とはみなさない。疎い注釈の未知部分を真の負例と断定せず、既存lossの教師maskとその変更を明示的に比較する。未承認の人手注釈や未取得の密な領域教師をあるものとして設計しない。
 - 初回の学習比較では検出候補生成・座標・前処理・復号を対照と揃える。候補回収、中心補正、局所再推論は後続の別比較として明示し、公開検出器の重み更新を含めない。検出不足が判明しても検出器の学習を自動で再開せず、固定候補の上限と追加候補回収の条件を記録する。
@@ -27,7 +27,7 @@
 
 ## 現在の重点
 
-1. [`public_detector_selection`](public_detector_selection.md)でベースとなる公開Notebook・重みの版と特徴取得方法を選定する。保存済み自前予測の誤差分析は並行して進められる。選定後に公開構成の基準推論から同じ診断を行う。
+1. [`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)で採用したoriginal datasetの小規模mount確認と、固定候補・特徴による公開構成の基準推論を行う。保存済み自前予測の誤差分析は並行して進められる。
 2. 固定検出候補と窓ごとの特徴の保存を小規模に検証し、同じ公開検出器でトラッカーを学習する基準を作る。候補数が費用を支配する場合は親候補の制限を先に診断する。
 3. 基準成立後は`partial_edge_mask`で接続の教師maskを比較し、母と2娘の候補回収が十分なら`division_triplets`で分裂の組採点を学習する。`graph_cost_scale`は保存済み得点で行う軽い比較として併行検討できるが、トラッカー学習の代わりにはしない。
 4. 観測した誤りに応じて近傍・運動・見た目の接続特徴、短い軌跡の接続、合成分裂へ進む。画像モデルの再学習はこの順序に含めない。新しいGPU実行数と時間配分は実測後に決める。
@@ -58,24 +58,23 @@
 | `HYP-20260910-09` | 異なる観測・表現・接続方法の候補と不確実性を残し画像から選ぶと、同系統の平均では直らない誤りを回収できる。 | [`candidate_union`](candidate_union.md)<br>[`position_mixture`](position_mixture.md)<br>[`graph_support_fusion`](graph_support_fusion.md)<br>[`image_condition_gate`](image_condition_gate.md)<br>[`one_two_cells`](one_two_cells.md)<br>[`whole_graph_choice`](whole_graph_choice.md) | - | 候補数を揃えた追加回収、正解なしの選別、相関した誤り |
 | `HYP-20260910-10` | 複数時点の画像と軌跡を使って接続を選べば、短い観測だけで起きる取り違えや一時的な見逃しを修正できる。 | [`long_window_links`](long_window_links.md)<br>[`tracklet_join`](tracklet_join.md)<br>[`latent_missing_nodes`](latent_missing_nodes.md)<br>[`neighbor_dynamics`](neighbor_dynamics.md) | - | 長窓で増える情報、実欠測での回収、境界と隣接辺の整合 |
 | `HYP-20260910-11` | 対応なしと観測可能な構造制約を学習・復号へ明示すると、誤接続を抑えながら正しい継続と分裂を保持できる。 | [`explicit_no_match`](explicit_no_match.md)<br>[`known_parent_constraint`](known_parent_constraint.md)<br>[`graph_cost_scale`](graph_cost_scale.md)<br>[`image_count_prior`](image_count_prior.md) | - | 棄権の教師、既存softmaxとの差、費用校正と細胞数の誤差 |
-| `HYP-20260910-12` | 等価な処理の再利用や局所的な計算配分により、高解像度・多時点・密な候補の手法を予算内で比較し最終精度を改善できる。 | [`public_detector_selection`](public_detector_selection.md)<br>[`exact_window_cache`](exact_window_cache.md)<br>[`sparse_motion_graph`](sparse_motion_graph.md)<br>[`uncertain_highres`](uncertain_highres.md)<br>[`distill_reinvest`](distill_reinvest.md)<br>[`frozen_image_encoder`](frozen_image_encoder.md) | - | 公開重みと特徴取得の成立、等価性、最悪時の費用、解禁した処理の最終精度 |
+| `HYP-20260910-12` | 等価な処理の再利用や局所的な計算配分により、高解像度・多時点・密な候補の手法を予算内で比較し最終精度を改善できる。 | [`exact_window_cache`](exact_window_cache.md)<br>[`sparse_motion_graph`](sparse_motion_graph.md)<br>[`uncertain_highres`](uncertain_highres.md)<br>[`distill_reinvest`](distill_reinvest.md)<br>[`frozen_image_encoder`](frozen_image_encoder.md) | [`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/) | original dataset mountの小規模確認、cache等価性、最悪時の費用、固定特徴で学習するtrackerの精度 |
 | `HYP-20260910-13` | 位置と系譜を保って撮像条件や境界・密度を変える学習により、別の胚の見え方に対する性能低下を抑えられる。 | [`anisotropic_blur`](anisotropic_blur.md)<br>[`photometric_shift`](photometric_shift.md)<br>[`lineage_density_aug`](lineage_density_aug.md)<br>[`crop_boundary_aug`](crop_boundary_aug.md) | - | 実際の胚差との対応、ラベル整合、片側胚の悪化。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 | `HYP-20260910-14` | 現行公式指標・胚を分けた評価・段階別の上限検査を用いると、独自proxyや学習内指標では見えない候補の順位差と失敗箇所を識別できる。 | [`group_error_readout`](group_error_readout.md)<br>[`oracle_stage_limits`](oracle_stage_limits.md) | [`exp003_official_metric_audit`](../experiments/exp003_official_metric_audit/)<br>[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)<br>[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)<br>[`exp007_graph_checkpoint_selection`](../experiments/exp007_graph_checkpoint_selection/) | 公式評価はexp003、胚別予測の最新証拠はexp005・exp006を参照。今後は固定公開重みの来歴と段階別の回収上限、公開モデル下での比較の独立性を確認する |
 | `HYP-20260911-01` | nnU-Netのデータに応じた前処理・構造・学習設定を中心マップの予測へ適応すると、疎注釈を適切に扱う条件で現行検出器より細胞を回収でき、両胚の公式接続・分裂指標が改善する。 | [`nnunet_center_detection`](nnunet_center_detection.md) | - | 中心教師とnnU-Net設定の寄与、背景と未知領域の識別、時間入力と接続特徴、学習・推論費用。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 
 ### 未着手バックログ
 
-2026-09-12に全63候補を公開検出器固定の方針で見直した後、公開モデルの選定を独立候補として追加し、現在は64件。P1は診断・特徴保存・トラッカー学習基準の準備、P2はその後の優先比較、P3は誤りと費用の証拠を要する後続、P4は再開条件が揃うまで保留とする。全64候補の[状態監査](../docs/surveys/biohub-backlog-status-audit_20260912.md)で測定待ちと設計判断を分離し、9候補を設計可能へ訂正した。現在は設計可能10件、設計上の未決事項が残る候補54件。先行成果物待ちは実行の依存として扱い、優先度と設計状態を混同しない。
+2026-09-12に全63候補を公開検出器固定の方針で見直した後、公開モデルの選定を独立候補として追加し、同日に`exp011_public_detector_selection`へ移行したため、未着手候補は63件。P1は診断・特徴保存・トラッカー学習基準の準備、P2はその後の優先比較、P3は誤りと費用の証拠を要する後続、P4は再開条件が揃うまで保留とする。全64候補の[状態監査](../docs/surveys/biohub-backlog-status-audit_20260912.md)で測定待ちと設計判断を分離した。移行後の未着手候補は設計可能9件、設計上の未決事項が残る候補54件。先行成果物待ちは実行の依存として扱い、優先度と設計状態を混同しない。
 
-公開重み選定は[`public_detector_selection`](public_detector_selection.md)をP1先頭で扱い、具体的な版・特徴取得方法を後続へ渡す。既存トラッカーの基準推論は選定後の診断・学習比較の入力として扱う。診断・cacheの候補はトラッカー再学習の成功を待たない。`partial_edge_mask`から`sparse_det_mask`への依存を外し、同一検出器で複数トラッカーを比較できる融合案も`candidate_union`への依存を外した。検出・画像モデルの学習や未取得の領域教師が必要な原案は、代替処理へ読み替えずP4に保存する。
+公開重みとトラッカー初期値は[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)で選定し、固定するSHA・特徴取得方法を採用済みである。次はoriginal dataset mount、基準推論、cache等価性を確認する。診断・cacheの候補はトラッカー再学習の成功を待たない。`partial_edge_mask`から`sparse_det_mask`への依存を外し、同一検出器で複数トラッカーを比較できる融合案も`candidate_union`への依存を外した。検出・画像モデルの学習や未取得の領域教師が必要な原案は、代替処理へ読み替えずP4に保存する。
 
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
-| P1 | `HYP-20260910-12` | [`public_detector_selection`](public_detector_selection.md) | ベースの公開Notebook・検出重みを選定 | 保存済み公開調査が入口。公開コード・重みの版と来歴は本候補で確認する。特徴保存・トラッカー学習の完了には依存しない。 | `設計可能・実験化未承認` |
-| P1 | `HYP-20260910-14` | [`group_error_readout`](group_error_readout.md) | 胚・画像条件ごとの誤りを測る | [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果とexp003の公式評価器。公開基準の診断は[`public_detector_selection`](public_detector_selection.md)後に行う。自前予測の集計は選定を待たずに進められる。 | `設計可能・実験化未承認` |
-| P1 | `HYP-20260910-14` | [`oracle_stage_limits`](oracle_stage_limits.md) | 検出・接続・分裂の上限を分ける | group_error_readoutと同じ対象一覧、固定重みの候補・得点・最終graph。公開基準の診断は[`public_detector_selection`](public_detector_selection.md)後の既存トラッカー推論を使い、再学習前に行う。 | `設計可能・実験化未承認` |
-| P1 | `HYP-20260910-12` | [`exact_window_cache`](exact_window_cache.md) | 固定公開モデルの候補点特徴を窓ごとに保存 | [`public_detector_selection`](public_detector_selection.md)で公開重み・元の時間窓・抽出層と来歴を特定する。未加工推論との等価性・容量・読み込み費用を本候補で測る。トラッカー再学習は先行条件にしない。 | `設計可能・実験化未承認` |
-| P1 | `HYP-20260910-12` | [`frozen_image_encoder`](frozen_image_encoder.md) | 公開検出器を固定し接続・分裂を学習 | [`public_detector_selection`](public_detector_selection.md)の選定結果、公開構成の基準予測、exact_window_cacheの等価性と費用、group_error_readoutとoracle_stage_limitsの初期診断。 | `検討メモ・設計不可` |
+| P1 | `HYP-20260910-14` | [`group_error_readout`](group_error_readout.md) | 胚・画像条件ごとの誤りを測る | [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果とexp003の公式評価器。採用済み[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)の公開基準予測も取得後に診断する。自前予測の集計は先に進められる。 | `設計可能・実験化未承認` |
+| P1 | `HYP-20260910-14` | [`oracle_stage_limits`](oracle_stage_limits.md) | 検出・接続・分裂の上限を分ける | group_error_readoutと同じ対象一覧、固定重みの候補・得点・最終graph。採用済み[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)の既存トラッカー推論を使い、再学習前に診断する。 | `設計可能・実験化未承認` |
+| P1 | `HYP-20260910-12` | [`exact_window_cache`](exact_window_cache.md) | 固定公開モデルの候補点特徴を窓ごとに保存 | 採用済み[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)のmanifestで公開重み・元の時間窓・抽出層と来歴を固定した。未加工推論との等価性・容量・読み込み費用を本候補で測る。トラッカー再学習は先行条件にしない。 | `設計可能・実験化未承認` |
+| P1 | `HYP-20260910-12` | [`frozen_image_encoder`](frozen_image_encoder.md) | 公開検出器を固定し接続・分裂を学習 | 採用済み[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)のprimary `SimpleNodeTransformer`初期値と公開基準予測、exact_window_cacheの等価性と費用、group_error_readoutとoracle_stage_limitsの初期診断。既存lossの教師mask監査は未解決。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-01` | [`partial_edge_mask`](partial_edge_mask.md) | 未記録の第2娘を負例にしない | 固定公開検出器のトラッカー学習基準と教師mask監査、group_error_readout・oracle_stage_limits。sparse_det_maskの実行は不要。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-03` | [`division_triplets`](division_triplets.md) | 母と2娘の組を採点する | 固定公開検出器のトラッカー学習基準とoracle_stage_limitsでの母・2娘の同時回収、既知分裂教師。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-12` | [`sparse_motion_graph`](sparse_motion_graph.md) | 近傍候補で多時点予測を可能に | 固定公開検出候補の親候補数・時間・メモリ実測とoracle_stage_limits。学習の費用超過が見えた場合は初回学習の前に候補制限を診断。 | `検討メモ・設計不可` |

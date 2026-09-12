@@ -9,12 +9,12 @@
 - 最終更新日: 2026-09-12
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: 検出・接続・分裂の上限を分けるの成立条件と反証可能な一変更の比較を具体化する。
-- 親実験 / 比較対象: 選定する公開検出器と既存トラッカーによる基準予測を主対照とする。重み・公開版・学習来歴は未選定。後続の学習比較は同じ公開検出器を固定したトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
+- 親実験 / 比較対象: 採用済みの[exp011公開構成](../experiments/exp011_public_detector_selection/)と既存トラッカーによる基準予測を主対照とする。同じ固定検出器下のトラッカー同士で比較する。
 - 優先度: P1
 - 優先度の理由: 固定検出器で回収できる範囲と接続・分裂の改善余地を先に確認し、学習枠の無駄を避けるため。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI14、検証候補64（同節の4項目目）。
-- 先行条件 / 依存: group_error_readoutと同じ対象一覧、固定重みの候補・得点・最終graph。公開基準の診断は[`public_detector_selection`](public_detector_selection.md)後の既存トラッカー推論を使い、再学習前に行う。
+- 先行条件 / 依存: group_error_readoutと同じ対象一覧、固定重みの候補・得点・最終graph。採用済みの[exp011](../experiments/exp011_public_detector_selection/)による既存トラッカー推論を使う。
 
 
 ## 2026-09-12の方針反映
@@ -44,7 +44,7 @@
   - [E05](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e05): 9月10日参照の公式評価。局所分裂構造と一対一対応。
   - [E06](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e06): 胚を分ける2方向評価、100x64x256x256、物理scale、hidden画像のみ。
 - 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI14。実験の数値は[exp002 metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)と[exp003 result](../experiments/exp003_official_metric_audit/result.md)を参照する。
-- 利用する保存済み生成物とSHA: [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果を補助参照する。選定する公開モデルの重み・候補・特徴は未確定であり、所在・版・SHAを取得時に記録する。過去調査の入力は[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)にある。
+- 利用する保存済み生成物とSHA: exp005・exp006の保存済み結果を補助参照する。公開重み・版・SHAは[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)を正とする。候補・特徴・基準予測は未生成であり、取得時にSHAを記録する。
 - 仮定: Assumption: 現在の公式指標と異なるproxyや学習内のaccuracyを基準にすると改善を取り違える。最終graph・胚分離・段階別上限に基づく比較へ変えると、意味のある改良を選びやすくなる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。
 
 ## この候補が直接検証する仮説と範囲
@@ -126,6 +126,7 @@
 - 2026-09-12: 全64候補の状態監査で、設計上の未決事項と測定・先行成果物待ちを分離した。状態を設計可能・実験化未承認へ訂正した。
 
 - 2026-09-12: 公開モデルの選定をpublic_detector_selectionへ分離し、本候補から明示的に参照した。選定と本候補の検証を循環依存にしない。
+- 2026-09-12: ユーザー「採用でいいです」によりexp011の公開構成を採用し、公開基準診断の選定待ちを解除した。本候補の実験化は未承認。
 
 - 2026-09-12: ユーザー「公開検出器を固定し、トラッカーを学習する こと前提として、バックログを修正してください」により、優先度・依存・学習対象を更新。現在の学習方針に合わせた比較範囲を明記した。
 

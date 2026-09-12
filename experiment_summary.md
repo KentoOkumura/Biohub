@@ -16,6 +16,8 @@
 | exp006_embryo_holdout_seed314159 | temporal_unet3d_node_transformer | exp005_embryo_holdout_batch8 | デバッグ完了 | 0.5533789422289814 | - | - | 2026-09-12 |
 | exp007_graph_checkpoint_selection | temporal_unet3d_node_transformer | exp005_embryo_holdout_batch8 | 破棄 | - | - | - | 2026-09-12 |
 | exp008_deformation_pair_aux | temporal_unet3d_node_transformer | exp005_embryo_holdout_batch8 | 計画中 | - | - | - | 2026-09-11 |
-| exp009_exp006_twofold_ensemble | temporal_unet3d_twofold_probability_ensemble | exp006_embryo_holdout_seed314159 | デバッグ完了 | - | - | - | 2026-09-12 |
+| exp009_exp006_twofold_ensemble | temporal_unet3d_twofold_probability_ensemble | exp006_embryo_holdout_seed314159 | デバッグ完了 | - | 0.693 | - | 2026-09-12 |
+| exp010_exp006_deterministic_replay | temporal_unet3d_node_transformer | exp006_embryo_holdout_seed314159 | 計画中 | - | - | - | 2026-09-12 |
+| exp011_public_detector_selection | public_detector_selection | N/A | 利用可 | - | - | - | 2026-09-12 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->

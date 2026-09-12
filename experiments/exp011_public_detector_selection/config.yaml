@@ -1,0 +1,51 @@
+experiment:
+  name: "exp011_public_detector_selection"
+  description: "公開0.946 Notebookを参照構成とし、公開検出器・候補特徴・既存tracker初期値の版とSHAを固定する静的選定"
+  route: public_detector_selection
+  created_at: "2026-09-12"
+
+lineage:
+  parent: N/A
+  hypothesis_id: HYP-20260910-12
+  backlog_candidate: public_detector_selection
+  diff_summary: "未指定だった公開Notebook、3 checkpoint、feature contract、初回に学習するprimary trackerを一意に指定する"
+
+validation: {}
+data: {}
+
+model:
+  name: public_temporal_unet3d_tracker_bundle
+  manifest: assets/public_detector_selection.json
+  selection_state: adopted
+  params: {}
+
+runtime:
+  execution: static_metadata_and_checkpoint_audit
+  kaggle_notebook_run: false
+  use_amp: false
+  num_workers: 0
+  batch_size: null
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_stochastic_execution
+  stochastic_components: []
+  parallel_rng_policy: not_applicable
+  feature_sha_policy: decompressed_content_sha_for_gzip
+  record:
+    kernel_version: false
+    input_sha: true
+    feature_schema_sha: false
+    feature_content_sha: false
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - "Kaggle CLIがkernel version番号を返さないため、参照Notebookはkernel id、取得時刻、content SHAで固定する。"
+    - "本実験はdeterministic anchorではなく、モデル実行・予測・submissionを行わない。"
+
+notes:
+  - "公開Notebookの0.946は全pipelineの報告値であり、detector単体の精度ではない。"
+  - "original Pilkwang datasetへのmount変更を含む小規模Kaggle動作確認は未実施。"
+  - "2026-09-12にユーザーが選定案を採用した。"
