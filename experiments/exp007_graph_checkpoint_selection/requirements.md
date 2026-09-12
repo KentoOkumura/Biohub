@@ -36,7 +36,7 @@
 - 期待する成果: 各foldの全epoch checkpoint、内部選択動画に対する2種類の選択score、selectorごとの選択manifest、外側評価の公式指標を得る。
 - input: outer学習胚のZarr画像とGEFF注釈、同じ学習胚から勾配更新に使わず分離した内部checkpoint選択用動画。
 - target / objective: 学習objectiveはexp005と同じ。学習後、現行の`edge_accuracy_times_node_recall`と公式のcombined graph metricを別々のcheckpoint selectorとして比較する。
-- output: fold×epochの6 checkpoint、内部selector score表、selectorごとの選択checkpoint、outer評価胚の予測graph、候補cache、公式評価summary。
+- output: fold×epochの6 checkpoint、内部selector score表と内部予測内容SHA、selectorごとの選択checkpoint、outer評価胚の予測graph、候補cache、公式評価summary。内部選択用graphは固定公式評価とSHA計算後に削除し、外側評価の再採点可能な生成物だけを保持する。
 - loss: exp005と同じ検出損失と接続損失。checkpoint選択自体に追加lossはない。
 - decode: exp005と同じ検出時augmentation、中心抽出、接続softmax、閾値、整数線形計画を全checkpointへ適用する。
 - context unit: 学習は2時刻の3D画像窓、checkpoint選択と外側評価は1動画のgraph、validation独立性は1胚。
@@ -52,7 +52,7 @@
 - アプローチ: 実装時にexp005のcompact self-contained train/inference Notebookを参照し、学習loopで各epoch checkpointを別名保存する。内部選択動画を各checkpointで推論し、exp003で固定した公式評価器へ渡す。
 - inputの実装箇所と変換: exp005の`artifacts/splits.json`と同じouter・内部splitを再生成してSHAを照合する。内部選択動画は勾配更新へ含めない。
 - target / objectiveの構築箇所: exp005の教師作成とlossを変更しない。selectorは学習後の評価処理として分離する。
-- outputの生成箇所と表現: `artifacts/models/fold_<n>/epoch_<index>.pth`、`artifacts/checkpoint_selection.json`、selector別predictionとcandidate manifest、公式評価summaryを保存する。
+- outputの生成箇所と表現: `artifacts/models/fold_<n>/epoch_<index>.pth`、`artifacts/checkpoint_selection.json`、外側unique checkpointのpredictionとcandidate manifest、公式評価summaryを保存する。内部選択用graphとcandidate配列はcheckpointごとの評価中だけ一時生成し、graph SHAとcandidate content SHAを`checkpoint_selection.json`へ記録してから削除する。
 - lossの実装箇所: exp005と同じ固定sourceを呼び、checkpoint保存処理だけを外から追加する。
 - decode / postprocessの実装箇所: exp005 inferenceと同じdecodeを内部選択用動画とouter評価動画へ使う。2 selectorが選んだcheckpointをsample単位で取り違えないmanifestを必須にする。
 - context unitを保つ処理箇所: outer分割は胚単位、内部選択は同じ学習胚の動画単位、decodeと評価は動画graph単位で行う。
@@ -80,12 +80,12 @@
 - stochastic feature generation / augmentation / seed bagging の有無: augmentationあり、seed baggingなし。
 - 並列処理と乱数の関係: exp005と同じDataLoader generatorを使う。引数なしNumPy RNGの制約によりexp005とのbitwise比較ではなく、同一run内selector比較を主証拠にする。
 - CPU/GPU runtime と deterministic flags: Kaggle T4 2基、DataParallel、AMP、internet無効。deterministic anchorとは扱わない。
-- train cache / test feature regeneration の SHA 記録方針: checkpointごとの内部prediction graph SHA、outer candidate content SHA、selector manifest SHAを記録する。
+- train cache / test feature regeneration の SHA 記録方針: checkpointごとの内部prediction graph SHAとcandidate content SHAを削除前に記録し、outer candidate content SHA、selector manifest SHAを記録する。内部選択の57動画分は固定公式評価後に削除し、外側評価の再採点用cacheを優先して保持する。
 - model manifest / prediction / submission SHA 記録方針: 6 checkpoint SHA、selectorごとのselected model、外側prediction SHAを記録する。submissionは作らない。
 - Kaggle package bootstrap 確認方針: 実装後に正のNotebook、config、metrics、source manifestの一致をpush前validatorで確認する。
 - リークリスク: outer評価胚の正解をselector、threshold、費用選択へ使わない。同じouter結果を見て第3selectorを追加しない。
 - CV/LB 不一致リスク: outer胚評価はPublic LBではない。LB順位を推定しない。
-- ランタイム/メモリリスク: 6 checkpointの保存容量と最大2倍の推論時間をsmokeで測り、11.5時間を超える場合はselectorや評価動画を縮小せず停止する。
+- ランタイム/メモリ/ディスクリスク: 6 checkpointの保存容量と最大2倍の推論時間をsmokeで測り、11.5時間を超える場合はselectorや評価動画を縮小せず停止する。内部選択用の各fold×epoch生成物は公式評価と内容SHA計算の直後に削除し、空き容量を記録する。外側評価graphと候補cacheは再採点用に保持する。
 - 再現性リスク: exp005とのrun間差は残るため、主比較は同一run内の2 selectorとする。
 - 手法忠実性リスク: 簡略graph proxyへ置換すると仮説を検証できないため、exp003の固定公式評価器とSHAを使う。
 - 過度な縮小 / proxy化リスク: 内部動画の一部だけでgraph指標を近似したり、outer片側だけを報告したりしない。

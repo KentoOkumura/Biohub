@@ -82,6 +82,7 @@ def test_lineage_and_selector_contract() -> None:
         TREATMENT_SELECTOR,
     ]
     assert config["model"]["inference"]["evaluate_unique_selected_checkpoints_only"] is True
+    assert config["model"]["inference"]["retain_internal_selection_artifacts"] is False
 
 
 def test_exp005_model_loss_split_and_decode_are_fixed() -> None:
@@ -117,6 +118,7 @@ def test_exp005_model_loss_split_and_decode_are_fixed() -> None:
 
     child_inference = dict(config["model"]["inference"])
     assert child_inference.pop("evaluate_unique_selected_checkpoints_only") is True
+    assert child_inference.pop("retain_internal_selection_artifacts") is False
     assert child_inference.pop("smoke_videos_per_unique_checkpoint") == 1
     assert child_inference.pop("runtime_gate_hours") == 11.5
     parent_inference = dict(parent["model"]["inference"])
@@ -293,6 +295,19 @@ def test_evaluation_saves_full_candidate_masks() -> None:
     assert "td.solvers.ILPSolver" in source
     assert "np.savez_compressed" in source
     assert "sha256_arrays" in source
+
+
+def test_internal_selection_artifacts_are_temporary_but_outer_caches_are_retained() -> None:
+    source = notebook_source("evaluation")
+    assert 'INTERNAL_SELECTION_ROOT = WORKING_ROOT / "_internal_selection_tmp"' in source
+    assert 'inference_cfg["retain_internal_selection_artifacts"]' in source
+    assert "retain_artifacts=False" in source
+    assert "shutil.rmtree(stage_root)" in source
+    assert "shutil.rmtree(INTERNAL_SELECTION_ROOT)" in source
+    assert '"candidate_content_sha256": candidate_content_sha' in source
+    assert "if retain_artifacts:" in source
+    assert "np.savez_compressed(cache_path, **arrays)" in source
+    assert "print(json.dumps(json_safe(checkpoint_selection), indent=2))" not in source
 
 
 def test_evaluation_kernel_depends_only_on_exp007_train_kernel() -> None:

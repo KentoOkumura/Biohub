@@ -108,6 +108,7 @@ model:
     runtime_gate_scope: all_outer_folds
   inference:
     evaluate_unique_selected_checkpoints_only: true
+    retain_internal_selection_artifacts: false
     det_threshold: 0.99
     det_tta: true
     pool_kernel_um: 3.0

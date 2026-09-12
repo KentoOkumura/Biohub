@@ -40,6 +40,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import shutil
 import subprocess
 import sys
 import time
@@ -58,7 +59,7 @@ SOURCE_ROOT = WORKING_ROOT / "official_source"
 SOURCE_MANIFEST_PATH = SOURCE_ROOT / "SOURCE.json"
 METRICS_PATH = WORKING_ROOT / "metrics.json"
 ARTIFACTS_ROOT = WORKING_ROOT / "artifacts"
-INTERNAL_SELECTION_ROOT = ARTIFACTS_ROOT / "internal_selection"
+INTERNAL_SELECTION_ROOT = WORKING_ROOT / "_internal_selection_tmp"
 OUTER_PREDICTIONS_ROOT = ARTIFACTS_ROOT / "outer_predictions"
 CHECKPOINT_SELECTION_PATH = ARTIFACTS_ROOT / "checkpoint_selection.json"
 PREDICTION_MANIFEST_PATH = ARTIFACTS_ROOT / "prediction_manifest.json"
@@ -132,6 +133,10 @@ def atomic_json(path: Path, payload: Any) -> None:
     temporary = path.with_name("." + path.name + ".tmp")
     temporary.write_text(json.dumps(json_safe(payload), indent=2, sort_keys=True) + "\n")
     temporary.replace(path)
+
+
+def free_working_space_gib() -> float:
+    return shutil.disk_usage(WORKING_ROOT).free / (1024**3)
 
 
 def deep_merge(base: dict[str, Any], update: dict[str, Any]) -> dict[str, Any]:
@@ -859,9 +864,12 @@ predict_config = PredictConfig(
 if int(inference_cfg["unet_batch_size"]) != 4:
     raise RuntimeError("the fixed organizer inference batch-size contract changed")
 
+if bool(inference_cfg["retain_internal_selection_artifacts"]):
+    raise RuntimeError("internal selection artifacts must remain temporary")
+if INTERNAL_SELECTION_ROOT.exists():
+    shutil.rmtree(INTERNAL_SELECTION_ROOT)
 INTERNAL_SELECTION_ROOT.mkdir(parents=True, exist_ok=True)
 OUTER_PREDICTIONS_ROOT.mkdir(parents=True, exist_ok=True)
-internal_prediction_records: list[dict[str, Any]] = []
 outer_prediction_records: list[dict[str, Any]] = []
 
 
@@ -879,6 +887,7 @@ def write_video_prediction(
     stage: str,
     predictions_root: Path,
     candidates_root: Path,
+    retain_artifacts: bool = True,
 ) -> dict[str, Any]:
     video_started = time.monotonic()
     coords, graph_edges, arrays = predict_video_with_candidates(
@@ -902,11 +911,13 @@ def write_video_prediction(
     add_final_selection_mask(arrays, node_ids, graph)
 
     predictions_root.mkdir(parents=True, exist_ok=True)
-    candidates_root.mkdir(parents=True, exist_ok=True)
     graph_path = predictions_root / f"{sample_name}.geff"
     cache_path = candidates_root / f"{sample_name}.npz"
     save_graph(graph, graph_path)
-    np.savez_compressed(cache_path, **arrays)
+    if retain_artifacts:
+        candidates_root.mkdir(parents=True, exist_ok=True)
+        np.savez_compressed(cache_path, **arrays)
+    candidate_content_sha = sha256_arrays(arrays)
     checkpoint_record = fold_models[fold]["checkpoints"][epoch_index]
     record = {
         "stage": stage,
@@ -917,11 +928,11 @@ def write_video_prediction(
         "outer_train_embryo": fold_models[fold]["outer_train_embryo"],
         "outer_evaluation_embryo": fold_models[fold]["outer_evaluation_embryo"],
         "checkpoint_sha256": checkpoint_record["checkpoint_sha256"],
-        "graph": relative_artifact_path(graph_path),
+        "graph": relative_artifact_path(graph_path) if retain_artifacts else None,
         "graph_tree_sha256": sha256_tree(graph_path),
-        "candidate_cache": relative_artifact_path(cache_path),
-        "candidate_file_sha256": sha256_file(cache_path),
-        "candidate_content_sha256": sha256_arrays(arrays),
+        "candidate_cache": relative_artifact_path(cache_path) if retain_artifacts else None,
+        "candidate_file_sha256": sha256_file(cache_path) if retain_artifacts else None,
+        "candidate_content_sha256": candidate_content_sha,
         "node_count": int(len(arrays["coords_tzyx"])),
         "edge_score_count": int(len(arrays["edge_probability"])),
         "edge_threshold_count": int(arrays["edge_threshold_mask"].sum()),
@@ -1031,9 +1042,9 @@ for fold in (0, 1):
                 "internal_checkpoint_selection",
                 predictions_root,
                 candidates_root,
+                retain_artifacts=False,
             )
             checkpoint_predictions.append(record)
-            internal_prediction_records.append(record)
         del model
         torch.cuda.empty_cache()
 
@@ -1069,6 +1080,17 @@ for fold in (0, 1):
                 "per_sample_metrics": named_rows,
             }
         )
+        shutil.rmtree(stage_root)
+        if stage_root.exists():
+            raise RuntimeError(f"temporary internal stage was not removed: {stage_root}")
+        print(
+            f"Released fold {fold} epoch {epoch_index} internal artifacts; "
+            f"working disk free={free_working_space_gib():.2f} GiB"
+        )
+
+shutil.rmtree(INTERNAL_SELECTION_ROOT)
+if INTERNAL_SELECTION_ROOT.exists():
+    raise RuntimeError("temporary internal selection root was not removed")
 
 reference_selector = str(validation_cfg["reference_selector"])
 treatment_selector = str(validation_cfg["treatment_selector"])
@@ -1119,7 +1141,18 @@ checkpoint_selection = {
 atomic_json(CHECKPOINT_SELECTION_PATH, checkpoint_selection)
 checkpoint_selection_sha = sha256_file(CHECKPOINT_SELECTION_PATH)
 internal_stage_elapsed_seconds = time.monotonic() - internal_stage_started
-print(json.dumps(json_safe(checkpoint_selection), indent=2))
+selection_log_summary = {
+    f"fold_{fold}": {
+        selector: {
+            "epoch_index": int(selection_by_fold[fold][selector]["epoch_index"]),
+            "score": float(selection_by_fold[fold][selector]["score"]),
+        }
+        for selector in selector_score_keys
+    }
+    for fold in (0, 1)
+}
+print("Checkpoint selection:", json.dumps(selection_log_summary, sort_keys=True))
+print(f"Working disk free before outer evaluation={free_working_space_gib():.2f} GiB")
 
 
 # %% [markdown]
@@ -1575,14 +1608,9 @@ if run_full_evaluation:
 missing_outputs = [str(path) for path in base_outputs if not path.exists()]
 if missing_outputs:
     raise FileNotFoundError(f"missing evaluation outputs: {missing_outputs}")
+if INTERNAL_SELECTION_ROOT.exists():
+    raise RuntimeError("temporary internal selection artifacts were retained")
 if run_full_evaluation:
-    expected_internal_prediction_count = sum(
-        len(split_by_fold[fold]["test"]) * len(expected_epoch_indices) for fold in (0, 1)
-    )
-    if len(list(INTERNAL_SELECTION_ROOT.rglob("*.geff"))) != expected_internal_prediction_count:
-        raise RuntimeError("internal selection GEFF count differs from the contract")
-    if len(list(INTERNAL_SELECTION_ROOT.rglob("*.npz"))) != expected_internal_prediction_count:
-        raise RuntimeError("internal candidate cache count differs from the contract")
     expected_outer_prediction_count = sum(
         len(split_by_fold[fold]["outer_evaluation"]) * len(unique_epochs_by_fold[fold])
         for fold in (0, 1)

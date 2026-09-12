@@ -13,20 +13,20 @@
 ## 実行証拠
 
 - 比較対象: 同じ学習runの現行proxy selector。exp005は既存基準の副参照。
-- `metrics.json` の参照キー: `status=running`、`evidence.kaggle.kernel_version=1`、`evidence.kaggle.notebook_runtime_seconds=23633.582541708998`、`evidence.artifacts.model_count=6`、`evidence.artifacts.model_manifest_sha`。
+- `metrics.json` の参照キー: `status=discarded`、`evidence.kaggle.kernel_version=1`、`evidence.kaggle.notebook_runtime_seconds=23633.582541708998`、`evidence.artifacts.model_count=6`、`evidence.artifacts.model_manifest_sha`、`evidence.reruns`のevaluation version 1失敗・選択結果。
 - `SESSION_NOTES.md` の実行記録: 実装、静的検査、push、正常終了、実測T4 2基、runtime gate、生成物確認を記録。
 - 参照する生成物: Kaggle train version 1の6 checkpoint、bundle/fold manifest、split、smoke/training summary。小規模な証拠だけを`/tmp/kaggle-output/exp007_graph_checkpoint_selection/train-evidence/`へ取得し、モデル本体はKaggle kernel outputを正とする。
 
 ## 解釈
 
-trainは正常終了し、2 fold × 3 epochのcheckpointを保存できた。現行proxyは両foldともepoch 2を選んだ。固定公式graph指標による内部選択と外側公式指標を計算するevaluation version 1は実行中であり、selectorの差や両胚での改善可否についてまだ結論を出さない。
+trainは正常終了し、2 fold × 3 epochのcheckpointを保存できた。evaluation version 1は全6 checkpointの内部選択評価とruntime gateまで完了し、edge accuracyとnode recallの積による選択と固定公式graph指標による選択はいずれも両foldでepoch 2を選んだ。その後、full outer評価を始める前にKaggle working diskが枯渇し、PapermillのNotebook保存で失敗した。内部選択の中間生成物だけを評価・SHA計算後に削除する修正は実装・検証済みだが、再実行しても2つの選択方法へ同じcheckpointの予測を共有するため、選択方法間の差は得られない。したがって、この1回の学習runについて「固定公式graph指標が異なるcheckpointを選ぶ」という主張は支持されなかった。ただし外側2胚の公式指標と生成物SHAは未取得であり、異なる学習runや固定公開検出器下のトラッカーへ一般化しない。
 
 ## ユーザー判断
 
-- 判断: 未判断
-- 確認日時 / 依頼メッセージ: 2026-09-12の「完了しました」はKaggle train runの完了通知として扱う。実験全体の完了・採用・不採用の判断ではない。
-- 理由: 仮説を判定する2 selector比較と外側胚評価が未実行のため。
+- 判断: `discarded`
+- 確認日時 / 依頼メッセージ: 2026-09-12の「それでは閉じてください。最後にgit commitとpushしてください。」
+- 理由: 両選択方法が両foldで同じepoch 2を選び、外側評価を再実行しても選択方法の差を検証できない。今後は公開検出器を固定してトラッカーを学習する方針であり、自前検出器を含むこのrunの外側score取得へGPU時間を追加投入しない。
 
 ## 次
 
-evaluation version 1の完了後、両胚の公式指標、2 selectorの選択epoch、失敗件数、Notebook実行時間を提示して判断を求める。
+再実行しない。次の作業は現行方針の`public_detector_selection`を優先する。

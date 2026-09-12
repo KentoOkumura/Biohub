@@ -5,13 +5,13 @@
 - 仮説要約: 学習内proxyではなく固定公式graph指標でepochを選ぶと、外側の胚holdoutでより良いcheckpointを選べる可能性がある。
 - 変更点要約: exp005の全epoch checkpointを保存し、同じ内部選択動画へ現行proxyと公式graph指標を適用する。
 - リスク: outer評価胚を選択へ使うleakage、checkpoint保存容量、selectorが選ぶunique model数による推論時間増加。
-- 次: 実行中のevaluation version 1について、2 selectorの選択epochと外側公式指標を確認する。
+- 次: なし。両selectorが同じcheckpointを選んだため、現在の公開検出器固定方針では再実行しない。
 
 ## 現在の状態
 
 - backlog `graph_checkpoint`から実験化し、train/evaluation Notebookと実験固有testを実装済み。Kaggle train version 1は正常終了した。
-- `metrics.json.status`: `running`
-- 6 checkpointとmanifestを保存済み。内部動画での2 selector比較とunique checkpointだけの外側評価を行うKaggle evaluation version 1は実行中。
+- `metrics.json.status`: `discarded`
+- 6 checkpointとmanifestを保存済み。evaluation version 1は内部動画で全6 checkpointを評価し、両selectorが両foldでepoch 2を選んだ後、外側評価前にworking disk枯渇で失敗した。2026-09-12のユーザー判断により再実行せず終了した。
 
 ## 正の記録
 

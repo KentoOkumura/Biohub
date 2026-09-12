@@ -1,6 +1,6 @@
 {
   "experiment": "exp007_graph_checkpoint_selection",
-  "status": "running",
+  "status": "discarded",
   "cv": null,
   "public_lb": null,
   "private_lb": null,
@@ -147,9 +147,10 @@
       },
       {
         "version": 1,
-        "status": "running",
+        "status": "failed",
         "stage": "checkpoint_selection_evaluation",
         "started_at": "2026-09-12T15:46:31+09:00",
+        "verified_at": "2026-09-12T21:51:09+09:00",
         "kernel_id": "kentookumura/exp007-graph-checkpoint-selection-evaluation",
         "kernel_version": 1,
         "url": "https://www.kaggle.com/code/kentookumura/exp007-graph-checkpoint-selection-evaluation",
@@ -168,11 +169,44 @@
           "remaining_hours": 30.0,
           "total_hours": 30.0,
           "refresh_at": "2026-09-19T00:00:00Z"
+        },
+        "failure": {
+          "classification": "runtime_disk_exhaustion",
+          "first_meaningful_error": "OSError: [Errno 28] No space left on device",
+          "failed_while": "Papermill was saving the executed notebook after the runtime gate passed",
+          "secondary_errors": [
+            "/bin/sh: echo: I/O error",
+            "ImportError: No module named RemovePapermillHeader",
+            "truncated __notebook__.ipynb JSON"
+          ]
+        },
+        "progress_before_failure": {
+          "checkpoint_count_scored": 6,
+          "internal_evaluation_counts": {
+            "fold_0": 7,
+            "fold_1": 12
+          },
+          "selected_epoch_indices": {
+            "fold_0": {
+              "edge_accuracy_times_node_recall": 2,
+              "official_adjusted_edge_jaccard_plus_0.1_division_jaccard": 2
+            },
+            "fold_1": {
+              "edge_accuracy_times_node_recall": 2,
+              "official_adjusted_edge_jaccard_plus_0.1_division_jaccard": 2
+            }
+          },
+          "internal_selection_elapsed_seconds": 4176.586706724001,
+          "outer_smoke_elapsed_seconds": 145.42348234200017,
+          "projected_total_seconds": 23662.26384784153,
+          "gate_limit_seconds": 41400.0,
+          "gate_passed": true,
+          "outer_full_evaluation_started": false
         }
       }
     ]
   },
   "key_idea": "select saved epoch checkpoints with the fixed official graph metric",
-  "notes": "Kaggle train version 1 completed normally and saved six epoch checkpoints from two embryo-disjoint folds. Checkpoint selection and outer held-out evaluation version 1 are running; official CV and the experiment-level completion decision remain pending.",
-  "updated_at": "2026-09-12T06:47:06+00:00"
+  "notes": "Kaggle train version 1 completed normally and saved six epoch checkpoints from two embryo-disjoint folds. Evaluation version 1 scored all six checkpoints; both selectors chose epoch 2 in both folds. It then failed from Kaggle working-disk exhaustion before full outer evaluation. The remediation was implemented and tested, but the user chose not to rerun because identical selected checkpoints cannot establish a selector improvement and the current direction fixes a public detector before tracker training. Outer official CV and its artifact hashes were not obtained.",
+  "updated_at": "2026-09-12T13:33:42+00:00"
 }

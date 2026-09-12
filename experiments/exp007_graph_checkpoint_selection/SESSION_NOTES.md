@@ -6,9 +6,9 @@ exp005と同じ学習runで全epoch checkpointを保存し、内部選択動画�
 
 ## 現在の作業
 
-- 作業内容: Kaggle train version 1の保存済み6 checkpointを入力に、checkpoint選択・外側胚評価用evaluation version 1を実行中。
-- ブロック要因: なし。
-- 次: evaluation完了後、2 selectorの選択epoch、両胚の公式指標、失敗件数、Notebook実行時間、生成物SHAを確認する。
+- 作業内容: 2026-09-12のユーザー判断により、evaluation version 1の部分結果を残して実験を終了した。
+- ブロック要因: なし。外側評価は未完了だが、再実行しない判断が確定した。
+- 次: なし。現行方針の`public_detector_selection`を優先する。
 
 ## 実験化時のGPUコスト計画
 
@@ -101,6 +101,21 @@ Jupytextの2件のround-tripとF821検査は通過した。`validate-exp`と`che
 - push後のmetadata pullでkernel id `kentookumura/exp007-graph-checkpoint-selection-evaluation`、id_no `134049533`、`machine_shape: NvidiaTeslaT4`、GPU有効、TPU無効、internet無効、kernel sourceがexp007 trainのみであることを確認した。
 - Kaggle statusは`KernelWorkerStatus.RUNNING`。実行ログで実GPU数を確認するまでは、configの期待値2を実測値として扱わない。competition submissionは作成していない。
 
+### 2026-09-12 exp007 evaluation version 1失敗と修正
+
+- 2026-09-12T21:51:09+09:00にKaggle status `KernelWorkerStatus.ERROR`を確認した。最初の意味のあるtracebackは、Papermillが実行済みNotebookを保存するときの`OSError: [Errno 28] No space left on device`だった。その後の`/bin/sh: echo: I/O error`、`RemovePapermillHeader`のimport失敗、`__notebook__.ipynb`のJSON切断は、ディスク枯渇後の二次障害と判断した。GPU OOM、network、入力path、固定公式評価器の失敗ではない。
+- 失敗前に、内部選択用の全6 checkpoint（fold 0は各7動画、fold 1は各12動画）の固定公式評価を完了した。両selectorが両foldでepoch 2を選択し、内部選択は4176.59秒、outer smokeは145.42秒、全体予測は23662.26秒、gate上限41400秒でruntime gateを通過した。full outer評価は開始前だった。
+- 原因は、内部選択57動画について、公式評価に必要なGEFF graphに加えて、検出scoreと全edge候補を含むNPZを全checkpoint分保持していたことだった。特に未選択の早期checkpointには4万〜7.5万nodeを出す動画があり、再採点対象でない中間生成物がKaggle working diskを消費した。さらに選択manifest全体をNotebook出力へ表示していたが、これは二次的な増幅要因である。
+- 選択指標、内部動画、全6 checkpoint、固定公式評価、内容SHA、外側評価を変えず、内部選択用graphは各fold×epochの公式評価とSHA計算直後に削除し、内部NPZは永続化しないよう修正した。`checkpoint_selection.json`には動画別公式指標、graph SHA、candidate content SHAを残す。外側評価のGEFFと候補NPZは従来どおり保持し、保存graphからの再採点契約も維持する。各内部stage削除後とouter開始前に空き容量を表示し、選択manifestのログ表示はfold×selectorのepochとscoreだけへ縮小した。
+- 修正版evaluation sourceからNotebookを再生成した。Jupytext round-tripとF821検査、`make validate-exp`、`make check-exp`、`make test-exp`を実行し、strict validation、Ruff check/format、実験固有14テストが通過した。
+- 再実行前のGPU quotaは30.00時間中8.87時間使用、残り21.13時間、refreshは2026-09-19T00:00:00Z。11.5時間gateを満たす。
+
+### 2026-09-12 exp007終了判断
+
+- version 2をpushする前に、両selectorが両foldで同じepoch 2を選んだため、同じcheckpoint予測を共有する外側評価から選択方法の差は得られないことを確認した。
+- 今後は公開検出器を固定してトラッカーを学習する方針であり、自前検出器を含むこのrunの外側scoreだけを得る再実行はGPU費用に見合わないと整理した。
+- ユーザーの「それでは閉じてください。最後にgit commitとpushしてください。」を`discarded`の明示判断として記録した。修正版evaluationはKaggleへpushせず、外側2胚の公式指標、prediction manifest、生成物SHAは未取得のまま終了する。
+
 ## 変更点
 
 - 親をexp005へ更新し、batch size 8の胚holdoutを比較基準にした。
@@ -115,6 +130,5 @@ Jupytextの2件のround-tripとF821検査は通過した。`validate-exp`と`che
 
 ## 次のアクション
 
-1. 実行中のevaluation version 1が完了したら、保存されたmetricsとmanifestを取得する。
-2. 両胚の公式指標、選択epoch、失敗件数、Notebook実行時間、生成物SHAを照合する。
-3. 結果を提示し、実験の完了・採否はユーザーへ判断を求める。
+- exp007の再実行は行わない。
+- 次の実験作業では、現行方針の`public_detector_selection`を優先する。
