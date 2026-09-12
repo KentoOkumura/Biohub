@@ -117,8 +117,22 @@
 - [x] 直接承認、親実験との差分、固定事項、成功条件、停止条件、実行しないこと、判断履歴を記録した。
 - [x] `config.yaml`の`lineage.hypothesis_id`と`lineage.backlog_candidate`が本書と一致する。
 - [x] Jupytext round-trip、`validate-exp`、`check-exp`、実験固有testが通る。
-- [ ] Kaggle T4 2基で2foldのsmokeと3 epochs学習が完走し、checkpoint 2個を保存する。
-- [ ] 外側評価199動画の予測、候補cache、動画別・胚別・全体の公式評価を保存し、欠落と失敗が0である。
-- [ ] 保存graphからの再採点が一致し、model、candidate、predictionのSHAとKaggle kernel versionを`metrics.json`へ記録する。
+- [x] Kaggle T4 2基で2foldのsmokeと3 epochs学習が完走し、checkpoint 2個を保存する。
+- [x] 外側評価199動画の予測、候補cache、動画別・胚別・全体の公式評価を保存し、欠落と失敗が0である。
+- [x] 保存graphからの再採点が一致し、model、candidate、predictionのSHAとKaggle kernel versionを`metrics.json`へ記録する。
 - [x] `HYP-20260910-14`の対応実験へ本実験を追加し、依存候補の基準予測参照を更新する。
-- [ ] 実験の完了、採用、不採用は結果提示後にユーザーが判断する。
+- [x] 2026-09-12、結果提示後にユーザーがexp005を閉じるよう明示し、実験statusを`completed`とした。これはモデル採用や今後のvalidation方針の確定を意味しない。
+
+## 2026-09-12 追加診断
+
+- 承認: exp005の低い`6bba`側node recallについて、ユーザーの「それでは進めてください」に基づき、候補検出coverageと胚間の画像分布差を同じ実験内で診断する。
+- input: Kaggle inference version 1の固定prediction manifest、0.99通過後の候補cache、動画別公式評価、同じ199件のtrain Zarr/GEFFを使う。modelの再学習と再推論は行わない。
+- target / objective: 保存候補が既知GT nodeを7 µm以内で回収する割合、最終graphまでに失うnode recall、候補数・検出score、決定的にsamplingした画像輝度統計を動画別・胚別に測る。
+- output: 動画別CSV、胚別・全体summary JSON、比較plot、入力と出力のSHA、`metrics.json.diagnostics.candidate_image_readout`。
+- loss: なし。
+- decode / 推論方法: 保存済み候補と最終graphを変更せず診断する。GTは回収率計算にだけ使い、閾値、checkpoint、graph費用の選択には使わない。
+- context unit: 199動画を1動画ずつ処理し、集計は胚別と全体で行う。画像統計は各動画の固定3時刻と固定空間strideのsampleであり、全voxel統計とは呼ばない。
+- 実装区分: 予測を変更しない診断。既存の`faithful`な予測契約は維持し、追加診断を精度改善として扱わない。
+- 制約: 既存cacheは検出確率0.99を厳密に超えたlocal maximumだけを含むため、0.965の回収率は測れない。0.965比較は固定checkpointから検出を再実行する別の比較として残す。
+- 成功条件: 全199動画の候補cacheとGTを一意に対応させ、候補node recallが最終graph node recall以上であることを検査し、公式の胚別最終node recallを再現する。欠落・重複・NaN件数とsampling範囲を保存する。
+- 停止条件: prediction、candidate、GTの対象集合または来歴が一致しない場合は実行を停止し、推測で補完しない。

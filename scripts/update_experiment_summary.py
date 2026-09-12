@@ -65,6 +65,17 @@ def display_value(value: Any) -> str:
     return str(value)
 
 
+def display_cv(value: Any) -> str:
+    if isinstance(value, dict):
+        overall = value.get("overall")
+        if isinstance(overall, dict) and "score" in overall:
+            return display_value(overall.get("score"))
+        if "score" in value:
+            return display_value(value.get("score"))
+        return "-"
+    return display_value(value)
+
+
 def display_status(value: Any) -> str:
     status = display_value(value)
     return STATUS_LABELS.get(status, status)
@@ -89,7 +100,7 @@ def record_from_experiment(experiment_dir: Path) -> ExperimentRecord | None:
     # New experiments keep status in metrics.json. The config fallback is for
     # existing experiments created before that source-of-truth rule.
     status = display_status(metrics.get("status") or experiment.get("status"))
-    cv = display_value(metrics.get("cv"))
+    cv = display_cv(metrics.get("cv"))
     public_lb = display_value(metrics.get("public_lb"))
     private_lb = display_value(metrics.get("private_lb"))
     summary = display_value(

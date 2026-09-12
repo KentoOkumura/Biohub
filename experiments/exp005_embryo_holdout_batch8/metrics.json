@@ -1,63 +1,399 @@
 {
-  "experiment": "exp005_embryo_holdout_batch8",
-  "status": "planned",
-  "cv": null,
-  "public_lb": null,
-  "private_lb": null,
-  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "cv": {
+    "by_embryo": {
+      "44b6": {
+        "adj_edge_jaccard": 0.6247928949700339,
+        "division_fn": 26,
+        "division_fp": 0,
+        "division_jaccard": 0.0,
+        "division_tp": 0,
+        "edge_jaccard": 0.6193003507476463,
+        "n": 71,
+        "n_adj": 71,
+        "node_recall": 0.85647336783315,
+        "score": 0.6247928949700339
+      },
+      "6bba": {
+        "adj_edge_jaccard": 0.026048553159312485,
+        "division_fn": 125,
+        "division_fp": 8,
+        "division_jaccard": 0.0,
+        "division_tp": 0,
+        "edge_jaccard": 0.023729556074766355,
+        "n": 128,
+        "n_adj": 128,
+        "node_recall": 0.03479319431592919,
+        "score": 0.026048553159312485
+      }
+    },
+    "overall": {
+      "adj_edge_jaccard": 0.12490551617521294,
+      "division_fn": 151,
+      "division_fp": 8,
+      "division_jaccard": 0.0,
+      "division_tp": 0,
+      "edge_jaccard": 0.12206254381419733,
+      "n": 199,
+      "n_adj": 199,
+      "node_recall": 0.32795546727935976,
+      "score": 0.12490551617521294
+    },
+    "sample_count": 199,
+    "strategy": "leave_one_embryo_out"
+  },
+  "diagnostic_validation": {
+    "checkpoint_selection": {
+      "fold_0": {
+        "best_epoch_index": 1,
+        "best_selection_score": 0.9388,
+        "diagnostic_only": true,
+        "epochs": [
+          {
+            "detection_loss": 0.0239,
+            "edge_loss": 0.0055,
+            "epoch_index": 0,
+            "n_epochs": 3,
+            "selection_score": 0.929,
+            "train_seconds": 2648.3,
+            "validation_edge_accuracy": 0.9992,
+            "validation_edge_loss": 0.0041,
+            "validation_node_recall": 0.9298,
+            "validation_seconds": 70.5
+          },
+          {
+            "detection_loss": 0.0118,
+            "edge_loss": 0.0041,
+            "epoch_index": 1,
+            "n_epochs": 3,
+            "selection_score": 0.9388,
+            "train_seconds": 2682.9,
+            "validation_edge_accuracy": 0.9991,
+            "validation_edge_loss": 0.0032,
+            "validation_node_recall": 0.9396,
+            "validation_seconds": 68.6
+          },
+          {
+            "detection_loss": 0.0112,
+            "edge_loss": 0.0017,
+            "epoch_index": 2,
+            "n_epochs": 3,
+            "selection_score": 0.9388,
+            "train_seconds": 2671.7,
+            "validation_edge_accuracy": 0.9996,
+            "validation_edge_loss": 0.0005,
+            "validation_node_recall": 0.9355,
+            "validation_seconds": 67.9
+          }
+        ],
+        "outer_evaluation_embryo": "6bba",
+        "outer_train_embryo": "44b6"
+      },
+      "fold_1": {
+        "best_epoch_index": 1,
+        "best_selection_score": 0.9315,
+        "diagnostic_only": true,
+        "epochs": [
+          {
+            "detection_loss": 0.0208,
+            "edge_loss": 0.0062,
+            "epoch_index": 0,
+            "n_epochs": 3,
+            "selection_score": 0.9003,
+            "train_seconds": 4657.9,
+            "validation_edge_accuracy": 0.9994,
+            "validation_edge_loss": 0.0007,
+            "validation_node_recall": 0.9008,
+            "validation_seconds": 109.7
+          },
+          {
+            "detection_loss": 0.0148,
+            "edge_loss": 0.0009,
+            "epoch_index": 1,
+            "n_epochs": 3,
+            "selection_score": 0.9315,
+            "train_seconds": 4799.5,
+            "validation_edge_accuracy": 0.9997,
+            "validation_edge_loss": 0.0003,
+            "validation_node_recall": 0.9318,
+            "validation_seconds": 104.8
+          },
+          {
+            "detection_loss": 0.0134,
+            "edge_loss": 0.0006,
+            "epoch_index": 2,
+            "n_epochs": 3,
+            "selection_score": 0.9315,
+            "train_seconds": 4841.5,
+            "validation_edge_accuracy": 0.9997,
+            "validation_edge_loss": 0.0003,
+            "validation_node_recall": 0.9182,
+            "validation_seconds": 104.3
+          }
+        ],
+        "outer_evaluation_embryo": "44b6",
+        "outer_train_embryo": "6bba"
+      }
+    },
+    "training_smoke": {
+      "active_variant_count": 1,
+      "control_retrained": false,
+      "folds": [
+        {
+          "allocator_conf": "expandable_segments:True",
+          "allocator_environment_variable": "PYTORCH_ALLOC_CONF",
+          "debug_stem": "44b6_0113de3b",
+          "debug_windows": 50,
+          "elapsed_seconds": 36.55068896499995,
+          "fold": 0,
+          "full_checkpoint_selection_window_upper": 693,
+          "full_train_window_upper": 6336,
+          "outer_evaluation_embryo": "6bba",
+          "outer_train_embryo": "44b6",
+          "peak_allocated_gib_by_device": [
+            6.945400238037109,
+            6.012518405914307
+          ],
+          "peak_reserved_gib_by_device": [
+            9.138671875,
+            7.5078125
+          ],
+          "projected_full_seconds": 13386.689833431232,
+          "smoke_checkpoint_selection_batches": 7,
+          "smoke_log_sha256": "d7989544aa311024ca4a277fa0d5c140f4d76fad02bb77a78e5455277cba65b9",
+          "smoke_train_iterations": 2
+        },
+        {
+          "allocator_conf": "expandable_segments:True",
+          "allocator_environment_variable": "PYTORCH_ALLOC_CONF",
+          "debug_stem": "6bba_05b6850b",
+          "debug_windows": 99,
+          "elapsed_seconds": 22.19851338600006,
+          "fold": 1,
+          "full_checkpoint_selection_window_upper": 1188,
+          "full_train_window_upper": 11484,
+          "outer_evaluation_embryo": "44b6",
+          "outer_train_embryo": "6bba",
+          "peak_allocated_gib_by_device": [
+            6.72188138961792,
+            6.012518405914307
+          ],
+          "peak_reserved_gib_by_device": [
+            9.025390625,
+            7.56640625
+          ],
+          "projected_full_seconds": 8796.160929202522,
+          "smoke_checkpoint_selection_batches": 13,
+          "smoke_log_sha256": "e73318d7040b1a48a154049c7d067de9533d85ec69c237093db0ae1408785937",
+          "smoke_train_iterations": 2
+        }
+      ],
+      "gate_limit_seconds": 43200.0,
+      "gate_passed": true,
+      "model_config_count": 1,
+      "outer_fold_count": 2,
+      "projected_all_folds_seconds": 22182.850762633752,
+      "total_booster_count": 0
+    }
+  },
+  "diagnostics": {
+    "candidate_image_readout": {
+      "diagnostic_only": true,
+      "sample_count": 199,
+      "fixed_detection_threshold": 0.99,
+      "overall": {
+        "candidate_node_recall_mean": 0.95316540157421,
+        "candidate_node_recall_micro": 0.9475239652560045,
+        "final_node_recall_mean": 0.32795546727935976,
+        "post_candidate_recall_loss_mean": 0.6252099342948504
+      },
+      "by_embryo": {
+        "44b6": {
+          "sample_count": 71,
+          "candidate_node_recall_mean": 0.9664691703226208,
+          "candidate_node_recall_micro": 0.9683616378670099,
+          "final_node_recall_mean": 0.85647336783315,
+          "post_candidate_recall_loss_mean": 0.10999580248947087,
+          "candidate_to_final_node_retention_mean": 0.7613157648065568,
+          "candidate_nodes_per_frame_median": 393.16,
+          "image_attr_qrange_median": 2579.333333333808,
+          "image_normalized_mean_median": 0.19032185312404457,
+          "image_normalized_std_median": 0.16017742271262495
+        },
+        "6bba": {
+          "sample_count": 128,
+          "candidate_node_recall_mean": 0.9457859673465758,
+          "candidate_node_recall_micro": 0.9438035378046516,
+          "final_node_recall_mean": 0.03479319431592919,
+          "post_candidate_recall_loss_mean": 0.9109927730306466,
+          "candidate_to_final_node_retention_mean": 0.011772595401753645,
+          "candidate_nodes_per_frame_median": 110.925,
+          "image_attr_qrange_median": 1415.0000000000969,
+          "image_normalized_mean_median": 0.0985663465337628,
+          "image_normalized_std_median": 0.1269115473732405
+        }
+      },
+      "connection_stage_from_prediction_manifest": {
+        "input_prediction_manifest_sha": "588f25652a86725367366d574ce76d1d768731301904fff8a51f9b9aa5bc7956",
+        "44b6": {
+          "node_count": 3043837,
+          "edge_score_count": 1617811437,
+          "edge_threshold_count": 1873469,
+          "graph_input_edge_count": 1873469,
+          "final_edge_count": 1813797,
+          "threshold_edges_per_node": 0.6154958363407764,
+          "final_edges_per_node": 0.5958916328305359
+        },
+        "6bba": {
+          "node_count": 2470231,
+          "edge_score_count": 920387045,
+          "edge_threshold_count": 12689,
+          "graph_input_edge_count": 12689,
+          "final_edge_count": 10196,
+          "threshold_edges_per_node": 0.005136766561507811,
+          "final_edges_per_node": 0.0041275492049124155
+        }
+      }
+    }
+  },
   "evidence": {
-    "kaggle": {
-      "kernel_id": null,
-      "kernel_version": null,
-      "url": null,
-      "kernel_source_ids": [],
-      "resource": null,
-      "notebook_runtime_seconds": null,
-      "internet_enabled": null
-    },
     "artifacts": {
-      "input_file_sha": null,
-      "cache_file_sha": null,
-      "feature_schema_sha": null,
-      "feature_content_sha": null,
-      "row_count": null,
-      "group_count": null,
-      "feature_count": null,
-      "raw_gzip_sha": null,
+      "cache_file_sha": "588f25652a86725367366d574ce76d1d768731301904fff8a51f9b9aa5bc7956",
       "decompressed_content_sha": null,
-      "model_manifest_sha": null,
-      "model_count": null,
-      "model_shas": {},
-      "selected_mode": null,
-      "selected_model": null,
-      "oof_prediction_sha": null,
+      "diagnostic_kernel_log_sha": "931c540b03799abee72a861a16b3f520bb1bc3c0bde6e06b71aaba215be9aba9",
+      "diagnostic_kernel_metadata_sha": "e70feb76b972d6e2d0085ce5be60901ff8af304b29c364c44cbbb7786ffc73a7",
+      "diagnostic_manifest_sha": "ce80b4a9ea753abe2c7f7bdc16758b99c5cdf3ce1fc34ece36e3be29e206c425",
+      "diagnostic_per_sample_csv_sha": "78e1063d0fca788ddaea6acbed4134d4289bd2c2584bc101ae47f2b9bd0a5e41",
+      "diagnostic_plot_sha": "40b98858be04fd0416d9b5d4153f54ea3beedb7513ea8f566873a1f04ef86f62",
+      "diagnostic_summary_sha": "a31a0b12c9334b1d534b3a65bbe4464249c1998d2f286f6522ce9f85b7e7d35e",
+      "feature_content_sha": "4d78e3c2f07aef23173f12c08e573aaf62604cc2dc42290b9a870864b8019752",
+      "feature_count": 2538198482,
+      "feature_schema_sha": "82b7ede8d9337d930118aa41108e4b99a29f01a509e491c0b4dfef0e0d2918ac",
+      "group_count": 2,
+      "input_file_sha": "69b828b745beb4179a753bf86a0754ee11ef4bfbfa80595c5dd170727de81db7",
+      "model_count": 2,
+      "model_manifest_sha": "1bd9496a5f9d659e6fb9f829a2e86db2db143fb4cb14dab4c5ab83f72f2c7a58",
+      "model_shas": {
+        "fold_0/edge_predictor_best.pth": "02e1e050d406dde11eacec8c06323047fea073031ee40f662eab6ba6b364492c",
+        "fold_1/edge_predictor_best.pth": "86fc541c8a96720bfc5591b76b938219607b1fcff0b7601e4935a02efa8eca09"
+      },
+      "oof_prediction_sha": "0e8ee93962a7ac7dcea8d88d04ccd667237fa50aaafd24254b0bcfcea0fb6d73",
+      "raw_gzip_sha": null,
+      "row_count": 199,
+      "selected_mode": "two_direction_leave_one_embryo_out",
+      "selected_model": "one internal-selection checkpoint per outer fold",
+      "source_manifest_sha": "fe4fa02c339011e995c591edf6377c75d4bfe1d2a5adc1a49dff18011c2630d7",
+      "split_sha": "f73778d5437eef9de9cd82d795c5f310d40bc5453eefb785fc3629e85f6bfb5e",
+      "submission_sha": null,
       "test_prediction_content_sha": null,
-      "submission_sha": null
-    },
-    "submission_validation": {
-      "passed": null,
-      "checked_at": null,
-      "row_count": null,
-      "id_column": null,
-      "target_columns": [],
-      "duplicate_id_count": null,
-      "missing_value_count": null,
-      "infinite_value_count": null,
-      "target_statistics": {},
-      "errors": [],
-      "fallback_rows": null,
-      "prediction_min": null,
-      "prediction_max": null,
-      "prediction_mean": null,
-      "prediction_std": null
+      "smoke_summary_sha": "d81c7e441456c28da038c17afad3f36e9a2fcb2812f49699676ca9cdfcf694b9",
+      "training_summary_sha": "7fcfd94053eea72401312bd7cc56bfc316123de2a5d7d9a10e5b3d82090af8f0",
+      "kernel_log_sha": "727cd87f8e94d19e4292992d4f9aa062310a329ea4ddc2ae1eba6ed17ce68fa6",
+      "kernel_metadata_sha": "c1821f4280ab2a3b8e37bbfefe0799f828f5a8354efdb98b2a04e837978b611b",
+      "inference_gate_sha": "8f45314fe6dccc89ac1a7976521433b693bdcd66569a65c5b6ccfd3d9c502f03",
+      "inference_summary_sha": "874dd109839ef8a4ba6fbc8fc788612fe7f690e64557d59f8d358471c3634784",
+      "official_metric_summary_sha": "4eab20e7cb7ea22dde59fdb70e10a12ee0cf21aacceadd9fba67df2592457503",
+      "per_sample_metrics_sha": "f8abd34212aa200d4dd360d7f42fb5a2f27f00210359f871684117f1de523dd1",
+      "prediction_manifest_sha": "588f25652a86725367366d574ce76d1d768731301904fff8a51f9b9aa5bc7956",
+      "remote_output_file_count": 6805
     },
     "cpu_gpu_comparison": {
       "cv_delta": null,
-      "prediction_diff_abs_mean": null,
       "prediction_diff_abs_max": null,
+      "prediction_diff_abs_mean": null,
       "prediction_diff_mean": null
     },
-    "reruns": []
+    "kaggle": {
+      "diagnostic": {
+        "kernel_id": "kentookumura/exp005-embryo-holdout-batch8-diagnostic",
+        "version": 1,
+        "id_no": 134014050,
+        "status": "completed",
+        "url": "https://www.kaggle.com/code/kentookumura/exp005-embryo-holdout-batch8-diagnostic",
+        "resource": "cpu",
+        "enable_tpu": false,
+        "internet_enabled": false,
+        "notebook_runtime_seconds": 804.7111064829999,
+        "source_kernel": "kentookumura/exp005-embryo-holdout-batch8-inference",
+        "docker_image": "gcr.io/kaggle-images/python@sha256:dafd4ce5668bbf1ad422e4c109e0f18c9623c3a7c7f48b0235f13142755c40b9"
+      },
+      "internet_enabled": false,
+      "kernel_id": "kentookumura/exp005-embryo-holdout-batch8-inference",
+      "kernel_source_ids": [
+        "kentookumura/exp005-embryo-holdout-batch8-train"
+      ],
+      "kernel_version": 1,
+      "notebook_runtime_seconds": 16625.958873677002,
+      "resource": {
+        "allocator_conf": "expandable_segments:True",
+        "allocator_environment_variable": "PYTORCH_ALLOC_CONF",
+        "gpu_names": [
+          "Tesla T4",
+          "Tesla T4"
+        ],
+        "visible_gpu_count": 2,
+        "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+        "machine_shape": "NvidiaTeslaT4"
+      },
+      "url": "https://www.kaggle.com/code/kentookumura/exp005-embryo-holdout-batch8-inference",
+      "id_no": 133957261
+    },
+    "reruns": [
+      {
+        "version": 1,
+        "status": "completed",
+        "stage": "train_completed",
+        "batch_size": 8,
+        "smoke_gate_passed": true,
+        "projected_all_folds_seconds": 22182.850762633752,
+        "notebook_runtime_seconds": 23046.864380194995,
+        "kernel_log_sha": "34113fd2928cdc8f8c4c96019686b2827384ca9eddb178b17a0a7e4d1c8ac856",
+        "training_summary_sha": "7fcfd94053eea72401312bd7cc56bfc316123de2a5d7d9a10e5b3d82090af8f0",
+        "smoke_summary_sha": "d81c7e441456c28da038c17afad3f36e9a2fcb2812f49699676ca9cdfcf694b9",
+        "split_sha": "f73778d5437eef9de9cd82d795c5f310d40bc5453eefb785fc3629e85f6bfb5e"
+      },
+      {
+        "version": 1,
+        "status": "completed",
+        "stage": "inference_completed",
+        "smoke_gate_passed": true,
+        "projected_prediction_seconds": 13011.534842423,
+        "projected_total_seconds": 17164.41855302875,
+        "notebook_runtime_seconds": 16625.958873677002,
+        "kernel_log_sha": "727cd87f8e94d19e4292992d4f9aa062310a329ea4ddc2ae1eba6ed17ce68fa6",
+        "prediction_manifest_sha": "588f25652a86725367366d574ce76d1d768731301904fff8a51f9b9aa5bc7956",
+        "oof_prediction_sha": "0e8ee93962a7ac7dcea8d88d04ccd667237fa50aaafd24254b0bcfcea0fb6d73",
+        "candidate_content_sha": "4d78e3c2f07aef23173f12c08e573aaf62604cc2dc42290b9a870864b8019752",
+        "prediction_count": 199,
+        "candidate_count": 199,
+        "remote_output_file_count": 6805,
+        "recomputed_from_saved_graphs": true,
+        "recomputed_summary_matches": true
+      }
+    ],
+    "submission_validation": {
+      "checked_at": null,
+      "duplicate_id_count": null,
+      "errors": [],
+      "fallback_rows": null,
+      "id_column": null,
+      "infinite_value_count": null,
+      "missing_value_count": null,
+      "passed": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_min": null,
+      "prediction_std": null,
+      "row_count": null,
+      "target_columns": [],
+      "target_statistics": {}
+    }
   },
-  "notes": "Implementation prepared from exp004 with only the training batch size changed from 16 to 8; no Kaggle run yet."
+  "experiment": "exp005_embryo_holdout_batch8",
+  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "notes": "All 199 embryo-held-out predictions, candidate caches, and official metric rows were saved and re-evaluated from the fixed graphs. The user closed the experiment after reviewing the result; no competition submission was created.",
+  "private_lb": null,
+  "public_lb": null,
+  "status": "completed",
+  "updated_at": "2026-09-12T01:14:07+00:00",
+  "key_idea": "batch size 8 embryo-held-out training"
 }

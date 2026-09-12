@@ -281,6 +281,37 @@ def test_inference_kernel_depends_only_on_exp005_train_kernel() -> None:
     assert kernel_sources == ["kentookumura/exp005-embryo-holdout-batch8-train"]
 
 
+def test_diagnostic_uses_fixed_inference_output_without_gpu_or_threshold_search() -> None:
+    config = load_config()
+    diagnostic = config["diagnostics"]["candidate_image_readout"]
+    runtime = config["runtime"]["kaggle"]["diagnostic"]
+    assert diagnostic["diagnostic_only"] is True
+    assert diagnostic["fixed_detection_threshold"] == 0.99
+    assert diagnostic["candidate_scope"] == "saved_post_threshold_local_maxima"
+    assert diagnostic["image_sampling"] == {
+        "frame_count": 3,
+        "spatial_stride_zyx": [4, 8, 8],
+        "deterministic": True,
+    }
+    assert runtime["enable_gpu"] is False
+    assert runtime["enable_internet"] is False
+    assert runtime["machine_shape"] is None
+    assert runtime["kernel_sources"] == ["kentookumura/exp005-embryo-holdout-batch8-inference"]
+    source = notebook_source("diagnostic")
+    assert 'find_competition_dir("train")' in source
+    assert 'find_competition_dir("test")' not in source
+    assert "DistanceMatching(max_distance=max_distance_um, scale=scale)" in source
+    assert 'candidate_cache["coords_tzyx"]' in source
+    assert 'candidate_cache["detection_probability"]' in source
+    assert "fixed_detection_threshold" in source
+    assert "detect_cells_with_scores" not in source
+    assert "load_model" not in source
+    assert "submission.csv" not in source
+    assert "competitions submit" not in source
+    assert "__file__" not in source
+    assert "TODO" not in source
+
+
 def test_candidate_recording_config_is_explicit() -> None:
     inference = load_config()["model"]["inference"]
     assert inference["det_threshold"] == 0.99
@@ -316,7 +347,7 @@ def test_numerical_stack_is_imported_after_offline_install() -> None:
 
 
 def test_notebooks_have_readable_role_sections() -> None:
-    for kind in ("train", "inference"):
+    for kind in ("train", "inference", "diagnostic"):
         source = (EXP_DIR / f"{EXPERIMENT}_{kind}.py").read_text()
         assert "# ## Contents" in source
         assert "# ## 1." in source

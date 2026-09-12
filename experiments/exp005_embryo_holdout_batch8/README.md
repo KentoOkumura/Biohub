@@ -4,8 +4,9 @@
 
 - 仮説要約: exp004のOOM原因が学習batch size 16のGPU memory要求なら、8へ下げることで2方向の胚holdout学習を完走し、全199動画の独立予測を作れる。
 - 変更点要約: exp004を親に、学習batch sizeだけを16から8へ変更する。2fold、3 epochs、model、loss、checkpoint selection、推論、候補保存、公式評価は固定する。
-- リスク: optimizer step数とminibatch構成がexp004の契約から変わり、batch size 8でもOOMまたは12時間gate超過となる可能性がある。
-- 次: 静的検証後にKaggle T4で学習し、checkpoint 2個が揃った場合だけ同じ実験の推論Notebookを実行する。
+- リスク: 2胚だけのholdoutで、胚方向のscore差が大きい。後続実験で同じ結果を繰り返し選択へ使うと開発集合になる。
+- 追加診断: `6bba`でも0.99候補は既知GT nodeの94.58%を回収したが、接続確率0.5通過edgeは候補node当たり0.00514本で、`44b6`の約120分の1だった。
+- 次: exp006とexp007の結果が揃った後に、動画単位のgroup validationと胚holdoutの役割分担を含む実験方針を更新する。
 
 ## 正の記録
 
@@ -19,6 +20,7 @@
 
 - 学習 notebook: `exp005_embryo_holdout_batch8_train.ipynb`
 - 推論 notebook: `exp005_embryo_holdout_batch8_inference.ipynb`
+- 追加診断 notebook: `exp005_embryo_holdout_batch8_diagnostic.ipynb`
 - Kaggle 準備と実行: [`SESSION_NOTES.md`](SESSION_NOTES.md)の予定を埋め、`kaggle-review-exp`と`kaggle-platform`の手順に従う
 - notebook 実行: Kaggle kernel run を正とする。ローカル実行は `--allow-local` を付けた smoke debug のみに限定する。
 

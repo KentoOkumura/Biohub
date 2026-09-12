@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from record_experiment import apply_evidence_assignments, parse_evidence_value  # noqa: E402
+from update_experiment_summary import display_cv  # noqa: E402
 
 
 def test_parse_evidence_value_preserves_types() -> None:
@@ -51,3 +52,16 @@ def test_apply_evidence_assignments_rejects_invalid_values() -> None:
             {"evidence": {"kaggle": "invalid"}},
             ["kaggle.kernel_id=owner/slug"],
         )
+
+
+def test_display_cv_extracts_overall_score_from_structured_result() -> None:
+    assert display_cv(0.42) == "0.42"
+    assert (
+        display_cv(
+            {
+                "overall": {"score": 0.12490551617521294},
+                "by_embryo": {"44b6": {"score": 0.6247928949700339}},
+            }
+        )
+        == "0.12490551617521294"
+    )

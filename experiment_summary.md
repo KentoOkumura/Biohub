@@ -12,7 +12,7 @@
 | exp002_unet3d_expandable_segments | temporal_unet3d_node_transformer | exp001_temporal_unet3d_baseline | 利用可 | - | 0.453 | - | 2026-09-11 |
 | exp003_official_metric_audit | official_metric_audit | exp002_unet3d_expandable_segments | 完了 | - | - | - | 2026-09-11 |
 | exp004_embryo_holdout_baseline | temporal_unet3d_node_transformer | exp002_unet3d_expandable_segments | 失敗 | - | - | - | 2026-09-11 |
-| exp005_embryo_holdout_batch8 | temporal_unet3d_node_transformer | exp004_embryo_holdout_baseline | 計画中 | - | - | - | 2026-09-11 |
+| exp005_embryo_holdout_batch8 | temporal_unet3d_node_transformer | exp004_embryo_holdout_baseline | 完了 | 0.12490551617521294 | - | - | 2026-09-12 |
 | exp006_embryo_holdout_seed314159 | temporal_unet3d_node_transformer | exp005_embryo_holdout_batch8 | 計画中 | - | - | - | 2026-09-11 |
 | exp007_graph_checkpoint_selection | temporal_unet3d_node_transformer | exp005_embryo_holdout_batch8 | 計画中 | - | - | - | 2026-09-11 |
 | exp008_deformation_pair_aux | temporal_unet3d_node_transformer | exp005_embryo_holdout_batch8 | 計画中 | - | - | - | 2026-09-11 |

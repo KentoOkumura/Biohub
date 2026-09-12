@@ -116,6 +116,25 @@ model:
     runtime_gate_hours: 12
     runtime_projection_multiplier: 1.25
     runtime_reserve_minutes: 15
+diagnostics:
+  candidate_image_readout:
+    diagnostic_only: true
+    prediction_source: kentookumura/exp005-embryo-holdout-batch8-inference
+    fixed_detection_threshold: 0.99
+    max_matching_distance_um: 7.0
+    candidate_scope: saved_post_threshold_local_maxima
+    compare_with: final_graph_node_recall
+    image_sampling:
+      frame_count: 3
+      spatial_stride_zyx:
+      - 4
+      - 8
+      - 8
+      deterministic: true
+    prohibitions:
+    - do_not_select_threshold_from_outer_evaluation_ground_truth
+    - do_not_treat_ground_truth_oracle_as_test_inference
+    - do_not_reconstruct_0.965_candidates_from_0.99_cache
 runtime:
   use_amp: true
   num_workers: 8
@@ -134,6 +153,12 @@ runtime:
     inference:
       kernel_sources:
       - kentookumura/exp005-embryo-holdout-batch8-train
+    diagnostic:
+      enable_gpu: false
+      enable_internet: false
+      machine_shape: null
+      kernel_sources:
+      - kentookumura/exp005-embryo-holdout-batch8-inference
     bootstrap_files:
     - official_source/SOURCE.json
     - official_source/LICENSE
