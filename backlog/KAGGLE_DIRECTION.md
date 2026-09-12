@@ -65,13 +65,13 @@
 
 ### 未着手バックログ
 
-2026-09-12に全63候補を公開検出器固定の方針で見直した後、公開モデルの選定を独立候補として追加し、現在は64件。P1は診断・特徴保存・トラッカー学習基準の準備、P2はその後の優先比較、P3は誤りと費用の証拠を要する後続、P4は再開条件が揃うまで保留とする。具体的な公開重みや教師・対照の未決事項が残るため、方針の承認を理由に候補を設計可能とはしていない。
+2026-09-12に全63候補を公開検出器固定の方針で見直した後、公開モデルの選定を独立候補として追加し、現在は64件。P1は診断・特徴保存・トラッカー学習基準の準備、P2はその後の優先比較、P3は誤りと費用の証拠を要する後続、P4は再開条件が揃うまで保留とする。公開モデルの選定調査は対象・方法・成果・制約が定義済みのため設計可能とする。重みの版や来歴はその調査で確認する事項。具体的な重みや教師・対照が設計に必要な後続候補は、それぞれの未決事項を解消してから状態を更新する。
 
 公開重み選定は[`public_detector_selection`](public_detector_selection.md)をP1先頭で扱い、具体的な版・特徴取得方法を後続へ渡す。既存トラッカーの基準推論は選定後の診断・学習比較の入力として扱う。診断・cacheの候補はトラッカー再学習の成功を待たない。`partial_edge_mask`から`sparse_det_mask`への依存を外し、同一検出器で複数トラッカーを比較できる融合案も`candidate_union`への依存を外した。検出・画像モデルの学習や未取得の領域教師が必要な原案は、代替処理へ読み替えずP4に保存する。
 
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
-| P1 | `HYP-20260910-12` | [`public_detector_selection`](public_detector_selection.md) | ベースの公開Notebook・検出重みを選定 | 保存済み公開調査、参照コード・重みの版と来歴。特徴保存・トラッカー学習の完了には依存しない。 | `検討メモ・設計不可` |
+| P1 | `HYP-20260910-12` | [`public_detector_selection`](public_detector_selection.md) | ベースの公開Notebook・検出重みを選定 | 保存済み公開調査が入口。公開コード・重みの版と来歴は本候補で確認する。特徴保存・トラッカー学習の完了には依存しない。 | `設計可能・実験化未承認` |
 | P1 | `HYP-20260910-14` | [`group_error_readout`](group_error_readout.md) | 胚・画像条件ごとの誤りを測る | [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果とexp003の公式評価器。公開基準の診断は[`public_detector_selection`](public_detector_selection.md)後に行う。自前予測の集計は選定を待たずに進められる。 | `検討メモ・設計不可` |
 | P1 | `HYP-20260910-14` | [`oracle_stage_limits`](oracle_stage_limits.md) | 検出・接続・分裂の上限を分ける | group_error_readoutと同じ対象一覧、固定重みの候補・得点・最終graph。公開基準の診断は[`public_detector_selection`](public_detector_selection.md)後の既存トラッカー推論を使い、再学習前に行う。 | `検討メモ・設計不可` |
 | P1 | `HYP-20260910-12` | [`exact_window_cache`](exact_window_cache.md) | 固定公開モデルの候補点特徴を窓ごとに保存 | [`public_detector_selection`](public_detector_selection.md)で公開重み・元の時間窓・抽出層と来歴を特定する。未加工推論との等価性・容量・読み込み費用を本候補で測る。トラッカー再学習は先行条件にしない。 | `検討メモ・設計不可` |
