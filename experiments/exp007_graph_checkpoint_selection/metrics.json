@@ -1,22 +1,73 @@
 {
   "experiment": "exp007_graph_checkpoint_selection",
-  "status": "planned",
+  "status": "running",
   "cv": null,
   "public_lb": null,
   "private_lb": null,
   "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "diagnostic_validation": {
+    "training_smoke": {
+      "active_variant_count": 1,
+      "model_config_count": 1,
+      "outer_fold_count": 2,
+      "total_booster_count": 0,
+      "control_retrained": false,
+      "projected_all_folds_seconds": 18759.232935863758,
+      "gate_limit_seconds": 41400.0,
+      "gate_passed": true,
+      "folds": [
+        {
+          "fold": 0,
+          "elapsed_seconds": 30.84502346200003,
+          "projected_full_seconds": 11296.98984295751,
+          "peak_allocated_gib_by_device": [6.936427593231201, 6.012518405914307],
+          "peak_reserved_gib_by_device": [9.11328125, 7.5078125]
+        },
+        {
+          "fold": 1,
+          "elapsed_seconds": 18.832159224999998,
+          "projected_full_seconds": 7462.24309290625,
+          "peak_allocated_gib_by_device": [6.633131504058838, 6.012518405914307],
+          "peak_reserved_gib_by_device": [8.7421875, 7.56640625]
+        }
+      ]
+    },
+    "checkpoint_selection": {
+      "fold_0": {
+        "outer_train_embryo": "44b6",
+        "outer_evaluation_embryo": "6bba",
+        "best_proxy_epoch_index": 2,
+        "best_proxy_selection_score": 0.9444172019453085,
+        "diagnostic_only": true
+      },
+      "fold_1": {
+        "outer_train_embryo": "6bba",
+        "outer_evaluation_embryo": "44b6",
+        "best_proxy_epoch_index": 2,
+        "best_proxy_selection_score": 0.9280531306263229,
+        "diagnostic_only": true
+      }
+    }
+  },
   "evidence": {
     "kaggle": {
-      "kernel_id": null,
-      "kernel_version": null,
-      "url": null,
+      "kernel_id": "kentookumura/exp007-graph-checkpoint-selection-train",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp007-graph-checkpoint-selection-train",
       "kernel_source_ids": [],
-      "resource": null,
-      "notebook_runtime_seconds": null,
-      "internet_enabled": null
+      "resource": {
+        "machine_shape": "NvidiaTeslaT4",
+        "expected_visible_gpu_count": 2,
+        "visible_gpu_count": 2,
+        "gpu_names": ["Tesla T4", "Tesla T4"],
+        "allocator_environment_variable": "PYTORCH_ALLOC_CONF",
+        "allocator_conf": "expandable_segments:True"
+      },
+      "notebook_runtime_seconds": 23633.582541708998,
+      "internet_enabled": false
     },
     "artifacts": {
-      "input_file_sha": null,
+      "input_file_sha": "69b828b745beb4179a753bf86a0754ee11ef4bfbfa80595c5dd170727de81db7",
       "cache_file_sha": null,
       "feature_schema_sha": null,
       "feature_content_sha": null,
@@ -25,14 +76,25 @@
       "feature_count": null,
       "raw_gzip_sha": null,
       "decompressed_content_sha": null,
-      "model_manifest_sha": null,
-      "model_count": null,
-      "model_shas": {},
-      "selected_mode": null,
+      "model_manifest_sha": "0c1adb728dbc173fc4084abe13354d6e0869324108427e5c9f979d14384835e6",
+      "model_count": 6,
+      "model_shas": {
+        "fold_0/epoch_0.pth": "b3d2e9de760ec8c7046fa06395f8676e4797d4ce1d40b72ccdd2a0e5c7388817",
+        "fold_0/epoch_1.pth": "358801125676df7443ec2da154d18dfb9a805264d804172d577eb3296ebc092f",
+        "fold_0/epoch_2.pth": "328ab6c9f060fbe0da4ea4744157f82af273ec1473a9c6598b3dcf8ab922adfe",
+        "fold_1/epoch_0.pth": "7b99e97411c53f8cba9ecc070cb5d6e8d3dbc513b0e5f2c2c845e346d34eb51f",
+        "fold_1/epoch_1.pth": "9e39689c17938d6f85f3af87855326a2647602aeaca5e74b08cff6cf6a89ccd0",
+        "fold_1/epoch_2.pth": "f48ebf660fd720ed98f44c7aa5338ca76104685e8b43fbf46bc87e827678e789"
+      },
+      "selected_mode": "all_epoch_checkpoints_pending_two_selector_comparison",
       "selected_model": null,
       "oof_prediction_sha": null,
       "test_prediction_content_sha": null,
-      "submission_sha": null
+      "submission_sha": null,
+      "source_manifest_sha": "fe4fa02c339011e995c591edf6377c75d4bfe1d2a5adc1a49dff18011c2630d7",
+      "split_sha": "f73778d5437eef9de9cd82d795c5f310d40bc5453eefb785fc3629e85f6bfb5e",
+      "training_summary_sha": "89e2e58bc60ea43c4e88ccfbf9ae46ddbd6579cc86718f00ba2737a105754551",
+      "kernel_log_sha": "8a2560d8d07cdebbda4615434af91817a2f34d2ca0ead2151f83377f905124b4"
     },
     "submission_validation": {
       "passed": null,
@@ -57,8 +119,60 @@
       "prediction_diff_abs_max": null,
       "prediction_diff_mean": null
     },
-    "reruns": []
+    "reruns": [
+      {
+        "version": 1,
+        "status": "completed",
+        "stage": "train",
+        "started_at": "2026-09-12T08:13:14+09:00",
+        "notebook_recorded_at": "2026-09-12T05:48:40.670307+00:00",
+        "verified_at": "2026-09-12T15:00:31+09:00",
+        "notebook_runtime_seconds": 23633.582541708998,
+        "full_training_elapsed_seconds": 23583.905359022,
+        "smoke_gate_passed": true,
+        "model_count": 6,
+        "model_manifest_sha": "0c1adb728dbc173fc4084abe13354d6e0869324108427e5c9f979d14384835e6",
+        "resource": {
+          "machine_shape": "NvidiaTeslaT4",
+          "expected_visible_gpu_count": 2,
+          "visible_gpu_count": 2,
+          "gpu_names": ["Tesla T4", "Tesla T4"]
+        },
+        "prepush_gpu_quota": {
+          "used_hours": 26.73,
+          "remaining_hours": 3.27,
+          "total_hours": 30.0,
+          "refresh_at": "2026-09-12T00:00:00Z"
+        }
+      },
+      {
+        "version": 1,
+        "status": "running",
+        "stage": "checkpoint_selection_evaluation",
+        "started_at": "2026-09-12T15:46:31+09:00",
+        "kernel_id": "kentookumura/exp007-graph-checkpoint-selection-evaluation",
+        "kernel_version": 1,
+        "url": "https://www.kaggle.com/code/kentookumura/exp007-graph-checkpoint-selection-evaluation",
+        "resource": {
+          "machine_shape": "NvidiaTeslaT4",
+          "expected_visible_gpu_count": 2,
+          "enable_gpu": true,
+          "enable_tpu": false,
+          "internet_enabled": false
+        },
+        "kernel_source_ids": [
+          "kentookumura/exp007-graph-checkpoint-selection-train"
+        ],
+        "prepush_gpu_quota": {
+          "used_hours": 0.0,
+          "remaining_hours": 30.0,
+          "total_hours": 30.0,
+          "refresh_at": "2026-09-19T00:00:00Z"
+        }
+      }
+    ]
   },
   "key_idea": "select saved epoch checkpoints with the fixed official graph metric",
-  "notes": "Migrated from backlog/graph_checkpoint.md on 2026-09-11. Implementation and execution are intentionally deferred."
+  "notes": "Kaggle train version 1 completed normally and saved six epoch checkpoints from two embryo-disjoint folds. Checkpoint selection and outer held-out evaluation version 1 are running; official CV and the experiment-level completion decision remain pending.",
+  "updated_at": "2026-09-12T06:47:06+00:00"
 }

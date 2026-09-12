@@ -16,15 +16,18 @@
 - 変更するもの: model初期化、PyTorch、DataLoaderに渡す実験seedを42から314159へ変更する。固定source内で引数なしに生成されるaugmentation用NumPy乱数は変更せず、そのため本実験をseedだけの厳密な因果比較とは扱わない。
 - 最小の反証可能な検証: 1構成、外側2fold、各3 epochsをscratchから学習し、外側評価胚の199動画を推論する。exp005と同じ公式指標を全体・胚別・動画別に比較し、prediction差と誤りの非相関性を保存する。
 - 成功条件: 2fold学習と199動画の推論が欠落なく成立し、exp005と同じ評価処理で比較できることを実行成功とする。追加seedが有用という仮説の支持には、両胚で公式指標が悪化せず、かつexp005と異なる誤りが観測されることを要求する。微小差の閾値は実測前に設定しない。
-- 停止条件: 外側評価胚の混入、split不一致、設定差がseed以外へ拡大すること、199動画の欠落、再採点不一致、学習が7時間の実行枠を超える見込み、または1Notebook 12時間制約超過があれば停止する。
+- 停止条件: 外側評価胚の混入、split不一致、設定差がseed以外へ拡大すること、199動画の欠落、再採点不一致、学習が9時間の実行枠を超える見込み、または1Notebook 12時間制約超過があれば停止する。
 - 実行しないこと: ensemble、logit融合、閾値調整、追加seedの探索、epoch数変更、親controlの再学習、hidden test推論、competition submission、Public LB取得を本実験へ含めない。
-- 未決事項: なし。seedは314159、学習上限は7時間、親との比較方法は上記で固定する。実装と実行は未承認であり開始しない。
+- 未決事項: なし。seedは314159、学習上限は9時間、親との比較方法は上記で固定する。2026-09-11に実装とKaggle実行が承認され、version 1のgate停止結果を提示後の「実行してください」により9時間gateでのversion 2再実行も承認された。
 - backlog記録から解釈を変更した箇所とユーザー承認: `N/A`。
 
 ## 判断履歴
 
 - 2026-09-11: exp005 inferenceと並行して、約7時間の第2seedフル学習を行い、後続の2-seed融合にも使える独立モデルを作る案を提示した。
 - 2026-09-11: ユーザーが3案すべての実験化を承認し、実装はまだ行わないよう指定した。seed 314159はexp005の42と重ならない固定値として契約した。
+- 2026-09-11: ユーザーの「exp006を実装してください」で、固定済み契約に従うNotebookとテストの実装を承認した。Kaggle push、実行、submissionの承認とは扱わない。
+- 2026-09-11: ユーザーの「実行してください」でKaggle train version 1の実行を承認した。2fold smokeの推定28,963.242秒が7時間gateを超え、full training前に停止した。
+- 2026-09-11: 7時間gateを9時間へ引き上げて同じ2fold・3 epochsをversion 2で実行する選択肢を提示し、ユーザーの「実行してください」で契約変更と再実行を承認した。
 
 ## 手法契約
 
@@ -47,14 +50,14 @@
 
 ## 実装方法
 
-- アプローチ: 実装時にexp005のcompact self-contained train/inference Notebookを構成参照元とし、設定seedだけを314159へ変更する。親のNotebookやsourceはこの実験化時点ではコピーしない。
+- アプローチ: exp005のself-contained train/inference Notebookを構成参照元として固定sourceと処理を移植し、設定seedだけを314159へ変更した。inferenceにはexp005の完成済みprediction bundleを読む比較セルを追加した。
 - inputの実装箇所と変換: exp005と同じ動的Zarr/GEFF列挙と、同じouter fold・内部split manifestを使う。
 - target / objectiveの構築箇所: exp005で固定した公式sourceの教師作成と損失を変更しない。
 - outputの生成箇所と表現: 実装時に`artifacts/models/`、`artifacts/predictions/`、`artifacts/candidates/`、各manifestと公式評価summaryを作る。
 - lossの実装箇所: exp005と同じ学習関数へ同じ引数を渡し、RNG seedだけ314159とする。
 - decode / postprocessの実装箇所: exp005 inferenceを変更せず、比較用prediction差の集計だけを追加する。
 - context unitを保つ処理箇所: outer splitは胚単位、学習は2時刻窓、推論・解放は動画単位を維持する。
-- 変更するファイル / component: 実装時にtrain/inferenceのJupytext sourceとNotebook、実験固有testを追加する。今回変更するのは実験契約、設定、未実装状態の記録だけである。
+- 変更するファイル / component: train/inferenceのJupytext sourceとNotebook、固定official source、実験固有test、`.ruff.toml`、設定と実装状態の記録を追加・更新した。
 - 固定事項を保つ確認方法: exp005 configとの差分が実験名、系譜、seed、実行枠、出力先だけであることをtestで固定する。
 - 参照sourceとの一致を確認するテスト: exp005のsource manifest SHA、モデル、loss、decode、split件数、閾値を照合する。
 - 承認済み差分を確認するテスト: `reproducibility.seed`と学習seedが314159、内部split seedが0、1構成・2fold・3 epochs・モデル2個であることを確認する。
@@ -71,7 +74,7 @@
 ## 再現性・リスク
 
 - 実行予定: active variant 1、model/config 1、outer fold 2、booster 0、選択済みモデル2個。親controlは再学習せず、exp005の保存済みmetrics・予測を比較対象にする。
-- 追加GPUコスト: exp005実測を根拠にtrain 6.4〜7時間を見込み、7時間gateを置く。推論は別Notebookでsmokeから12時間以内を再確認する。
+- 追加GPUコスト: exp005実測は6.40時間、exp006 version 1 smokeの保守的推定は8.05時間。version 2は9時間gateを置き、同じ2fold・3 epochsを実行する。推論は別Notebookでsmokeから12時間以内を再確認する。
 - seed policy: model、PyTorch、DataLoaderは314159、内部splitは0。処理単位ごとの乱数は実装可能な箇所でstable keyから生成する。
 - stochastic 処理の有無: random initialization、DataLoader shuffle、brightness/flip augmentation、CUDA kernelがある。
 - stochastic feature generation / augmentation / seed bagging の有無: augmentationあり、seed baggingなし。追加seedは1個だけである。
@@ -82,7 +85,7 @@
 - Kaggle package bootstrap 確認方針: 実装後のprepareとpush前validatorで正のNotebook、config、metrics、source manifestとの一致を確認する。
 - リークリスク: 外側評価胚を学習、checkpoint選択、閾値・費用選択に使わない。exp005との差を見て追加seedや設定を選ばない。
 - CV/LB 不一致リスク: 胚holdoutの結果でありPublic LBではない。LB改善を推定しない。
-- ランタイム/メモリリスク: 7時間gateを超える場合はepoch、動画数、解像度を縮小せず停止し、契約変更をユーザーへ確認する。
+- ランタイム/メモリリスク: 9時間gateを超える場合はepoch、動画数、解像度を縮小せず停止し、再度ユーザーへ確認する。
 - 再現性リスク: 親augmentationとGPU kernelがbitwise固定されないため、観測差をseedだけの効果と断定しない。
 - 手法忠実性リスク: seed以外の差が入ると比較不能になるため、config差分とsource SHAをtestで固定する。
 - 過度な縮小 / proxy化リスク: 時間超過時に1foldや短縮epochへ黙って変更しない。
@@ -92,7 +95,7 @@
 - [x] 実験化承認、親実験、seed 314159、固定事項、成功条件、停止条件、実行しないことを記録した。
 - [x] 手法契約の `input / target / output / loss / decode / context unit` が実装前に一意である。
 - [x] `config.yaml`のlineageと本書が一致し、statusは`planned`である。
-- [ ] train/inference Notebookと実験固有testを実装する。
-- [ ] `validate-exp`、`check-exp`、`test-exp`を実装後に通す。
-- [ ] Kaggle T4 2基で2fold学習と199動画推論を実行し、比較可能なSHAと公式評価を記録する。
+- [x] train/inference Notebookと実験固有testを実装する。
+- [x] `validate-exp`、`check-exp`、`test-exp`を実装後に通す。
+- [x] Kaggle T4 2基で2fold学習と199動画推論を実行し、比較可能なSHAと公式評価を記録する。
 - [ ] 実験の完了、採用、不採用は結果提示後にユーザーが判断する。

@@ -1,0 +1,224 @@
+experiment:
+  name: exp010_exp006_deterministic_replay
+  description: Make the exp006 training and held-out evaluation pipeline deterministic, then run the identical Kaggle train and inference notebooks twice and compare canonical model, prediction, and metric content hashes.
+  route: temporal_unet3d_node_transformer
+  created_at: '2026-09-12'
+lineage:
+  parent: exp006_embryo_holdout_seed314159
+  hypothesis_id: N/A
+  backlog_candidate: N/A
+  diff_summary: Replace entropy-seeded per-item augmentation with epoch-and-item keyed RNG, replace non-deterministic CUDA MaxPool3d backward with equivalent non-overlapping first-max reduction, require deterministic PyTorch/CUDA settings, record canonical hashes, and verify two identical full Kaggle reruns.
+source:
+  repository: https://github.com/royerlab/kaggle-cell-tracking-competition
+  commit: 075fc5f5a52d11077f9dc2b074644618f26939e2
+  manifest: official_source/SOURCE.json
+  license: BSD-3-Clause
+overrides:
+  project_defaults:
+  - validation.metric
+  - validation.n_folds
+  - validation.strategy
+  - validation.seed
+  - reproducibility.seed
+validation:
+  strategy: leave_one_embryo_out
+  seed: 314159
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_gradient_update_count: 64
+    expected_checkpoint_selection_count: 7
+    expected_evaluation_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_gradient_update_count: 116
+    expected_checkpoint_selection_count: 12
+    expected_evaluation_count: 71
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  n_folds: 2
+  expected_sample_count: 199
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+  checkpoint_selection_metric: edge_accuracy_times_node_recall
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  max_matching_distance_um: 7.0
+  diagnostic_only: false
+  metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  comparison_experiment: exp010_exp006_deterministic_replay
+data:
+  split_manifest_source: ../exp005_embryo_holdout_batch8/artifacts/splits.json
+  expected_frames_per_sample: 100
+  expected_image_shape:
+  - 100
+  - 64
+  - 256
+  - 256
+  require_geff_for_train: true
+  test_discovery: dynamic_zarr_enumeration
+model:
+  name: TemporalUNet3D_SimpleNodeTransformer
+  params:
+    in_channels: 1
+    unet_out_channels: 32
+    unet_layers:
+    - 32
+    - 64
+    - 128
+    gradient_checkpointing: true
+    skip_fullres_temporal: true
+    window_size: 2
+    downsample:
+    - 1
+    - 4
+    - 4
+  training:
+    seed: 314159
+    initialization: random
+    upstream_checkpoint: null
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    batch_size: 8
+    num_workers: 8
+    det_loss_weight: 1.0
+    det_neg_weight: 0.01
+    pool_kernel_um: 5.0
+    augmentations:
+    - brightness_augment
+    - flip_augment
+    checkpoint_selection: edge_accuracy_times_node_recall
+    data_parallel: true
+    deterministic_algorithms: true
+    augmentation_seed_key: [global_seed, epoch_index, dataset_item_index]
+    cudnn_deterministic: true
+    cudnn_benchmark: false
+    allow_tf32: false
+    deterministic_max_pool: non_overlapping_2x2x2_reshape_first_max
+  smoke:
+    debug_video: first_sorted_gradient_update_sample_per_outer_fold
+    epochs: 1
+    max_iters: 2
+    runtime_gate_hours: 9.25
+    runtime_projection_multiplier: 1.25
+    runtime_gate_scope: all_outer_folds
+  inference:
+    det_threshold: 0.99
+    det_tta: true
+    pool_kernel_um: 3.0
+    edge_activation: softmax
+    edge_threshold: 0.5
+    use_ilp: true
+    ilp_edge_weight: -1.0
+    ilp_appearance_weight: 0.1
+    ilp_disappearance_weight: 0.1
+    ilp_division_weight: 1.0
+    unet_batch_size: 4
+    save_detection_scores: true
+    save_all_edge_scores: true
+    save_edge_valid_mask: true
+    save_edge_threshold_mask: true
+    save_graph_input_mask: true
+    save_final_selection_mask: true
+    candidate_cache_format: npz
+    candidate_schema_version: 1
+    smoke_videos_per_fold: 1
+    runtime_gate_hours: 12
+    runtime_projection_multiplier: 1.25
+    runtime_reserve_minutes: 15
+  comparison:
+    enabled: true
+    kind: exact_replay
+    reference_experiment: exp010_exp006_deterministic_replay
+    required_full_runs: 2
+    expected_sample_count: 199
+    required_equal_fields:
+    - checkpoint_content_sha256_by_fold
+    - candidate_content_sha256
+    - oof_prediction_content_sha256
+    - per_sample_metric_content_sha256
+    - official_metric_summary_content_sha256
+    - cv
+runtime:
+  use_amp: true
+  num_workers: 8
+  batch_size: 8
+  expected_cuda_device_count: 2
+  expected_gpu_name_substring: T4
+  train_runtime_gate_hours: 9.25
+  notebook_time_limit_hours: 12
+  environment:
+    PYTORCH_ALLOC_CONF: expandable_segments:True
+    CUBLAS_WORKSPACE_CONFIG: ':4096:8'
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+    dataset_sources:
+    - thibautgoldsborough/cellmot-baseline-artifacts
+    inference:
+      kernel_sources:
+      - kentookumura/exp010-exp006-deterministic-replay-train
+    bootstrap_files:
+    - official_source/SOURCE.json
+    - official_source/LICENSE
+    - official_source/scripts/augmentations.py
+    - official_source/scripts/dataspec.py
+    - official_source/scripts/evaluate.py
+    - official_source/scripts/train_unet_transformer.py
+    - official_source/scripts/predict_unet_transformer.py
+    - official_source/src/tracking_cellmot/__init__.py
+    - official_source/src/tracking_cellmot/io.py
+    - official_source/src/tracking_cellmot/img_proc.py
+    - official_source/src/tracking_cellmot/metrics.py
+    - official_source/src/tracking_cellmot/division_metrics.py
+    - official_source/src/tracking_cellmot/models/__init__.py
+    - official_source/src/tracking_cellmot/models/temporal_unet.py
+    - official_source/src/tracking_cellmot/models/simple_node_transformer.py
+reproducibility:
+  deterministic_anchor: false
+  seed: 314159
+  seed_policy: Fixed Python, NumPy, PyTorch, and CUDA seed; deterministic epoch sampler; augmentation RNG keyed by global seed, epoch index, and stable dataset item index.
+  stochastic_components:
+  - random_initialization
+  - dataloader_shuffle
+  - brightness_augment
+  - flip_augment
+  - cuda_kernels
+  parallel_rng_policy: The main-process sampler emits epoch-and-item keys. Each worker reconstructs augmentation RNG from that key, so worker scheduling and prefetch order do not change augmentation draws.
+  deterministic_runtime:
+    torch_use_deterministic_algorithms: true
+    deterministic_debug_mode: error
+    cudnn_deterministic: true
+    cudnn_benchmark: false
+    allow_tf32: false
+    cublas_workspace_config: ':4096:8'
+  feature_sha_policy: Canonical array content SHA is computed from sorted keys, dtype,
+    shape, and contiguous bytes; NPZ file SHA is secondary because ZIP metadata can
+    vary.
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - The unchanged exp006 output is not the reference run because its augmentation RNG was entropy-seeded.
+  - deterministic_anchor remains false until two full train-and-held-out-inference runs have matching canonical hashes and CV.
+  - This establishes an evaluation anchor for this fixed Kaggle environment; it does not claim cross-version or cross-hardware identity.
+  - No ensemble, hidden-test inference, or competition submission is part of this experiment.
+notes:
+- The public checkpoint bundled in the dependency dataset is never copied or loaded.
+- PYTORCH_ALLOC_CONF is set before importing Torch, as in exp002.
+- One model is trained from scratch per outer fold; the exp005 control is not retrained.
+- The outer evaluation embryo is never used for gradient updates, checkpoint selection,
+  threshold selection, or ILP cost selection.
+- The inference notebook evaluates training data only and never creates or submits a competition submission.
+- The two authoritative reruns use byte-identical Notebook/config/source inputs; version-specific outputs are downloaded before the next version is pushed.

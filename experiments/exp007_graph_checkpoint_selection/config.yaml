@@ -1,53 +1,87 @@
 experiment:
   name: exp007_graph_checkpoint_selection
-  description: Save every epoch checkpoint from the exp005 batch-8 embryo-held-out training and compare the existing proxy selector with the fixed official graph metric on the same internal selection videos.
+  description: Save all three epoch checkpoints for each exp005 embryo-held-out fold, select them with both the existing proxy and the fixed official graph metric on the same internal videos, and compare the selected checkpoints on the outer embryos.
   route: temporal_unet3d_node_transformer
   created_at: '2026-09-11'
-
+  notebooks:
+  - train
+  - evaluation
 lineage:
   parent: exp005_embryo_holdout_batch8
   hypothesis_id: HYP-20260910-14
   backlog_candidate: graph_checkpoint
   diff_summary: Preserve exp005 training and decode, save all three epoch checkpoints per outer fold, and select between them using both the existing edge-accuracy-times-node-recall proxy and the fixed official graph metric on the same internal selection videos.
-
+source:
+  repository: https://github.com/royerlab/kaggle-cell-tracking-competition
+  commit: 075fc5f5a52d11077f9dc2b074644618f26939e2
+  manifest: official_source/SOURCE.json
+  license: BSD-3-Clause
 overrides:
   project_defaults:
   - validation.metric
   - validation.n_folds
   - validation.strategy
-
 validation:
   strategy: leave_one_embryo_out
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_gradient_update_count: 64
+    expected_checkpoint_selection_count: 7
+    expected_evaluation_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_gradient_update_count: 116
+    expected_checkpoint_selection_count: 12
+    expected_evaluation_count: 71
   internal_split_seed: 0
   internal_selection_fraction: 0.1
-  n_folds: 2
   expected_sample_count: 199
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+  checkpoint_selection_metric: edge_accuracy_times_node_recall
   reference_selector: edge_accuracy_times_node_recall
   treatment_selector: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
   selector_data: internal_checkpoint_selection_videos
-  outer_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
-  max_matching_distance_um: 7.0
+  selector_tie_break: latest_epoch
   comparison_mode: same_training_run_two_selectors
   comparison_experiment: exp005_embryo_holdout_batch8
-
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  max_matching_distance_um: 7.0
+  diagnostic_only: false
+  metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
 data:
   split_contract_source: ../exp005_embryo_holdout_batch8/config.yaml
-  test_discovery: dynamic_zarr_enumeration
   expected_frames_per_sample: 100
-
+  expected_image_shape:
+  - 100
+  - 64
+  - 256
+  - 256
+  require_geff_for_train: true
+  test_discovery: dynamic_zarr_enumeration
 model:
   name: TemporalUNet3D_SimpleNodeTransformer
   params:
     in_channels: 1
     unet_out_channels: 32
-    unet_layers: [32, 64, 128]
+    unet_layers:
+    - 32
+    - 64
+    - 128
     gradient_checkpointing: true
     skip_fullres_temporal: true
     window_size: 2
-    downsample: [1, 4, 4]
+    downsample:
+    - 1
+    - 4
+    - 4
   training:
-    seed: 42
     initialization: random
+    upstream_checkpoint: null
     epochs: 3
     optimizer: AdamW
     learning_rate: 0.0001
@@ -55,12 +89,23 @@ model:
     num_workers: 8
     det_loss_weight: 1.0
     det_neg_weight: 0.01
-    augmentations: [brightness_augment, flip_augment]
+    pool_kernel_um: 5.0
+    augmentations:
+    - brightness_augment
+    - flip_augment
+    checkpoint_selection: edge_accuracy_times_node_recall
     data_parallel: true
     save_epoch_indices: [0, 1, 2]
     selectors:
     - edge_accuracy_times_node_recall
     - official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  smoke:
+    debug_video: first_sorted_gradient_update_sample_per_outer_fold
+    epochs: 1
+    max_iters: 2
+    runtime_gate_hours: 11.5
+    runtime_projection_multiplier: 1.25
+    runtime_gate_scope: all_outer_folds
   inference:
     evaluate_unique_selected_checkpoints_only: true
     det_threshold: 0.99
@@ -74,22 +119,52 @@ model:
     ilp_disappearance_weight: 0.1
     ilp_division_weight: 1.0
     unet_batch_size: 4
-
+    save_detection_scores: true
+    save_all_edge_scores: true
+    save_edge_valid_mask: true
+    save_edge_threshold_mask: true
+    save_graph_input_mask: true
+    save_final_selection_mask: true
+    candidate_cache_format: npz
+    candidate_schema_version: 1
+    smoke_videos_per_unique_checkpoint: 1
+    runtime_gate_hours: 11.5
+    runtime_projection_multiplier: 1.25
+    runtime_reserve_minutes: 15
 runtime:
   use_amp: true
   num_workers: 8
   batch_size: 8
   expected_cuda_device_count: 2
   expected_gpu_name_substring: T4
-  train_runtime_gate_hours: 11.5
-  inference_runtime_gate_hours: 11.5
-  notebook_time_limit_hours: 12
+  environment:
+    PYTORCH_ALLOC_CONF: expandable_segments:True
   kaggle:
     enable_gpu: true
     enable_internet: false
     machine_shape: NvidiaTeslaT4
     time_limit_hours: 12
-
+    dataset_sources:
+    - thibautgoldsborough/cellmot-baseline-artifacts
+    evaluation:
+      kernel_sources:
+      - kentookumura/exp007-graph-checkpoint-selection-train
+    bootstrap_files:
+    - official_source/SOURCE.json
+    - official_source/LICENSE
+    - official_source/scripts/augmentations.py
+    - official_source/scripts/dataspec.py
+    - official_source/scripts/evaluate.py
+    - official_source/scripts/train_unet_transformer.py
+    - official_source/scripts/predict_unet_transformer.py
+    - official_source/src/tracking_cellmot/__init__.py
+    - official_source/src/tracking_cellmot/io.py
+    - official_source/src/tracking_cellmot/img_proc.py
+    - official_source/src/tracking_cellmot/metrics.py
+    - official_source/src/tracking_cellmot/division_metrics.py
+    - official_source/src/tracking_cellmot/models/__init__.py
+    - official_source/src/tracking_cellmot/models/temporal_unet.py
+    - official_source/src/tracking_cellmot/models/simple_node_transformer.py
 reproducibility:
   deterministic_anchor: false
   seed: 42
@@ -100,8 +175,12 @@ reproducibility:
   - brightness_augment
   - flip_augment
   - cuda_kernels
-  parallel_rng_policy: Use the exp005 seeded DataLoader generator; inherited unseeded local NumPy augmentation means cross-run bitwise identity is not claimed.
-  feature_sha_policy: Record canonical content SHA for checkpoint predictions and candidate arrays; file container SHA is secondary.
+  parallel_rng_policy: DataLoader order uses a seeded torch.Generator; the pinned
+    source creates a fresh NumPy default_rng inside each item, so augmentation draws
+    are not byte-deterministic.
+  feature_sha_policy: Canonical array content SHA is computed from sorted keys, dtype,
+    shape, and contiguous bytes; NPZ file SHA is secondary because ZIP metadata can
+    vary.
   record:
     kernel_version: true
     input_sha: true
@@ -112,10 +191,14 @@ reproducibility:
     test_prediction_content_sha: false
     submission_sha: false
   notes:
-  - The primary evidence is the comparison of two selectors applied to checkpoints from the same training run.
-  - The outer evaluation embryo is never used for checkpoint selection.
-
+  - Cross-run byte identity with exp005 is not claimed because the inherited NumPy augmentation is not fully seeded.
+  - The internal sample holdout is used only to select a checkpoint inside the outer
+    training embryo; official scoring is performed only on the other embryo.
 notes:
-- Planned only; implementation and Kaggle execution are intentionally deferred.
-- Active training variant count 1, model config count 1, outer fold count 2, booster count 0.
-- Six epoch checkpoints are planned; no separate control training run is added.
+- The public checkpoint bundled in the dependency dataset is never copied or loaded.
+- PYTORCH_ALLOC_CONF is set before importing Torch, as in exp002.
+- One model is trained from scratch per outer fold and all three epoch checkpoints are saved; no control run is retrained.
+- The outer evaluation embryo is never used for gradient updates, checkpoint selection, threshold selection, or ILP cost selection.
+- Internal selection predictions use all six epoch checkpoints; outer predictions run once per unique selected checkpoint.
+- The evaluation notebook evaluates training data only and never creates or submits
+  a competition submission.

@@ -1,0 +1,39 @@
+{
+  "repository": "https://github.com/royerlab/kaggle-cell-tracking-competition",
+  "commit": "075fc5f5a52d11077f9dc2b074644618f26939e2",
+  "license": "BSD-3-Clause",
+  "files": {
+    "LICENSE": "3910a8b578783928cbbf981c1b204591ab3368e70017dc695d6536f71d272796",
+    "scripts/augmentations.py": "a929e73a2d6f963f2d9dc7003d96cf7c8ff4476e33601cdc1ea92cbb6604d37b",
+    "scripts/dataspec.py": "e4486bfdacafe47919a262aa7d5ce5f95fc8efad3e1553999d1c2897befad77b",
+    "scripts/train_unet_transformer.py": "a67064076408da4fb05f1d4b7edd6fcceef0bbc0d1b6d9757747dddbda023468",
+    "scripts/predict_unet_transformer.py": "0c0f82844fa212d783bcb942a46d5b5a6cbe30a41ff08f38d22774cf0b47ff26",
+    "scripts/evaluate.py": "03ad4049530d3682c77435194e5d921981f331df3462abcde4a7156d1a57b7d3",
+    "src/tracking_cellmot/__init__.py": "f9df2098dd85934d0b0d48d477420b1f9ed20a9a55ca6294a1874b964e9166e6",
+    "src/tracking_cellmot/io.py": "efae135b088cecaab463d889f16c885ef6da3ad27b0747327d8ddc28d866b7bd",
+    "src/tracking_cellmot/img_proc.py": "00e8ef0adc8b39f1aaaa547ea6197b906bf9e8c009e339d3e95f8f8dbf31be3f",
+    "src/tracking_cellmot/metrics.py": "cfdd596e3f8909cca14db0682889738b19ff75c3808b3773175aba9367ca7444",
+    "src/tracking_cellmot/division_metrics.py": "0635c38621a38f1eb4b55a302b4a817a88e9094930dfc2dab16faeeee60f4dc9",
+    "src/tracking_cellmot/models/__init__.py": "0861b0bf0d5a574dd0d582c529b763e75c8d271f4df48df15fae3cf5b5fbb127",
+    "src/tracking_cellmot/models/temporal_unet.py": "d07a7d0d8c95c2aca9c90497c10d209a5a3004e9a068c88cfb25363cec819216",
+    "src/tracking_cellmot/models/simple_node_transformer.py": "b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e"
+  },
+  "upstream_byte_normalizations": {
+    "scripts/dataspec.py": {
+      "change": "added_final_newline",
+      "upstream_sha256": "a1454dc5feb9a794dff4e6b0a9f98a75ad69e0bb1d459911de6faa491d18c2f6"
+    }
+  },
+  "local_experiment_patches": {
+    "scripts/train_unet_transformer.py": {
+      "experiment": "exp010_exp006_deterministic_replay",
+      "base_sha256": "83e3f30a3313ea452b5072b118bfd06539302cf6886e317c542a602deb27d281",
+      "change": "augmentation RNG keyed by global seed, epoch, and stable dataset item index; deterministic epoch sampler"
+    },
+    "src/tracking_cellmot/models/temporal_unet.py": {
+      "experiment": "exp010_exp006_deterministic_replay",
+      "base_sha256": "d809c35d42f504161074ddeaaa7aee5b407e5bca7f9b4e1d5f9b2ff345666cac",
+      "change": "replace non-deterministic CUDA MaxPool3d backward with equivalent non-overlapping reshape and first-max reduction"
+    }
+  }
+}

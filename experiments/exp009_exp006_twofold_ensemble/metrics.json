@@ -1,0 +1,129 @@
+{
+  "experiment": "exp009_exp006_twofold_ensemble",
+  "status": "debug_completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp009-exp006-twofold-ensemble-inference",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp009-exp006-twofold-ensemble-inference",
+      "kernel_source_ids": [
+        "kentookumura/exp006-embryo-holdout-seed314159-train"
+      ],
+      "resource": {
+        "gpu_names": [
+          "Tesla T4",
+          "Tesla T4"
+        ],
+        "visible_gpu_count": 2,
+        "fold_devices": {
+          "fold_0": "cuda:0",
+          "fold_1": "cuda:1"
+        }
+      },
+      "notebook_runtime_seconds": 915.53444837,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": "15175596a731e172a88699aae18423986b5f8ef0270486b28609348fb18943d6",
+      "cache_file_sha": "c6eed6b34937648d91693a570cd41b28c9b2ecd1c8505a353d636fc808e60402",
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": 188460,
+      "group_count": 4,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "15175596a731e172a88699aae18423986b5f8ef0270486b28609348fb18943d6",
+      "model_count": 2,
+      "model_shas": {
+        "fold_0/edge_predictor_best.pth": "e55da03b223b5118eac154dc1b05865b996a78060b3ad2740ba5f3842fd97ba8",
+        "fold_1/edge_predictor_best.pth": "6e9cf60f956554bd54a96b7afb11089ccb0f14b13e9ff88e1b81265146ba6b52"
+      },
+      "selected_mode": "twofold_probability_mean_then_single_decode",
+      "selected_model": "exp006 folds 0 and 1, equal weights",
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": "90ee74e696747e21a5962fefb4fa9a8d51e20fdec3723275d0388f9ffb42cbb1",
+      "submission_sha": "90ee74e696747e21a5962fefb4fa9a8d51e20fdec3723275d0388f9ffb42cbb1"
+    },
+    "submission_validation": {
+      "passed": true,
+      "checked_at": "2026-09-12T08:56:26.659033+00:00",
+      "row_count": 188460,
+      "id_column": "id",
+      "target_columns": [
+        "node_id",
+        "t",
+        "z",
+        "y",
+        "x",
+        "source_id",
+        "target_id"
+      ],
+      "duplicate_id_count": 0,
+      "missing_value_count": 0,
+      "infinite_value_count": 0,
+      "target_statistics": {
+        "node_id": {
+          "min": -1.0,
+          "max": 72964.0,
+          "mean": 15186.931746789769,
+          "std": 20084.742674891917
+        },
+        "t": {
+          "min": -1.0,
+          "max": 99.0,
+          "mean": 28.67806961689483,
+          "std": 33.886944518758206
+        },
+        "z": {
+          "min": -1.0,
+          "max": 63.0,
+          "mean": 17.500201634299057,
+          "std": 20.51084681479667
+        },
+        "y": {
+          "min": -1.0,
+          "max": 252.0,
+          "mean": 71.64222116098907,
+          "std": 80.92887739007804
+        },
+        "x": {
+          "min": -1.0,
+          "max": 252.0,
+          "mean": 70.77602143690969,
+          "std": 82.07658574285385
+        },
+        "source_id": {
+          "min": -1.0,
+          "max": 72295.0,
+          "mean": 11537.237907248222,
+          "std": 18587.769924205568
+        },
+        "target_id": {
+          "min": -1.0,
+          "max": 72964.0,
+          "mean": 11761.724509179667,
+          "std": 18831.114749186167
+        }
+      },
+      "errors": [],
+      "fallback_rows": 0,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": []
+  },
+  "notes": "Kaggle inference version 1 and repository submit-check completed. The validated artifact was submitted as submission ref 56182729 and scoring is being monitored."
+}

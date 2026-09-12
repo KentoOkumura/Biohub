@@ -1,64 +1,351 @@
 {
-  "experiment": "exp006_embryo_holdout_seed314159",
-  "status": "planned",
-  "cv": null,
-  "public_lb": null,
-  "private_lb": null,
-  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "comparison": {
+    "artifact_sha256": "34a7597b958ad16d5f537777888cb5d60668b8edda5e0909f22f356dae87239c",
+    "different_graph_count": 199,
+    "error_pearson_correlation": 0.6125461826495584,
+    "error_spearman_correlation": 0.7240679729420408,
+    "overall_official_score_delta": 0.4284734260537685,
+    "reference_experiment": "exp005_embryo_holdout_batch8"
+  },
+  "cv": {
+    "by_embryo": {
+      "44b6": {
+        "adj_edge_jaccard": 0.7045717889017791,
+        "division_fn": 26,
+        "division_fp": 1,
+        "division_jaccard": 0.0,
+        "division_tp": 0,
+        "edge_jaccard": 0.7107840903913618,
+        "n": 71,
+        "n_adj": 71,
+        "node_recall": 0.9430888181451811,
+        "score": 0.7045717889017791
+      },
+      "6bba": {
+        "adj_edge_jaccard": 0.5266528013178748,
+        "division_fn": 124,
+        "division_fp": 689,
+        "division_jaccard": 0.0012285012285012285,
+        "division_tp": 1,
+        "edge_jaccard": 0.5199445606107946,
+        "n": 128,
+        "n_adj": 128,
+        "node_recall": 0.7880703766237056,
+        "score": 0.5267756514407249
+      }
+    },
+    "overall": {
+      "adj_edge_jaccard": 0.5532600361647722,
+      "division_fn": 150,
+      "division_fp": 690,
+      "division_jaccard": 0.0011890606420927466,
+      "division_tp": 1,
+      "edge_jaccard": 0.5484840226204265,
+      "n": 199,
+      "n_adj": 199,
+      "node_recall": 0.8433784637997095,
+      "score": 0.5533789422289814
+    },
+    "sample_count": 199,
+    "strategy": "leave_one_embryo_out"
+  },
+  "diagnostic_validation": {
+    "checkpoint_selection": {
+      "fold_0": {
+        "best_epoch_index": 2,
+        "best_selection_score": 0.9357,
+        "diagnostic_only": true,
+        "epochs": [
+          {
+            "detection_loss": 0.0238,
+            "edge_loss": 0.0051,
+            "epoch_index": 0,
+            "n_epochs": 3,
+            "selection_score": 0.9321,
+            "train_seconds": 2620.7,
+            "validation_edge_accuracy": 0.9991,
+            "validation_edge_loss": 0.0045,
+            "validation_node_recall": 0.933,
+            "validation_seconds": 65.1
+          },
+          {
+            "detection_loss": 0.0128,
+            "edge_loss": 0.0042,
+            "epoch_index": 1,
+            "n_epochs": 3,
+            "selection_score": 0.9355,
+            "train_seconds": 2626.1,
+            "validation_edge_accuracy": 0.9991,
+            "validation_edge_loss": 0.0035,
+            "validation_node_recall": 0.9364,
+            "validation_seconds": 64.7
+          },
+          {
+            "detection_loss": 0.011,
+            "edge_loss": 0.0019,
+            "epoch_index": 2,
+            "n_epochs": 3,
+            "selection_score": 0.9357,
+            "train_seconds": 2686.3,
+            "validation_edge_accuracy": 0.9995,
+            "validation_edge_loss": 0.0005,
+            "validation_node_recall": 0.9362,
+            "validation_seconds": 67.5
+          }
+        ],
+        "outer_evaluation_embryo": "6bba",
+        "outer_train_embryo": "44b6"
+      },
+      "fold_1": {
+        "best_epoch_index": 2,
+        "best_selection_score": 0.931,
+        "diagnostic_only": true,
+        "epochs": [
+          {
+            "detection_loss": 0.0212,
+            "edge_loss": 0.0056,
+            "epoch_index": 0,
+            "n_epochs": 3,
+            "selection_score": 0.8701,
+            "train_seconds": 4802.4,
+            "validation_edge_accuracy": 0.9991,
+            "validation_edge_loss": 0.0011,
+            "validation_node_recall": 0.8709,
+            "validation_seconds": 97.0
+          },
+          {
+            "detection_loss": 0.015,
+            "edge_loss": 0.001,
+            "epoch_index": 1,
+            "n_epochs": 3,
+            "selection_score": 0.9282,
+            "train_seconds": 4735.6,
+            "validation_edge_accuracy": 0.9996,
+            "validation_edge_loss": 0.0004,
+            "validation_node_recall": 0.9286,
+            "validation_seconds": 101.2
+          },
+          {
+            "detection_loss": 0.0136,
+            "edge_loss": 0.0006,
+            "epoch_index": 2,
+            "n_epochs": 3,
+            "selection_score": 0.931,
+            "train_seconds": 4778.8,
+            "validation_edge_accuracy": 0.9996,
+            "validation_edge_loss": 0.0005,
+            "validation_node_recall": 0.9314,
+            "validation_seconds": 96.3
+          }
+        ],
+        "outer_evaluation_embryo": "44b6",
+        "outer_train_embryo": "6bba"
+      }
+    },
+    "training_smoke": {
+      "active_variant_count": 1,
+      "control_retrained": false,
+      "folds": [
+        {
+          "allocator_conf": "expandable_segments:True",
+          "allocator_environment_variable": "PYTORCH_ALLOC_CONF",
+          "debug_stem": "44b6_0113de3b",
+          "debug_windows": 50,
+          "elapsed_seconds": 40.90858299299998,
+          "fold": 0,
+          "full_checkpoint_selection_window_upper": 693,
+          "full_train_window_upper": 6336,
+          "outer_evaluation_embryo": "6bba",
+          "outer_train_embryo": "44b6",
+          "peak_allocated_gib_by_device": [
+            7.360208511352539,
+            6.012518405914307
+          ],
+          "peak_reserved_gib_by_device": [
+            9.248046875,
+            7.5078125
+          ],
+          "projected_full_seconds": 14982.768521186244,
+          "smoke_checkpoint_selection_batches": 7,
+          "smoke_log_sha256": "8efc17c4ff5af3d91d45095dd85b6c5d33d5e979a8bed183d27983ffa0da190e",
+          "smoke_train_iterations": 2
+        },
+        {
+          "allocator_conf": "expandable_segments:True",
+          "allocator_environment_variable": "PYTORCH_ALLOC_CONF",
+          "debug_stem": "6bba_05b6850b",
+          "debug_windows": 99,
+          "elapsed_seconds": 33.586690539000074,
+          "fold": 1,
+          "full_checkpoint_selection_window_upper": 1188,
+          "full_train_window_upper": 11484,
+          "outer_evaluation_embryo": "44b6",
+          "outer_train_embryo": "6bba",
+          "peak_allocated_gib_by_device": [
+            6.953149795532227,
+            6.012518405914307
+          ],
+          "peak_reserved_gib_by_device": [
+            9.12890625,
+            7.56640625
+          ],
+          "projected_full_seconds": 13308.726126078778,
+          "smoke_checkpoint_selection_batches": 13,
+          "smoke_log_sha256": "a2ef6d42b4a09b637ff2d52bc2a66d1901a5a2b8f4945b6aec80cee808cf2c0e",
+          "smoke_train_iterations": 2
+        }
+      ],
+      "gate_limit_seconds": 32400.0,
+      "gate_passed": true,
+      "model_config_count": 1,
+      "outer_fold_count": 2,
+      "projected_all_folds_seconds": 28291.494647265023,
+      "total_booster_count": 0
+    }
+  },
   "evidence": {
-    "kaggle": {
-      "kernel_id": null,
-      "kernel_version": null,
-      "url": null,
-      "kernel_source_ids": [],
-      "resource": null,
-      "notebook_runtime_seconds": null,
-      "internet_enabled": null
-    },
     "artifacts": {
-      "input_file_sha": null,
-      "cache_file_sha": null,
-      "feature_schema_sha": null,
-      "feature_content_sha": null,
-      "row_count": null,
-      "group_count": null,
-      "feature_count": null,
-      "raw_gzip_sha": null,
+      "cache_file_sha": "234619c58e1ea4001b953eefec72cd226119650d4668c51cd523687b3d42f588",
       "decompressed_content_sha": null,
-      "model_manifest_sha": null,
-      "model_count": null,
-      "model_shas": {},
-      "selected_mode": null,
-      "selected_model": null,
-      "oof_prediction_sha": null,
+      "feature_content_sha": "a966687495916a11106fcf9c76cdccbb4e12b941f5c7e6541194acee039a8f73",
+      "feature_count": 2574870648,
+      "feature_schema_sha": "82b7ede8d9337d930118aa41108e4b99a29f01a509e491c0b4dfef0e0d2918ac",
+      "group_count": 2,
+      "input_file_sha": "69b828b745beb4179a753bf86a0754ee11ef4bfbfa80595c5dd170727de81db7",
+      "model_count": 2,
+      "model_manifest_sha": "15175596a731e172a88699aae18423986b5f8ef0270486b28609348fb18943d6",
+      "model_shas": {
+        "fold_0/edge_predictor_best.pth": "e55da03b223b5118eac154dc1b05865b996a78060b3ad2740ba5f3842fd97ba8",
+        "fold_1/edge_predictor_best.pth": "6e9cf60f956554bd54a96b7afb11089ccb0f14b13e9ff88e1b81265146ba6b52"
+      },
+      "oof_prediction_sha": "7dd985a3f3798ebf9a464ce56a54893ae64436d1769c587eb29cf35074134631",
+      "raw_gzip_sha": null,
+      "row_count": 199,
+      "seed_comparison_sha": "34a7597b958ad16d5f537777888cb5d60668b8edda5e0909f22f356dae87239c",
+      "selected_mode": "two_direction_leave_one_embryo_out",
+      "selected_model": "one internal-selection checkpoint per outer fold",
+      "source_manifest_sha": "fe4fa02c339011e995c591edf6377c75d4bfe1d2a5adc1a49dff18011c2630d7",
+      "split_sha": "f73778d5437eef9de9cd82d795c5f310d40bc5453eefb785fc3629e85f6bfb5e",
+      "submission_sha": null,
       "test_prediction_content_sha": null,
-      "submission_sha": null
-    },
-    "submission_validation": {
-      "passed": null,
-      "checked_at": null,
-      "row_count": null,
-      "id_column": null,
-      "target_columns": [],
-      "duplicate_id_count": null,
-      "missing_value_count": null,
-      "infinite_value_count": null,
-      "target_statistics": {},
-      "errors": [],
-      "fallback_rows": null,
-      "prediction_min": null,
-      "prediction_max": null,
-      "prediction_mean": null,
-      "prediction_std": null
+      "kernel_log_sha": "e9928a535dd2b36f9734a9717b5591526427a58389f554971c5bd6024738fd27",
+      "smoke_summary_sha": "995a10afe931f6c4627836fd6d6c0984ed92b0286165445cbc0600eda0231c04",
+      "kernel_metadata_sha": "8e10ee983b4887f90425aa14cfb48ecd23b225d360d4acdec5d1f9b4a665e0ca",
+      "training_summary_sha": "95c59353fe4b1423eb2c8cb91c4202cab6f3de14552e3e420c85b7d53ee94f92",
+      "inference_gate_sha": "85f6e0f46ac4eb3de408b5d437d152a85e1354c2662438bef829d551679db212",
+      "inference_summary_sha": "a1de6e010a40981a2f697cff244069f9ba3da7fcd5fc35952d1b29e543a16335",
+      "kernel_metrics_sha": "a321654ddae4134efa69126c72a639c191ccf809086790f168b569cae241bd15",
+      "official_metric_summary_sha": "748c0e0cd1d55da31cc0c72de3e971706be3207db93395d0720e35f3c2f4ce68",
+      "per_sample_metrics_sha": "532dd54fd9ae6ae544c1ca6b85704dc3aa06489000b8b6c8472df128276f00ea",
+      "prediction_manifest_sha": "234619c58e1ea4001b953eefec72cd226119650d4668c51cd523687b3d42f588"
     },
     "cpu_gpu_comparison": {
       "cv_delta": null,
-      "prediction_diff_abs_mean": null,
       "prediction_diff_abs_max": null,
+      "prediction_diff_abs_mean": null,
       "prediction_diff_mean": null
     },
-    "reruns": []
+    "kaggle": {
+      "internet_enabled": false,
+      "kernel_id": "kentookumura/exp006-embryo-holdout-seed314159-inference",
+      "kernel_source_ids": [
+        "kentookumura/exp005-embryo-holdout-batch8-inference",
+        "kentookumura/exp006-embryo-holdout-seed314159-train"
+      ],
+      "kernel_version": 1,
+      "notebook_runtime_seconds": 19032.269313987,
+      "resource": {
+        "allocator_conf": "expandable_segments:True",
+        "allocator_environment_variable": "PYTORCH_ALLOC_CONF",
+        "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+        "gpu_names": [
+          "Tesla T4",
+          "Tesla T4"
+        ],
+        "machine_shape": "NvidiaTeslaT4",
+        "visible_gpu_count": 2
+      },
+      "url": "https://www.kaggle.com/code/kentookumura/exp006-embryo-holdout-seed314159-inference",
+      "id_no": 134014258,
+      "started_at": null,
+      "quota_before_push": {
+        "checked_at": "2026-09-12T08:54:40+09:00",
+        "used_hours": 27.49,
+        "remaining_hours": 2.51,
+        "total_hours": 30.0,
+        "refresh_at": "2026-09-12T00:00:00Z"
+      },
+      "running_observed_at": "2026-09-12T08:54:40+09:00",
+      "completed_observed_at": "2026-09-12T16:13:22+09:00",
+      "status": "completed"
+    },
+    "reruns": [
+      {
+        "version": 1,
+        "status": "completed",
+        "stage": "train_gate_stopped",
+        "smoke_gate_passed": false,
+        "projected_all_folds_seconds": 28963.241848703732,
+        "gate_limit_seconds": 25200.0,
+        "notebook_runtime_seconds": 76.32827030299995,
+        "kernel_log_sha": "e6a43ec0369e6d95207bfb552512322bfde94eb245a3a5812135bdd273593676",
+        "smoke_summary_sha": "6c33c754a9dcc38b18d44c90b02712bba8deb2132ea0e6eacdad80b2bd5d7270",
+        "split_sha": "f73778d5437eef9de9cd82d795c5f310d40bc5453eefb785fc3629e85f6bfb5e"
+      },
+      {
+        "version": 2,
+        "status": "completed",
+        "stage": "train_completed",
+        "smoke_gate_passed": true,
+        "projected_all_folds_seconds": 28291.494647265023,
+        "gate_limit_seconds": 32400.0,
+        "notebook_runtime_seconds": 22940.599765302,
+        "kernel_log_sha": "d3725323796cc9cd174a51c1ee79ef9204d604ad3226b96f1c64541e2989dfe7",
+        "training_summary_sha": "95c59353fe4b1423eb2c8cb91c4202cab6f3de14552e3e420c85b7d53ee94f92",
+        "smoke_summary_sha": "995a10afe931f6c4627836fd6d6c0984ed92b0286165445cbc0600eda0231c04",
+        "split_sha": "f73778d5437eef9de9cd82d795c5f310d40bc5453eefb785fc3629e85f6bfb5e",
+        "model_manifest_sha": "15175596a731e172a88699aae18423986b5f8ef0270486b28609348fb18943d6",
+        "model_count": 2
+      },
+      {
+        "version": 1,
+        "status": "completed",
+        "stage": "inference_completed",
+        "gate_passed": true,
+        "prediction_count": 199,
+        "missing_prediction_count": 0,
+        "notebook_runtime_seconds": 19032.269313987,
+        "kernel_log_sha": "e9928a535dd2b36f9734a9717b5591526427a58389f554971c5bd6024738fd27",
+        "inference_summary_sha": "a1de6e010a40981a2f697cff244069f9ba3da7fcd5fc35952d1b29e543a16335",
+        "official_metric_summary_sha": "748c0e0cd1d55da31cc0c72de3e971706be3207db93395d0720e35f3c2f4ce68",
+        "prediction_manifest_sha": "234619c58e1ea4001b953eefec72cd226119650d4668c51cd523687b3d42f588",
+        "seed_comparison_sha": "34a7597b958ad16d5f537777888cb5d60668b8edda5e0909f22f356dae87239c"
+      }
+    ],
+    "submission_validation": {
+      "checked_at": null,
+      "duplicate_id_count": null,
+      "errors": [],
+      "fallback_rows": null,
+      "id_column": null,
+      "infinite_value_count": null,
+      "missing_value_count": null,
+      "passed": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_min": null,
+      "prediction_std": null,
+      "row_count": null,
+      "target_columns": [],
+      "target_statistics": {}
+    }
   },
+  "experiment": "exp006_embryo_holdout_seed314159",
   "key_idea": "second fixed seed for the exp005 embryo-held-out batch-8 pipeline",
-  "notes": "Experimentized on 2026-09-11. Implementation and execution are intentionally deferred."
+  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "notes": "Kaggle inference version 1 completed all 199 embryo-held-out predictions with no missing rows. Official metrics were recomputed from the saved graphs and matched. Exact prediction differences and per-video error correlations against exp005 were saved. No competition submission was created.",
+  "private_lb": null,
+  "public_lb": null,
+  "status": "debug_completed",
+  "updated_at": "2026-09-12T07:13:22+00:00"
 }

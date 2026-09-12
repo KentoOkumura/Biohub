@@ -1,15 +1,18 @@
 experiment:
   name: exp006_embryo_holdout_seed314159
-  description: Repeat the exp005 leave-one-embryo-out batch-8 pipeline with a second fixed training seed to measure prediction variability and create an independently trained model for a later, separate ensemble comparison.
+  description: Repeat the exp005 leave-one-embryo-out batch-8 pipeline with seed 314159 to measure prediction variability and support a later, separate ensemble comparison.
   route: temporal_unet3d_node_transformer
   created_at: '2026-09-11'
-
 lineage:
   parent: exp005_embryo_holdout_batch8
   hypothesis_id: N/A
   backlog_candidate: N/A
   diff_summary: Change the model, PyTorch, and DataLoader seed from 42 to 314159; preserve the data splits, model, targets, losses, three-epoch schedule, checkpoint selector, inference, decode, and official evaluation.
-
+source:
+  repository: https://github.com/royerlab/kaggle-cell-tracking-competition
+  commit: 075fc5f5a52d11077f9dc2b074644618f26939e2
+  manifest: official_source/SOURCE.json
+  license: BSD-3-Clause
 overrides:
   project_defaults:
   - validation.metric
@@ -17,36 +20,65 @@ overrides:
   - validation.strategy
   - validation.seed
   - reproducibility.seed
-
 validation:
   strategy: leave_one_embryo_out
   seed: 314159
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_gradient_update_count: 64
+    expected_checkpoint_selection_count: 7
+    expected_evaluation_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_gradient_update_count: 116
+    expected_checkpoint_selection_count: 12
+    expected_evaluation_count: 71
   internal_split_seed: 0
+  internal_selection_fraction: 0.1
   n_folds: 2
   expected_sample_count: 199
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
   checkpoint_selection_metric: edge_accuracy_times_node_recall
-  metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
   max_matching_distance_um: 7.0
+  diagnostic_only: false
+  metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
   comparison_experiment: exp005_embryo_holdout_batch8
-
 data:
   split_manifest_source: ../exp005_embryo_holdout_batch8/artifacts/splits.json
-  test_discovery: dynamic_zarr_enumeration
   expected_frames_per_sample: 100
-
+  expected_image_shape:
+  - 100
+  - 64
+  - 256
+  - 256
+  require_geff_for_train: true
+  test_discovery: dynamic_zarr_enumeration
 model:
   name: TemporalUNet3D_SimpleNodeTransformer
   params:
     in_channels: 1
     unet_out_channels: 32
-    unet_layers: [32, 64, 128]
+    unet_layers:
+    - 32
+    - 64
+    - 128
     gradient_checkpointing: true
     skip_fullres_temporal: true
     window_size: 2
-    downsample: [1, 4, 4]
+    downsample:
+    - 1
+    - 4
+    - 4
   training:
     seed: 314159
     initialization: random
+    upstream_checkpoint: null
     epochs: 3
     optimizer: AdamW
     learning_rate: 0.0001
@@ -54,9 +86,19 @@ model:
     num_workers: 8
     det_loss_weight: 1.0
     det_neg_weight: 0.01
-    augmentations: [brightness_augment, flip_augment]
+    pool_kernel_um: 5.0
+    augmentations:
+    - brightness_augment
+    - flip_augment
     checkpoint_selection: edge_accuracy_times_node_recall
     data_parallel: true
+  smoke:
+    debug_video: first_sorted_gradient_update_sample_per_outer_fold
+    epochs: 1
+    max_iters: 2
+    runtime_gate_hours: 9
+    runtime_projection_multiplier: 1.25
+    runtime_gate_scope: all_outer_folds
   inference:
     det_threshold: 0.99
     det_tta: true
@@ -69,21 +111,63 @@ model:
     ilp_disappearance_weight: 0.1
     ilp_division_weight: 1.0
     unet_batch_size: 4
-
+    save_detection_scores: true
+    save_all_edge_scores: true
+    save_edge_valid_mask: true
+    save_edge_threshold_mask: true
+    save_graph_input_mask: true
+    save_final_selection_mask: true
+    candidate_cache_format: npz
+    candidate_schema_version: 1
+    smoke_videos_per_fold: 1
+    runtime_gate_hours: 12
+    runtime_projection_multiplier: 1.25
+    runtime_reserve_minutes: 15
+  comparison:
+    enabled: true
+    reference_experiment: exp005_embryo_holdout_batch8
+    expected_sample_count: 199
+    score_error_definition: one_minus_per_sample_official_score
+    detection_matching: exact_tzyx_coordinate
+    selected_edge_matching: exact_source_and_target_tzyx_coordinates
+    artifact: artifacts/seed_comparison.json
 runtime:
   use_amp: true
   num_workers: 8
   batch_size: 8
   expected_cuda_device_count: 2
   expected_gpu_name_substring: T4
-  train_runtime_gate_hours: 7.0
+  train_runtime_gate_hours: 9
   notebook_time_limit_hours: 12
+  environment:
+    PYTORCH_ALLOC_CONF: expandable_segments:True
   kaggle:
     enable_gpu: true
     enable_internet: false
     machine_shape: NvidiaTeslaT4
     time_limit_hours: 12
-
+    dataset_sources:
+    - thibautgoldsborough/cellmot-baseline-artifacts
+    inference:
+      kernel_sources:
+      - kentookumura/exp006-embryo-holdout-seed314159-train
+      - kentookumura/exp005-embryo-holdout-batch8-inference
+    bootstrap_files:
+    - official_source/SOURCE.json
+    - official_source/LICENSE
+    - official_source/scripts/augmentations.py
+    - official_source/scripts/dataspec.py
+    - official_source/scripts/evaluate.py
+    - official_source/scripts/train_unet_transformer.py
+    - official_source/scripts/predict_unet_transformer.py
+    - official_source/src/tracking_cellmot/__init__.py
+    - official_source/src/tracking_cellmot/io.py
+    - official_source/src/tracking_cellmot/img_proc.py
+    - official_source/src/tracking_cellmot/metrics.py
+    - official_source/src/tracking_cellmot/division_metrics.py
+    - official_source/src/tracking_cellmot/models/__init__.py
+    - official_source/src/tracking_cellmot/models/temporal_unet.py
+    - official_source/src/tracking_cellmot/models/simple_node_transformer.py
 reproducibility:
   deterministic_anchor: false
   seed: 314159
@@ -94,8 +178,12 @@ reproducibility:
   - brightness_augment
   - flip_augment
   - cuda_kernels
-  parallel_rng_policy: DataLoader order uses a seeded torch.Generator; inherited augmentation code may create unseeded local NumPy generators, so the run is not treated as bitwise deterministic.
-  feature_sha_policy: Canonical array content SHA uses sorted keys, dtype, shape, and contiguous bytes; NPZ file SHA is secondary.
+  parallel_rng_policy: DataLoader order uses a seeded torch.Generator; the pinned
+    source creates a fresh NumPy default_rng inside each item, so augmentation draws
+    are not byte-deterministic.
+  feature_sha_policy: Canonical array content SHA is computed from sorted keys, dtype,
+    shape, and contiguous bytes; NPZ file SHA is secondary because ZIP metadata can
+    vary.
   record:
     kernel_version: true
     input_sha: true
@@ -107,9 +195,13 @@ reproducibility:
     submission_sha: false
   notes:
   - This experiment measures one independent rerun under seed 314159; it does not identify a population-level seed effect.
+  - The inherited augmentation code and CUDA kernels prevent a bitwise deterministic claim.
   - No ensemble or submission is part of this experiment.
-
 notes:
-- Planned only; implementation and Kaggle execution are intentionally deferred.
-- Active variant count 1, model config count 1, outer fold count 2, booster count 0.
-- The exp005 saved run is the control reference and is not retrained.
+- The public checkpoint bundled in the dependency dataset is never copied or loaded.
+- PYTORCH_ALLOC_CONF is set before importing Torch, as in exp002.
+- One model is trained from scratch per outer fold; the exp005 control is not retrained.
+- The outer evaluation embryo is never used for gradient updates, checkpoint selection,
+  threshold selection, or ILP cost selection.
+- The inference notebook evaluates training data only and never creates or submits
+  a competition submission.
