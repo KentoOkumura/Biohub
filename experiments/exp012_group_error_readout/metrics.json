@@ -1,66 +1,83 @@
 {
-  "experiment": "exp012_group_error_readout",
-  "status": "scaffold_completed",
   "cv": null,
-  "public_lb": null,
-  "private_lb": null,
-  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "diagnostics": {
+    "group_error_readout": {
+      "boundary_feature_complete": true,
+      "diagnostic_only": true,
+      "group_summary_count": 34,
+      "paired_comparison_count": 17,
+      "route_count": 2,
+      "sample_count_per_route": 199
+    }
+  },
   "evidence": {
-    "kaggle": {
-      "kernel_id": null,
-      "kernel_version": null,
-      "url": null,
-      "kernel_source_ids": [],
-      "resource": null,
-      "notebook_runtime_seconds": null,
-      "internet_enabled": null
-    },
     "artifacts": {
-      "input_file_sha": null,
       "cache_file_sha": null,
-      "feature_schema_sha": null,
-      "feature_content_sha": null,
-      "row_count": null,
-      "group_count": null,
-      "feature_count": null,
-      "raw_gzip_sha": null,
       "decompressed_content_sha": null,
+      "feature_content_sha": "11dc792242dca26290be6a6734b322b0bfa9238f395b1a56d5d179f84e6b7041",
+      "feature_count": null,
+      "feature_schema_sha": "bcf18caba9b306c5d24d2ea40bd83b287d494c03c31f76637c56016d47319bad",
+      "group_count": 34,
+      "group_error_summary_csv_sha256": "9d81c758d1d86661aa80fa7731c5c9b77b318156cbc8b1dbc4ff7ad95521ef46",
+      "group_error_summary_json_sha256": "c822bc11ca87921f41b79142e0a97d9613adb931ce05704aa18442625a15a9f2",
+      "input_file_sha": "60f94976768dec455cb6b382ebbebba3a98e5d911441f20e7d2a88591a08ff82",
+      "model_count": 0,
       "model_manifest_sha": null,
-      "model_count": null,
       "model_shas": {},
-      "selected_mode": null,
-      "selected_model": null,
       "oof_prediction_sha": null,
-      "test_prediction_content_sha": null,
-      "submission_sha": null
-    },
-    "submission_validation": {
-      "passed": null,
-      "checked_at": null,
-      "row_count": null,
-      "id_column": null,
-      "target_columns": [],
-      "duplicate_id_count": null,
-      "missing_value_count": null,
-      "infinite_value_count": null,
-      "target_statistics": {},
-      "errors": [],
-      "fallback_rows": null,
-      "prediction_min": null,
-      "prediction_max": null,
-      "prediction_mean": null,
-      "prediction_std": null
+      "paired_route_comparison_sha256": "3a6fa2a768290a8cfb3c6c961ede08af6a2a72381b07fe48f50d1c228b91dd50",
+      "per_sample_readout_sha256": "11dc792242dca26290be6a6734b322b0bfa9238f395b1a56d5d179f84e6b7041",
+      "raw_gzip_sha": null,
+      "readout_manifest_sha": "426bb70cda78488ef5a058926a602df9584f766914deec318d8752bc3ac93fec",
+      "row_count": 398,
+      "selected_mode": "saved_prediction_group_diagnostic",
+      "selected_model": null,
+      "submission_sha": null,
+      "test_prediction_content_sha": null
     },
     "cpu_gpu_comparison": {
       "cv_delta": null,
-      "prediction_diff_abs_mean": null,
       "prediction_diff_abs_max": null,
+      "prediction_diff_abs_mean": null,
       "prediction_diff_mean": null
     },
-    "reruns": []
+    "kaggle": {
+      "internet_enabled": false,
+      "kernel_id": "kentookumura/exp012-group-error-readout-diagnostic",
+      "kernel_source_ids": [
+        "kentookumura/exp005-embryo-holdout-batch8-inference",
+        "kentookumura/exp006-embryo-holdout-seed314159-inference",
+        "kentookumura/exp005-embryo-holdout-batch8-diagnostic"
+      ],
+      "kernel_version": 1,
+      "notebook_runtime_seconds": 717.0571287970001,
+      "resource": "cpu",
+      "url": "https://www.kaggle.com/code/kentookumura/exp012-group-error-readout-diagnostic"
+    },
+    "reruns": [],
+    "submission_validation": {
+      "checked_at": null,
+      "duplicate_id_count": null,
+      "errors": [],
+      "fallback_rows": null,
+      "id_column": null,
+      "infinite_value_count": null,
+      "missing_value_count": null,
+      "passed": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_min": null,
+      "prediction_std": null,
+      "row_count": null,
+      "target_columns": [],
+      "target_statistics": {}
+    }
   },
-  "diagnostics": {
-    "group_error_readout": null
-  },
-  "notes": "Implementation only; authoritative Kaggle diagnostic has not run."
+  "experiment": "exp012_group_error_readout",
+  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "notes": "User closed exp012 on 2026-09-13 after the Kaggle CPU diagnostic achieved full coverage; results feed oracle_stage_limits.",
+  "private_lb": null,
+  "public_lb": null,
+  "status": "completed",
+  "updated_at": "2026-09-12T23:48:27.115824+00:00"
 }

@@ -6,9 +6,9 @@ exp005・exp006 の固定した胚 holdout 予測を、胚・画像輝度・候�
 
 ## 現在の作業
 
-- 作業内容: backlog 契約を exp012 へ移行し、CPU diagnostic Notebook と実験固有 test を実装する。
-- ブロック要因: Kaggle 実行前の実装にはなし。正式な条件別結果には kernel source 上の candidate cache が必要。
-- 次: 静的検証後、Kaggle CPU diagnostic の push 前に resource / quota を確認する。
+- 作業内容: ユーザー判断により exp012 を `completed` として閉じる。
+- ブロック要因: なし。
+- 次: [`oracle_stage_limits`](../../backlog/oracle_stage_limits.md)へ悪化 16 件の条件別・段階別診断を引き継ぐ。
 
 ## GPU 学習コスト確認
 
@@ -30,17 +30,19 @@ exp005・exp006 の固定した胚 holdout 予測を、胚・画像輝度・候�
 - 2026-09-13: `kaggle-strategy` の移行手順に従い、上位仮説 ID と候補名の移行後に未着手行と候補詳細を削除し、`HYP-20260910-14` と依存候補を exp012 参照へ更新した。`make check-strategy-docs` は合格した。
 - 2026-09-13T08:06:42+09:00: push 前に再度 `make validate-exp`、`make check-exp`、`make test-exp`、`make prepare-kaggle-notebooks` を実行し、strict validation、lint、format、8 test、package 再生成がすべて成功した。
 - 2026-09-13T08:06:42+09:00: 生成済み metadata で `enable_gpu=false`、`enable_tpu=false`、`enable_internet=false`、`run_on_push=true` を確認した。実行資源は CPU、GPU 残時間は対象外、private Notebook の push を許可できると判断した。
+- 2026-09-13: `make push-kaggle-notebook EXP=exp012_group_error_readout NOTEBOOK=diagnostic` で version 1 を push した。
+- 2026-09-13: 最初の live SSE は Kaggle API の 500 で終了した。同じ kernel ID を pull して ID 134126983 と metadata を確認し、再接続後の log で正常完了を確認した。別 slug への再 push は行っていない。
+- 2026-09-13: `make kaggle-output` で出力を取得し、5 成果物、398 行、34 group、17 paired comparison、717.057 秒、入力・出力 SHA を確認した。
+- 2026-09-13: Kaggle 生成の `metrics.json` と `artifacts/readout_v1/` を実験へ反映し、`make record-exp` で kernel version、URL、resource、実行時間を記録した。
+- 2026-09-13: ユーザー「exp012は閉じてください」により、診断目的の達成を確認して `make record-exp STATUS=completed` で status を確定した。
 
-### 予定
+### 正式実行
 
-```bash
-make validate-exp EXP=exp012_group_error_readout
-make check-exp EXP=exp012_group_error_readout
-make test-exp EXP=exp012_group_error_readout
-make prepare-kaggle-notebooks EXP=exp012_group_error_readout EXTRA_ARGS="--notebook diagnostic --run-on-push"
-```
-
-Kaggle push は `kaggle-platform` の runtime resource / quota 確認後に行う。competition submission は予定に含めない。
+- private kernel: `kentookumura/exp012-group-error-readout-diagnostic` version 1。
+- Kaggle kernel ID: 134126983。
+- resource: CPU、internet 無効。Notebook 実行時間 717.057 秒。
+- 出力: 398 行、34 group、17 paired comparison。failure 0、NaN 0。
+- competition submission は行っていない。
 
 ## 変更点
 
@@ -52,5 +54,5 @@ Kaggle push は `kaggle-platform` の runtime resource / quota 確認後に行�
 
 ## 次のアクション
 
-1. Kaggle CPU diagnostic の実行前に quota と Active Sessions を確認する。
-2. 実行結果を `metrics.json` と `result.md` へ記録し、ユーザーへ採否・完了判断を求める。
+1. `oracle_stage_limits`で、悪化 16 件を輝度・候補密度などの exp012 条件別に分けて、検出候補・接続候補・分裂候補・最終選択のどこで失敗したか集計する。
+2. exp012 自体は再実行せず、固定済み生成物と SHA を後続診断の入力にする。
