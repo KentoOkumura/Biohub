@@ -1,0 +1,132 @@
+{
+  "schema_version": 1,
+  "checked_at_utc": "2026-09-12T13:51:47Z",
+  "selection_state": "adopted",
+  "adoption": {
+    "decided_at": "2026-09-12",
+    "user_message": "採用でいいです"
+  },
+  "reference_notebook": {
+    "kernel_ref": "reyhanksatria/biohub-cell-tracking-0-946-lb",
+    "url": "https://www.kaggle.com/code/reyhanksatria/biohub-cell-tracking-0-946-lb",
+    "title": "Biohub Cell Tracking: 0.946 LB",
+    "kernel_id_no": 133199516,
+    "last_run_time_utc_from_list": "2026-09-12T13:37:40.710000",
+    "retrieved_notebook_sha256": "ae8e01a262211045161984e469e8be23e3386bab9140fe12df503dc6a1e010e6",
+    "version_pin": "kernel_id_no=133199516;sha256=ae8e01a262211045161984e469e8be23e3386bab9140fe12df503dc6a1e010e6",
+    "version_note": "Kaggle CLI 2.2.4 does not expose a kernel version number in pulled metadata; the kernel id, retrieval timestamp, and content SHA identify the inspected source.",
+    "claimed_public_lb": 0.946,
+    "score_evidence": "Notebook title, narrative, and internal verified_public_lb_0946 receipt; the current Kaggle Public Score field was not independently retrieved.",
+    "code_license": "not_declared_in_pulled_kernel_metadata_or_notebook_source",
+    "reuse_condition": "Use as a configuration and behavior reference or as a Kaggle-hosted public notebook. Do not copy its notebook-only patches into this repository until their code license is confirmed."
+  },
+  "canonical_public_artifacts": [
+    {
+      "role": "primary_detector_image_encoder_and_tracker_initialization",
+      "dataset_ref": "pilkwang/biohub-tracking-support-pack-50ep-v1",
+      "url": "https://www.kaggle.com/datasets/pilkwang/biohub-tracking-support-pack-50ep-v1",
+      "current_dataset_version": 10,
+      "last_updated_utc": "2026-07-08T22:42:12.497Z",
+      "version_note": "Upload UNET graph 400ep snapshot.",
+      "license": "CC0-1.0",
+      "artifact_manifest_sha256": "bc20f1f04cfb682af3b27a836ce9a57f44a2fe27508dc59039200b2a23188103",
+      "checkpoint_path": "weights/unet_transformer/split_0/edge_predictor_best.pth",
+      "checkpoint_sha256": "12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771",
+      "checkpoint_bytes": 8363159,
+      "model_family": "TemporalUNet3D + SimpleNodeTransformer",
+      "window_size": 2,
+      "downsample_zyx": [1, 4, 4],
+      "unet_output_channels": 32,
+      "training_provenance": "The dataset version note and artifact name identify a 400-epoch snapshot, but the manifest does not record the best epoch, training split, seed, or independent-validation status. Treat evaluation provenance as unknown."
+    },
+    {
+      "role": "secondary_detector_image_encoder_and_frozen_tracker_branch",
+      "dataset_ref": "pilkwang/biohub-temporal-unet3d-seed314159-v1",
+      "url": "https://www.kaggle.com/datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1",
+      "current_dataset_version": 2,
+      "last_updated_utc": "2026-07-20T08:26:25.767Z",
+      "version_note": "TemporalUNet3D seed 314159 epoch 400 snapshot best score 0.9779747766",
+      "license": "CC0-1.0",
+      "artifact_manifest_sha256": "7f01c0b2f9491606a1b543339e072230e25317d9c70fb9a18aea59e002a995eb",
+      "checkpoint_path": "weights/unet_transformer/split_0/edge_predictor_best.pth",
+      "checkpoint_sha256": "9bac2fa0dadc4a6fc1899e0caf187f4b553e0a7cd90ba1261a68b35ffe9e305f",
+      "checkpoint_bytes": 8363159,
+      "model_family": "TemporalUNet3D + SimpleNodeTransformer",
+      "window_size": 2,
+      "downsample_zyx": [1, 4, 4],
+      "unet_output_channels": 32,
+      "training_provenance": {
+        "method": "unet_transformer_alltrain_seed314159_v1",
+        "base_seed": 314159,
+        "snapshot_epoch": 400,
+        "best_epoch": 381,
+        "best_score_internal": 0.9779747766406395,
+        "train_datasets": 199,
+        "validation_datasets": 40,
+        "deterministic": false,
+        "independent_validation": false
+      }
+    },
+    {
+      "role": "auxiliary_deepcenter_repair_gate_only",
+      "dataset_ref": "pilkwang/biohub-deepcenter-unet3d-center-prior-v1",
+      "url": "https://www.kaggle.com/datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1",
+      "current_dataset_version": 5,
+      "last_updated_utc": "2026-07-07T11:53:58.670Z",
+      "version_note": "DeepCenterUNet3D center prior ep0500 snapshot",
+      "license": "CC0-1.0",
+      "artifact_manifest_sha256": "3bfe97304e9bbc3b3481a095392a1e83937315325bac8b987eb527d2951b96f3",
+      "checkpoint_path": "weights/full_frame_center/best.pt",
+      "checkpoint_sha256": "8040999a92f6b7bbd98fa8cf458141e045c0f9ad7c936bdb3b18e1f7edafe2a0",
+      "checkpoint_bytes": 37876911,
+      "model_family": "DeepCenterUNet3D",
+      "best_epoch": 2,
+      "snapshot_last_epoch": 500,
+      "normalization": "per-frame percentiles 50.0 and 99.5, clipped to [-0.5, 6.0]",
+      "training_provenance": "Sparse GEFF centroids rendered as Gaussian center heatmaps with a positive-unlabeled weighted BCE objective and a fixed random 10% validation split. This model is a conservative repair gate, not the selected primary detector."
+    }
+  ],
+  "pipeline_contract": {
+    "input": "Two consecutive 3D image frames from the same movie, read with z/y/x stride 1/4/4.",
+    "normalization": "Use Zarr image_statistics quantiles 0.001 and 0.999 for the whole movie and clamp normalized values below at zero.",
+    "candidate_detection": "Run the primary and secondary TemporalUNet3D branches on the same two-frame window, align and average eight D4 detection-logit views, calibrate the secondary logit scale, blend secondary detection logits with weight 0.80, and detect pooled local maxima above probability 0.965.",
+    "primary_candidate_feature": "At each candidate coordinate on the downsampled grid, integer-index the 32-channel primary TemporalUNet3D output after inverse-transforming and averaging the same eight D4 feature maps.",
+    "secondary_candidate_feature": "At each candidate coordinate, integer-index the 32-channel secondary TemporalUNet3D output from the original spatial view. The selected 0.946 source does not average secondary association features.",
+    "tracker_input": "For each branch, concatenate its 32-channel candidate image feature with the 32-dimensional window-relative positional encoding. SimpleNodeTransformer also scores every source-target pair with the relative z/y/x displacement.",
+    "tracker_control": "Use the two SimpleNodeTransformer branches embedded in the primary and secondary checkpoints, combine forward and reverse association probabilities by the notebook's harmonic mutual-support rule, retain the secondary branch only on low-margin primary agreements, and pass candidates to the existing ILP and graph-repair pipeline.",
+    "downstream_training_recommendation": "Initialize the trainable primary SimpleNodeTransformer from the primary checkpoint. Freeze the primary TemporalUNet3D and detection head, the complete secondary branch, and DeepCenter. Keep the selected detector candidates, feature extraction, secondary contribution, ILP, and repair settings fixed so the first comparison changes only the primary tracker weights.",
+    "existing_tracker_loss_to_audit": "The public training source applies focal-weighted binary cross entropy after a source-axis softmax on pairs touching an annotated source or target. The next experiment must audit teacher matching and the sparse-label mask before training.",
+    "decode": "Use the selected notebook's edge candidate threshold, ILP, motion relinking, gap repair, division repair, short-track filtering, and DeepCenter veto unchanged for the first baseline comparison."
+  },
+  "resource_and_validation_limits": {
+    "notebook_resource": "NvidiaTeslaT4",
+    "comparable_public_runtime_evidence": "Prior saved survey observed roughly 30-40 minute public-page runtimes for related inference notebooks; selected hidden-test runtime was not measured in this experiment.",
+    "full_inference_executed": false,
+    "detector_or_tracker_training_executed": false,
+    "public_lb_reproduced": false,
+    "independent_cv_available": false
+  },
+  "alternatives_not_selected_for_initial_control": [
+    {
+      "kernel_ref": "sjlee101/biohub-lf-dctta-v020",
+      "retrieved_notebook_sha256": "7129370737acb810fc8aa1dc0b515e782571ad61f9cc0b689d777f2c257fb012",
+      "reason": "Adds secondary association-feature TTA and DeepCenter TTA without independently retrieved current Public LB evidence; keep as a later controlled variant."
+    },
+    {
+      "kernel_ref": "flexonafft/biohub-lineage-forge-precision-tracking",
+      "retrieved_notebook_sha256": "f1c7d777e5c41a937ce4b679f65f2e0d5795aec411e1cccda99487a86b06dbb2",
+      "reason": "Useful parent implementation, but the retrieved current Public Score field was unavailable and the 0.946 notebook provides a more explicit single-change progression."
+    },
+    {
+      "kernel_ref": "redoctopusk/biohub-942tta",
+      "retrieved_notebook_sha256": "521cb97f0f457643379a51b60c4f71e3f4cc7d1823fd98cbb97633ffaa515ec4",
+      "reason": "Close reference implementation, but its score is an upstream report and the selected notebook pins the later 0.946 configuration more explicitly."
+    }
+  ],
+  "unresolved_before_adoption": [
+    "User approval of this recommended selection.",
+    "Notebook-only patch license if code is to be copied outside Kaggle rather than used as a configuration reference.",
+    "Small Kaggle run confirming that the original Pilkwang datasets materialize the same three checkpoint SHAs under the selected notebook behavior.",
+    "Measured candidate count, candidate-feature storage size, feature equivalence, and end-to-end hidden-test runtime."
+  ]
+}

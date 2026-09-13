@@ -630,7 +630,7 @@ exp002のfull training所要時間の既存予測は約10.10hだが、これはs
 
 <a id="exact_window_cache"></a>
 
-**[exact_window_cache](../../backlog/exact_window_cache.md)** — 同一条件の特徴を再利用
+**[exact_window_cache](../../experiments/exp014_exact_window_cache/)** — 同一条件の特徴を再利用
 
 - 確認結果: 時間attentionにより特徴は窓に依存する。64立方×32ch×float16は1frame16MiB、199動画99個の2frame窓なら約615.7GiB。
 - 最初の比較案: 同じ重み・全入力窓・前処理・変形・padding・精度をkeyにし、動画内の窓単位で限定再利用する。全候補の特徴を一括保存しない。

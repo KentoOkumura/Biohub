@@ -14,7 +14,7 @@
 - 優先度の理由: ユーザーが明示した公開検出器固定・トラッカー学習の基準を確立する中心候補。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI12、検証候補56（同節の5項目目）。
-- 先行条件 / 依存: 採用済みの[exp011](../experiments/exp011_public_detector_selection/)のprimary `SimpleNodeTransformer`初期値と公開基準予測、exact_window_cacheの等価性と費用、初期診断。
+- 先行条件 / 依存: 採用済みの[exp011](../experiments/exp011_public_detector_selection/)のprimary `SimpleNodeTransformer`初期値と公開基準予測、[exp014](../experiments/exp014_exact_window_cache/)で確認したcache等価性と費用、初期診断。
 
 ## 2026-09-12の方針反映
 
@@ -26,7 +26,7 @@
 
 - 実測済みの事実: この候補の学習時間と精度改善は未測定。公開コードの構成と特徴の窓依存性は[公開Notebook調査](../docs/surveys/biohub-public-baselines_20260910.md)、[先行調査](../docs/surveys/biohub-backlog-readiness_20260910.md#frozen_image_encoder)、[公式コードの確認](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03)を参照する。
 - 根拠ファイル / 一次資料: 元の仮説は[計算量の仮説](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)、[元記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI12。過去の自前学習は[exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)と[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)を補助参照する。
-- 利用する保存済み生成物とSHA: 公開重み・版・feature contract・primary tracker初期値は[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)を正とする。固定候補・特徴・公開基準予測は未生成であり、取得時にSHAを記録する。
+- 利用する保存済み生成物とSHA: 公開重み・版・feature contract・primary tracker初期値は[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)を正とする。public testの固定候補・特徴・公開基準予測とSHAは[exp014のmetrics](../experiments/exp014_exact_window_cache/metrics.json)を正とする。train cacheは未生成であり、取得時に対象一覧とSHAを記録する。
 - 仮定: Assumption: 公開モデルの固定特徴に接続・分裂を識別する情報が残り、下流学習だけで基準を改善できる。画像側の逆伝播を省き、同一特徴を再利用することで比較回数を増やせる可能性がある。最終推論の高速化や改善幅は保証しない。
 
 ## この候補が直接検証する仮説と範囲
@@ -36,7 +36,7 @@
 - 仮説が正しい場合に期待する観測: 検出結果を変えず、両胚別の接続・分裂と公式combined scoreに改善が残る。初回特徴抽出を含めた総費用と、特徴を再利用する次回学習の費用を分けて示す。
 - 仮説を棄却する観測: 固定特徴で識別できず学習後も改善しない、候補の組合せや読み込みが費用を支配して予算内で比較できない。来歴不明のスコア上昇は独立評価での改善の証拠にはしない。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: [特徴保存の等価性](exact_window_cache.md)、[親候補の制限](sparse_motion_graph.md)、後続の接続・分裂モデルでの改善と全件推論費用。P4候補の実行を必須にはしない。
+- 上位仮説の判断に残る検証: public testの特徴保存等価性は[exp014](../experiments/exp014_exact_window_cache/)で確認済み。[親候補の制限](sparse_motion_graph.md)、train全件cacheの費用、後続の接続・分裂モデルでの改善と全件推論費用が残る。P4候補の実行を必須にはしない。
 
 ## 入力・予測対象・出力・推論方法
 
@@ -52,12 +52,12 @@
 
 - 変更するもの: 同じ公開検出器下でprimary `SimpleNodeTransformer`を公開checkpointから初期化して学習する。初回は既存の下流構造を維持し、公開の既存trackerと学習後trackerを比較する。scratch初期値や別構造は同時に加えない。
 - 固定するもの: 公開検出器・画像特徴抽出器の重みと統計、候補生成、画像前処理、時間窓、復号と評価対象。optimizerから画像側を除外し、特徴抽出は勾配を保持しない。
-- 再利用するコード / config / 生成物: 選定公開モデルの基準推論と学習コード、exact_window_cacheの候補点特徴、exp003の公式評価照合。exp002の設定を公開モデルの設定とみなさない。
+- 再利用するコード / config / 生成物: 選定公開モデルの基準推論と学習コード、[exp014](../experiments/exp014_exact_window_cache/)の候補点特徴cacheとschema、exp003の公式評価照合。exp002の設定を公開モデルの設定とみなさない。
 - 新しく作るもの: 下流だけの学習、教師対応と未知状態の診断、学習前後の比較、費用と公開重み不変の記録。
 
 ## 最小の反証可能な検証
 
-- 検証方法: 公開版・来歴と教師対応を確定し、小規模な同一窓で直接抽出と保存特徴の得点を照合する。短い学習で画像側の重み・統計が変わらず下流だけが更新されることを確認し、費用が成立した場合に対象を広げて学習前後を公式評価する。
+- 検証方法: exp014と同じwindow identity・schema・model SHAでtrain cacheを作り、対象一覧と内容SHAを確認する。短い学習で画像側の重み・統計が変わらず下流だけが更新されることを確認し、費用が成立した場合に対象を広げて学習前後を公式評価する。
 - variant / config / fold / booster数: 初回は同じ公開検出器で既存トラッカーと下流学習後を比較する。公開checkpointの来歴に応じて評価の独立性を表示し、両胚別に報告する。学習量は小規模実測後に決め、追加seedや全層学習の比較を必須にしない。
 - control再学習: 公開の既存トラッカーを初回の基準とし、検出器は再学習しない。後続の学習変更では同条件の学習済みトラッカーを対照に使い、必要な再学習も下流部分だけとする。
 - 想定runtime / resource: 未実測。Kaggle Notebookのみ、週30時間のGPU枠と実行時残量に従う。初回抽出、読み込み、下流学習、公式評価、全件推論を別計上する。固定特徴でも候補数の増加で時間・メモリが大きくなる場合はsparse_motion_graphで回収率と費用を診断する。

@@ -1,0 +1,180 @@
+{
+  "experiment": "exp013_public_notebook_replay",
+  "status": "debug_completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp013-public-notebook-replay-inference",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp013-public-notebook-replay-inference",
+      "kernel_source_ids": [
+        133199516
+      ],
+      "resource": "NvidiaTeslaT4_x2",
+      "notebook_runtime_seconds": null,
+      "internet_enabled": false,
+      "docker_image_sha256": "37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461"
+    },
+    "artifacts": {
+      "input_file_sha": "e1767a58f7eee45178e6919640f08d3bcf5165f6b4ea3aa9480a846301441b2f",
+      "cache_file_sha": "ca86436f16a97b056b4dd13841ffcf6c2fa9e37717ba8185e1728f6e84f15381",
+      "feature_schema_sha": null,
+      "feature_content_sha": "303de241f08ae1d3456c84f344e074146844c868d7b0ad66a96d20745602dcc4",
+      "row_count": 241282,
+      "group_count": 4,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": 3,
+      "model_shas": {
+        "deepcenter": "8040999a92f6b7bbd98fa8cf458141e045c0f9ad7c936bdb3b18e1f7edafe2a0",
+        "primary": "12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771",
+        "secondary": "9bac2fa0dadc4a6fc1899e0caf187f4b553e0a7cd90ba1261a68b35ffe9e305f"
+      },
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": "0319ba6d8e864335d3573f6b1a6227c546f17e9247a0c2858fa09b6c2422db3f",
+      "submission_sha": "0319ba6d8e864335d3573f6b1a6227c546f17e9247a0c2858fa09b6c2422db3f"
+    },
+    "submission_validation": {
+      "passed": true,
+      "checked_at": "2026-09-13T05:19:03.670051+00:00",
+      "row_count": 241282,
+      "id_column": "id",
+      "target_columns": [
+        "node_id",
+        "t",
+        "z",
+        "y",
+        "x",
+        "source_id",
+        "target_id"
+      ],
+      "duplicate_id_count": 0,
+      "missing_value_count": 0,
+      "infinite_value_count": 0,
+      "target_statistics": {
+        "node_id": {
+          "min": -1.0,
+          "max": 76864.0,
+          "mean": 14060.53665834998,
+          "std": 20639.112229770075
+        },
+        "t": {
+          "min": -1.0,
+          "max": 99.0,
+          "mean": 24.05984698402699,
+          "std": 31.91906093928916
+        },
+        "z": {
+          "min": -1.0,
+          "max": 63.0,
+          "mean": 15.558504156961563,
+          "std": 20.69015956021849
+        },
+        "y": {
+          "min": -1.0,
+          "max": 254.0,
+          "mean": 61.771375403055345,
+          "std": 78.47539377353621
+        },
+        "x": {
+          "min": -1.0,
+          "max": 254.0,
+          "mean": 64.30348306131415,
+          "std": 81.71012920398864
+        },
+        "source_id": {
+          "min": -1.0,
+          "max": 76864.0,
+          "mean": 13476.897157682712,
+          "std": 20310.361997213913
+        },
+        "target_id": {
+          "min": -1.0,
+          "max": 76864.0,
+          "mean": 13750.331301133114,
+          "std": 20557.324866494186
+        }
+      },
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [
+      {
+        "kernel_version": 1,
+        "resource": "NvidiaTeslaT4_x2",
+        "docker_image_sha256": "37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+        "prediction_seconds_observed": 559.07967877388,
+        "notebook_runtime_seconds": null,
+        "notebook_runtime_note": "Kaggle CLI did not expose exact full Notebook runtime; push-to-output wall interval was approximately 25 minutes.",
+        "gpu_quota_delta_hours_observed": 0.81,
+        "input_manifest_sha256": "e1767a58f7eee45178e6919640f08d3bcf5165f6b4ea3aa9480a846301441b2f",
+        "candidate_coordinate_content_sha256": "303de241f08ae1d3456c84f344e074146844c868d7b0ad66a96d20745602dcc4",
+        "graph_topology_sha256": "5289d4bcfa24be048ace1a20d9793b4d77e9664bfd53a517c9d808e3b3b774aa",
+        "retention_guard_content_sha256": "5f464040aa918984cae38bc2bc9ca5ad2082558e3fbb3dece012aa381f2ff003",
+        "deterministic_run_statistics_sha256": "9e6d89c1b95c60a0bbe4029e5863c72e9b72a6e2995791f219768dd8b974e73a",
+        "submission_rows": 241282,
+        "submission_sha256": "0319ba6d8e864335d3573f6b1a6227c546f17e9247a0c2858fa09b6c2422db3f",
+        "receipt_content_sha256": "5a9f8a400685d0d1f0ea010365f1dfa96c9115777cb344bfcfc49b6e374e5611",
+        "raw_receipt_sha256": "5054345fa5c3d6515eaffe37b4eb581b626fc4d0af5e276d4cc22024587442d2"
+      },
+      {
+        "kernel_version": 2,
+        "resource": "NvidiaTeslaT4_x2",
+        "docker_image_sha256": "37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+        "prediction_seconds_observed": 546.079577922821,
+        "notebook_runtime_seconds": null,
+        "notebook_runtime_note": "Kaggle CLI did not expose exact full Notebook runtime; push-to-output wall interval was approximately 37 minutes.",
+        "gpu_quota_delta_hours_observed": 1.23,
+        "input_manifest_sha256": "e1767a58f7eee45178e6919640f08d3bcf5165f6b4ea3aa9480a846301441b2f",
+        "candidate_coordinate_content_sha256": "303de241f08ae1d3456c84f344e074146844c868d7b0ad66a96d20745602dcc4",
+        "graph_topology_sha256": "5289d4bcfa24be048ace1a20d9793b4d77e9664bfd53a517c9d808e3b3b774aa",
+        "retention_guard_content_sha256": "5f464040aa918984cae38bc2bc9ca5ad2082558e3fbb3dece012aa381f2ff003",
+        "deterministic_run_statistics_sha256": "9e6d89c1b95c60a0bbe4029e5863c72e9b72a6e2995791f219768dd8b974e73a",
+        "submission_rows": 241282,
+        "submission_sha256": "0319ba6d8e864335d3573f6b1a6227c546f17e9247a0c2858fa09b6c2422db3f",
+        "receipt_content_sha256": "a94561b4d75ac27af41ebbdadf9b66007cdf23f541d8ee79a0b4eeaef311fe17",
+        "raw_receipt_sha256": "527bb9a4008299ad61fd8a7505aea1fe4bf95004394af5fc9cdced5e69601669"
+      }
+    ],
+    "replay_comparison": {
+      "report_path": "artifacts/replay_comparison.json",
+      "report_sha256": "781da5cb37fd8921bc4f63208190bec0612142dfc91871b912180b4bcf2a3304",
+      "byte_identical_to_reference": true,
+      "matched_field_count": 13,
+      "mismatches": [],
+      "receipt_hash_difference_expected": true,
+      "receipt_hash_difference_reason": "The receipt includes observed prediction_seconds, which is intentionally excluded from deterministic comparison."
+    },
+    "submission": {
+      "ref": 56199738,
+      "kernel_id": "kentookumura/exp013-public-notebook-replay-inference",
+      "kernel_version": 2,
+      "output_file": "submission.csv",
+      "message": "exp013_public_notebook_replay_v2",
+      "submitted_at": "2026-09-13T05:20:43.280000Z",
+      "status": "pending",
+      "public_score": null,
+      "private_score": null
+    }
+  },
+  "notes": "Kaggle private Notebook version 1/2は成功し、raw submissionを含む13比較項目が一致した。code submission ref 56199738は採点待ち。",
+  "updated_at": "2026-09-13T05:28:13.190092+00:00",
+  "key_idea": "固定した公開Notebookとcanonical artifactを同じKaggle T4環境で2回clean実行し、公開test全件の候補座標・graph topology・決定的run統計・submission.csvの再実行一致を検証する。"
+}

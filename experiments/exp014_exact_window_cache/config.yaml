@@ -1,0 +1,136 @@
+experiment:
+  name: exp014_exact_window_cache
+  description: "固定公開モデルの2-frame window候補点特徴を可逆に保存し、下流score・graphの等価性と再利用費用を測る"
+  route: public_notebook_replay
+  created_at: "2026-09-13"
+  notebooks:
+    - inference
+
+lineage:
+  parent: exp013_public_notebook_replay
+  hypothesis_id: HYP-20260910-12
+  backlog_candidate: exact_window_cache
+  diff_summary: "primary/secondary候補点特徴と対応情報をwindow単位のNPZへ保存・再読込し、scoreと最終graphの完全一致および費用を記録する"
+
+validation:
+  method: public_test_full_cache_round_trip
+  repeats: 1
+  cache_round_trip_exact: true
+  edge_logits_exact: true
+  require_identical_candidate_coordinates: true
+  require_identical_graph_topology: true
+  expected_graph_topology_sha256: 5289d4bcfa24be048ace1a20d9793b4d77e9664bfd53a517c9d808e3b3b774aa
+  expected_submission_sha256: 0319ba6d8e864335d3573f6b1a6227c546f17e9247a0c2858fa09b6c2422db3f
+
+cache:
+  format: numpy_npz_uncompressed
+  schema_version: 1
+  unit: original_two_frame_window
+  preserve_dtype: true
+  feature_channels: 32
+  arrays:
+    - candidate_ids_src
+    - candidate_ids_tgt
+    - coords_src_grid
+    - coords_tgt_grid
+    - coords_src_physical
+    - coords_tgt_physical
+    - detection_scores_src
+    - detection_scores_tgt
+    - position_features_src
+    - position_features_tgt
+    - candidate_mask_src
+    - candidate_mask_tgt
+    - primary_features_src
+    - primary_features_tgt
+    - secondary_features_src
+    - secondary_features_tgt
+
+data:
+  test_source: competition_runtime
+  enumerate_test_datasets: sorted_dynamic
+  canonical_artifacts:
+    - ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+      version: 10
+      manifest_sha256: bc20f1f04cfb682af3b27a836ce9a57f44a2fe27508dc59039200b2a23188103
+    - ref: pilkwang/biohub-temporal-unet3d-seed314159-v1
+      version: 2
+      manifest_sha256: 7f01c0b2f9491606a1b543339e072230e25317d9c70fb9a18aea59e002a995eb
+    - ref: pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      version: 5
+      manifest_sha256: 3bfe97304e9bbc3b3481a095392a1e83937315325bac8b987eb527d2951b96f3
+
+model:
+  name: public_temporal_unet3d_tracker_bundle
+  manifest: assets/public_detector_selection.json
+  selection_state: adopted
+  checkpoint_sha256:
+    primary: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+    secondary: 9bac2fa0dadc4a6fc1899e0caf187f4b553e0a7cd90ba1261a68b35ffe9e305f
+    deepcenter: 8040999a92f6b7bbd98fa8cf458141e045c0f9ad7c936bdb3b18e1f7edafe2a0
+  params:
+    change_prediction_parameters: false
+
+source:
+  reference_kernel: reyhanksatria/biohub-cell-tracking-0-947-lb
+  reference_kernel_id_no: 133199516
+  reference_notebook_sha256: ae8e01a262211045161984e469e8be23e3386bab9140fe12df503dc6a1e010e6
+  baseline_experiment: exp013_public_notebook_replay
+  preserved_at: assets/reference_notebook/biohub-cell-tracking-0-947-lb.ipynb
+  allowed_changes:
+    - canonical_dataset_paths
+    - replay_input_manifest
+    - replay_output_receipt
+    - exact_window_cache_round_trip
+    - notebook_cell_structure
+
+runtime:
+  execution: kaggle_public_test_full_cache_round_trip
+  kaggle_notebook_run: true
+  use_amp: true
+  num_workers: 2
+  kaggle:
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_explicit_random_sampling
+  stochastic_components:
+    - cuda_kernels_not_forced_deterministic
+    - scip_solver_implementation
+    - two_process_gpu_sharding
+  parallel_rng_policy: no_explicit_rng_sorted_dataset_shards
+  feature_sha_policy: canonical_array_schema_and_content_sha
+  compare:
+    repeats: 1
+    require_same:
+      - cache_arrays_before_after_round_trip
+      - primary_edge_logits
+      - secondary_edge_logits
+      - candidate_coordinates_vs_exp013
+      - graph_topology_vs_exp013
+      - submission_vs_exp013
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: true
+    submission_sha: true
+  notes:
+    - "exp013の同一Kaggle T4構成2-run一致をbaselineにし、本実験はcache挿入前後とbaselineの一致を1回のfull runで確認する。"
+    - "NPZ file SHAだけでなく、配列名・dtype・shape・bytesから計算したcanonical content SHAを主証拠にする。"
+
+notes:
+  - "本実験は等価性と費用の検証であり、精度改善を主張しない。"
+  - "Kaggle submissionは行わない。"

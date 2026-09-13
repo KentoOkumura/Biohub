@@ -1,0 +1,6 @@
+extend = "../../pyproject.toml"
+extend-exclude = [
+    "assets",
+    # Exact public-notebook derivative; semantic fidelity is tested separately.
+    "exp014_exact_window_cache_inference.py",
+]

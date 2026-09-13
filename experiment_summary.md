@@ -17,8 +17,10 @@
 | exp007_graph_checkpoint_selection | temporal_unet3d_node_transformer | exp005_embryo_holdout_batch8 | 破棄 | - | - | - | 2026-09-12 |
 | exp008_deformation_pair_aux | temporal_unet3d_node_transformer | exp005_embryo_holdout_batch8 | 計画中 | - | - | - | 2026-09-11 |
 | exp009_exp006_twofold_ensemble | temporal_unet3d_twofold_probability_ensemble | exp006_embryo_holdout_seed314159 | デバッグ完了 | - | 0.693 | - | 2026-09-12 |
-| exp010_exp006_deterministic_replay | temporal_unet3d_node_transformer | exp006_embryo_holdout_seed314159 | 計画中 | - | - | - | 2026-09-12 |
+| exp010_exp006_deterministic_replay | temporal_unet3d_node_transformer | exp006_embryo_holdout_seed314159 | 破棄 | 0.4981248954847012 | - | - | 2026-09-13 |
 | exp011_public_detector_selection | public_detector_selection | N/A | 利用可 | - | - | - | 2026-09-12 |
 | exp012_group_error_readout | group_error_diagnostic | exp011_public_detector_selection | 完了 | - | - | - | 2026-09-12 |
+| exp013_public_notebook_replay | public_notebook_replay | exp011_public_detector_selection | デバッグ完了 | - | - | - | 2026-09-13 |
+| exp014_exact_window_cache | public_notebook_replay | exp013_public_notebook_replay | 利用可 | - | - | - | 2026-09-13 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->

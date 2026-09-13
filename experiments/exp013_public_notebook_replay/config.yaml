@@ -1,0 +1,111 @@
+experiment:
+  name: exp013_public_notebook_replay
+  description: "採用公開Notebookをcanonical artifactとT4 2基で2回full inferenceし、候補座標・graph・submissionの再実行一致を検査する"
+  route: public_notebook_replay
+  created_at: "2026-09-13"
+  notebooks:
+    - inference
+
+lineage:
+  parent: exp011_public_detector_selection
+  hypothesis_id: HYP-20260910-12
+  backlog_candidate: public_notebook_replay
+  diff_summary: "作者mirrorをcanonical datasetへ置き換え、入力・wheel・中間座標・graph・submissionのSHA記録と2 run比較を追加する"
+
+validation:
+  method: public_test_full_replay
+  repeats: 2
+  require_byte_identical_submission: true
+  require_identical_candidate_coordinates: true
+  require_identical_graph_topology: true
+
+data:
+  test_source: competition_runtime
+  enumerate_test_datasets: sorted_dynamic
+  canonical_artifacts:
+    - ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+      version: 10
+      manifest_sha256: bc20f1f04cfb682af3b27a836ce9a57f44a2fe27508dc59039200b2a23188103
+    - ref: pilkwang/biohub-temporal-unet3d-seed314159-v1
+      version: 2
+      manifest_sha256: 7f01c0b2f9491606a1b543339e072230e25317d9c70fb9a18aea59e002a995eb
+    - ref: pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      version: 5
+      manifest_sha256: 3bfe97304e9bbc3b3481a095392a1e83937315325bac8b987eb527d2951b96f3
+
+model:
+  name: public_temporal_unet3d_tracker_bundle
+  manifest: assets/public_detector_selection.json
+  selection_state: adopted
+  checkpoint_sha256:
+    primary: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+    secondary: 9bac2fa0dadc4a6fc1899e0caf187f4b553e0a7cd90ba1261a68b35ffe9e305f
+    deepcenter: 8040999a92f6b7bbd98fa8cf458141e045c0f9ad7c936bdb3b18e1f7edafe2a0
+  params:
+    change_prediction_parameters: false
+
+source:
+  reference_kernel: reyhanksatria/biohub-cell-tracking-0-947-lb
+  reference_kernel_id_no: 133199516
+  reference_notebook_sha256: ae8e01a262211045161984e469e8be23e3386bab9140fe12df503dc6a1e010e6
+  retrieved_title: "Biohub Cell Tracking: 0.947 LB"
+  code_title: "Biohub Cell Tracking: 0.946 LB"
+  preserved_at: assets/reference_notebook/biohub-cell-tracking-0-947-lb.ipynb
+  allowed_changes:
+    - canonical_dataset_paths
+    - replay_input_manifest
+    - replay_output_receipt
+    - notebook_cell_structure
+
+runtime:
+  execution: kaggle_public_test_full_inference_replay
+  kaggle_notebook_run: true
+  use_amp: true
+  num_workers: 2
+  batch_size: null
+  kaggle:
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_explicit_random_sampling
+  stochastic_components:
+    - cuda_kernels_not_forced_deterministic
+    - scip_solver_implementation
+    - two_process_gpu_sharding
+  parallel_rng_policy: no_explicit_rng_sorted_dataset_shards
+  feature_sha_policy: candidate_coordinate_content_sha
+  compare:
+    repeats: 2
+    require_same:
+      - source_manifest
+      - input_manifest
+      - wheel_manifest
+      - candidate_coordinates
+      - graph_topology
+      - deterministic_run_statistics
+      - submission
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: true
+    submission_sha: true
+  notes:
+    - "元sourceのdeterministic flagsは変更せず、同じT4 2基・docker imageで2 runの実測一致を確認する。"
+    - "2 run一致前はdeterministic anchorとして扱わない。"
+
+notes:
+  - "公開Notebookの0.946/0.947は作者の表示・receiptであり、本実験の実測Public LBではない。"
+  - "Kaggle submissionは別途の明示承認後だけ行う。"
