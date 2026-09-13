@@ -1,38 +1,107 @@
 {
   "experiment": "exp010_exp006_deterministic_replay",
-  "status": "planned",
-  "cv": null,
+  "status": "discarded",
+  "cv": {
+    "by_embryo": {
+      "44b6": {
+        "adj_edge_jaccard": 0.5995244748984676,
+        "division_fn": 26,
+        "division_fp": 2,
+        "division_jaccard": 0.0,
+        "division_tp": 0,
+        "edge_jaccard": 0.5916693694111106,
+        "n": 71,
+        "n_adj": 71,
+        "node_recall": 0.8225515997398989,
+        "score": 0.5995244748984676
+      },
+      "6bba": {
+        "adj_edge_jaccard": 0.47968902514294864,
+        "division_fn": 124,
+        "division_fp": 429,
+        "division_jaccard": 0.0018050541516245488,
+        "division_tp": 1,
+        "edge_jaccard": 0.46677886177507105,
+        "n": 128,
+        "n_adj": 128,
+        "node_recall": 0.6814241078080715,
+        "score": 0.4798695305581111
+      }
+    },
+    "overall": {
+      "adj_edge_jaccard": 0.49795307417885926,
+      "division_fn": 150,
+      "division_fp": 431,
+      "division_jaccard": 0.001718213058419244,
+      "division_tp": 1,
+      "edge_jaccard": 0.4858133491512019,
+      "n": 199,
+      "n_adj": 199,
+      "node_recall": 0.7317761275425426,
+      "score": 0.4981248954847012
+    },
+    "sample_count": 199,
+    "strategy": "leave_one_embryo_out"
+  },
   "public_lb": null,
   "private_lb": null,
   "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
   "evidence": {
     "kaggle": {
-      "kernel_id": null,
-      "kernel_version": null,
-      "url": null,
-      "kernel_source_ids": [],
-      "resource": null,
-      "notebook_runtime_seconds": null,
-      "internet_enabled": null
+      "kernel_id": "kentookumura/exp010-exp006-deterministic-replay-inference",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp010-exp006-deterministic-replay-inference",
+      "kernel_source_ids": [
+        "kentookumura/exp010-exp006-deterministic-replay-train"
+      ],
+      "resource": {
+        "deterministic_algorithms": true,
+        "gpu_names": [
+          "Tesla T4",
+          "Tesla T4"
+        ],
+        "runtime_environment": {
+          "CUBLAS_WORKSPACE_CONFIG": ":4096:8",
+          "PYTORCH_ALLOC_CONF": "expandable_segments:True"
+        },
+        "visible_gpu_count": 2
+      },
+      "notebook_runtime_seconds": 22557.636648239997,
+      "internet_enabled": false
     },
     "artifacts": {
-      "input_file_sha": null,
-      "cache_file_sha": null,
-      "feature_schema_sha": null,
-      "feature_content_sha": null,
-      "row_count": null,
-      "group_count": null,
-      "feature_count": null,
+      "input_file_sha": "366efb653f083d60b91793ae789075faf2cb176ff924dbcc78e082309750a5fb",
+      "cache_file_sha": "52cb3fb5cbf7b6502cecc5c705c0701eaa00772523d0cae1708e3fd03fc24602",
+      "feature_schema_sha": "82b7ede8d9337d930118aa41108e4b99a29f01a509e491c0b4dfef0e0d2918ac",
+      "feature_content_sha": "065469446e1fdef67b1d1f2265270695171ca57222ebc93a2102d692a2d25fd2",
+      "row_count": 199,
+      "group_count": 2,
+      "feature_count": 2246591452,
       "raw_gzip_sha": null,
       "decompressed_content_sha": null,
-      "model_manifest_sha": null,
-      "model_count": null,
-      "model_shas": {},
-      "selected_mode": null,
-      "selected_model": null,
-      "oof_prediction_sha": null,
+      "model_manifest_sha": "fcb5c15685cfde2443c4a9f051a851b22c55a3400d7484922259ca4d64c77d7e",
+      "model_count": 2,
+      "model_shas": {
+        "fold_0/edge_predictor_best.pth": "ac5762df7fb94d709ce8b0bab873d48123b5d0b5722253db2cf84e7e5f5a73f3",
+        "fold_1/edge_predictor_best.pth": "a0329bc2a83793a6e2d0282b0f7bec01e43a204b442f27bb15cca49971e5b10a"
+      },
+      "model_content_shas": {
+        "fold_0/edge_predictor_best.pth": "928c1dadb2c58d314cc9f18812999bb500dbe2b2fa5de51da5f859096cff37b3",
+        "fold_1/edge_predictor_best.pth": "a47225407f9643b842098eaeb282682c49178f2cc2b5f3d061ff85420e0e7ef1"
+      },
+      "selected_mode": "deterministic_two_direction_leave_one_embryo_out",
+      "selected_model": "one internal-selection checkpoint per outer fold",
+      "oof_prediction_sha": "ef5eed1c0a8834f7e9c80644bd99f9c672e85fe9043546e23d184662bdf48c0e",
       "test_prediction_content_sha": null,
-      "submission_sha": null
+      "submission_sha": null,
+      "candidate_content_sha": "065469446e1fdef67b1d1f2265270695171ca57222ebc93a2102d692a2d25fd2",
+      "config_sha": "4639dd3f449daab1f9fd07d47e3e9fdff0b8beff7c82238009043e4e0a9e34bf",
+      "source_manifest_sha": "9851c02ac716223ff2e7888cb0a4049d0aedaf4997e8d0ec6d0b372beedc866c",
+      "split_sha": "f73778d5437eef9de9cd82d795c5f310d40bc5453eefb785fc3629e85f6bfb5e",
+      "official_metric_summary_content_sha": "f7fa91a250a0a32e22baae08b32a94597a966c1d283d828625edb4214f141a41",
+      "per_sample_metric_content_sha": "1bcbdf166010ee605b5655ecbc56051120ae0cb1623e2d5d9f7575ff1560e86a",
+      "training_summary_file_sha": "4a819722429cc4c373cf08c36d4ab498347dbc266461724b1517c0c6cfaa8830",
+      "inference_summary_file_sha": "0beab1245f5ea50f6c946bf39969c9fa49610819efe521089f6240d430cf8389"
     },
     "submission_validation": {
       "passed": null,
@@ -57,7 +126,33 @@
       "prediction_diff_abs_max": null,
       "prediction_diff_mean": null
     },
-    "reruns": []
+    "reruns": [
+      {
+        "run": 1,
+        "stage": "train_completed",
+        "kernel_id": "kentookumura/exp010-exp006-deterministic-replay-train",
+        "kernel_version": 3,
+        "notebook_runtime_seconds": 36712.660,
+        "training_seconds": 36627.947,
+        "model_manifest_sha": "fcb5c15685cfde2443c4a9f051a851b22c55a3400d7484922259ca4d64c77d7e",
+        "training_summary_file_sha": "4a819722429cc4c373cf08c36d4ab498347dbc266461724b1517c0c6cfaa8830"
+      },
+      {
+        "run": 1,
+        "stage": "inference_completed",
+        "kernel_id": "kentookumura/exp010-exp006-deterministic-replay-inference",
+        "kernel_version": 1,
+        "notebook_runtime_seconds": 22557.636648239997,
+        "prediction_count": 199,
+        "candidate_content_sha": "065469446e1fdef67b1d1f2265270695171ca57222ebc93a2102d692a2d25fd2",
+        "oof_prediction_sha": "ef5eed1c0a8834f7e9c80644bd99f9c672e85fe9043546e23d184662bdf48c0e",
+        "per_sample_metric_content_sha": "1bcbdf166010ee605b5655ecbc56051120ae0cb1623e2d5d9f7575ff1560e86a",
+        "official_metric_summary_content_sha": "f7fa91a250a0a32e22baae08b32a94597a966c1d283d828625edb4214f141a41",
+        "cv_score": 0.4981248954847012,
+        "inference_summary_file_sha": "0beab1245f5ea50f6c946bf39969c9fa49610819efe521089f6240d430cf8389"
+      }
+    ]
   },
-  "notes": "No authoritative rerun yet. deterministic_anchor remains false until two full train and held-out inference runs match."
+  "notes": "Authoritative run 1 completed train and all 199 held-out predictions. The user stopped the experiment before run 2 because the old joint detector-tracker route is no longer the active learning direction; deterministic reproducibility remains unverified and deterministic_anchor stays false.",
+  "updated_at": "2026-09-13T07:30:00+00:00"
 }

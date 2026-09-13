@@ -6,9 +6,9 @@ exp006後継の学習とheld-out評価を決定論化し、同一Kaggle環境の
 
 ## 現在の作業
 
-- 作業内容: 決定論的な学習・評価・比較処理の実装と静的検証が完了し、train run 1（Kaggle kernel version 3）を実行中。
-- ブロック要因: なし。
-- 次: train run 1完了後に生成物を保存し、同じcheckpointを使うheld-out inference run 1を実行する。
+- 作業内容: authoritative run 1のtrain（Kaggle kernel version 3）とheld-out inference（version 1）まで完了・記録した。ユーザー判断によりrun 2を行わず、実験を途中停止した。
+- ブロック要因: なし。exp010の追加実行は行わない。
+- 次: run 1の証拠を履歴として保持し、固定公開検出器を使う`exact_window_cache`へ進む。run間比較がないため`reproducibility.deterministic_anchor`は`false`のままとする。
 
 ## コマンドログ
 
@@ -25,8 +25,16 @@ exp006後継の学習とheld-out評価を決定論化し、同一Kaggle環境の
 - 2026-09-12: train kernel version 3をauthoritative run 1としてpush。両foldのsmokeが成功し、保守的推定32,291.760秒（8.970時間）が9.25時間gateを通過してfull trainingへ入った。
 - 2026-09-12: version 3実行入力のtrain Notebook SHA-256は`853ac1a8ad3e24557925c22cceaaaa22238708cd03d9ee788c9d918f079f3605`、`config.yaml` SHA-256は`4639dd3f449daab1f9fd07d47e3e9fdff0b8beff7c82238009043e4e0a9e34bf`。run 2 push直前に同じ値であることを必須確認する。
 - 2026-09-12: full fold 0の初期ウォームアップ後は約5.4秒/batchで推移していることをlive logで確認した。
+- 2026-09-13: train kernel version 3が完了した。full trainingは36,627.947秒、Notebook計測は36,712.660秒。fold 0のcheckpoint content SHA-256は`928c1dadb2c58d314cc9f18812999bb500dbe2b2fa5de51da5f859096cff37b3`、fold 1は`a47225407f9643b842098eaeb282682c49178f2cc2b5f3d061ff85420e0e7ef1`。model manifest SHA-256は`fcb5c15685cfde2443c4a9f051a851b22c55a3400d7484922259ca4d64c77d7e`。
+- 2026-09-13 08:48 JST: inference run 1 packageのmetadataはGPU有効、TPU無効、T4、internet無効。`uv run kaggle quota --format json`でGPU残時間13.38時間、refreshは2026-09-19 00:00（Kaggle表示）を確認した。inferenceのgate上限12時間には足りるためrun 1を開始するが、実測10.20時間のtrain run 2とinference run 2の両方には不足する見込みであり、次のpush前に再判定する。
+- 2026-09-13: `make push-kaggle-infer`でinference kernel version 1をpushした。Kaggle側のmetadataをpullし、T4、GPU有効、TPU無効、internet無効、train kernel sourceを確認した。statusは`RUNNING`。
+- 2026-09-13 16:14 JST: inference kernel version 1が`COMPLETE`になったことを確認した。22,557.637秒で199動画を欠落なく推論し、公式metricの再計算も保存graphからの集計と一致した。全体scoreは0.4981248955、44b6は0.5995244749、6bbaは0.4798695306。
+- 2026-09-13 16:14 JST: run 1のcandidate content SHAは`065469446e1fdef67b1d1f2265270695171ca57222ebc93a2102d692a2d25fd2`、OOF prediction content SHAは`ef5eed1c0a8834f7e9c80644bd99f9c672e85fe9043546e23d184662bdf48c0e`、per-sample metric content SHAは`1bcbdf166010ee605b5655ecbc56051120ae0cb1623e2d5d9f7575ff1560e86a`、公式summary content SHAは`f7fa91a250a0a32e22baae08b32a94597a966c1d283d828625edb4214f141a41`。
+- 2026-09-13 16:14 JST: 大容量の候補cache全体ではなく、run間比較に必要な`inference_summary.json`、公式summary、per-sample metrics、prediction manifest、metricsを`run-1-summary`へ保存した。`compare_replays.py`はtrain/inference双方のsummaryだけを入力とするため、run 2を行う場合のexact比較に必要な証拠は保持できている。
+- 2026-09-13 16:14 JST: `uv run kaggle quota --format json`でGPU使用23.84時間、残り6.16時間、refreshは2026-09-19 00:00（Kaggle表示）を確認した。実測10.20時間のtrain run 2に足りないため、新しいrunはpushしなかった。
+- 2026-09-13: ユーザーが「それではこれで進めてください」と判断し、run 1の証拠を保存したままexp010を停止して、GPUを現行の固定公開検出器路線へ回す方針を承認した。このリポジトリ内の実験statusを`discarded`へ変更し、exp010の監視automationを削除した。
 
-### 予定
+### 実行済みコマンドと保留中の予定
 
 ```bash
 make validate-exp EXP=exp010_exp006_deterministic_replay
@@ -40,7 +48,7 @@ make push-kaggle-infer EXP=exp010_exp006_deterministic_replay
 make kaggle-output KERNEL=kentookumura/exp010-exp006-deterministic-replay-inference OUT=<run-1-inference-dir>
 ```
 
-run 1を保存後、Notebookと設定を変えずにtrain/inferenceを再pushし、run 2を保存して比較scriptを実行する。各push直前にGPU quotaを確認する。
+run 1までは実行済み。run 2と比較scriptはquota不足およびユーザー判断待ちのため未実行。続行する場合も、Notebookと設定を変えず、各push直前にGPU quotaを再確認する。
 
 ## 変更点
 
@@ -50,6 +58,6 @@ run 1を保存後、Notebookと設定を変えずにtrain/inferenceを再pushし
 
 ## 次のアクション
 
-1. train/inferenceと比較script、testを実装する。
-2. 静的検証後、同一のKaggle train/inferenceを2回ずつ実行する。
-3. SHA/CV一致を確認し、証拠と未解決事項をユーザーへ提示する。
+1. run 1のtrain/inferenceとcanonical SHA、CVは記録済み。
+2. run 2は実行しない。exp010の完全な再現性は未確認として保持する。
+3. 決定論的学習の確認は、現行路線の最初のtracker学習実験で行う。
