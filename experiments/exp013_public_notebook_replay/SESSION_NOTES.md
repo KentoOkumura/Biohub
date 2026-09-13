@@ -6,9 +6,9 @@
 
 ## 現在の作業
 
-- 作業内容: 再実行一致を確認したprivate Kaggle Notebook version 2をcode submission ref `56199738`として提出し、Kaggleの採点待ち。
+- 作業内容: code submission ref `56199738`のPublic LB `0.944`と再実行一致を根拠に、ユーザー判断で実験statusを`usable`へ確定した。
 - ブロック要因: なし
-- 次: ref `56199738`の採点完了後にPublic LBと採点所要時間を記録し、完了・採否をユーザーに判断してもらう。
+- 次: 固定予測と実測費用を後続のtracker比較と診断へ引き継ぐ。
 
 ## コマンドログ
 
@@ -118,11 +118,25 @@ prepare後に生成された`kernel-metadata.json`からkernel idを取得して
 - submission refは`56199738`、提出日時は2026-09-13 05:20:43.280000 UTC、messageは`exp013 public notebook replay v2`。提出直後は`pending`で、Kaggle CLIは当日の残り提出回数を4回と表示した。
 - `metrics.json`の`evidence.submission`と`SUBMISSIONS.md`のv003へpendingの最終スナップショットを記録した。採点監視ログは一時生成物としてGitへ保存しない。
 
+### 2026-09-13 20:46 JST scoring完了確認
+
+- ユーザーからscoring完了の連絡を受け、monitorをsubmission ref `56199738`へ固定して再確認した。
+- Kaggle CLIとmonitorは`SubmissionStatus.COMPLETE`、Public LB `0.944`、Private LB未取得を返した。
+- 提出日時は2026-09-13 05:20:43.280000 UTC、初回monitor開始は05:22:11 UTC、最後のpending観測は05:25:41 UTC、complete確認は11:46:32 UTCだった。
+- `scoring_elapsed_minutes=384`は初回monitor開始からcomplete確認までの丸めた観測時間である。monitorに約6時間20分の中断があるため、Kaggle側で実際にscoreが確定した時刻ではなく上限を含む。提出からの実際の所要時間は4分58秒超、6時間25分49秒以下である。
+- `make record-exp`で`metrics.json`のPublic LBと`evidence.submission`を先に更新し、続いて`make record-submission`で既存のv003・ref `56199738`を`submission_status=complete`へ更新した。新しい提出履歴行は作成していない。
+- 実測Public LB `0.944`はexp009の現行自前提出ベスト`0.693`より`0.251`高い。作者の0.946/0.947表記より`0.002`から`0.003`低いため、作者表記ではなく本submissionの実測値を正とする。
+- CVとPrivate LBは未取得。実験statusはユーザー判断待ちの`debug_completed`を維持する。
+
+### 2026-09-13 ユーザー判断
+
+- ユーザーが「statusを確定してください。git commitとpushしてください。」と依頼した。
+- 同一Kaggle T4環境での2回の再実行一致、code submission ref `56199738`のPublic LB `0.944`、現行の自前提出ベスト`0.693`からの`0.251`改善を根拠に、後続比較の基準として実験statusを`usable`へ確定した。
+- CVとPrivate LBは未取得であり、公開重みの学習来歴とleaderboard feedback利用を含むため、独立validation済みとは扱わない。
+
 設定と再現性方針は`config.yaml`、kernel情報、Kaggle Notebook実行時間、生成物SHA、rerun比較、実験statusは`metrics.json`へ記録する。このファイルには、それらを得たコマンド、時刻、途中経過、失敗と修正を時系列で残す。提出した場合はsubmission ref・提出日時・submission scoring status・監視開始からscore確定までの所要時間を、詳細な時系列の正として記録し、Notebook実行時間と混同しない。`SUBMISSIONS.md`には横断比較に必要な最終スナップショットだけを`record-submission`で記録し、状態遷移、観測時刻、実行コマンドを転記しない。
 
 ## 次のアクション
 
-1. submission ref `56199738`を監視し、score確定後にPublic LBと採点所要時間を記録する。
-2. 第1段階と提出結果の証拠を提示し、完了・採否をユーザーへ判断してもらう。
-3. 完了判断後、この実験に関係する変更だけをcommit・pushする。
-4. 採用された場合は固定予測と実測費用を`exact_window_cache`等の後続比較へ渡す。
+1. 第1段階と提出結果の証拠を提示し、完了・利用可・不採用のいずれにするかユーザーへ判断してもらう。
+2. 完了判断後、この実験に関係する変更だけをcommit・pushする。

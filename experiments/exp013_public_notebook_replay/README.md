@@ -5,9 +5,9 @@
 - 仮説要約: 固定した公開Notebook、canonical artifact、T4 2基を使う2回のclean runで、候補座標・graph・`submission.csv`を同じ内容として再生成できる。
 - 変更点要約: exp011の静的選定から、公開sourceのfull inferenceへ進める。予測処理は保持し、canonical mount、入力・wheel manifest、replay receipt、2 run比較を追加する。
 - リスク: CUDA・SCIP・2 GPU processの決定性は強制していない。公開testで一致してもhidden testや別環境の一致、独立validationは保証しない。
-- 結果: private Kaggle Notebook version 1と2はともに成功し、公開test全4動画について13比較項目と241,282行の`submission.csv`が一致した。実験statusはユーザー判断待ちの`debug_completed`。
-- 提出: code submission ref `56199738`を作成した。現在はKaggleの採点待ちで、Public LBは未取得。
-- 次: ref `56199738`の採点完了後にPublic LBと採点所要時間を記録し、第1段階と提出結果の完了判断をユーザーへ依頼する。
+- 結果: private Kaggle Notebook version 1と2はともに成功し、公開test全4動画について13比較項目と241,282行の`submission.csv`が一致した。ユーザー判断により、後続比較の基準として実験statusを`usable`に確定した。
+- 提出: code submission ref `56199738`は`COMPLETE`、Public LBは`0.944`。現行の自前提出ベスト`0.693`を`0.251`上回った。
+- 次: 固定予測と実測費用を、`exp014_exact_window_cache`以降のtracker比較と診断へ引き継ぐ。
 
 ## 正の記録
 

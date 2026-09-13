@@ -22,12 +22,12 @@
 
 - 2026-09-11の「すべて推奨でいいです」による無料枠・課金なし、両胚の改善、人手注釈を当面行わない方針は継続する。FOCUSの取得同意は含まれない。
 - 2026-09-12の「公開検出器を固定し、トラッカーを学習する」前提への変更により、従来の「自前検出器を基準とし、外部重みは追加候補のみ」と、検出器学習を先に行う未着手候補の順序を更新した。同じ学習方針・予算の承認を再質問しない。
-- 2026-09-12の方針更新時点では新規実験を開始しなかった。2026-09-13に`public_notebook_replay`の実験化と実装が承認され、`exp013_public_notebook_replay`へ移行した。Kaggle submissionは引き続き別途の明示承認を必要とする。既承認実験を新方針の比較対象として使う場合も、実際の学習来歴を示す。
+- 2026-09-12の方針更新時点では新規実験を開始しなかった。2026-09-13に`public_notebook_replay`の実験化・実装・Kaggle submissionが順に承認され、`exp013_public_notebook_replay`へ移行した。submission ref `56199738`のPublic LBは`0.944`。既承認実験を新方針の比較対象として使う場合も、実際の学習来歴を示す。
 - 精度と計算費用の実証を提示し、採否・完了はユーザーが判断する。提出推論12時間以内という既存条件を維持する。
 
 ## 現在の重点
 
-1. [`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)は、同一Kaggle T4環境の2回実行で公開test全件の候補座標・graph・241,282行の`submission.csv`が一致した。code submission ref `56199738`は採点中で、Public LB確定後に第1段階と提出結果の完了判断をユーザーへ依頼する。
+1. [`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)は、同一Kaggle T4環境の2回実行で公開test全件の候補座標・graph・241,282行の`submission.csv`が一致し、code submission ref `56199738`でPublic LB `0.944`を得た。ユーザー判断により、後続比較の基準として`usable`に確定した。
 2. [`exp014_exact_window_cache`](../experiments/exp014_exact_window_cache/)はpublic test全396 windowで保存前後の配列・edge logits・exp013最終出力の完全一致を確認し、後続tracker比較用cacheとして利用可能と判断した。次は同じ固定公開モデルで`oracle_stage_limits`を行い、候補数が費用を支配する場合は親候補の制限を先に診断する。
 3. 基準成立後は`partial_edge_mask`で接続の教師maskを比較し、母と2娘の候補回収が十分なら`division_triplets`で分裂の組採点を学習する。`graph_cost_scale`は保存済み得点で行う軽い比較として併行検討できるが、トラッカー学習の代わりにはしない。
 4. 観測した誤りに応じて近傍・運動・見た目の接続特徴、短い軌跡の接続、合成分裂へ進む。画像モデルの再学習はこの順序に含めない。新しいGPU実行数と時間配分は実測後に決める。
@@ -36,7 +36,7 @@
 
 - 公式評価器は[exp003の照合結果](../experiments/exp003_official_metric_audit/result.md)を参照する。実験横断の最新結果は[`experiment_summary.md`](../experiment_summary.md)、提出履歴は[`SUBMISSIONS.md`](../SUBMISSIONS.md)、数値と実行状態は各実験の`metrics.json`を正とする。
 - 自前学習の補助基準は[exp005の結果](../experiments/exp005_embryo_holdout_batch8/result.md)と[exp006の結果](../experiments/exp006_embryo_holdout_seed314159/result.md)。既存の予測・評価集計を再利用し、今回の方針変更のために検出器を再学習しない。Kaggle上の候補生成物とローカルの集計は所在を区別する。
-- 新方針の公開重み・公開トラッカーはexp011で選定し、exp013で公開test全件の2回再実行一致と予測部分の実測時間を確認した。CVと実測Public LBは未取得であり、公開Notebookの報告スコアを同じ対象・同じ評価分割での自前実験との優劣の証拠にはしない。参照資料は[公開Notebook調査](../docs/surveys/biohub-public-baselines_20260910.md)、[候補の先行調査](../docs/surveys/biohub-backlog-readiness_20260910.md)、[exp013の結果](../experiments/exp013_public_notebook_replay/result.md)。
+- 新方針の公開重み・公開トラッカーはexp011で選定し、exp013で公開test全件の2回再実行一致、予測部分の実測時間、Public LB `0.944`を確認した。現行の自前提出ベスト`0.693`より`0.251`高いが、CVはなく、公開重みの学習来歴とleaderboard feedback利用を含むため独立validationとは扱わない。参照資料は[公開Notebook調査](../docs/surveys/biohub-public-baselines_20260910.md)、[候補の先行調査](../docs/surveys/biohub-backlog-readiness_20260910.md)、[exp013の結果](../experiments/exp013_public_notebook_replay/result.md)。
 
 ## アイデアバックログ
 
@@ -58,7 +58,7 @@
 | `HYP-20260910-09` | 異なる観測・表現・接続方法の候補と不確実性を残し画像から選ぶと、同系統の平均では直らない誤りを回収できる。 | [`candidate_union`](candidate_union.md)<br>[`position_mixture`](position_mixture.md)<br>[`graph_support_fusion`](graph_support_fusion.md)<br>[`image_condition_gate`](image_condition_gate.md)<br>[`one_two_cells`](one_two_cells.md)<br>[`whole_graph_choice`](whole_graph_choice.md) | - | 候補数を揃えた追加回収、正解なしの選別、相関した誤り |
 | `HYP-20260910-10` | 複数時点の画像と軌跡を使って接続を選べば、短い観測だけで起きる取り違えや一時的な見逃しを修正できる。 | [`long_window_links`](long_window_links.md)<br>[`tracklet_join`](tracklet_join.md)<br>[`latent_missing_nodes`](latent_missing_nodes.md)<br>[`neighbor_dynamics`](neighbor_dynamics.md) | - | 長窓で増える情報、実欠測での回収、境界と隣接辺の整合 |
 | `HYP-20260910-11` | 対応なしと観測可能な構造制約を学習・復号へ明示すると、誤接続を抑えながら正しい継続と分裂を保持できる。 | [`explicit_no_match`](explicit_no_match.md)<br>[`known_parent_constraint`](known_parent_constraint.md)<br>[`graph_cost_scale`](graph_cost_scale.md)<br>[`image_count_prior`](image_count_prior.md) | - | 棄権の教師、既存softmaxとの差、費用校正と細胞数の誤差 |
-| `HYP-20260910-12` | 等価な処理の再利用や局所的な計算配分により、高解像度・多時点・密な候補の手法を予算内で比較し最終精度を改善できる。 | [`sparse_motion_graph`](sparse_motion_graph.md)<br>[`uncertain_highres`](uncertain_highres.md)<br>[`distill_reinvest`](distill_reinvest.md)<br>[`frozen_image_encoder`](frozen_image_encoder.md) | [`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)<br>[`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)<br>[`exp014_exact_window_cache`](../experiments/exp014_exact_window_cache/) | code submission ref `56199738`のPublic LB、train全件とhidden testでの最悪時の費用、固定特徴で学習するtrackerの精度は未確認 |
+| `HYP-20260910-12` | 等価な処理の再利用や局所的な計算配分により、高解像度・多時点・密な候補の手法を予算内で比較し最終精度を改善できる。 | [`sparse_motion_graph`](sparse_motion_graph.md)<br>[`uncertain_highres`](uncertain_highres.md)<br>[`distill_reinvest`](distill_reinvest.md)<br>[`frozen_image_encoder`](frozen_image_encoder.md) | [`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)<br>[`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)<br>[`exp014_exact_window_cache`](../experiments/exp014_exact_window_cache/) | exp013のPublic LBは`0.944`。train全件とhidden testでの最悪時の費用、固定特徴で学習するtrackerの精度は未確認 |
 | `HYP-20260910-13` | 位置と系譜を保って撮像条件や境界・密度を変える学習により、別の胚の見え方に対する性能低下を抑えられる。 | [`anisotropic_blur`](anisotropic_blur.md)<br>[`photometric_shift`](photometric_shift.md)<br>[`lineage_density_aug`](lineage_density_aug.md)<br>[`crop_boundary_aug`](crop_boundary_aug.md) | - | 実際の胚差との対応、ラベル整合、片側胚の悪化。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 | `HYP-20260910-14` | 現行公式指標・胚を分けた評価・段階別の上限検査を用いると、独自proxyや学習内指標では見えない候補の順位差と失敗箇所を識別できる。 | [`oracle_stage_limits`](oracle_stage_limits.md) | [`exp003_official_metric_audit`](../experiments/exp003_official_metric_audit/)<br>[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)<br>[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)<br>[`exp007_graph_checkpoint_selection`](../experiments/exp007_graph_checkpoint_selection/)<br>[`exp012_group_error_readout`](../experiments/exp012_group_error_readout/) | 公式評価はexp003、胚別予測の最新証拠はexp005・exp006、条件別診断はexp012で完了。今後は固定公開重みの来歴と段階別の回収上限に加え、exp012の悪化16件を5条件別に段階分解し、公開モデル下での比較の独立性を確認する |
 | `HYP-20260911-01` | nnU-Netのデータに応じた前処理・構造・学習設定を中心マップの予測へ適応すると、疎注釈を適切に扱う条件で現行検出器より細胞を回収でき、両胚の公式接続・分裂指標が改善する。 | [`nnunet_center_detection`](nnunet_center_detection.md) | - | 中心教師とnnU-Net設定の寄与、背景と未知領域の識別、時間入力と接続特徴、学習・推論費用。対応候補は現方針では保留し、詳細の再開条件を確認する。 |

@@ -21,18 +21,18 @@
 - `compare_replays.py`で照合した13項目はすべて一致した。241,282行のraw `submission.csv`もbyte-identicalで、両runのSHA-256は`0319ba6d8e864335d3573f6b1a6227c546f17e9247a0c2858fa09b6c2422db3f`。
 - `replay_receipt.json`全体のSHAは異なる。receiptに実測の予測時間を含めているためであり、予測時間を除いた比較対象のcandidate coordinate、graph topology、retention guard、決定的なrun統計、入力・wheel・checkpoint・source manifest、dataset一覧、submissionは一致した。
 - 比較reportは`artifacts/replay_comparison.json`に保存し、そのSHA-256を`evidence.replay_comparison.report_sha256`へ記録した。
-- version 2の`submission.csv`をcode submission ref `56199738`として提出した。現在は採点待ちで、CV、Public LB、Private LBは未取得である。
+- version 2の`submission.csv`をcode submission ref `56199738`として提出した。`metrics.json`の`public_lb`は`0.944`、submission statusは`COMPLETE`。CVとPrivate LBは未取得である。
 
 ## 解釈
 
-固定したsource・入力・依存・T4 2基・docker imageの条件では、公開test全件の候補座標、graph topology、決定的なrun統計、最終submissionを同じ内容として再生成できた。これにより、第1段階の再実行一致という成功条件は満たした。ただし確認範囲は同一Kaggle環境の2 runと公開test 4動画に限られ、別hardware、別docker image、hidden testでのbitwise一致や独立validationを保証しない。作者のtitleとhard-coded receiptにある0.946/0.947を本実験のPublic LBとして扱わない。
+固定したsource・入力・依存・T4 2基・docker imageの条件では、公開test全件の候補座標、graph topology、決定的なrun統計、最終submissionを同じ内容として再生成できた。これにより、第1段階の再実行一致という成功条件は満たした。実測Public LB `0.944`は現行の自前提出ベスト`0.693`を`0.251`上回り、固定公開pipelineを後続比較の強い基準にできる。一方、作者のtitleとhard-coded receiptにある0.946/0.947より`0.002`から`0.003`低く、その表記を再現したとは扱わない。原因は本実験だけでは特定できない。確認範囲は同一Kaggle環境の2 runと1回のhidden test評価に限られ、別hardware、別docker imageでのbitwise一致や独立validationを保証しない。
 
 ## ユーザー判断
 
-- 判断: 未判断
-- 確認日時 / 依頼メッセージ: 2026-09-13の実行結果を提示後に確認する。
-- 理由: 2回のKaggle実行とoutput比較は成功したが、`completed`、`usable`、`discarded`の確定はユーザー判断を待つ。
+- 判断: `usable`
+- 確認日時 / 依頼メッセージ: 2026-09-13「statusを確定してください。git commitとpushしてください。」
+- 理由: 同一Kaggle T4環境での2回の再実行一致と、code submission ref `56199738`のPublic LB `0.944`を確認した。現行の自前提出ベスト`0.693`を`0.251`上回るため、固定公開pipelineを後続比較の基準として利用する。CVとPrivate LBは未取得であり、独立validation済みとは扱わない。
 
 ## 次
 
-submission ref `56199738`の採点完了を監視し、Public LBと採点所要時間を`metrics.json`、`SESSION_NOTES.md`、`SUBMISSIONS.md`へ記録する。その後、第1段階と提出結果を完了とするかユーザーへ判断を依頼する。完了判断後は、この実験に関係する変更だけをcommit・pushし、固定予測を`exact_window_cache`等の後続比較へ渡す。
+固定予測はすでに`exp014_exact_window_cache`へ渡され、保存前後の等価性が確認されている。以後は、この予測と実測費用をtracker比較と段階別診断の基準として使う。

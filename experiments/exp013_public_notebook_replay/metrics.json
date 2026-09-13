@@ -1,10 +1,10 @@
 {
   "experiment": "exp013_public_notebook_replay",
-  "status": "debug_completed",
+  "status": "usable",
   "cv": null,
-  "public_lb": null,
+  "public_lb": 0.944,
   "private_lb": null,
-  "metric": null,
+  "metric": "adjusted_edge_jaccard + 0.1 * division_jaccard",
   "evidence": {
     "kaggle": {
       "kernel_id": "kentookumura/exp013-public-notebook-replay-inference",
@@ -169,12 +169,17 @@
       "output_file": "submission.csv",
       "message": "exp013_public_notebook_replay_v2",
       "submitted_at": "2026-09-13T05:20:43.280000Z",
-      "status": "pending",
-      "public_score": null,
-      "private_score": null
+      "status": "complete",
+      "public_score": 0.944,
+      "private_score": null,
+      "completed_at_observed": "2026-09-13T11:46:32Z",
+      "scoring_elapsed_minutes": 384,
+      "scoring_elapsed_basis": "monitor_start_to_confirmation_with_gap",
+      "last_pending_at": "2026-09-13T05:25:41Z",
+      "last_pending_elapsed_minutes": 4
     }
   },
-  "notes": "Kaggle private Notebook version 1/2は成功し、raw submissionを含む13比較項目が一致した。code submission ref 56199738は採点待ち。",
-  "updated_at": "2026-09-13T05:28:13.190092+00:00",
+  "notes": "同一条件の2回replayは一致し、code submission ref 56199738はCOMPLETE、Public LB 0.944。ユーザー判断により後続比較の基準としてusableに確定。CVとPrivate LBは未取得。",
+  "updated_at": "2026-09-13T11:54:19.841722+00:00",
   "key_idea": "固定した公開Notebookとcanonical artifactを同じKaggle T4環境で2回clean実行し、公開test全件の候補座標・graph topology・決定的run統計・submission.csvの再実行一致を検証する。"
 }
