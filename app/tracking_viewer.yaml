@@ -1,0 +1,6 @@
+# Local EDA settings; these do not alter experiment configuration.
+voxel_scale_um: [1.625, 0.40625, 0.40625]
+matching_radius_um: 7.0
+minimum_detection_score: 0.0
+trail_frames: 5
+playback_interval_seconds: 0.7

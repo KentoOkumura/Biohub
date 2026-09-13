@@ -26,9 +26,13 @@ notebook = [
     "ipykernel",
     "jupyterlab",
     "jupytext",
+    "ipywidgets>=8",
 ]
 app = [
     "streamlit",
+    "plotly>=6",
+    "scipy",
+    "zarr>=3,<4",
 ]
 [tool.ruff]
 line-length = 100

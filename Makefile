@@ -171,3 +171,17 @@ fmt:
 
 test:
 	uv run --extra dev --extra notebook pytest tests $(EXPERIMENTS_DIR)
+
+.PHONY: tracking-app build-tracking-viewer check-tracking-viewer test-tracking-viewer
+tracking-app:
+	uv run --extra app python -m streamlit run app/tracking_viewer.py --server.address 127.0.0.1 --browser.gatherUsageStats false $(EXTRA_ARGS)
+
+build-tracking-viewer:
+	uv run --extra notebook python scripts/build_tracking_viewer_notebook.py
+
+check-tracking-viewer:
+	uv run --extra dev ruff check app/tracking_*.py scripts/build_tracking_viewer_notebook.py tests/test_tracking_viewer.py
+	uv run --extra dev ruff format --check app/tracking_*.py scripts/build_tracking_viewer_notebook.py tests/test_tracking_viewer.py
+
+test-tracking-viewer:
+	uv run --extra app --extra dev --extra notebook pytest -q tests/test_tracking_viewer.py

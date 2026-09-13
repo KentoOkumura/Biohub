@@ -258,3 +258,24 @@ tasks:
     desc: Run all repository and configured experiment tests.
     cmds:
       - uv run --extra dev --extra notebook pytest tests {{.EXPERIMENTS_DIR}}
+
+  tracking-app:
+    desc: Run the local cell-tracking EDA viewer.
+    cmds:
+      - uv run --extra app python -m streamlit run app/tracking_viewer.py --server.address 127.0.0.1 --browser.gatherUsageStats false {{.EXTRA_ARGS}}
+
+  build-tracking-viewer:
+    desc: Package the cell-tracking viewer as a standalone Kaggle notebook.
+    cmds:
+      - uv run --extra notebook python scripts/build_tracking_viewer_notebook.py
+
+  check-tracking-viewer:
+    desc: Check only the tracking viewer code and tests.
+    cmds:
+      - uv run --extra dev ruff check app/tracking_*.py scripts/build_tracking_viewer_notebook.py tests/test_tracking_viewer.py
+      - uv run --extra dev ruff format --check app/tracking_*.py scripts/build_tracking_viewer_notebook.py tests/test_tracking_viewer.py
+
+  test-tracking-viewer:
+    desc: Test cell-tracking viewer inputs, matching, and UI with synthetic fixtures.
+    cmds:
+      - uv run --extra app --extra dev --extra notebook pytest -q tests/test_tracking_viewer.py

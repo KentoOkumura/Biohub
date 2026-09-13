@@ -1,0 +1,22 @@
+{
+  "id": "kentookumura/biohub-tracking-eda-viewer",
+  "title": "Biohub Tracking EDA Viewer",
+  "code_file": "tracking_viewer.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": false,
+  "enable_tpu": false,
+  "enable_internet": false,
+  "run_on_push": true,
+  "competition_sources": [
+    "biohub-cell-tracking-during-development"
+  ],
+  "kernel_sources": [
+    "kentookumura/exp014-exact-window-cache-inference"
+  ],
+  "dataset_sources": [
+    "pilkwang/biohub-tracking-support-pack-50ep-v1"
+  ],
+  "model_sources": []
+}
