@@ -71,8 +71,9 @@ print('train:', TRAIN_ROOT)
 print('settings:', CONFIG)
 """
     run = """import plotly.io as pio
-# Kaggle 推奨の表示方式。描画ライブラリはブラウザー側で読み込みます。
-pio.renderers.default = 'kaggle'
+# HTML scriptを使うkaggle rendererはipywidgets.Output内で実行されないため、
+# JupyterのPlotly MIME rendererを使います。
+pio.renderers.default = 'plotly_mimetype'
 import faulthandler
 faulthandler.dump_traceback_later(90)
 try:

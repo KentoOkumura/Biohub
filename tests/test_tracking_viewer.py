@@ -222,3 +222,8 @@ def test_kaggle_viewer_uses_exp015_train_cache_only():
     root = Path(__file__).resolve().parents[1]
     metadata = json.loads((root / "app/kaggle/kernel-metadata.json").read_text())
     assert metadata["kernel_sources"] == ["kentookumura/exp015-oracle-stage-limits-inference"]
+
+    notebook = json.loads((root / "app/kaggle/tracking_viewer.ipynb").read_text())
+    viewer_source = "".join(notebook["cells"][3]["source"])
+    assert "pio.renderers.default = 'plotly_mimetype'" in viewer_source
+    assert "pio.renderers.default = 'kaggle'" not in viewer_source

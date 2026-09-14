@@ -71,8 +71,10 @@ GPU・Internet は不要です。
 読み込み・対応付けは [tracking_data.py](tracking_data.py)、描画は [tracking_plots.py](tracking_plots.py)、
 Notebook の操作部は [tracking_notebook.py](tracking_notebook.py)、既定値は [tracking_viewer.yaml](tracking_viewer.yaml)。
 Notebook はこれらのソースを埋め込んだ自己完結形式で、リポジトリの clone は必要ない。
-Plotly は [Kaggle 向け renderer](https://plotly.com/python/renderers/#kaggle-and-azure) を使い、
-ブラウザーが描画ライブラリを読み込む。Kaggle 計算環境の Internet 設定は OFF のままで使える。
+Plotly は Jupyter の `application/vnd.plotly.v1+json` MIME renderer を使う。
+Kaggle の `ipywidgets.Output` 内では `kaggle` renderer の HTML script が実行されず図が空になるため、
+Figure の MIME bundle をブラウザー側の Plotly renderer に渡す。Kaggle 計算環境の Internet 設定は
+OFF のままで使える。
 [生成 Notebook](kaggle/tracking_viewer.ipynb) と [metadata](kaggle/kernel-metadata.json) は次で更新する。
 
 ```bash
@@ -116,3 +118,7 @@ Kaggle上で直接参照する。exp014 sourceは接続せず、`window_cache`�
 同日のKaggle viewer version 6はCPU・Internet OFFで正常終了した。exp015の`window_cache`と
 competition trainを解決し、初期サンプル`44b6_0113de3b`の99 window・100時刻、
 GEFF 52 node・50 edge、Zarr画像を読み込んで対応計算まで完了した。
+
+2026-09-14 のブラウザー確認では、操作部と時刻変更後の件数は表示されたが、`kaggle` rendererで
+`ipywidgets.Output` 内へ出したPlotly図が空になった。NotebookをPlotly MIME rendererへ変更し、
+操作部内の空白表示を修正した。
