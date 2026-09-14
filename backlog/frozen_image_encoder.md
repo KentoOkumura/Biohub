@@ -6,7 +6,7 @@
 - 対応する上位仮説: `HYP-20260910-12`
 - 関連する上位仮説: なし。依存は先行検証の条件であり、主仮説を複数にしない。
 - 作成日: 2026-09-10
-- 最終更新日: 2026-09-12
+- 最終更新日: 2026-09-14
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: 公開検出器の再学習を行わずに、接続・分裂を学習して比較できる基準と、週30時間内の費用を確立する。精度改善は未実証。
 - 親実験 / 比較対象: 採用済みの[exp011公開構成](../experiments/exp011_public_detector_selection/)に含まれる既存トラッカーを主対照とする。primary `SimpleNodeTransformer`を同じ公開checkpointから初期化して学習し、固定検出器下で比較する。
@@ -14,7 +14,7 @@
 - 優先度の理由: ユーザーが明示した公開検出器固定・トラッカー学習の基準を確立する中心候補。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI12、検証候補56（同節の5項目目）。
-- 先行条件 / 依存: 採用済みの[exp011](../experiments/exp011_public_detector_selection/)のprimary `SimpleNodeTransformer`初期値と公開基準予測、[exp014](../experiments/exp014_exact_window_cache/)で確認したcache等価性と費用、初期診断。
+- 先行条件 / 依存: 採用済みの[exp011](../experiments/exp011_public_detector_selection/)のprimary `SimpleNodeTransformer`初期値と公開基準予測、[exp014](../experiments/exp014_exact_window_cache/)のpublic同値性、[exp015](../experiments/exp015_oracle_stage_limits/)で生成済みのtrain 199動画・19,701 window cache、candidate graph、final graph。候補対応と既存lossの教師mask監査は未解決。
 
 ## 2026-09-12の方針反映
 
@@ -24,9 +24,9 @@
 
 ## 観測事実と根拠
 
-- 実測済みの事実: この候補の学習時間と精度改善は未測定。公開コードの構成と特徴の窓依存性は[公開Notebook調査](../docs/surveys/biohub-public-baselines_20260910.md)、[先行調査](../docs/surveys/biohub-backlog-readiness_20260910.md#frozen_image_encoder)、[公式コードの確認](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03)を参照する。
+- 実測済みの事実: この候補の学習時間と精度改善は未測定。[exp015](../experiments/exp015_oracle_stage_limits/)でtrain全199動画・19,701 windowの固定特徴cacheを4,151,337,848 bytesで生成し、array round-trip完全一致、GPU予測区間23,994.20秒、working output 4,813,320,625 bytes、peak GPU memory 688,422,400 bytesを確認した。公開コードの構成と特徴の窓依存性は[公開Notebook調査](../docs/surveys/biohub-public-baselines_20260910.md)、[先行調査](../docs/surveys/biohub-backlog-readiness_20260910.md#frozen_image_encoder)、[公式コードの確認](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03)を参照する。
 - 根拠ファイル / 一次資料: 元の仮説は[計算量の仮説](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)、[元記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI12。過去の自前学習は[exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)と[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)を補助参照する。
-- 利用する保存済み生成物とSHA: 公開重み・版・feature contract・primary tracker初期値は[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)を正とする。public testの固定候補・特徴・公開基準予測とSHAは[exp014のmetrics](../experiments/exp014_exact_window_cache/metrics.json)を正とする。train cacheは未生成であり、取得時に対象一覧とSHAを記録する。
+- 利用する保存済み生成物とSHA: 公開重み・版・feature contract・primary tracker初期値は[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)を正とする。public testの固定候補・特徴・公開基準予測とSHAは[exp014のmetrics](../experiments/exp014_exact_window_cache/metrics.json)を正とする。train cache・candidate graph・final graphはKaggle上の[exp015 inference](https://www.kaggle.com/code/kentookumura/exp015-oracle-stage-limits-inference) version 1に保存され、cache identity SHAは`440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee`、summary SHAは`040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c`である。大容量outputはローカルへdownloadせず、後続Kaggle Notebookから直接参照する。
 - 仮定: Assumption: 公開モデルの固定特徴に接続・分裂を識別する情報が残り、下流学習だけで基準を改善できる。画像側の逆伝播を省き、同一特徴を再利用することで比較回数を増やせる可能性がある。最終推論の高速化や改善幅は保証しない。
 
 ## この候補が直接検証する仮説と範囲
@@ -57,7 +57,7 @@
 
 ## 最小の反証可能な検証
 
-- 検証方法: exp014と同じwindow identity・schema・model SHAでtrain cacheを作り、対象一覧と内容SHAを確認する。短い学習で画像側の重み・統計が変わらず下流だけが更新されることを確認し、費用が成立した場合に対象を広げて学習前後を公式評価する。
+- 検証方法: exp015でexp014と同じwindow identity・schema・model SHAのtrain cacheが199 dataset・19,701 window揃い、array round-trip完全一致であることを確認済み。次に候補対応と教師maskを監査し、短い学習で画像側の重み・統計が変わらず下流だけが更新されることを確認する。費用が成立した場合に対象を広げて学習前後を公式評価する。
 - variant / config / fold / booster数: 初回は同じ公開検出器で既存トラッカーと下流学習後を比較する。公開checkpointの来歴に応じて評価の独立性を表示し、両胚別に報告する。学習量は小規模実測後に決め、追加seedや全層学習の比較を必須にしない。
 - control再学習: 公開の既存トラッカーを初回の基準とし、検出器は再学習しない。後続の学習変更では同条件の学習済みトラッカーを対照に使い、必要な再学習も下流部分だけとする。
 - 想定runtime / resource: 未実測。Kaggle Notebookのみ、週30時間のGPU枠と実行時残量に従う。初回抽出、読み込み、下流学習、公式評価、全件推論を別計上する。固定特徴でも候補数の増加で時間・メモリが大きくなる場合はsparse_motion_graphで回収率と費用を診断する。
@@ -99,6 +99,10 @@
 - 選定公開構成の候補対応・既存lossを監査し、何を継承する学習基準かを確定する。来歴不明の場合の評価表示は共通方針に従う。
 
 ## 判断履歴
+
+- 2026-09-14: exp015のKaggle実測でtrain 199動画・19,701 windowの4.15GB cacheと完全一致を確認した。cache生成の先行条件は成立したが、候補対応・既存lossの教師mask監査は設計判断として残るため、P1と`検討メモ・設計不可`を維持する。大容量cacheはローカルへdownloadせず、Kaggle kernel sourceとして直接参照する。
+
+- 2026-09-13: 全体バックログを再点検し、exp015でtrain cacheを同時生成する実装を先行条件へ反映した。full run前なのでP1と設計不可の状態は維持し、次に解消する未決事項を候補対応・既存lossの教師mask監査へ限定した。
 
 - 2026-09-12: 全64候補の状態監査で、設計上の未決事項と測定・先行成果物待ちを分離した。具体的な設計・方針の未決事項が残るため、状態を維持して根拠を明記した。
 

@@ -6,15 +6,15 @@
 - 対応する上位仮説: `HYP-20260910-12`
 - 関連する上位仮説: なし。依存は先行検証の条件であり、主仮説を複数にしない。
 - 作成日: 2026-09-10
-- 最終更新日: 2026-09-12
+- 最終更新日: 2026-09-14
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: 近傍候補で多時点予測を可能にの成立条件と反証可能な一変更の比較を具体化する。
-- 親実験 / 比較対象: 選定する公開検出器と既存トラッカーによる基準予測を主対照とする。重み・公開版・学習来歴は未選定。後続の学習比較は同じ公開検出器を固定したトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
+- 親実験 / 比較対象: [exp011](../experiments/exp011_public_detector_selection/)で採用し、[exp013](../experiments/exp013_public_notebook_replay/)でPublic LB 0.944を再現した固定公開検出器・既存トラッカーを主対照とする。後続の学習比較は同じ固定検出器下のトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
 - 優先度: P2
 - 優先度の理由: 候補の組合せがトラッカーのメモリ・時間を支配する場合に、固定特徴による学習を予算内で可能にするため。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI12、検証候補53（同節の2項目目）。
-- 先行条件 / 依存: 固定公開検出候補の親候補数・時間・メモリ実測とoracle_stage_limits。学習の費用超過が見えた場合は初回学習の前に候補制限を診断。
+- 先行条件 / 依存: [exp015](../experiments/exp015_oracle_stage_limits/)のtrain cache manifest、GPU予測区間23,994.20秒、peak GPU memory 688,422,400 bytes、candidate edge recall 94.829%。候補間計算が初回tracker学習の時間・メモリを支配すると実測された場合だけ、学習前に候補制限を診断する。
 
 
 ## 2026-09-12の方針反映
@@ -36,11 +36,11 @@
 
 ## 観測事実と根拠
 
-- 実測済みの事実: 本候補の改善値は未取得。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
+- 実測済みの事実: 本候補の改善値とtracker学習中の候補間計算費用は未取得。[exp015](../experiments/exp015_oracle_stage_limits/)の固定公開推論はGPU予測区間23,994.20秒、peak GPU memory 688,422,400 bytesで完走し、candidate edge recallは94.829%だった。これは特徴抽出を含む推論全体の値であり、候補間計算が学習費用を支配する証拠ではない。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
   - [E03](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03): compute_loss55行、compute_detection_loss528行、detect_and_match620行、train_epoch794行。実学習も検出候補を使う。
   - [E04](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e04): 診断用sample holdout、3epochs、batch16、T4x2、allocator変更と時間制約。主CV/OOFは未取得。
 - 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI12。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
-- 利用する保存済み生成物とSHA: [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果を補助参照する。選定する公開モデルの重み・候補・特徴は未確定であり、所在・版・SHAを取得時に記録する。過去調査の入力は[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)にある。
+- 利用する保存済み生成物とSHA: 公開model・checkpoint・feature contractは[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)、公開test基準予測は[exp013 metrics](../experiments/exp013_public_notebook_replay/metrics.json)、cache schemaとpublic test同値性は[exp014 metrics](../experiments/exp014_exact_window_cache/metrics.json)を正とする。[exp015 metrics](../experiments/exp015_oracle_stage_limits/metrics.json)にtrain 199動画・19,701 window cache、candidate/final graph各199件、時間・memory・coverage・生成物SHAを記録した。大容量生成物はKaggle上に保存し、後続Notebookから直接参照する。exp005・exp006は自前学習の補助診断に限る。
 - 仮定: Assumption: 同じ計算の再実行を減らし難しい場所へ計算を割けば、12時間内で長い時間窓や高解像度を使えるようになり、最終精度を上げられる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。
 
 ## この候補が直接検証する仮説と範囲
@@ -116,6 +116,10 @@
 - 最初の時間窓を維持した比較と、節約した費用で多時点へ広げる比較の境界を確定する。候補上限の具体的な値は実測事項。
 
 ## 判断履歴
+
+- 2026-09-14: exp015はpeak GPU memory 688MBで完走したが、23,994.20秒は特徴抽出を含む予測区間であり、候補間計算が初回tracker学習を支配するとはまだ判定できない。発火条件とP2を維持し、固定tracker基準より先に自動実行しない。
+
+- 2026-09-13: 全体バックログを再点検し、exp015 cache manifestの候補数・時間・peak memoryとoracle coverageを発火条件へ追加した。費用超過は未実測なので状態とP2を維持し、固定tracker基準より先に自動実行しない。
 
 - 2026-09-12: 全64候補の状態監査で、設計上の未決事項と測定・先行成果物待ちを分離した。具体的な設計・方針の未決事項が残るため、状態を維持して根拠を明記した。
 

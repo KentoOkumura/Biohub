@@ -1,0 +1,6 @@
+extend = "../../pyproject.toml"
+extend-exclude = [
+    "assets",
+    # Exact public-notebook derivative; semantic fidelity is tested separately.
+    "exp015_oracle_stage_limits_inference.py",
+]

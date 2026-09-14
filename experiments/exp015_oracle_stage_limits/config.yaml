@@ -1,0 +1,190 @@
+experiment:
+  name: exp015_oracle_stage_limits
+  description: >-
+    固定公開モデルのtrain予測で、後続学習に再利用するwindow cacheを同時生成し、
+    既知中心、既知辺、母と2娘、最終graph選択の回収上限も段階別に診断する
+  route: oracle_stage_diagnostic
+  notebooks:
+    - inference
+    - diagnostic
+  created_at: "2026-09-13"
+
+lineage:
+  parent: exp014_exact_window_cache
+  hypothesis_id: HYP-20260910-14
+  backlog_candidate: oracle_stage_limits
+  diff_summary: >-
+    exp014で等価性を確認した固定公開構成をtrain 199動画へ適用し、同じforwardから
+    window cache、ILP前候補graph、最終graphを保存して段階別回収上限を診断する
+
+validation:
+  diagnostic_only: true
+  expected_sample_count: 199
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+  matching:
+    method: per_frame_linear_sum_assignment
+    max_distance_um: 7.0
+    scale_zyx_um: [1.625, 0.40625, 0.40625]
+  stages:
+    - known_center_in_detector_candidates
+    - known_edge_in_candidate_graph
+    - known_mother_and_two_daughters_in_candidate_graph
+    - candidate_structure_selected_in_final_graph
+
+data:
+  source: competition_train_runtime
+  image_dir: train
+  annotation_format: geff
+  expected_frames_per_sample: 100
+  exp012_readout:
+    local_dir: ../exp012_group_error_readout/artifacts/readout_v1
+    kernel_source: kentookumura/exp012-group-error-readout-diagnostic
+    per_sample_readout_sha256: 11dc792242dca26290be6a6734b322b0bfa9238f395b1a56d5d179f84e6b7041
+    paired_route_comparison_sha256: 3a6fa2a768290a8cfb3c6c961ede08af6a2a72381b07fe48f50d1c228b91dd50
+    baseline_route: exp005_embryo_holdout_batch8
+    comparison_route: exp006_embryo_holdout_seed314159
+    expected_degraded_count: 16
+    expected_degraded_embryo: 44b6
+
+model:
+  name: public_temporal_unet3d_tracker_bundle
+  manifest: assets/public_detector_selection.json
+  selection_state: adopted
+  checkpoint_sha256:
+    primary: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+    secondary: 9bac2fa0dadc4a6fc1899e0caf187f4b553e0a7cd90ba1261a68b35ffe9e305f
+    deepcenter: 8040999a92f6b7bbd98fa8cf458141e045c0f9ad7c936bdb3b18e1f7edafe2a0
+  params:
+    detector_threshold: 0.965
+    change_prediction_parameters: false
+
+oracle:
+  inference_source:
+    local_artifact_dir: artifacts/inference_v1
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    manifest: oracle_inference_manifest.json
+    candidate_graph_dir: oracle_candidate_graphs
+    final_graph_dir: oracle_final_graphs
+  output_dir: artifacts/oracle_v1
+  condition_columns:
+    - embryo
+    - brightness_bucket
+    - candidate_density_bucket
+    - boundary_distance_bucket
+    - known_division
+  crossing:
+    - brightness_bucket
+    - candidate_density_bucket
+  prohibitions:
+    - do_not_tune_from_train_ground_truth
+    - do_not_change_detector_tracker_or_decode
+    - do_not_treat_unmatched_candidates_as_false_positives
+    - do_not_call_oracle_recall_a_model_improvement
+    - do_not_submit
+
+cache:
+  train_window:
+    enabled: true
+    source_equivalence_experiment: exp014_exact_window_cache
+    source_summary_sha256: 4c8449d472805b541c00d1b4016c35353837e91115c56117d0153257ca564aa8
+    schema_version: 1
+    format: numpy_npz_uncompressed
+    unit: consecutive_two_frame_window
+    expected_dataset_count: 199
+    expected_frames_per_dataset: 100
+    expected_window_count: 19701
+    feature_channels: 32
+    planning_estimate_bytes: 6081397663
+    max_bytes_per_gpu_shard: 6000000000
+    max_total_cache_bytes: 12000000000
+    notebook_output_soft_limit_bytes: 18000000000
+    kaggle_output_limit_bytes: 20000000000
+    arrays:
+      - candidate_ids_src
+      - candidate_ids_tgt
+      - coords_src_grid
+      - coords_tgt_grid
+      - coords_src_physical
+      - coords_tgt_physical
+      - detection_scores_src
+      - detection_scores_tgt
+      - position_features_src
+      - position_features_tgt
+      - candidate_mask_src
+      - candidate_mask_tgt
+      - primary_features_src
+      - primary_features_tgt
+      - secondary_features_src
+      - secondary_features_tgt
+    validation:
+      - exact_array_round_trip_per_window
+      - complete_train_window_coverage
+      - current_prediction_uses_in_memory_features
+      - no_duplicate_edge_scoring_for_cache
+      - reference_exp014_exact_edge_logit_equivalence
+
+source:
+  fixed_public_configuration: exp011_public_detector_selection
+  exact_cache_evidence: exp014_exact_window_cache
+  reference_kernel: reyhanksatria/biohub-cell-tracking-0-947-lb
+  reference_kernel_id_no: 133199516
+  reference_notebook_sha256: ae8e01a262211045161984e469e8be23e3386bab9140fe12df503dc6a1e010e6
+  allowed_changes:
+    - switch_runtime_input_from_test_to_train
+    - save_pre_ilp_candidate_graph
+    - save_final_graph_with_original_candidate_ids
+    - save_train_window_feature_cache_from_existing_forward
+    - oracle_diagnostic_outputs
+    - experiment_receipts
+
+runtime:
+  execution: fixed_public_train_inference_with_feature_cache_then_cpu_oracle_diagnostic
+  use_amp: true
+  num_workers: 2
+  kaggle:
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+    diagnostic:
+      enable_gpu: false
+      enable_internet: false
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+      kernel_sources:
+        - kentookumura/exp015-oracle-stage-limits-inference
+        - kentookumura/exp012-group-error-readout-diagnostic
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_explicit_random_sampling
+  stochastic_components:
+    - cuda_kernels_not_forced_deterministic
+    - scip_solver_implementation
+    - two_process_gpu_sharding
+  parallel_rng_policy: no_explicit_rng_sorted_dataset_shards
+  feature_sha_policy: per_window_array_content_sha_and_sorted_cache_identity_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - "公開モデルの学習来歴にtrain 199動画が含まれるため、結果は固定公開モデル下の条件付き診断であり独立CVではない。"
+    - "GTは対応と集計だけに使い、候補生成、閾値、重み、復号へ戻さない。"
+    - "cacheは書き込み直後に完全一致を検査し、現在の予測は元のGPU tensorを使ってedge scoreを各model 1回だけ計算する。"
+
+notes:
+  - "inferenceは固定公開構成をtrainへ適用し、同じforwardからcacheも保存する。model config 0、fold学習0、booster 0、control再学習なし。"
+  - "Kaggle submissionは行わない。"

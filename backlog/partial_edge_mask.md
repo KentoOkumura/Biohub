@@ -6,15 +6,15 @@
 - 対応する上位仮説: `HYP-20260910-01`
 - 関連する上位仮説: なし。依存は先行検証の条件であり、主仮説を複数にしない。
 - 作成日: 2026-09-10
-- 最終更新日: 2026-09-12
+- 最終更新日: 2026-09-14
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: 未記録の第2娘を負例にしないの成立条件と反証可能な一変更の比較を具体化する。
-- 親実験 / 比較対象: 選定する公開検出器と既存トラッカーによる基準予測を主対照とする。重み・公開版・学習来歴は未選定。後続の学習比較は同じ公開検出器を固定したトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
+- 親実験 / 比較対象: [exp011](../experiments/exp011_public_detector_selection/)で採用し、[exp013](../experiments/exp013_public_notebook_replay/)でPublic LB 0.944を再現した固定公開検出器・既存トラッカーを主対照とする。後続の学習比較は同じ固定検出器下のトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
 - 優先度: P2
 - 優先度の理由: 固定候補を使い教師maskの一変更を比較できる。検出器再学習への依存を外し、基準成立後に優先する。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI01、検証候補2（同節の2項目目）。
-- 先行条件 / 依存: 固定公開検出器のトラッカー学習基準と教師mask監査、[`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)・oracle_stage_limits。sparse_det_maskの実行は不要。
+- 先行条件 / 依存: [exp015](../experiments/exp015_oracle_stage_limits/)で生成済みのtrain cacheと段階別診断、固定公開検出器のトラッカー学習基準。正例のある子列だけに限定する教師mask仕様は設計済みで、sparse_det_maskの実行は不要。
 
 
 ## 2026-09-12の方針反映
@@ -40,7 +40,7 @@
   - [E02](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02): 133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotation maskなし。
   - [E03](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03): compute_loss55行、compute_detection_loss528行、detect_and_match620行、train_epoch794行。実学習も検出候補を使う。
 - 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI01。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
-- 利用する保存済み生成物とSHA: [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果を補助参照する。選定する公開モデルの重み・候補・特徴は未確定であり、所在・版・SHAを取得時に記録する。過去調査の入力は[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)にある。
+- 利用する保存済み生成物とSHA: 公開model・checkpoint・feature contractは[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)、公開test基準予測は[exp013 metrics](../experiments/exp013_public_notebook_replay/metrics.json)、cache schemaとpublic test同値性は[exp014 metrics](../experiments/exp014_exact_window_cache/metrics.json)を正とする。[exp015 metrics](../experiments/exp015_oracle_stage_limits/metrics.json)にtrain 199動画・19,701 window cacheのSHA、candidate/final graph各199件、candidate edge recall 94.829%、final edge recall 91.602%を記録した。大容量生成物はKaggle上に保存し、後続Notebookから直接参照する。exp005・exp006は自前学習の補助診断に限る。
 - 仮定: Assumption: 検出と対応の損失で、未注釈の実在細胞や第2娘への接続を負例として押し下げる学習を減らせば、暗い細胞・疎い注釈の胚・分裂の見逃しを改善できる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。
 
 ## この候補が直接検証する仮説と範囲
@@ -118,6 +118,10 @@
 - なし
 
 ## 判断履歴
+
+- 2026-09-14: exp015でcandidate edge 94.829%からfinal edge 91.602%への3.227 pointsの選択損失を確認した。教師mask変更がこの損失を改善できるかは未検証だが、固定tracker基準後の一変更比較としてP2と`設計可能・実験化未承認`を維持する。
+
+- 2026-09-13: 全体バックログを再点検し、exp015のtrain cacheを先行入力へ追加した。最初の一変更比較は既に定義済みのため状態とP2を維持し、固定tracker基準成立後の安全側の次候補とした。
 
 - 2026-09-12: 全64候補の状態監査で、設計上の未決事項と測定・先行成果物待ちを分離した。状態を設計可能・実験化未承認へ訂正した。
 

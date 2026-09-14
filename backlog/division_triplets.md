@@ -6,15 +6,15 @@
 - 対応する上位仮説: `HYP-20260910-03`
 - 関連する上位仮説: なし。依存は先行検証の条件であり、主仮説を複数にしない。
 - 作成日: 2026-09-10
-- 最終更新日: 2026-09-12
+- 最終更新日: 2026-09-14
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: 母と2娘の組を採点するの成立条件と反証可能な一変更の比較を具体化する。
-- 親実験 / 比較対象: 選定する公開検出器と既存トラッカーによる基準予測を主対照とする。重み・公開版・学習来歴は未選定。後続の学習比較は同じ公開検出器を固定したトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
+- 親実験 / 比較対象: [exp011](../experiments/exp011_public_detector_selection/)で採用し、[exp013](../experiments/exp013_public_notebook_replay/)でPublic LB 0.944を再現した固定公開検出器・既存トラッカーを主対照とする。後続の学習比較は同じ固定検出器下のトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
 - 優先度: P2
-- 優先度の理由: 固定特徴から分裂を組で採点する学習は、出力と学習対象を変えて改善を狙える。公開基準で母・2娘の回収が確認できた場合に優先する。
+- 優先度の理由: 固定特徴から分裂を組で採点する学習は出力を変える高upside候補であり、exp015ではfinal選択の大きな損失を確認した。一方、現行candidate graphのtriplet回収は40.397%なので、既存中心候補から組候補を作る設計を先に確定する。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI03、検証候補10（同節の1項目目）。
-- 先行条件 / 依存: 固定公開検出器のトラッカー学習基準とoracle_stage_limitsでの母・2娘の同時回収、既知分裂教師。
+- 先行条件 / 依存: [exp015](../experiments/exp015_oracle_stage_limits/)の生成済みtrain cacheと段階別診断、固定公開検出器のトラッカー学習基準、既知151分裂。現行candidate graphではtripletが61件、final graphでは15件なので、既存中心候補から組候補を作る範囲、通常継続の確定条件・教師mask・loss・decodeは未解決。
 
 
 ## 2026-09-12の方針反映
@@ -36,12 +36,12 @@
 
 ## 観測事実と根拠
 
-- 実測済みの事実: 本候補の改善値は未取得。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
+- 実測済みの事実: 本候補の改善値は未取得。[exp015](../experiments/exp015_oracle_stage_limits/)では既知151分裂中、母と2娘が現行candidate graphに揃ったのは61件、final graphに残ったのは15件だった。candidate triplet recallは40.397%、final division recallは9.934%である。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
   - [E01](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e01): 公開0.94前後の推論構成、proxyの相違、FOCUSと局所化のdiscussion。スコアはページ表示と自己報告を区別。
   - [E02](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02): 133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotation maskなし。
   - [E05](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e05): 9月10日参照の公式評価。局所分裂構造と一対一対応。
 - 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI03。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
-- 利用する保存済み生成物とSHA: [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果を補助参照する。選定する公開モデルの重み・候補・特徴は未確定であり、所在・版・SHAを取得時に記録する。過去調査の入力は[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)にある。
+- 利用する保存済み生成物とSHA: 公開model・checkpoint・feature contractは[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)、公開test基準予測は[exp013 metrics](../experiments/exp013_public_notebook_replay/metrics.json)、cache schemaとpublic test同値性は[exp014 metrics](../experiments/exp014_exact_window_cache/metrics.json)を正とする。[exp015 metrics](../experiments/exp015_oracle_stage_limits/metrics.json)にtrain cache、candidate/final graph、151分裂の段階別回収、生成物SHAを記録した。大容量生成物はKaggle上に保存し、後続Notebookから直接参照する。exp005・exp006は自前学習の補助診断に限る。
 - 仮定: Assumption: 独立した2本のedgeではなく母細胞・2娘細胞・分裂時刻を一つの事象として学習すると、継続との混同と不正な分裂を減らせる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。
 
 ## この候補が直接検証する仮説と範囲
@@ -72,7 +72,7 @@
 
 ## 最小の反証可能な検証
 
-- 検証方法: 親と両娘の同時回収率を測り、2本別々の採点と組採点を比較 成立した場合だけ、学習側で方法を固定して胚を入れ替える2方向の比較へ進む。
+- 検証方法: 現行candidate graphでの親と両娘の同時回収率40.397%は確認済み。現行edge候補内だけの組採点を行わず、既存中心候補から作るtriplet候補の回収率・候補数・費用を先に測る。その範囲が成立した場合だけ、2本別々の採点と組採点を比較し、学習側で方法を固定して胚を入れ替える2方向の比較へ進む。
 - variant / config / fold / booster数: 候補固有の最小比較に限定し、同じ固定検出器と対象一覧を使う。学習量は小規模実測から週の残量内で設定する。両胚別に報告し、公開重みを含む分割の独立性は別記する。条件の選択は学習側内部のみ。booster数は0。
 - control再学習: 検出器と画像特徴抽出器は再学習しない。学習変更は同じ固定特徴・分割・初期化方針のトラッカーを対照とし、同条件の保存済み対照がなければ下流部分だけを学習する。診断・推論のみの比較は再学習なし。
 - 想定runtime / resource: Kaggle Notebookのみ・週30時間のGPU枠を上限とし、初回抽出、下流学習、評価・提出用推論を別計上する。CPU Notebookで可能な保存済み集計はGPUを使わない。本候補の追加抽出・候補数・最大入力での時間とメモリは未実測。実行前に残量と小規模実測で上限を決める。
@@ -113,10 +113,15 @@
 
 ## 未決事項
 
+- 現行candidate edgeに限定せず、exp015で99.286%回収できた既存中心候補から、母と2娘のtriplet候補をどの範囲・上限で作るかを確定する。
 - 疎い注釈から通常継続の組を負例として確定する条件と、未知の第2娘を除外する教師maskを決める。
 - 組の分類・順位損失のどちらを用い、個別接続の得点とどう競合させて復号するかを確定する。
 
 ## 判断履歴
+
+- 2026-09-14: exp015でcandidate triplet 61/151、final division 15/151を確認した。選択改善の余地は大きいが、現行candidate edgeだけを組にしても40.397%が上限になる。P2は維持し、既存中心候補からtriplet候補を形成する範囲を未決事項へ追加したうえで、`検討メモ・設計不可`を維持する。
+
+- 2026-09-13: 全体バックログを再点検し、exp015のtrain cacheと母・2娘同時coverageを先行条件へ追加した。実測coverageと教師・loss・decodeの未決事項が残るため状態とP2は維持し、条件成立時の高リスク・高upside候補とした。
 
 - 2026-09-12: 全64候補の状態監査で、設計上の未決事項と測定・先行成果物待ちを分離した。具体的な設計・方針の未決事項が残るため、状態を維持して根拠を明記した。
 

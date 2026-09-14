@@ -6,15 +6,15 @@
 - 対応する上位仮説: `HYP-20260910-11`
 - 関連する上位仮説: なし。依存は先行検証の条件であり、主仮説を複数にしない。
 - 作成日: 2026-09-10
-- 最終更新日: 2026-09-12
+- 最終更新日: 2026-09-14
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: 接続と出現・分裂の費用を整合の成立条件と反証可能な一変更の比較を具体化する。
-- 親実験 / 比較対象: 選定する公開検出器と既存トラッカーによる基準予測を主対照とする。重み・公開版・学習来歴は未選定。後続の学習比較は同じ公開検出器を固定したトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
+- 親実験 / 比較対象: [exp011](../experiments/exp011_public_detector_selection/)で採用し、[exp013](../experiments/exp013_public_notebook_replay/)でPublic LB 0.944を再現した固定公開検出器・既存トラッカーを主対照とする。後続の学習比較は同じ固定検出器下のトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
 - 優先度: P2
-- 優先度の理由: 候補得点の保存後は追加の検出器学習をせず低いGPU費用で接続・分裂の選択を比較できる。ただし学習案の代替にはしない。
+- 優先度の理由: exp015でcandidateからfinalへのedge 3.227 pointsとdivision 46件の選択損失を確認した。保存済み候補得点をKaggle上のCPU Notebookから直接参照でき、追加の検出器学習をせず比較できる。ただし学習案の代替にはしない。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI11、検証候補50（同節の3項目目）。
-- 先行条件 / 依存: oracle_stage_limitsと固定公開検出器・トラッカーの学習側の候補得点。初回校正はトラッカー再学習の完了を待たずに可能。
+- 先行条件 / 依存: [exp015](../experiments/exp015_oracle_stage_limits/)で保存済みの固定公開検出器・既存trackerのcandidate/final graphと得点、および学習側だけで選ぶ評価分割。初回校正はtracker再学習の完了を待たずKaggle CPU Notebookで可能だが、変更する費用と有限集合は未解決。
 
 
 ## 2026-09-12の方針反映
@@ -36,13 +36,13 @@
 
 ## 観測事実と根拠
 
-- 実測済みの事実: 本候補の改善値は未取得。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
+- 実測済みの事実: 本候補の改善値は未取得。[exp015](../experiments/exp015_oracle_stage_limits/)ではcandidate edge recall 94.829%からfinal edge recall 91.602%へ3.227 points低下し、candidate graphにあった既知division 61件のうちfinal graphに残ったのは15件だった。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
   - [E02](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02): 133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotation maskなし。
   - [E03](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03): compute_loss55行、compute_detection_loss528行、detect_and_match620行、train_epoch794行。実学習も検出候補を使う。
   - [E04](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e04): 診断用sample holdout、3epochs、batch16、T4x2、allocator変更と時間制約。主CV/OOFは未取得。
   - [E05](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e05): 9月10日参照の公式評価。局所分裂構造と一対一対応。
 - 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI11。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
-- 利用する保存済み生成物とSHA: [exp005](../experiments/exp005_embryo_holdout_batch8/metrics.json)・[exp006](../experiments/exp006_embryo_holdout_seed314159/metrics.json)の保存済み結果を補助参照する。選定する公開モデルの重み・候補・特徴は未確定であり、所在・版・SHAを取得時に記録する。過去調査の入力は[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)にある。
+- 利用する保存済み生成物とSHA: 公開model・checkpoint・feature contractは[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)、公開test基準予測は[exp013 metrics](../experiments/exp013_public_notebook_replay/metrics.json)、cache schemaとpublic test同値性は[exp014 metrics](../experiments/exp014_exact_window_cache/metrics.json)を正とする。[exp015 metrics](../experiments/exp015_oracle_stage_limits/metrics.json)にcandidate/final graph各199件、段階別回収、生成物SHAを記録した。大容量生成物はKaggle上に保存し、CPU Notebookからkernel sourceとして直接参照する。exp005・exp006は自前学習の補助診断に限る。
 - 仮定: Assumption: 候補親への相対scoreだけでなく、対応なし・継続・分裂を明示し、候補数やcrop境界に応じた不確実性を扱うと、無理な接続を減らせる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。
 
 ## この候補が直接検証する仮説と範囲
@@ -118,6 +118,10 @@
 - 学習側の選択用分割と有限比較の設計を定める。再学習を初回に加えない点は決定済みであり、最適な係数値は実験で求める。
 
 ## 判断履歴
+
+- 2026-09-14: exp015でcandidateからfinalへのedge 3.227 pointsとdivision 46件の選択損失を確認し、CPU中心の診断価値は高まった。変更する費用・有限集合・学習側分割は未決なのでP2と`検討メモ・設計不可`を維持する。大容量outputはdownloadせずKaggle上で直接参照する。
+
+- 2026-09-13: 全体バックログを再点検し、exp015で保存する候補graph・得点を先行入力へ追加した。CPU中心の比較候補としてP2を維持するが、変更する費用・有限集合・学習側分割が未決のため設計不可を維持した。
 
 - 2026-09-12: 全64候補の状態監査で、設計上の未決事項と測定・先行成果物待ちを分離した。具体的な設計・方針の未決事項が残るため、状態を維持して根拠を明記した。
 
