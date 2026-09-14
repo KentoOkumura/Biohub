@@ -1,0 +1,114 @@
+{
+  "experiment": "exp017_cross_crop_registration_audit",
+  "status": "completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "cross_crop_registration_evidence",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp017-cross-crop-registration-audit-audit",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp017-cross-crop-registration-audit-audit",
+      "kernel_source_ids": [],
+      "resource": "cpu",
+      "notebook_runtime_seconds": 1303.053834851,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": "8d6b1fa7df73eeb36639af206a251c02b4f25027ea86795ec2ed3648cfced522",
+      "cache_file_sha": null,
+      "feature_schema_sha": "17bfda12885f51ed8329a40bffa0f497f2fce62724c6a686689e1eb88dab88d0",
+      "feature_content_sha": "54d89b9e91686a7e7b95e6176bf505e3df2d261f285773d7d4b9205e7abdf12a",
+      "row_count": 199,
+      "group_count": 2,
+      "feature_count": 10,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": null,
+      "model_shas": {},
+      "selected_mode": "cpu_multistage_registration_audit",
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null,
+      "artifact_manifest_sha": "54d89b9e91686a7e7b95e6176bf505e3df2d261f285773d7d4b9205e7abdf12a"
+    },
+    "registration_audit": {
+      "sample_count": 199,
+      "embryo_counts": {
+        "44b6": 71,
+        "6bba": 128
+      },
+      "freeze": {
+        "44b6_samples_with_repeated_consecutive_frames": 0,
+        "6bba_samples_with_repeated_consecutive_frames": 114,
+        "6bba_repeat_run_count": 834,
+        "run_length_counts": {
+          "2": 772,
+          "3": 11,
+          "4": 51
+        },
+        "identical_nonempty_repeat_schedule_pairs": 24,
+        "cross_crop_identical_repeated_frame_content_count": 0
+      },
+      "registration": {
+        "same_embryo_pairs_screened": 10613,
+        "d4_pairs_refined": 150,
+        "cross_embryo_null_pairs": 100,
+        "thumbnail_ncc_null_q99": 0.38513674121092084,
+        "thumbnail_ncc_effective_threshold": 0.45,
+        "passes_2d_count": 0,
+        "volume_pairs_confirmed": 48,
+        "volume_ncc_max": 0.22660432264729177,
+        "volume_ncc_threshold": 0.35,
+        "passes_2d_and_3d_count": 0
+      },
+      "identical_repeat_schedule_pairs": {
+        "count": 24,
+        "thumbnail_ncc_median": 0.25588562456870345,
+        "thumbnail_ncc_max": 0.4166665006602261,
+        "same_vs_mismatch_margin_median": -0.007909260077633512,
+        "shift_mad_downsampled_px_median": 7.447941497572213,
+        "volume_ncc_median": 0.042000121443520486,
+        "volume_ncc_max": 0.22660432264729177,
+        "passes_2d": 0,
+        "passes_2d_and_3d": 0
+      },
+      "geff": {
+        "pairs_checked": 48,
+        "pairs_with_spatial_matches": 5,
+        "maximum_spatial_matches": 3,
+        "pairs_with_mapped_edge_agreement": 1,
+        "positive_image_pairs_with_spatial_matches": 0,
+        "positive_image_pairs_with_edge_agreement": 0
+      }
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": []
+  },
+  "notes": "Kaggle CPU kernel v2 completed. No same-embryo pair, including all 24 pairs with identical nonempty repeated-frame schedules, passed the multi-timepoint 2D and 3D registration evidence contract. The user accepted completing the experiment and retaining sample-level tracker training without directly connecting crops. No model, prediction, or submission was produced."
+}

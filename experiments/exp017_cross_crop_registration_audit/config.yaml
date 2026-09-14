@@ -1,0 +1,108 @@
+experiment:
+  name: exp017_cross_crop_registration_audit
+  description: >-
+    同一胚に属するcrop画像が共通領域を持つかを、複数時刻の2D/3D画像登録と
+    GEFF注釈の整合性で調べるCPU-only診断
+  route: cross_crop_registration_audit
+  notebooks:
+    - audit
+  created_at: "2026-09-14"
+
+lineage:
+  parent: N/A
+  hypothesis_id: N/A
+  backlog_candidate: N/A
+  diff_summary: >-
+    学習・推論・復号を変更せず、crop間の剛体的な重なりと領域をまたぐ軌跡を
+    復元できる前提がデータにあるかをCPUで監査する
+
+validation:
+  strategy: same_embryo_cross_crop_registration_audit
+  metric: cross_crop_registration_evidence
+  seed: 42
+  n_folds: 0
+  diagnostic_only: true
+  expected_sample_count: 199
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+
+data:
+  expected_frames_per_sample: 100
+  expected_image_shape_tzyx: [100, 64, 256, 256]
+  thumbnail_frames: [10, 30, 50, 70, 90]
+  mismatch_frame_offset: 17
+  volume_frames: [20, 50, 80]
+  thumbnail_downsample_yx: 4
+  volume_downsample_zyx: [2, 4, 4]
+  voxel_scale_zyx_um: [1.625, 0.40625, 0.40625]
+
+model:
+  name: none_image_registration_audit
+  params: {}
+
+audit:
+  freeze_signature_bytes: 65536
+  min_overlap_fraction_2d: 0.20
+  min_overlap_fraction_3d: 0.15
+  top_phase_pairs_per_sample: 4
+  max_identity_refinement_pairs: 500
+  max_d4_refinement_pairs: 150
+  volume_top_score_pairs: 30
+  max_volume_confirmation_pairs: 80
+  null_pair_count: 100
+  transforms: [identity, rot90, rot180, rot270, flip_x, flip_y, transpose, anti_transpose]
+  evidence_thresholds:
+    min_thumbnail_ncc: 0.45
+    min_volume_ncc: 0.35
+    min_same_vs_mismatch_margin: 0.03
+    max_shift_mad_downsampled_px: 2.0
+    null_quantile: 0.99
+  annotation:
+    max_match_distance_um: 3.0
+  repeat_schedule_priority: identical_nonempty_schedule
+
+runtime:
+  execution: competition_input_cpu_audit
+  use_amp: false
+  num_workers: 0
+  batch_size: null
+  kaggle:
+    enable_gpu: false
+    enable_internet: false
+    machine_shape: null
+    time_limit_hours: 12
+    audit:
+      enable_gpu: false
+      enable_internet: false
+      machine_shape: null
+
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_seed_for_null_pair_selection
+  stochastic_components:
+    - deterministic_null_pair_sampling
+  parallel_rng_policy: sequential_local_generator_seed_42
+  feature_sha_policy: uncompressed_file_sha_and_sorted_manifest_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: false
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - CPUとinternet無効のKaggle Notebookを正式実行とする。
+    - 同じconfigと入力から候補選択を再現できるが、再実行一致の確認前はdeterministic anchorにしない。
+
+notes:
+  - 追加学習、test推論、復号変更、competition submissionは行わない。
+  - 画像登録の正例は共通視野の証拠であり、胚全体の一意な座標系や全軌跡復元を保証しない。
+
+overrides:
+  project_defaults:
+    - validation.metric
+    - validation.n_folds
