@@ -8,7 +8,7 @@ from functools import lru_cache
 from pathlib import Path
 
 import ipywidgets as widgets
-from IPython.display import HTML, clear_output, display
+from IPython.display import HTML, display
 
 from app.tracking_data import (
     analyze_sequence,
@@ -28,6 +28,19 @@ def find_input_directory(root: Path, name: str) -> Path:
     if len(unique) != 1:
         raise ValueError(f"Expected one {name} directory; found {unique}. Set the path explicitly.")
     return unique[0]
+
+
+def plotly_iframe(figure, height: int) -> str:
+    """Render Plotly in an iframe that also works inside a Kaggle HTML widget."""
+    document = figure.to_html(
+        full_html=True,
+        include_plotlyjs="cdn",
+        config={"responsive": True, "displaylogo": False},
+    )
+    return (
+        f'<iframe title="Plotly figure" srcdoc="{html.escape(document, quote=True)}" '
+        f'style="width:100%;height:{height}px;border:0" loading="eager"></iframe>'
+    )
 
 
 class TrackingNotebookViewer:
@@ -103,7 +116,11 @@ class TrackingNotebookViewer:
         self.next_issue = widgets.Button(description="次の未対応時刻")
         self.export = widgets.Button(description="対応表を CSV 保存")
         self.message = widgets.HTML()
-        self.output = widgets.Output()
+        full_width = widgets.Layout(width="100%")
+        self.summary_output = widgets.HTML(layout=full_width)
+        self.spatial_output = widgets.HTML(layout=full_width)
+        self.timeline_output = widgets.HTML(layout=full_width)
+        self.detail_output = widgets.HTML(layout=full_width)
         self.busy = False
         self._projection = lru_cache(maxsize=6)(read_projection)
         self.dataset.observe(self._load, "value")
@@ -237,62 +254,64 @@ class TrackingNotebookViewer:
         self.busy = True
         self.play.value = self.frames.index(self.frame.value)
         self.busy = False
-        with self.output:
-            clear_output(wait=True)
-            try:
-                t, plane = self.frame.value, self.plane.value
-                scale = tuple(self.config["voxel_scale_um"])
-                lo, hi = self.zrange.value
-                bounds = ((lo - 0.5) * scale[0], (hi + 0.5) * scale[0])
-                background = None
-                if self.background.value and plane != "3D" and self.shape and t < self.shape[0]:
-                    background = self._projection(self.image_path, t, plane, (lo, hi))
-                row = self.summary[self.summary.t == t].iloc[0]
-                display(
-                    HTML(
-                        f"<b>t={t}</b>　検出 {int(row['検出候補'])}　正解 {int(row['正解'])}　"
-                        f"対応 {int(row['対応あり'])}　未対応の正解 {int(row['未対応の正解'])}"
-                        "<br><small>件数は全視野・全Z。表示範囲や系譜の選択は対応計算を変えません。</small>"
-                    )
-                )
-                lineage = None if self.lineage.value == -1 else self.lineage.value
-                self.figure = spatial_figure(
-                    self.filtered,
-                    self.gt,
-                    self.edges,
-                    self.matches,
-                    t=t,
-                    plane=plane,
-                    lineage=lineage,
-                    trail=self.trail.value,
-                    z_bounds=bounds,
-                    background=background,
-                    scale=scale,
-                    image_z_start=lo,
-                    show_unmatched=self.unmatched.value,
-                    show_links=self.links.value,
-                    dataset=self.dataset.value,
-                )
-                display(self.figure)
-                display(timeline_figure(self.summary, t))
-                details = detail_table(self.gt, self.filtered, self.matches, lineage)
-                columns = [
-                    "t",
-                    "gt_id",
-                    "detection_id",
-                    "distance_um",
-                    "nearest_distance_um",
-                    "candidates_in_radius",
-                    "detection_score",
-                    "division",
-                    "state",
-                ]
-                display(
-                    details[columns] if lineage is not None else details[details.t == t][columns]
-                )
-            except (ValueError, KeyError, OSError, IndexError) as exc:
-                display(HTML(f"<b>読み込み・表示エラー:</b> {html.escape(str(exc))}"))
-                raise
+        try:
+            t, plane = self.frame.value, self.plane.value
+            scale = tuple(self.config["voxel_scale_um"])
+            lo, hi = self.zrange.value
+            bounds = ((lo - 0.5) * scale[0], (hi + 0.5) * scale[0])
+            background = None
+            if self.background.value and plane != "3D" and self.shape and t < self.shape[0]:
+                background = self._projection(self.image_path, t, plane, (lo, hi))
+            row = self.summary[self.summary.t == t].iloc[0]
+            self.summary_output.value = (
+                f"<b>t={t}</b>　検出 {int(row['検出候補'])}　正解 {int(row['正解'])}　"
+                f"対応 {int(row['対応あり'])}　未対応の正解 {int(row['未対応の正解'])}"
+                "<br><small>件数は全視野・全Z。表示範囲や系譜の選択は対応計算を変えません。</small>"
+            )
+            lineage = None if self.lineage.value == -1 else self.lineage.value
+            self.figure = spatial_figure(
+                self.filtered,
+                self.gt,
+                self.edges,
+                self.matches,
+                t=t,
+                plane=plane,
+                lineage=lineage,
+                trail=self.trail.value,
+                z_bounds=bounds,
+                background=background,
+                scale=scale,
+                image_z_start=lo,
+                show_unmatched=self.unmatched.value,
+                show_links=self.links.value,
+                dataset=self.dataset.value,
+            )
+            self.spatial_output.value = plotly_iframe(self.figure, 640)
+            self.timeline_output.value = plotly_iframe(timeline_figure(self.summary, t), 250)
+            details = detail_table(self.gt, self.filtered, self.matches, lineage)
+            columns = [
+                "t",
+                "gt_id",
+                "detection_id",
+                "distance_um",
+                "nearest_distance_um",
+                "candidates_in_radius",
+                "detection_score",
+                "division",
+                "state",
+            ]
+            table = details[columns] if lineage is not None else details[details.t == t][columns]
+            self.detail_output.value = (
+                '<div style="max-height:420px;overflow:auto">'
+                + table.to_html(index=False, border=0)
+                + "</div>"
+            )
+        except (ValueError, KeyError, OSError, IndexError) as exc:
+            self.summary_output.value = f"<b>読み込み・表示エラー:</b> {html.escape(str(exc))}"
+            self.spatial_output.value = ""
+            self.timeline_output.value = ""
+            self.detail_output.value = ""
+            raise
 
     def show(self):
         display(
@@ -318,7 +337,10 @@ class TrackingNotebookViewer:
                     widgets.HBox([self.radius, self.score]),
                     widgets.HBox([self.background, self.unmatched, self.links, self.export]),
                     self.message,
-                    self.output,
+                    self.summary_output,
+                    self.spatial_output,
+                    self.timeline_output,
+                    self.detail_output,
                 ]
             )
         )

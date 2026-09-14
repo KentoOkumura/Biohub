@@ -71,9 +71,8 @@ print('train:', TRAIN_ROOT)
 print('settings:', CONFIG)
 """
     run = """import plotly.io as pio
-# HTML scriptを使うkaggle rendererはipywidgets.Output内で実行されないため、
-# JupyterのPlotly MIME rendererを使います。
-pio.renderers.default = 'plotly_mimetype'
+# 保存ページ末尾の静的Figure用。対話図はHTML widget内のiframeで描画します。
+pio.renderers.default = 'kaggle'
 import faulthandler
 faulthandler.dump_traceback_later(90)
 try:

@@ -140,7 +140,6 @@ def test_notebook_controls_recompute_and_preserve_lineage(tmp_path, monkeypatch)
     from app import tracking_notebook as module
 
     monkeypatch.setattr(module, "display", lambda *args: None)
-    monkeypatch.setattr(module, "clear_output", lambda **kwargs: None)
     train, cache = tmp_path / "train", tmp_path / "window_cache"
     train.mkdir()
     write_geff(train / "sample.geff")
@@ -160,6 +159,10 @@ def test_notebook_controls_recompute_and_preserve_lineage(tmp_path, monkeypatch)
     }
     viewer = module.TrackingNotebookViewer(cache, train, config)
     assert viewer.matches.detection_id.notna().sum() == 4
+    assert viewer.spatial_output.value.startswith('<iframe title="Plotly figure"')
+    assert "cdn.plot.ly" in viewer.spatial_output.value
+    assert viewer.timeline_output.value.startswith('<iframe title="Plotly figure"')
+    assert "<table" in viewer.detail_output.value
     assert viewer.play.layout.display == "none"
     assert "検出キャッシュあり: 1件 / 正解 train: 1件" in viewer.dataset_note.value
     assert all(
@@ -225,5 +228,5 @@ def test_kaggle_viewer_uses_exp015_train_cache_only():
 
     notebook = json.loads((root / "app/kaggle/tracking_viewer.ipynb").read_text())
     viewer_source = "".join(notebook["cells"][3]["source"])
-    assert "pio.renderers.default = 'plotly_mimetype'" in viewer_source
-    assert "pio.renderers.default = 'kaggle'" not in viewer_source
+    assert "pio.renderers.default = 'kaggle'" in viewer_source
+    assert "pio.renderers.default = 'plotly_mimetype'" not in viewer_source
