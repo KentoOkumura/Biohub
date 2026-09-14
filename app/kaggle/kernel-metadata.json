@@ -13,7 +13,7 @@
     "biohub-cell-tracking-during-development"
   ],
   "kernel_sources": [
-    "kentookumura/exp014-exact-window-cache-inference"
+    "kentookumura/exp015-oracle-stage-limits-inference"
   ],
   "dataset_sources": [
     "pilkwang/biohub-tracking-support-pack-50ep-v1"

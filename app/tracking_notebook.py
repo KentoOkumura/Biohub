@@ -39,7 +39,7 @@ class TrackingNotebookViewer:
             if p.is_dir() and any(p.glob("*.npz")) and (train_root / f"{p.name}.geff").is_dir()
         )
         if not datasets:
-            raise ValueError("No matching cache/GEFF pairs. Attach competition and exp014 outputs.")
+            raise ValueError("No matching cache/GEFF pairs. Attach competition and exp015 outputs.")
         style = {"description_width": "initial"}
         train_count = sum(path.is_dir() for path in train_root.glob("*.geff"))
         self.dataset = widgets.Dropdown(

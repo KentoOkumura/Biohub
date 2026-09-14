@@ -16,16 +16,16 @@ def build():
     files = {name: (ROOT / "app" / name).read_text() for name in MODULES}
     intro = """# Cell tracking — 検出位置と正解の時間変化
 
-exp014 の検出候補と、同名の train GEFF / Zarr を比較する EDA ビューアーです。
+exp015 の train 全199件の検出候補と、同名の GEFF / Zarr を比較する EDA ビューアーです。
 **Edit を開いて Run All** すると、時刻・Z断面・正解の系譜を操作できます。
 保存された静的な Notebook ページでは Python の操作部は動きません。
 
 - CPU / Internet OFF で実行。画像は選択時刻だけ読み、ローカルへダウンロードしません。
 - Input: `biohub-cell-tracking-during-development` と
-  `kentookumura/exp014-exact-window-cache-inference` の出力。
+  `kentookumura/exp015-oracle-stage-limits-inference` の出力。
 - 正解は疎です。未対応の検出は誤検出とは限りません。
 - 候補 ID は各検出点の識別子です。同一細胞を時間方向につなぐ ID ではありません。
-- 公開 test と同名 train の比較は EDA 用です。汎化性能の評価ではありません。
+- 公開モデルは train 199件を学習に含むため、この表示は固定公開モデル下の診断です。
 - 対応表の保存ボタンは作業ディレクトリに CSV と設定 JSON を作ります。
 """
     setup = (
@@ -130,7 +130,7 @@ display(viewer.figure)
         "enable_internet": False,
         "run_on_push": True,
         "competition_sources": ["biohub-cell-tracking-during-development"],
-        "kernel_sources": ["kentookumura/exp014-exact-window-cache-inference"],
+        "kernel_sources": ["kentookumura/exp015-oracle-stage-limits-inference"],
         "dataset_sources": ["pilkwang/biohub-tracking-support-pack-50ep-v1"],
         "model_sources": [],
     }

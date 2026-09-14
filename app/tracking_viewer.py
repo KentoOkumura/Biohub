@@ -58,7 +58,7 @@ def main():
     )
     folders = sorted(p for p in cache_root.glob("*") if p.is_dir() and any(p.glob("*.npz")))
     if not folders:
-        st.info("exp014 の window_cache を指定してください。Kaggle 版は app/README.md を参照。")
+        st.info("exp015 の window_cache を指定してください。Kaggle 版は app/README.md を参照。")
         return
     folder = st.sidebar.selectbox("サンプル", folders, format_func=lambda p: p.name)
     signature = tuple(

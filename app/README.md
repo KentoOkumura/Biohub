@@ -41,15 +41,15 @@ GPU・Internet は不要です。
 
 ### 入力と解釈
 
-- 検出: exp014 の `window_cache/<dataset>/*.npz`。32次元特徴は読み込まず、ID・座標・score・maskを読む。
-- サンプル一覧には検出キャッシュと正解 GEFF の両方があるものだけを表示する。現在の exp014 は
-  公開 test 4件だけを処理したため、train 199件のうち同名の4件だけを選択できる。
+- 検出: exp015 の `window_cache/<dataset>/*.npz`。32次元特徴は読み込まず、ID・座標・score・maskを読む。
+- サンプル一覧には検出キャッシュと正解 GEFF の両方があるものだけを表示する。exp015は
+  train全199件を処理しているため、199件すべてを選択できる。
 - 正解: 競技データの `train/<dataset>.geff`。画像は同名の `.zarr` の `0` 配列。
-- `kernel_sources` に `kentookumura/exp014-exact-window-cache-inference`、
+- `kernel_sources` に `kentookumura/exp015-oracle-stage-limits-inference`、
   `competition_sources` に `biohub-cell-tracking-during-development` を接続済み。
 - Zarr は `pilkwang/biohub-tracking-support-pack-50ep-v1` の wheel からオフライン導入する。
 - GEFF の voxel 座標を z=1.625、y=x=0.40625 µm/voxel で物理座標へ変換する。
-  exp014 は保存済みの物理座標をそのまま使う。
+  exp015 は保存済みの物理座標をそのまま使う。
 - 同時刻の3次元距離が指定上限以内となる1対1の割当を求める。対応数を最大化し、その中で距離合計を最小化する。
   既定の上限は7 µm。これは EDA 用の対応付けで、公式 tracking score は計算しない。
 - 対応計算は表示用のZ範囲・系譜選択より前に行う。画面の件数は全視野・全Zの件数。
@@ -59,7 +59,8 @@ GPU・Internet は不要です。
   score はその時刻を含む最初の window を使い、異なる window で score が変わる件数を読み込み情報へ記録する。
 - キャッシュのない時刻を未検出扱いにせず、対応表に「キャッシュなし」と記録する。
 - 画像は選んだ1時刻・Z範囲だけ読む。Notebook 版の画像投影キャッシュは最大6件。
-- 公開 test と同名 train の比較は EDA 用であり、汎化性能の検証には使わない。
+- 公開モデルはtrain 199件を学習に含むため、この表示は固定公開モデル下の診断であり、
+  独立した交差検証には使わない。
 
 対応表には `gt_id`、`detection_id`、`distance_um`、`nearest_distance_um`、
 `candidates_in_radius`、`detection_score`、分裂親の印と対応状態を保存する。
@@ -106,5 +107,12 @@ Kaggle 実行では `viewer_input_check.json` と `viewer_initial_matches.csv` �
 相対リンク4件で失敗したが、このアプリの文書リンクは正常。これらの既存問題は今回変更していない。
 
 2026-09-13 の表示修正: Kaggle でアイコンフォントが読み込まれず四角に×で表示された再生操作と
-CSV保存を、日本語の文字ボタンへ変更した。画面上にも「検出キャッシュあり4件 / 正解train 199件」
-と選択範囲を表示する。
+CSV保存を、日本語の文字ボタンへ変更した。画面上には検出キャッシュと正解trainの件数
+を表示する。
+
+2026-09-14 の入力更新: kernel sourceをexp015 inferenceへ差し替え、train全199件の候補cacheを
+Kaggle上で直接参照する。exp014 sourceは接続せず、`window_cache`を一意に解決する。
+
+同日のKaggle viewer version 6はCPU・Internet OFFで正常終了した。exp015の`window_cache`と
+competition trainを解決し、初期サンプル`44b6_0113de3b`の99 window・100時刻、
+GEFF 52 node・50 edge、Zarr画像を読み込んで対応計算まで完了した。

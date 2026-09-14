@@ -216,3 +216,9 @@ def test_local_streamlit_no_gt_is_explicit(tmp_path):
     app.button[1].click().run(timeout=30)
     assert not app.exception
     assert app.select_slider[0].value == 1
+
+
+def test_kaggle_viewer_uses_exp015_train_cache_only():
+    root = Path(__file__).resolve().parents[1]
+    metadata = json.loads((root / "app/kaggle/kernel-metadata.json").read_text())
+    assert metadata["kernel_sources"] == ["kentookumura/exp015-oracle-stage-limits-inference"]
