@@ -133,3 +133,7 @@ GEFF 52 node・50 edge、Zarr画像を読み込んで対応計算まで完了し
 2026-09-14 のブラウザー確認では、操作部と時刻変更後の件数は表示されたが、`kaggle` rendererで
 `ipywidgets.Output` 内へ出したPlotly図が空になった。version 7で試したPlotly MIME rendererは
 `Initial viewer ready`後も保存実行が終了しなかったため採用せず、対話図をHTML iframeへ変更した。
+
+2026-09-15 のversion 10は予測軌跡表示を追加して正常終了した。初期サンプル
+`44b6_0113de3b`で最終予測25,621 node・24,901 edgeを読み、正解52 nodeのうち49 nodeを
+7 µm以内で対応付けた。graph repairで追加され、検出cacheにないnodeも保存座標から表示する。
