@@ -112,7 +112,37 @@ windowごとのmin-max正規化ではないので、隣接window間で強度scal
 
 ## 3. TemporalUNet3Dと細胞候補点
 
-primaryとsecondaryは同じ構造で、`TemporalUNet3D` のchannel幅は `[32, 64, 128]`、出力はframeごとに32 channelsである。各stageは3D convolutionを使い、深いstageでは同じ空間位置にある2 frame間へmulti-head attentionを適用する。出力には次の2つの使い道がある。
+primaryとsecondaryは同じ構造を持つ独立した2組のmodelで、parameterは共有しない。各組は `TemporalUNet3D`、1-channelのdetection head、`SimpleNodeTransformer` からなる。
+
+```mermaid
+flowchart LR
+    X["2 frames<br/>B × 2 × 1 × Z × Y/4 × X/4"] --> U["TemporalUNet3D<br/>32 → 64 → 128 → 64 → 32"]
+    U --> F["frame別feature map<br/>B × 2 × 32 × Z × Y/4 × X/4"]
+    F --> H["1 × 1 × 1 detection head"]
+    H --> L["center logit<br/>B × 2 × 1 × Z × Y/4 × X/4"]
+    L --> C["局所最大から候補点"]
+    F --> I["候補座標で32-channel特徴を取得"]
+    C --> I
+    I --> T["SimpleNodeTransformer<br/>frame間の全候補pairを採点"]
+    T --> E["edge logits<br/>B × N_t × N_{t+1}"]
+```
+
+`TemporalUNet3D` のchannel幅は `[32, 64, 128]` で、入力済みのdownsample grid上でencoderとdecoderを構成する。構造は次のとおりである。
+
+| 段階 | channel | 空間処理 | 時間方向の処理 |
+| --- | ---: | --- | --- |
+| encoder stage 1 | 32 | `Conv3d → BatchNorm3d → ReLU` を2回 | 省略 |
+| encoder stage 2 | 64 | 2倍max pooling後、同じconv block | 同じ空間位置にある2 frame間の4-head self-attention |
+| encoder stage 3 | 128 | さらに2倍max pooling後、同じconv block | 同じ空間位置にある2 frame間の4-head self-attention |
+| decoder stage 1 | 64 | trilinear upsample、64-channel skipと連結、conv block | なし |
+| decoder stage 2 | 32 | trilinear upsample、32-channel skipと連結、conv block | なし |
+| feature head | 32 | 1×1×1 convolution | frame別の32-channel特徴を出力 |
+
+時間attentionでは、各空間位置を独立に扱い、その位置にある長さ2のframe列だけへself-attentionを適用する。これは後述する候補点集合間の `SimpleNodeTransformer` とは別のattentionである。前者は同じvoxel位置の画像特徴を2 frame間で混ぜ、後者は異なる座標を含む全候補点間の接続を採点する。
+
+class定義から数えた1 branchのparameter数は、`TemporalUNet3D` が1,496,320、detection headが33、`SimpleNodeTransformer` が580,353で、合計2,076,706である。primaryとsecondaryはこの構造を1組ずつ持つ。DeepCenterは別modelなので、この数には含めない。
+
+32-channel出力には次の2つの使い道がある。
 
 - 1×1×1 convolutionのdetection headで、各voxelが細胞中心であることを表す1-channel logitを作る。
 - 候補点座標で32-channel feature mapを整数indexingし、association特徴として使う。
@@ -176,14 +206,150 @@ secondary detection logitは、平均と標準偏差をprimaryへ合わせてか
 
 ## 6. SimpleNodeTransformerによるassociation
 
-各候補点には、次の情報を連結して `SimpleNodeTransformer` へ渡す。
+### 6.1 入力するnode特徴
+
+`SimpleNodeTransformer` は画像全voxelをtokenにするのではなく、検出済みの細胞候補点だけをtokenとして扱う。frame $t$ の候補数を $N_t$ 、frame $t+1$ の候補数を $N_{t+1}$ とする。各候補点には次の情報を連結する。
 
 - 候補点座標で取り出した32-channel UNet特徴
 - window内の相対時刻とz/y/xをsin/cosで符号化した32-dimensional位置embedding
 
-したがってnodeごとの入力は64 dimensionsである。Transformer本体はhidden dimension 128、4 heads、4 cross-attention blocksを使い、frame $t$ の候補群とframe $t+1$ の候補群を相互に参照する。最後に、source特徴、target特徴、相対z/y/xをpair MLPへ渡し、全source-target pairのedge logitを出す。
+位置embeddingは、時刻、z、y、xの各軸を対応するwindowまたは画像shapeで正規化する。軸 $a$ の正規化座標を $u_a$ とすると、周波数 $1,2,4,8$ のsinとcosを並べた8 dimensionsを作る。
 
-### primaryの時間順・逆順統合
+```math
+\operatorname{PE}_a(u_a)
+=
+\left[
+\sin(2^k\pi u_a),
+\cos(2^k\pi u_a)
+\right]_{k=0}^{3}
+\in \mathbb{R}^{8}
+```
+
+4軸を連結すると32 dimensionsとなる。時刻にはmovie全体の絶対frame番号ではなく、2-frame window内の0と1を使う。node $i$ の入力は次の64 dimensionsである。
+
+```math
+v_i
+=
+\left[
+f_i^{\mathrm{UNet}}\in\mathbb{R}^{32};
+\operatorname{PE}(t_i,z_i,y_i,x_i)\in\mathbb{R}^{32}
+\right]
+\in\mathbb{R}^{64}
+```
+
+候補座標でのUNet特徴取得は整数indexingであり、周囲のvoxelをtrilinear補間する処理ではない。したがってassociationは候補座標そのものを微分可能に補正せず、検出済み座標の画像特徴と位置embeddingから接続を予測する。
+
+### 6.2 Transformer本体の構造
+
+```mermaid
+flowchart LR
+    S0["source nodes at t<br/>B × N_t × 64"] --> SP["Linear 64 → 128<br/>LayerNorm"]
+    T0["target nodes at t+1<br/>B × N_{t+1} × 64"] --> TP["同じLinear 64 → 128<br/>LayerNorm"]
+    SP --> B1["Cross-attention block × 4<br/>source ← target<br/>target ← updated source"]
+    TP --> B1
+    B1 --> SN["source LayerNorm<br/>B × N_t × 128"]
+    B1 --> TN["target LayerNorm<br/>B × N_{t+1} × 128"]
+    SN --> P["全source-target pairを作る<br/>128 + 128 + 3 = 259"]
+    TN --> P
+    R["相対 z/y/x<br/>(source − target) / 100"] --> P
+    P --> M["pair MLP<br/>259 → 128 → 64 → 1"]
+    M --> O["edge logits<br/>B × N_t × N_{t+1}"]
+```
+
+| 項目 | 実装値 |
+| --- | ---: |
+| node入力 | 64 dimensions |
+| hidden dimension | 128 |
+| cross-attention heads | 4 |
+| 1 headあたりのdimension | 32 |
+| cross-attention blocks | 4 |
+| block内MLP | 128 → 256 → 128 |
+| activation | GELU |
+| dropout | 0.3 |
+| pair scorer入力 | 259 dimensions |
+| pair scorer | 259 → 128 → 64 → 1 |
+| source方向のpair chunk | 32 nodes |
+
+各attention headは、query候補と反対frameの全key候補との内積から重み行列を作る。head $h$ の射影行列を $W_Q^{(h)}$ 、 $W_K^{(h)}$ 、 $W_V^{(h)}$ とすると、sourceからtargetを見るheadは次の計算に対応する。
+
+```math
+\begin{aligned}
+A_h
+&=
+\operatorname{softmax}\!\left(
+\frac{(QW_Q^{(h)})(KW_K^{(h)})^\top}{\sqrt{32}}
+\right),\\
+\operatorname{head}_h(Q,K)
+&=
+A_h(KW_V^{(h)})
+\end{aligned}
+```
+
+$A_h$ のshapeは $N_t\times N_{t+1}$ である。4 headsの出力を連結して128 dimensionsへ戻す。このattentionはedgeを直接確定せず、各候補の表現へ反対frameの候補集合全体の文脈を加える。その後のpair MLPが個々のedge logitを出す。
+
+各blockはpre-LayerNorm型で、cross-attentionとMLPの両方にresidual connectionを持つ。source表現を $q$ 、target表現を $k$ とすると、source側の更新は概念的に次の形である。MHAでは4 headsに分けるため、各headのquery、key、valueは32 dimensionsである。
+
+```math
+\begin{aligned}
+\hat{q}
+&=
+q+\operatorname{MHA}\!\left(
+\operatorname{LN}_1(q),
+\operatorname{LN}_1(k),
+\operatorname{LN}_1(k)
+\right),\\
+q'
+&=
+\hat{q}+\operatorname{MLP}\!\left(\operatorname{LN}_2(\hat{q})\right)
+\end{aligned}
+```
+
+同じblock内で、次にtarget側をquery、更新済みsource側 $q'$ をkey/valueとしてtarget表現を更新する。
+
+```math
+\begin{aligned}
+\hat{k}
+&=
+k+\operatorname{MHA}\!\left(
+\operatorname{LN}_1(k),
+\operatorname{LN}_1(q'),
+\operatorname{LN}_1(q')
+\right),\\
+k'
+&=
+\hat{k}+\operatorname{MLP}\!\left(\operatorname{LN}_2(\hat{k})\right)
+\end{aligned}
+```
+
+この2方向は別々のTransformerを使うのではなく、同じblockのattention・MLP parameterを共有する。また、sourceとtargetを同時更新するのではなく、target側はそのblockで更新済みのsource表現を参照する。この処理をparameterの異なる4 blocksで繰り返し、最後に両候補集合へLayerNormを適用する。
+
+padding用maskを受け取る実装だが、この公開Notebookの動画別推論では候補をpaddingせず、maskはすべて真である。また `model.eval()` で実行するため、構造上のdropout 0.3は推論時には無効になる。
+
+ここでいう「2方向のcross-attention」は、後述するprimary modelの「時間順・逆順推論」とは異なる。block内部では1回のforward中に両候補集合の表現を更新する。時間順・逆順推論は、modelへのsourceとtargetの入力自体を入れ替えてedge logitをもう一度計算し、その2回の出力確率を統合する処理である。
+
+### 6.3 全候補pairの採点
+
+4 blocks後のsource表現 $q_i$ とtarget表現 $k_j$ に、original-resolution voxel座標の差を100で割った3 dimensionsを加える。これは物理単位のµmではない。
+
+```math
+r_{ij}
+=
+\frac{c_i-c_j}{100}
+\in\mathbb{R}^{3},
+\qquad
+g_{ij}
+=
+[q_i;k_j;r_{ij}]
+\in\mathbb{R}^{259}
+```
+
+各 $g_{ij}$ を共有のpair MLPへ通し、すべての組に1つずつedge logit $s_{ij}$ を出す。pair MLPは `Linear(259,128) → GELU → Dropout(0.3) → Linear(128,64) → GELU → Linear(64,1)` である。Transformer内には距離による候補削減や局所近傍maskがなく、計算量は基本的に $N_tN_{t+1}$ に比例する。
+
+source候補を32件ずつ処理する `pair_chunk_size=32` は、一度に作る `B × chunk × N_{t+1} × 259` tensorを小さくしてpeak memoryを抑えるための実装である。全pairを最終的に採点する点は変わらず、計算量を近傍探索のように減らすものではない。
+
+最終出力shapeは `B × N_t × N_{t+1}` である。forward・reverse・secondaryの統合後、source軸へsoftmaxを適用するため、各target候補について「どのsource候補をparentとするか」の相対確率になる。明示的な「接続なし」tokenはTransformer出力に含まれず、0.48の候補edge閾値と後段のILPにあるappearance・disappearance costが未接続を扱う。
+
+### 6.4 primaryの時間順・逆順統合
 
 primary modelは $t \rightarrow t+1$ と $t+1 \rightarrow t$ の両方向でedgeを予測する。逆方向logitの平均とscaleを時間順logitへ合わせた後、確率へ変換する。実装は単純な50対50の調和平均ではなく、逆方向の寄与 $w=0.15$ を使う重み付き調和平均である。
 
@@ -201,7 +367,7 @@ w=0.15
 
 その後、候補間で再正規化し、log確率をprimaryの元logit scaleへ合わせる。どちらか一方向だけが高いedgeを抑えつつ、時間順予測を主に残すための処理である。
 
-### secondaryのlow-margin consensus
+### 6.5 secondaryのlow-margin consensus
 
 secondary modelのedge logitも、平均とscaleをprimaryへ合わせる。ただし常に0.15を混ぜるのではない。各targetに対してprimaryの上位2 parent候補の確率差をmarginとし、次の条件でだけsecondaryを使う。
 
