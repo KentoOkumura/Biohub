@@ -216,7 +216,7 @@ secondary detection logitは、平均と標準偏差をprimaryへ合わせてか
 位置embeddingは、時刻、z、y、xの各軸を対応するwindowまたは画像shapeで正規化する。軸 $a$ の正規化座標を $u_a$ とすると、周波数 $1,2,4,8$ のsinとcosを並べた8 dimensionsを作る。
 
 ```math
-\operatorname{PE}_a(u_a)
+\mathrm{PE}_a(u_a)
 =
 \left[
 \sin(2^k\pi u_a),
@@ -232,7 +232,7 @@ v_i
 =
 \left[
 f_i^{\mathrm{UNet}}\in\mathbb{R}^{32};
-\operatorname{PE}(t_i,z_i,y_i,x_i)\in\mathbb{R}^{32}
+\mathrm{PE}(t_i,z_i,y_i,x_i)\in\mathbb{R}^{32}
 \right]
 \in\mathbb{R}^{64}
 ```
@@ -276,10 +276,10 @@ flowchart LR
 \begin{aligned}
 A_h
 &=
-\operatorname{softmax}\!\left(
+\mathrm{softmax}\!\left(
 \frac{(QW_Q^{(h)})(KW_K^{(h)})^\top}{\sqrt{32}}
 \right),\\
-\operatorname{head}_h(Q,K)
+\mathrm{head}_h(Q,K)
 &=
 A_h(KW_V^{(h)})
 \end{aligned}
@@ -293,14 +293,14 @@ $A_h$ のshapeは $N_t\times N_{t+1}$ である。4 headsの出力を連結し�
 \begin{aligned}
 \hat{q}
 &=
-q+\operatorname{MHA}\!\left(
-\operatorname{LN}_1(q),
-\operatorname{LN}_1(k),
-\operatorname{LN}_1(k)
+q+\mathrm{MHA}\!\left(
+\mathrm{LN}_1(q),
+\mathrm{LN}_1(k),
+\mathrm{LN}_1(k)
 \right),\\
 q'
 &=
-\hat{q}+\operatorname{MLP}\!\left(\operatorname{LN}_2(\hat{q})\right)
+\hat{q}+\mathrm{MLP}\!\left(\mathrm{LN}_2(\hat{q})\right)
 \end{aligned}
 ```
 
@@ -310,14 +310,14 @@ q'
 \begin{aligned}
 \hat{k}
 &=
-k+\operatorname{MHA}\!\left(
-\operatorname{LN}_1(k),
-\operatorname{LN}_1(q'),
-\operatorname{LN}_1(q')
+k+\mathrm{MHA}\!\left(
+\mathrm{LN}_1(k),
+\mathrm{LN}_1(q'),
+\mathrm{LN}_1(q')
 \right),\\
 k'
 &=
-\hat{k}+\operatorname{MLP}\!\left(\operatorname{LN}_2(\hat{k})\right)
+\hat{k}+\mathrm{MLP}\!\left(\mathrm{LN}_2(\hat{k})\right)
 \end{aligned}
 ```
 
