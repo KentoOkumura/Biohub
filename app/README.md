@@ -48,7 +48,8 @@ GPU・Internet は不要です。
 
 - 検出: exp015 の `window_cache/<dataset>/*.npz`。32次元特徴は読み込まず、ID・座標・score・maskを読む。
 - 予測軌跡: exp015 の `oracle_final_graphs/<dataset>.npz`。ILP と graph repair 後の
-  node・edgeを読み、node IDを検出候補へ対応させる。ビューアー内でtracker推論は行わない。
+  node・edgeを読む。元の検出候補IDを保つnodeに加えてgraph repairで補ったnodeも含み、
+  ビューアー内でtracker推論は行わない。
 - サンプル一覧には検出キャッシュ、最終予測 graph、正解 GEFF があるものだけを表示する。exp015は
   train全199件を処理しているため、199件すべてを選択できる。
 - 正解: 競技データの `train/<dataset>.geff`。画像は同名の `.zarr` の `0` 配列。
@@ -57,7 +58,8 @@ GPU・Internet は不要です。
 - Zarr は `pilkwang/biohub-tracking-support-pack-50ep-v1` の wheel からオフライン導入する。
 - GEFF の voxel 座標を z=1.625、y=x=0.40625 µm/voxel で物理座標へ変換する。
   exp015 の検出cacheは保存済みの物理座標を使い、最終予測 graph の voxel 座標は同じscaleで変換する。
-- 同時刻の3次元距離が指定上限以内となる1対1の割当を求める。対応数を最大化し、その中で距離合計を最小化する。
+- 検出候補と正解、最終予測nodeと正解について、それぞれ同時刻の3次元距離が指定上限以内となる
+  1対1の割当を求める。対応数を最大化し、その中で距離合計を最小化する。
   既定の上限は7 µm。これは EDA 用の対応付けで、公式 tracking score は計算しない。
 - 対応計算は表示用のZ範囲・系譜選択より前に行う。画面の件数は全視野・全Zの件数。
 - 正解は疎なので、未対応の検出を誤検出と断定しない。候補 ID を時間方向の軌跡 ID とみなさない。

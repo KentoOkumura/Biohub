@@ -117,6 +117,10 @@ def main():
         )
         filtered = detections[detections.score >= minimum_score]
         matches, summary = cached_analysis(filtered, gt, receipt["frames"], radius)
+        prediction_matches, prediction_summary = cached_analysis(
+            prediction_nodes, gt, receipt["frames"], radius
+        )
+        summary["予測対応"] = prediction_summary["対応あり"].to_numpy()
         st.sidebar.caption(
             "同時刻の3次元距離から1対1で割当。表示範囲・系譜の選択は計算を変えません。"
         )
@@ -163,12 +167,13 @@ def main():
                 st.session_state.frame = frames[min(len(frames) - 1, index + 1)]
             t = c.select_slider("時刻 t", options=frames, key="frame")
             row = summary[summary.t == t].iloc[0]
-            metric_columns = st.columns(5)
+            metric_columns = st.columns(6)
             for column, label in zip(metric_columns[:2], ["検出候補", "正解"], strict=True):
                 column.metric(label, int(row[label]))
             metric_columns[2].metric("最終予測", int((prediction_nodes.t == t).sum()))
-            for column, label in zip(metric_columns[3:], ["対応あり", "未対応の正解"], strict=True):
-                column.metric(label, int(row[label]))
+            metric_columns[3].metric("候補対応", int(row["対応あり"]))
+            metric_columns[4].metric("予測対応", int(row["予測対応"]))
+            metric_columns[5].metric("未対応の正解", int(row["未対応の正解"]))
             background = (
                 cached_projection(str(image_path), t, plane, bounds)
                 if show_image and plane != "3D"
@@ -192,6 +197,7 @@ def main():
                 dataset=folder.name,
                 predicted_nodes=prediction_nodes,
                 predicted_edges=prediction_edges,
+                prediction_matches=prediction_matches,
                 show_predictions=show_predictions,
             )
             st.plotly_chart(figure, width="stretch", key="spatial")

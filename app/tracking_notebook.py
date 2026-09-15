@@ -200,11 +200,6 @@ class TrackingNotebookViewer:
                     self.prediction_root / f"{name}.npz",
                     tuple(self.config["voxel_scale_um"]),
                 )
-                unknown = set(self.prediction_nodes.node_id) - set(self.detections.node_id)
-                if unknown:
-                    raise ValueError(
-                        f"Prediction graph contains {len(unknown)} IDs absent from the cache"
-                    )
             else:
                 self.prediction_nodes = self.gt.iloc[:0].copy()
                 self.prediction_edges = self.edges.iloc[:0].copy()
@@ -245,6 +240,10 @@ class TrackingNotebookViewer:
         self.matches, self.summary = analyze_sequence(
             self.filtered, self.gt, self.frames, self.radius.value
         )
+        self.prediction_matches, prediction_summary = analyze_sequence(
+            self.prediction_nodes, self.gt, self.frames, self.radius.value
+        )
+        self.summary["予測対応"] = prediction_summary["対応あり"].to_numpy()
         self._render()
 
     def _play_frame(self, change):
@@ -281,6 +280,9 @@ class TrackingNotebookViewer:
             "radius_um": self.radius.value,
             "minimum_score": self.score.value,
             "voxel_scale_um": self.config["voxel_scale_um"],
+            "prediction_nodes": len(self.prediction_nodes),
+            "prediction_edges": len(self.prediction_edges),
+            "matched_prediction": int(self.prediction_matches.detection_id.notna().sum()),
             "diagnostic_only": True,
         }
         path.with_suffix(".json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2))
@@ -303,9 +305,11 @@ class TrackingNotebookViewer:
                 background = self._projection(self.image_path, t, plane, (lo, hi))
             row = self.summary[self.summary.t == t].iloc[0]
             prediction_count = int((self.prediction_nodes.t == t).sum())
+            prediction_match_count = int(row["予測対応"])
             self.summary_output.value = (
                 f"<b>t={t}</b>　検出 {int(row['検出候補'])}　正解 {int(row['正解'])}　"
-                f"最終予測 {prediction_count}　対応 {int(row['対応あり'])}　"
+                f"最終予測 {prediction_count}　候補対応 {int(row['対応あり'])}　"
+                f"予測対応 {prediction_match_count}　"
                 f"未対応の正解 {int(row['未対応の正解'])}"
                 "<br><small>件数は全視野・全Z。表示範囲や系譜の選択は対応計算を変えません。</small>"
             )
@@ -328,6 +332,7 @@ class TrackingNotebookViewer:
                 dataset=self.dataset.value,
                 predicted_nodes=self.prediction_nodes,
                 predicted_edges=self.prediction_edges,
+                prediction_matches=self.prediction_matches,
                 show_predictions=self.show_predictions.value,
             )
             self.spatial_output.value = plotly_iframe(self.figure, 640)
@@ -365,8 +370,8 @@ class TrackingNotebookViewer:
                 "<h2>Cell tracking · 検出と正解の時間変化</h2>"
                 "<p>正解は疎です。未対応の検出は誤検出を意味しません。"
                 "対応は同時刻・3次元の距離による1対1割当で、公式スコアではありません。"
-                "候補IDは各検出点のIDです。予測軌跡は exp015 の最終 graph が接続した"
-                "候補IDを表示します。</p>"
+                "予測軌跡は exp015 の最終 graph を使い、graph repair で補った node も"
+                "表示します。</p>"
             )
         )
         display(

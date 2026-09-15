@@ -168,6 +168,7 @@ def test_prediction_graph_scale_lineage_and_gt_supported_edges(tmp_path):
         plane="3D",
         predicted_nodes=prediction,
         predicted_edges=prediction_edges,
+        prediction_matches=matches,
     )
     supported = next(
         trace for trace in figure.data if trace.name == "正解edgeとの対応を確認できた予測軌跡"
@@ -204,9 +205,9 @@ def test_notebook_controls_recompute_and_preserve_lineage(tmp_path, monkeypatch)
         write_window(cache / "sample", [a, b], det[det.t == a], det[det.t == b])
     write_prediction(
         prediction_root / "sample.npz",
-        det.node_id,
-        det[["t", "z", "y", "x"]],
-        [[110, 120], [120, 130], [120, 140]],
+        [*det.node_id, 999],
+        [*det[["t", "z", "y", "x"]].to_numpy(), [2, 4, 7, 7]],
+        [[110, 120], [120, 130], [120, 140], [110, 999]],
     )
     volume = np.ones((3, 5, 8, 8), dtype=np.uint16)
     zarr.open_group(str(train / "sample.zarr"), mode="w").create_array("0", data=volume)
@@ -219,6 +220,8 @@ def test_notebook_controls_recompute_and_preserve_lineage(tmp_path, monkeypatch)
     }
     viewer = module.TrackingNotebookViewer(cache, train, config, prediction_root=prediction_root)
     assert viewer.matches.detection_id.notna().sum() == 4
+    assert viewer.prediction_matches.detection_id.notna().sum() == 4
+    assert len(viewer.prediction_nodes) == 5
     assert viewer.spatial_output.value.startswith('<iframe title="Plotly figure"')
     assert "cdn.plot.ly" in viewer.spatial_output.value
     assert viewer.timeline_output.value.startswith('<iframe title="Plotly figure"')

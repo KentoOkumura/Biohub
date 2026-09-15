@@ -26,7 +26,7 @@ exp015 の train 全199件の検出候補・最終予測軌跡と、
   `kentookumura/exp015-oracle-stage-limits-inference` の出力。
 - 正解は疎です。未対応の検出は誤検出とは限りません。
 - 橙は最終予測の軌跡、青緑は正解 edge との対応を確認できた予測区間です。
-- 候補 ID は各検出点の識別子で、exp015 の最終 graph がそれらを時間方向へ接続します。
+- exp015 の最終 graph は候補を時間方向へ接続し、graph repair で補った node も含みます。
 - 公開モデルは train 199件を学習に含むため、この表示は固定公開モデル下の診断です。
 - 対応表の保存ボタンは作業ディレクトリに CSV と設定 JSON を作ります。
 """
@@ -95,6 +95,7 @@ from app.tracking_plots import detail_table
 receipt = {**viewer.receipt, 'gt_nodes': len(viewer.gt), 'gt_edges': len(viewer.edges),
            'prediction_nodes': len(viewer.prediction_nodes),
            'prediction_edges': len(viewer.prediction_edges),
+           'matched_prediction': int(viewer.prediction_matches.detection_id.notna().sum()),
            'matched_gt': int(viewer.matches.detection_id.notna().sum()),
            'image_shape': list(viewer.shape) if viewer.shape else None,
            'matching_radius_um': viewer.radius.value, 'diagnostic_only': True}

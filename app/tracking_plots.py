@@ -40,12 +40,15 @@ def spatial_figure(
     dataset="",
     predicted_nodes=None,
     predicted_edges=None,
+    prediction_matches=None,
     show_predictions=True,
 ):
     if predicted_nodes is None:
         predicted_nodes = pd.DataFrame(columns=["node_id", "t", *XYZ, "lineage", "division"])
     if predicted_edges is None:
         predicted_edges = pd.DataFrame(columns=["source_id", "target_id"])
+    if prediction_matches is None:
+        prediction_matches = pd.DataFrame(columns=["gt_id", "detection_id", "t"])
     det = detections[detections.t == t].copy()
     now = gt[gt.t == t].copy()
     prediction_now = predicted_nodes[predicted_nodes.t == t].copy()
@@ -60,8 +63,9 @@ def spatial_figure(
         now = now[now.lineage == lineage]
         selected_gt_ids = set(gt.loc[gt.lineage == lineage, "node_id"])
         selected_prediction_ids = set(
-            matches.loc[
-                matches.gt_id.isin(selected_gt_ids) & matches.detection_id.notna(),
+            prediction_matches.loc[
+                prediction_matches.gt_id.isin(selected_gt_ids)
+                & prediction_matches.detection_id.notna(),
                 "detection_id",
             ].astype(np.int64)
         )
@@ -159,7 +163,7 @@ def spatial_figure(
     gt_edge_set = set(edges.itertuples(index=False, name=None))
     gt_by_detection = {
         int(row.detection_id): int(row.gt_id)
-        for row in matches.dropna(subset=["detection_id"]).itertuples()
+        for row in prediction_matches.dropna(subset=["detection_id"]).itertuples()
     }
     supported_prediction_segments = []
     other_prediction_segments = []
@@ -311,6 +315,16 @@ def timeline_figure(summary, t, predicted_nodes=None):
                 mode="lines",
                 name="最終予測",
                 line=dict(color=COLORS["prediction"]),
+            )
+        )
+    if "予測対応" in summary:
+        figure.add_trace(
+            go.Scatter(
+                x=summary.t,
+                y=summary["予測対応"],
+                mode="lines",
+                name="予測と正解の対応",
+                line=dict(color=COLORS["prediction_supported"]),
             )
         )
     figure.add_vline(x=t, line_color=COLORS["link"])
