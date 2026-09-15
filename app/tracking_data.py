@@ -1,7 +1,8 @@
 """Read-only inputs and spatial diagnostics for the tracking viewer.
 
-Distances and plots use micrometers; GEFF stores original voxel coordinates.
-No model inference, prediction edges, or official competition score is computed.
+Distances and plots use micrometers; GEFF and saved prediction graphs store
+original voxel coordinates. No model inference or official competition score is
+computed.
 """
 
 from __future__ import annotations
@@ -120,17 +121,64 @@ def load_geff(path: Path, scale: tuple[float, float, float]) -> tuple[pd.DataFra
     edges_array = np.asarray(group["edges/ids"][:])
     if edges_array.ndim != 2 or edges_array.shape[1] != 2:
         raise ValueError("GEFF edges/ids must have shape (N, 2)")
-    edges = pd.DataFrame(edges_array, columns=["source_id", "target_id"])
+    edges = validate_edges(nodes, pd.DataFrame(edges_array, columns=["source_id", "target_id"]))
+    nodes["lineage"] = lineage_ids(nodes, edges)
+    nodes["division"] = nodes.node_id.isin(
+        edges.source_id.value_counts().loc[lambda s: s >= 2].index
+    )
+    return nodes, edges
+
+
+def validate_edges(nodes: pd.DataFrame, edges: pd.DataFrame) -> pd.DataFrame:
+    """Validate directed temporal edges against a validated node table."""
+    edges = edges.copy()
+    if list(edges.columns) != ["source_id", "target_id"]:
+        raise ValueError("Edges require source_id and target_id")
+    values = edges.to_numpy(dtype=float)
+    if values.ndim != 2 or values.shape[1] != 2 or not np.isfinite(values).all():
+        raise ValueError("Edges must have shape (N, 2) with finite IDs")
+    if len(edges) and ((values < 0).any() or (values % 1 != 0).any()):
+        raise ValueError("Edge IDs must contain nonnegative integers")
+    edges = edges.astype(np.int64)
     if edges.duplicated().any():
-        raise ValueError("Duplicate GEFF edges")
+        raise ValueError("Duplicate edges")
     by_id = nodes.set_index("node_id")
     if not set(edges.to_numpy().ravel()).issubset(by_id.index):
-        raise ValueError("GEFF edge references a missing node")
+        raise ValueError("Edge references a missing node")
     if len(edges):
         ts = by_id.loc[edges.source_id, "t"].to_numpy()
         tt = by_id.loc[edges.target_id, "t"].to_numpy()
         if (tt <= ts).any():
-            raise ValueError("GEFF edges must point forward in time")
+            raise ValueError("Edges must point forward in time")
+    return edges.reset_index(drop=True)
+
+
+def load_prediction_graph(
+    path: Path, scale: tuple[float, float, float]
+) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Load exp015's post-ILP and graph-repair prediction for one sample."""
+    if len(scale) != 3 or not np.isfinite(scale).all() or min(scale) <= 0:
+        raise ValueError("Voxel scale must have three positive finite values")
+    with np.load(path, allow_pickle=False) as payload:
+        node_ids = np.asarray(payload["node_ids"])
+        node_tzyx = np.asarray(payload["node_tzyx"])
+        edges_array = np.asarray(payload["edges"])
+    if node_ids.ndim != 1 or node_tzyx.shape != (len(node_ids), 4):
+        raise ValueError(f"Invalid prediction node arrays: {path}")
+    if edges_array.ndim != 2 or edges_array.shape[1] != 2:
+        raise ValueError(f"Invalid prediction edge array: {path}")
+    nodes = pd.DataFrame(
+        {
+            "node_id": node_ids,
+            "t": node_tzyx[:, 0],
+            "z": node_tzyx[:, 1],
+            "y": node_tzyx[:, 2],
+            "x": node_tzyx[:, 3],
+        }
+    )
+    nodes = validate_nodes(nodes)
+    nodes[XYZ] = nodes[XYZ].astype(float) * np.asarray(scale)
+    edges = validate_edges(nodes, pd.DataFrame(edges_array, columns=["source_id", "target_id"]))
     nodes["lineage"] = lineage_ids(nodes, edges)
     nodes["division"] = nodes.node_id.isin(
         edges.source_id.value_counts().loc[lambda s: s >= 2].index

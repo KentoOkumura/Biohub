@@ -15,6 +15,9 @@ COLORS = {
     "other": "#8c97ab",
     "link": "#f5cd73",
     "trail": "#bc98ff",
+    "prediction": "#ff9f43",
+    "prediction_supported": "#2dd4bf",
+    "prediction_division": "#ffd166",
 }
 
 
@@ -35,16 +38,37 @@ def spatial_figure(
     show_unmatched=True,
     show_links=True,
     dataset="",
+    predicted_nodes=None,
+    predicted_edges=None,
+    show_predictions=True,
 ):
+    if predicted_nodes is None:
+        predicted_nodes = pd.DataFrame(columns=["node_id", "t", *XYZ, "lineage", "division"])
+    if predicted_edges is None:
+        predicted_edges = pd.DataFrame(columns=["source_id", "target_id"])
     det = detections[detections.t == t].copy()
     now = gt[gt.t == t].copy()
+    prediction_now = predicted_nodes[predicted_nodes.t == t].copy()
     pairs = matches[matches.t == t].dropna(subset=["detection_id"])
     matched_gt, matched_det = set(pairs.gt_id), set(pairs.detection_id)
     if z_bounds is not None:
         det = det[det.z.between(*z_bounds)]
         now = now[now.z.between(*z_bounds)]
+        prediction_now = prediction_now[prediction_now.z.between(*z_bounds)]
+    prediction_lineages = None
     if lineage is not None:
         now = now[now.lineage == lineage]
+        selected_gt_ids = set(gt.loc[gt.lineage == lineage, "node_id"])
+        selected_prediction_ids = set(
+            matches.loc[
+                matches.gt_id.isin(selected_gt_ids) & matches.detection_id.notna(),
+                "detection_id",
+            ].astype(np.int64)
+        )
+        prediction_lineages = set(
+            predicted_nodes.loc[predicted_nodes.node_id.isin(selected_prediction_ids), "lineage"]
+        )
+        prediction_now = prediction_now[prediction_now.lineage.isin(prediction_lineages)]
     is3d = plane == "3D"
     horizontal, vertical = {"XY": ("x", "y"), "XZ": ("x", "z"), "YZ": ("y", "z"), "3D": ("x", "y")}[
         plane
@@ -124,6 +148,48 @@ def spatial_figure(
         if s in by_id.index and d in by_id.index
     ]
     lines(segments, "正解の軌跡・分裂", COLORS["trail"], 3)
+    prediction_history = predicted_nodes[predicted_nodes.t.between(t - trail, t)]
+    if prediction_lineages is not None:
+        prediction_history = prediction_history[
+            prediction_history.lineage.isin(prediction_lineages)
+        ]
+    if z_bounds is not None:
+        prediction_history = prediction_history[prediction_history.z.between(*z_bounds)]
+    prediction_by_id = prediction_history.set_index("node_id")
+    gt_edge_set = set(edges.itertuples(index=False, name=None))
+    gt_by_detection = {
+        int(row.detection_id): int(row.gt_id)
+        for row in matches.dropna(subset=["detection_id"]).itertuples()
+    }
+    supported_prediction_segments = []
+    other_prediction_segments = []
+    for source, target in predicted_edges.itertuples(index=False, name=None):
+        if source not in prediction_by_id.index or target not in prediction_by_id.index:
+            continue
+        segment = (
+            prediction_by_id.loc[source, XYZ].to_numpy(),
+            prediction_by_id.loc[target, XYZ].to_numpy(),
+        )
+        mapped_edge = (gt_by_detection.get(int(source)), gt_by_detection.get(int(target)))
+        destination = (
+            supported_prediction_segments
+            if mapped_edge in gt_edge_set
+            else other_prediction_segments
+        )
+        destination.append(segment)
+    if show_predictions:
+        lines(
+            other_prediction_segments,
+            "その他の予測軌跡",
+            COLORS["prediction"],
+            2,
+        )
+        lines(
+            supported_prediction_segments,
+            "正解edgeとの対応を確認できた予測軌跡",
+            COLORS["prediction_supported"],
+            3,
+        )
     if show_links:
         g_index, d_index = now.set_index("node_id"), det.set_index("node_id")
         segments = [
@@ -167,7 +233,24 @@ def spatial_figure(
     )
     if "division" in now:
         points(now[now.division], "正解の分裂親", COLORS["trail"], "diamond-open", 12, "gt")
-    all_coords = pd.concat([detections[XYZ], gt[XYZ]])
+    if show_predictions:
+        points(
+            prediction_now,
+            "最終予測で選択された細胞",
+            COLORS["prediction"],
+            "square-open",
+            7 if is3d else 13,
+            "prediction",
+        )
+        points(
+            prediction_now[prediction_now.division],
+            "予測の分裂親",
+            COLORS["prediction_division"],
+            "diamond-open",
+            9 if is3d else 16,
+            "prediction",
+        )
+    all_coords = pd.concat([detections[XYZ], gt[XYZ], predicted_nodes[XYZ]])
     ranges = {
         axis: [
             min(0.0, float(all_coords[axis].min()) - 2),
@@ -209,7 +292,7 @@ def spatial_figure(
     return figure
 
 
-def timeline_figure(summary, t):
+def timeline_figure(summary, t, predicted_nodes=None):
     figure = go.Figure()
     for col, color in [
         ("正解", COLORS["gt"]),
@@ -218,6 +301,17 @@ def timeline_figure(summary, t):
     ]:
         figure.add_trace(
             go.Scatter(x=summary.t, y=summary[col], mode="lines", name=col, line=dict(color=color))
+        )
+    if predicted_nodes is not None and len(predicted_nodes):
+        counts = predicted_nodes.groupby("t").size().reindex(summary.t, fill_value=0)
+        figure.add_trace(
+            go.Scatter(
+                x=summary.t,
+                y=counts,
+                mode="lines",
+                name="最終予測",
+                line=dict(color=COLORS["prediction"]),
+            )
         )
     figure.add_vline(x=t, line_color=COLORS["link"])
     figure.update_layout(

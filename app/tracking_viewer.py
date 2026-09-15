@@ -14,6 +14,7 @@ from app.tracking_data import (
     image_array,
     load_candidates,
     load_geff,
+    load_prediction_graph,
     read_projection,
 )
 from app.tracking_plots import detail_table, spatial_figure, timeline_figure
@@ -30,6 +31,11 @@ def cached_candidates(path, signature):
 @st.cache_data(max_entries=4)
 def cached_gt(path, scale, signature):
     return load_geff(Path(path), scale)
+
+
+@st.cache_data(max_entries=4)
+def cached_prediction(path, scale, signature):
+    return load_prediction_graph(Path(path), scale)
 
 
 @st.cache_data(max_entries=6)
@@ -55,6 +61,11 @@ def main():
     )
     train_root = Path(
         st.sidebar.text_input("正解・画像の train", str(project_path(project, "data.train_dir")))
+    )
+    prediction_roots = sorted(experiments.glob("*/artifacts/*/oracle_final_graphs"), reverse=True)
+    prediction_root_text = st.sidebar.text_input(
+        "最終予測 graph のルート",
+        str(prediction_roots[0]) if prediction_roots else "",
     )
     folders = sorted(p for p in cache_root.glob("*") if p.is_dir() and any(p.glob("*.npz")))
     if not folders:
@@ -82,6 +93,22 @@ def main():
             )
             gt = pd.DataFrame(columns=["node_id", "t", "z", "y", "x", "lineage", "division"])
             edges = pd.DataFrame(columns=["source_id", "target_id"])
+        prediction_path = (
+            Path(prediction_root_text) / f"{folder.name}.npz" if prediction_root_text else None
+        )
+        if prediction_path is not None and prediction_path.is_file():
+            prediction_nodes, prediction_edges = cached_prediction(
+                str(prediction_path),
+                scale,
+                (prediction_path.stat().st_mtime_ns, prediction_path.stat().st_size),
+            )
+        else:
+            if prediction_root_text:
+                st.info(f"最終予測 graph がありません: {prediction_path}")
+            prediction_nodes = pd.DataFrame(
+                columns=["node_id", "t", "z", "y", "x", "lineage", "division"]
+            )
+            prediction_edges = pd.DataFrame(columns=["source_id", "target_id"])
         radius = st.sidebar.number_input(
             "対応距離の上限 (µm)", min_value=0.01, value=config["matching_radius_um"]
         )
@@ -102,6 +129,9 @@ def main():
         trail = st.sidebar.slider("軌跡の過去 frame 数", 0, 30, config["trail_frames"])
         show_unmatched = st.sidebar.checkbox("未対応の検出を表示", True)
         show_links = st.sidebar.checkbox("対応線を表示", True)
+        show_predictions = st.sidebar.checkbox(
+            "予測軌跡を表示", bool(len(prediction_nodes)), disabled=prediction_nodes.empty
+        )
         image_path = train_root / f"{folder.name}.zarr"
         shape = image_array(image_path).shape if image_path.exists() else None
         depth = shape[1] if shape else max(1, int(detections.z.max() / scale[0]) + 1)
@@ -133,9 +163,11 @@ def main():
                 st.session_state.frame = frames[min(len(frames) - 1, index + 1)]
             t = c.select_slider("時刻 t", options=frames, key="frame")
             row = summary[summary.t == t].iloc[0]
-            for column, label in zip(
-                st.columns(4), ["検出候補", "正解", "対応あり", "未対応の正解"], strict=True
-            ):
+            metric_columns = st.columns(5)
+            for column, label in zip(metric_columns[:2], ["検出候補", "正解"], strict=True):
+                column.metric(label, int(row[label]))
+            metric_columns[2].metric("最終予測", int((prediction_nodes.t == t).sum()))
+            for column, label in zip(metric_columns[3:], ["対応あり", "未対応の正解"], strict=True):
                 column.metric(label, int(row[label]))
             background = (
                 cached_projection(str(image_path), t, plane, bounds)
@@ -158,13 +190,21 @@ def main():
                 show_unmatched=show_unmatched,
                 show_links=show_links,
                 dataset=folder.name,
+                predicted_nodes=prediction_nodes,
+                predicted_edges=prediction_edges,
+                show_predictions=show_predictions,
             )
             st.plotly_chart(figure, width="stretch", key="spatial")
             st.caption(
-                "件数は全視野・全Z。線は正解の時間方向の接続、黄色の破線は同時刻の対応です。"
+                "件数は全視野・全Z。紫は正解、橙は予測、青緑は正解edgeとの対応を"
+                "確認できた予測、黄色の破線は同時刻の対応です。"
             )
             if not gt.empty:
-                st.plotly_chart(timeline_figure(summary, t), width="stretch", key="timeline")
+                st.plotly_chart(
+                    timeline_figure(summary, t, prediction_nodes),
+                    width="stretch",
+                    key="timeline",
+                )
                 table = detail_table(gt, filtered, matches, lineage)
                 st.dataframe(table if lineage is not None else table[table.t == t], hide_index=True)
 

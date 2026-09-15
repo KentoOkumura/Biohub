@@ -15,6 +15,7 @@ from app.tracking_data import (
     image_array,
     load_candidates,
     load_geff,
+    load_prediction_graph,
     read_projection,
 )
 from app.tracking_plots import detail_table, spatial_figure, timeline_figure
@@ -44,25 +45,44 @@ def plotly_iframe(figure, height: int) -> str:
 
 
 class TrackingNotebookViewer:
-    def __init__(self, cache_root: Path, train_root: Path, config: dict):
-        self.cache_root, self.train_root, self.config = cache_root, train_root, config
+    def __init__(
+        self,
+        cache_root: Path,
+        train_root: Path,
+        config: dict,
+        prediction_root: Path | None = None,
+    ):
+        self.cache_root = cache_root
+        self.train_root = train_root
+        self.prediction_root = prediction_root
+        self.config = config
         datasets = sorted(
             p.name
             for p in cache_root.iterdir()
-            if p.is_dir() and any(p.glob("*.npz")) and (train_root / f"{p.name}.geff").is_dir()
+            if p.is_dir()
+            and any(p.glob("*.npz"))
+            and (train_root / f"{p.name}.geff").is_dir()
+            and (prediction_root is None or (prediction_root / f"{p.name}.npz").is_file())
         )
         if not datasets:
-            raise ValueError("No matching cache/GEFF pairs. Attach competition and exp015 outputs.")
+            raise ValueError(
+                "No matching cache/GEFF/prediction inputs. Attach competition and exp015 outputs."
+            )
         style = {"description_width": "initial"}
         train_count = sum(path.is_dir() for path in train_root.glob("*.geff"))
+        prediction_count = (
+            sum(path.is_file() for path in prediction_root.glob("*.npz"))
+            if prediction_root is not None
+            else 0
+        )
         self.dataset = widgets.Dropdown(
             options=datasets, description=f"サンプル ({len(datasets)}件)", style=style
         )
         self.dataset_note = widgets.HTML(
             value=(
                 f"<small>検出キャッシュあり: {len(datasets)}件 / "
-                f"正解 train: {train_count}件。"
-                "このビューアーでは検出キャッシュがあるサンプルだけを選べます。</small>"
+                f"正解 train: {train_count}件 / 最終予測 graph: {prediction_count}件。"
+                "入力がすべてそろうサンプルだけを選べます。</small>"
             )
         )
         self.frame = widgets.SelectionSlider(
@@ -112,6 +132,11 @@ class TrackingNotebookViewer:
         self.background = widgets.Checkbox(value=True, description="画像を重ねる")
         self.unmatched = widgets.Checkbox(value=True, description="未対応の検出を表示")
         self.links = widgets.Checkbox(value=True, description="対応線を表示")
+        self.show_predictions = widgets.Checkbox(
+            value=prediction_root is not None,
+            description="予測軌跡を表示",
+            disabled=prediction_root is None,
+        )
         self.prev_issue = widgets.Button(description="前の未対応時刻")
         self.next_issue = widgets.Button(description="次の未対応時刻")
         self.export = widgets.Button(description="対応表を CSV 保存")
@@ -135,6 +160,7 @@ class TrackingNotebookViewer:
             self.background,
             self.unmatched,
             self.links,
+            self.show_predictions,
         ]:
             w.observe(self._render, "value")
         self.node.observe(self._select_node, "value")
@@ -169,6 +195,19 @@ class TrackingNotebookViewer:
             self.gt, self.edges = load_geff(
                 self.train_root / f"{name}.geff", tuple(self.config["voxel_scale_um"])
             )
+            if self.prediction_root is not None:
+                self.prediction_nodes, self.prediction_edges = load_prediction_graph(
+                    self.prediction_root / f"{name}.npz",
+                    tuple(self.config["voxel_scale_um"]),
+                )
+                unknown = set(self.prediction_nodes.node_id) - set(self.detections.node_id)
+                if unknown:
+                    raise ValueError(
+                        f"Prediction graph contains {len(unknown)} IDs absent from the cache"
+                    )
+            else:
+                self.prediction_nodes = self.gt.iloc[:0].copy()
+                self.prediction_edges = self.edges.iloc[:0].copy()
             self.frames = self.receipt["frames"]
             self.frame.options = self.frames
             self.frame.value = self.frames[0]
@@ -263,9 +302,11 @@ class TrackingNotebookViewer:
             if self.background.value and plane != "3D" and self.shape and t < self.shape[0]:
                 background = self._projection(self.image_path, t, plane, (lo, hi))
             row = self.summary[self.summary.t == t].iloc[0]
+            prediction_count = int((self.prediction_nodes.t == t).sum())
             self.summary_output.value = (
                 f"<b>t={t}</b>　検出 {int(row['検出候補'])}　正解 {int(row['正解'])}　"
-                f"対応 {int(row['対応あり'])}　未対応の正解 {int(row['未対応の正解'])}"
+                f"最終予測 {prediction_count}　対応 {int(row['対応あり'])}　"
+                f"未対応の正解 {int(row['未対応の正解'])}"
                 "<br><small>件数は全視野・全Z。表示範囲や系譜の選択は対応計算を変えません。</small>"
             )
             lineage = None if self.lineage.value == -1 else self.lineage.value
@@ -285,9 +326,14 @@ class TrackingNotebookViewer:
                 show_unmatched=self.unmatched.value,
                 show_links=self.links.value,
                 dataset=self.dataset.value,
+                predicted_nodes=self.prediction_nodes,
+                predicted_edges=self.prediction_edges,
+                show_predictions=self.show_predictions.value,
             )
             self.spatial_output.value = plotly_iframe(self.figure, 640)
-            self.timeline_output.value = plotly_iframe(timeline_figure(self.summary, t), 250)
+            self.timeline_output.value = plotly_iframe(
+                timeline_figure(self.summary, t, self.prediction_nodes), 250
+            )
             details = detail_table(self.gt, self.filtered, self.matches, lineage)
             columns = [
                 "t",
@@ -319,7 +365,8 @@ class TrackingNotebookViewer:
                 "<h2>Cell tracking · 検出と正解の時間変化</h2>"
                 "<p>正解は疎です。未対応の検出は誤検出を意味しません。"
                 "対応は同時刻・3次元の距離による1対1割当で、公式スコアではありません。"
-                "候補IDは各検出点のIDで、細胞の軌跡IDではありません。</p>"
+                "候補IDは各検出点のIDです。予測軌跡は exp015 の最終 graph が接続した"
+                "候補IDを表示します。</p>"
             )
         )
         display(
@@ -335,7 +382,15 @@ class TrackingNotebookViewer:
                     widgets.HBox([self.lineage, self.node]),
                     widgets.HBox([self.zrange, self.trail]),
                     widgets.HBox([self.radius, self.score]),
-                    widgets.HBox([self.background, self.unmatched, self.links, self.export]),
+                    widgets.HBox(
+                        [
+                            self.background,
+                            self.unmatched,
+                            self.links,
+                            self.show_predictions,
+                            self.export,
+                        ]
+                    ),
                     self.message,
                     self.summary_output,
                     self.spatial_output,

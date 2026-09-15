@@ -16,7 +16,8 @@ def build():
     files = {name: (ROOT / "app" / name).read_text() for name in MODULES}
     intro = """# Cell tracking — 検出位置と正解の時間変化
 
-exp015 の train 全199件の検出候補と、同名の GEFF / Zarr を比較する EDA ビューアーです。
+exp015 の train 全199件の検出候補・最終予測軌跡と、
+同名の GEFF / Zarr を比較する EDA ビューアーです。
 **Edit を開いて Run All** すると、時刻・Z断面・正解の系譜を操作できます。
 保存された静的な Notebook ページでは Python の操作部は動きません。
 
@@ -24,7 +25,8 @@ exp015 の train 全199件の検出候補と、同名の GEFF / Zarr を比較�
 - Input: `biohub-cell-tracking-during-development` と
   `kentookumura/exp015-oracle-stage-limits-inference` の出力。
 - 正解は疎です。未対応の検出は誤検出とは限りません。
-- 候補 ID は各検出点の識別子です。同一細胞を時間方向につなぐ ID ではありません。
+- 橙は最終予測の軌跡、青緑は正解 edge との対応を確認できた予測区間です。
+- 候補 ID は各検出点の識別子で、exp015 の最終 graph がそれらを時間方向へ接続します。
 - 公開モデルは train 199件を学習に含むため、この表示は固定公開モデル下の診断です。
 - 対応表の保存ボタンは作業ディレクトリに CSV と設定 JSON を作ります。
 """
@@ -61,12 +63,14 @@ print({m.__name__: m.__version__ for m in [numpy, pandas, scipy, plotly, ipywidg
     paths = """import yaml
 from app.tracking_notebook import TrackingNotebookViewer, find_input_directory
 
-# 自動検出が曖昧な場合だけ、下の2行を明示パスへ変更してください。
+# 自動検出が曖昧な場合だけ、下の3行を明示パスへ変更してください。
 INPUT = Path('/kaggle/input')
 CACHE_ROOT = find_input_directory(INPUT, 'window_cache')
+PREDICTION_ROOT = find_input_directory(INPUT, 'oracle_final_graphs')
 TRAIN_ROOT = find_input_directory(INPUT, 'train')
 CONFIG = yaml.safe_load((PACKAGE / 'app' / 'tracking_viewer.yaml').read_text())
 print('cache:', CACHE_ROOT)
+print('predictions:', PREDICTION_ROOT)
 print('train:', TRAIN_ROOT)
 print('settings:', CONFIG)
 """
@@ -77,7 +81,9 @@ import faulthandler
 faulthandler.dump_traceback_later(90)
 try:
     print("Loading first image and viewer...", flush=True)
-    viewer = TrackingNotebookViewer(CACHE_ROOT, TRAIN_ROOT, CONFIG)
+    viewer = TrackingNotebookViewer(
+        CACHE_ROOT, TRAIN_ROOT, CONFIG, prediction_root=PREDICTION_ROOT
+    )
     viewer.show()
     print("Initial viewer ready", flush=True)
 finally:
@@ -87,6 +93,8 @@ finally:
 import json
 from app.tracking_plots import detail_table
 receipt = {**viewer.receipt, 'gt_nodes': len(viewer.gt), 'gt_edges': len(viewer.edges),
+           'prediction_nodes': len(viewer.prediction_nodes),
+           'prediction_edges': len(viewer.prediction_edges),
            'matched_gt': int(viewer.matches.detection_id.notna().sum()),
            'image_shape': list(viewer.shape) if viewer.shape else None,
            'matching_radius_um': viewer.radius.value, 'diagnostic_only': True}

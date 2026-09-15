@@ -12,6 +12,7 @@ from app.tracking_data import (
     analyze_sequence,
     load_candidates,
     load_geff,
+    load_prediction_graph,
     match_frame,
     read_projection,
 )
@@ -57,6 +58,16 @@ def write_geff(path):
         "edges/ids": [[10, 20], [20, 30], [20, 40]],
     }.items():
         group.create_array(name, data=np.array(data))
+
+
+def write_prediction(path, node_ids, node_tzyx, edges):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    np.savez_compressed(
+        path,
+        node_ids=np.asarray(node_ids, dtype=np.int64),
+        node_tzyx=np.asarray(node_tzyx, dtype=float).reshape((-1, 4)),
+        edges=np.asarray(edges, dtype=np.int64).reshape((-1, 2)),
+    )
 
 
 def test_assignment_avoids_greedy_conflict_and_is_inclusive():
@@ -124,6 +135,48 @@ def test_geff_scale_division_and_daughters_share_lineage(tmp_path):
     assert len(trail.x) == 9  # All three real graph edges, including both daughters.
 
 
+def test_prediction_graph_scale_lineage_and_gt_supported_edges(tmp_path):
+    path = tmp_path / "sample.npz"
+    write_prediction(
+        path,
+        [110, 120, 130, 140, 150],
+        [
+            [0, 2, 3, 4],
+            [1, 2, 3, 5],
+            [2, 2, 3, 6],
+            [2, 2, 4, 5],
+            [2, 2, 8, 8],
+        ],
+        [[110, 120], [120, 130], [120, 140], [110, 150]],
+    )
+    prediction, prediction_edges = load_prediction_graph(path, (2.0, 3.0, 4.0))
+    assert prediction.iloc[0][["z", "y", "x"]].tolist() == [4.0, 9.0, 16.0]
+    assert prediction.lineage.nunique() == 1
+    assert prediction[prediction.division].node_id.tolist() == [110, 120]
+
+    gt_path = tmp_path / "sample.geff"
+    write_geff(gt_path)
+    gt, gt_edges = load_geff(gt_path, (2.0, 3.0, 4.0))
+    detections = prediction.assign(score=1.0)
+    matches, _ = analyze_sequence(detections, gt, [0, 1, 2], 0.01)
+    figure = spatial_figure(
+        detections,
+        gt,
+        gt_edges,
+        matches,
+        t=2,
+        plane="3D",
+        predicted_nodes=prediction,
+        predicted_edges=prediction_edges,
+    )
+    supported = next(
+        trace for trace in figure.data if trace.name == "正解edgeとの対応を確認できた予測軌跡"
+    )
+    other = next(trace for trace in figure.data if trace.name == "その他の予測軌跡")
+    assert len(supported.x) == 9
+    assert len(other.x) == 3
+
+
 def test_projection_keeps_axes_and_includes_last_z_slice(tmp_path):
     path = tmp_path / "sample.zarr"
     volume = np.arange(2 * 3 * 4 * 5).reshape(2, 3, 4, 5)
@@ -141,6 +194,7 @@ def test_notebook_controls_recompute_and_preserve_lineage(tmp_path, monkeypatch)
 
     monkeypatch.setattr(module, "display", lambda *args: None)
     train, cache = tmp_path / "train", tmp_path / "window_cache"
+    prediction_root = tmp_path / "oracle_final_graphs"
     train.mkdir()
     write_geff(train / "sample.geff")
     gt, _ = load_geff(train / "sample.geff", (1.0, 1.0, 1.0))
@@ -148,6 +202,12 @@ def test_notebook_controls_recompute_and_preserve_lineage(tmp_path, monkeypatch)
     det["node_id"] += 100
     for a, b in [(0, 1), (1, 2)]:
         write_window(cache / "sample", [a, b], det[det.t == a], det[det.t == b])
+    write_prediction(
+        prediction_root / "sample.npz",
+        det.node_id,
+        det[["t", "z", "y", "x"]],
+        [[110, 120], [120, 130], [120, 140]],
+    )
     volume = np.ones((3, 5, 8, 8), dtype=np.uint16)
     zarr.open_group(str(train / "sample.zarr"), mode="w").create_array("0", data=volume)
     config = {
@@ -157,14 +217,21 @@ def test_notebook_controls_recompute_and_preserve_lineage(tmp_path, monkeypatch)
         "trail_frames": 5,
         "playback_interval_seconds": 0.7,
     }
-    viewer = module.TrackingNotebookViewer(cache, train, config)
+    viewer = module.TrackingNotebookViewer(cache, train, config, prediction_root=prediction_root)
     assert viewer.matches.detection_id.notna().sum() == 4
     assert viewer.spatial_output.value.startswith('<iframe title="Plotly figure"')
     assert "cdn.plot.ly" in viewer.spatial_output.value
     assert viewer.timeline_output.value.startswith('<iframe title="Plotly figure"')
     assert "<table" in viewer.detail_output.value
     assert viewer.play.layout.display == "none"
-    assert "検出キャッシュあり: 1件 / 正解 train: 1件" in viewer.dataset_note.value
+    assert (
+        "検出キャッシュあり: 1件 / 正解 train: 1件 / 最終予測 graph: 1件"
+        in viewer.dataset_note.value
+    )
+    assert "最終予測で選択された細胞" in [trace.name for trace in viewer.figure.data]
+    viewer.show_predictions.value = False
+    assert "最終予測で選択された細胞" not in [trace.name for trace in viewer.figure.data]
+    viewer.show_predictions.value = True
     assert all(
         button.icon == ""
         for button in [
@@ -227,6 +294,8 @@ def test_kaggle_viewer_uses_exp015_train_cache_only():
     assert metadata["kernel_sources"] == ["kentookumura/exp015-oracle-stage-limits-inference"]
 
     notebook = json.loads((root / "app/kaggle/tracking_viewer.ipynb").read_text())
+    input_source = "".join(notebook["cells"][2]["source"])
     viewer_source = "".join(notebook["cells"][3]["source"])
+    assert "oracle_final_graphs" in input_source
     assert "pio.renderers.default = 'kaggle'" in viewer_source
     assert "pio.renderers.default = 'plotly_mimetype'" not in viewer_source
