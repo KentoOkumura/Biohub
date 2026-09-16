@@ -1,0 +1,202 @@
+experiment:
+  name: exp018_graph_cost_scale
+  description: >-
+    exp015の固定ILP前候補graphでedge costの係数だけを有限比較し、
+    胚を入れ替える2方向の選択と評価で公式combined scoreを確認する
+  route: fixed_candidate_graph_cost_scale
+  notebooks:
+    - alpha_025
+    - alpha_05
+    - alpha_1
+    - alpha_2
+    - alpha_4
+    - aggregate
+  created_at: "2026-09-15"
+
+lineage:
+  parent: exp015_oracle_stage_limits
+  hypothesis_id: HYP-20260910-11
+  backlog_candidate: graph_cost_scale
+  diff_summary: >-
+    固定した候補graph、edge_prob、ILP制約、出現・消失・分裂費用のうち、
+    edge_weightの係数alphaだけを0.25、0.5、1、2、4で比較する
+
+validation:
+  strategy: bidirectional_leave_one_embryo_out_cost_selection
+  metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  seed: 42
+  n_folds: 0
+  diagnostic_only: true
+  expected_sample_count: 199
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+  selection_directions:
+    - calibration_embryo: 44b6
+      heldout_embryo: 6bba
+    - calibration_embryo: 6bba
+      heldout_embryo: 44b6
+  matching:
+    max_distance_um: 7.0
+    scale_zyx_um: [1.625, 0.40625, 0.40625]
+  promotion_gate:
+    baseline_alpha: 1.0
+    minimum_combined_score_delta: 0.0
+    require_strict_improvement_in_both_directions: true
+    require_nonnegative_division_jaccard_delta_in_both_directions: true
+    require_complete_sample_coverage: true
+    forbid_non_finite_metrics: true
+  tie_break:
+    score_tolerance: 1.0e-12
+    prefer_baseline_alpha: true
+    then_nearest_log2_distance_to_baseline: true
+    then_lower_alpha: true
+
+data:
+  source: competition_train_runtime
+  annotation_format: geff
+  exp015_candidate_graphs:
+    local_artifact_dir: ../exp015_oracle_stage_limits/artifacts/inference_v1
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    kernel_id_no: 134210702
+    manifest: oracle_inference_manifest.json
+    manifest_file_sha256: 0cae5963848c2797d04b526f9daa48db00e3bcc3b2db9a0c6e4ed4ee6cee35b2
+    manifest_payload_sha256: 5a511b8d5c8b25f6cab76563a32a63cde8b1bd74b83d5d38cacd64034396b28e
+    input_manifest_sha256: 69d4fcfd6d99e7edb834805c1d44ad80ebdb5e578179850101fe3be07ab23991
+    candidate_graph_dir: oracle_candidate_graphs
+    expected_candidate_graph_count: 199
+    ground_truth_accessed_during_generation: false
+  exp012_embryo_map:
+    local_dir: ../exp012_group_error_readout/artifacts/readout_v1
+    kernel_source: kentookumura/exp012-group-error-readout-diagnostic
+    per_sample_readout_sha256: 11dc792242dca26290be6a6734b322b0bfa9238f395b1a56d5d179f84e6b7041
+    paired_route_comparison_sha256: 3a6fa2a768290a8cfb3c6c961ede08af6a2a72381b07fe48f50d1c228b91dd50
+    baseline_route: exp005_embryo_holdout_batch8
+
+model:
+  name: fixed_public_candidate_graph_ilp
+  params:
+    trained_model_count: 0
+    active_variant_count: 5
+    booster_count: 0
+    control_retrained: false
+    alpha_grid: [0.25, 0.5, 1.0, 2.0, 4.0]
+    baseline_alpha: 1.0
+    edge_cost_expression: "-alpha * edge_prob"
+    edge_probability_attribute: edge_prob
+    appearance_weight: 0.0
+    disappearance_weight: 2.0
+    division_weight: 1.2
+    candidate_generation_changed: false
+    edge_probability_changed: false
+    ilp_constraints_changed: false
+
+stages:
+  initial_ilp_only:
+    implemented: true
+    execution_mode: independent_sequential_alpha_shards_then_aggregate
+    output_dir: artifacts/ilp_only_v1
+    repair_enabled: false
+    alpha_shards:
+      alpha_025:
+        alpha: 0.25
+        output_dir: artifacts/alpha_025_v1
+        kernel_source: kentookumura/exp018-graph-cost-scale-alpha-025
+      alpha_05:
+        alpha: 0.5
+        output_dir: artifacts/alpha_05_v1
+        kernel_source: kentookumura/exp018-graph-cost-scale-alpha-05
+      alpha_1:
+        alpha: 1.0
+        output_dir: artifacts/alpha_1_v1
+        kernel_source: kentookumura/exp018-graph-cost-scale-alpha-1
+      alpha_2:
+        alpha: 2.0
+        output_dir: artifacts/alpha_2_v1
+        kernel_source: kentookumura/exp018-graph-cost-scale-alpha-2
+      alpha_4:
+        alpha: 4.0
+        output_dir: artifacts/alpha_4_v1
+        kernel_source: kentookumura/exp018-graph-cost-scale-alpha-4
+  fixed_full_repair:
+    implemented: false
+    experiment: exp018_graph_cost_scale
+    entry_condition: both_direction_promotion_gate_passed
+    permitted_changes_after_gate:
+      - apply_selected_alpha_to_fixed_ilp
+      - run_exp015_motion_gap_division_deepcenter_repairs_unchanged
+    requires_result_review_before_implementation: true
+
+official_metric_source:
+  dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+  evaluator_path: repo/scripts/evaluate.py
+  evaluator_sha256: 614813cc51c3581c6ccda4bb20725a19da8ecac4a27620654bfca58319cffa3c
+  metrics_path: repo/src/biohub_tracking/metrics.py
+  metrics_sha256: 31baf45b54c78f68bab4f65dd8f4b38bca702abb644171c6df7c46cdeef55d83
+  division_metrics_path: repo/src/biohub_tracking/division_metrics.py
+  division_metrics_sha256: d1cf1e0a43009d02174f1699ce2aa28458a2220ac4b521731d3bcf31cf8c76be
+  aggregation_entrypoint: biohub_tracking.metrics.summarise
+
+runtime:
+  execution: saved_candidate_graph_cpu_ilp_and_official_metric
+  use_amp: false
+  num_workers: 0
+  batch_size: null
+  kaggle:
+    enable_gpu: false
+    enable_internet: false
+    machine_shape: null
+    time_limit_hours: 12
+    include_experiment_sources: true
+    dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+    kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+      - kentookumura/exp012-group-error-readout-diagnostic
+    diagnostic:
+      enable_gpu: false
+      enable_internet: false
+      machine_shape: null
+    aggregate:
+      enable_gpu: false
+      enable_internet: false
+      machine_shape: null
+      kernel_sources:
+        - kentookumura/exp018-graph-cost-scale-alpha-025
+        - kentookumura/exp018-graph-cost-scale-alpha-05
+        - kentookumura/exp018-graph-cost-scale-alpha-1
+        - kentookumura/exp018-graph-cost-scale-alpha-2
+        - kentookumura/exp018-graph-cost-scale-alpha-4
+
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: no_explicit_random_sampling
+  stochastic_components:
+    - scip_solver_tie_resolution
+  parallel_rng_policy: independent_alpha_kernels_each_with_sequential_sorted_samples
+  feature_sha_policy: canonical_candidate_graph_nodes_edges_and_edge_prob
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: false
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - exp015のmanifest fileとpayload SHA、候補graph内容SHA、公式評価source SHAを検査する。
+    - solver package版とILPSolver source SHA、各alphaのsolution topology SHAを実行時に保存する。
+    - 公開モデルはtrain 199動画を含む可能性があり、結果は固定公開モデル下の条件付き比較である。
+
+notes:
+  - model config 0、fold学習0、booster 0、control再学習なし。
+  - 初段はILPだけを比較し、motion、gap、safe-division、DeepCenter repairを実行しない。
+  - 両方向のgateを通るまで同じ実験内のfull repair段階を実装・実行しない。
+  - Kaggle submissionとPublic LB取得は行わない。
+
+overrides:
+  project_defaults:
+    - validation.metric
+    - validation.n_folds

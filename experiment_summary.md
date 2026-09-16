@@ -24,5 +24,6 @@
 | exp014_exact_window_cache | public_notebook_replay | exp013_public_notebook_replay | 利用可 | - | - | - | 2026-09-13 |
 | exp015_oracle_stage_limits | oracle_stage_diagnostic | exp014_exact_window_cache | 完了 | - | - | - | 2026-09-13 |
 | exp017_cross_crop_registration_audit | cross_crop_registration_audit | N/A | 完了 | - | - | - | 2026-09-14 |
+| exp018_graph_cost_scale | fixed_candidate_graph_cost_scale | exp015_oracle_stage_limits | 破棄 | - | - | - | 2026-09-15 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->

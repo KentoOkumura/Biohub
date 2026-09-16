@@ -1,0 +1,155 @@
+{
+  "experiment": "exp018_graph_cost_scale",
+  "status": "discarded",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp018-graph-cost-scale-aggregate",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp018-graph-cost-scale-aggregate",
+      "kernel_source_ids": [
+        "kentookumura/exp018-graph-cost-scale-alpha-025",
+        "kentookumura/exp018-graph-cost-scale-alpha-05",
+        "kentookumura/exp018-graph-cost-scale-alpha-1",
+        "kentookumura/exp018-graph-cost-scale-alpha-2",
+        "kentookumura/exp018-graph-cost-scale-alpha-4"
+      ],
+      "kernel_source_versions": {
+        "alpha_025": 1,
+        "alpha_05": 1,
+        "alpha_1": 1,
+        "alpha_2": 1,
+        "alpha_4": 2
+      },
+      "resource": "cpu",
+      "notebook_runtime_seconds": 731.5177280590001,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": "0d8a8f8b86c01d624b4a8b070e4c7744b3366975a408f6c33994f439ab1af95b",
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": 995,
+      "group_count": 2,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": null,
+      "model_shas": {},
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null,
+      "per_sample_sha256": "459726bc34e3bf9d819fb1e178afc73e0309e97b22c1f51f63e348e0a4a5b74b",
+      "embryo_alpha_sha256": "a07345a4c821f808f4f107dc2b59dc2359d6151cd6a146b30ea578452fc84525",
+      "cross_embryo_selection_sha256": "1cbb3b12d2673949bbbcdc93fdb4f6c84c14303a0b0c3f92694b87699959d4c8",
+      "summary_sha256": "6f8de7dc6837f32fbb9c20f5ff8e7a4ad5f8d3fdcaccd0d31ac6b2a84fbfb898",
+      "manifest_sha256": "4d553972be05e05c1014cb2cdd8f26270971c6e8f4eaf64b14da0399eb70aa29",
+      "manifest_file_sha256": "777cf81fe3265792766173314a4146a51535135f973bfa4dace4fc0176038344",
+      "candidate_graph_bundle_sha256": "3df8d9fe071e10cfca159fffbe1636ae9b1131c538021b1c3621cf1ab4d155e9",
+      "solution_bundle_sha256": "c07b6f85326b5ffafe68d94d706e31757bf1ced4c3990aa69fe28722448fd89c"
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": []
+  },
+  "diagnostics": {
+    "graph_cost_scale": {
+      "stage": "initial_ilp_only",
+      "repair_executed": false,
+      "sample_count": 199,
+      "per_sample_row_count": 995,
+      "alpha_grid": [
+        0.25,
+        0.5,
+        1.0,
+        2.0,
+        4.0
+      ],
+      "failure_count": 0,
+      "aggregate_runtime_seconds": 731.5177280590001,
+      "total_shard_runtime_seconds": 22380.816667248,
+      "shard_notebook_runtime_seconds": {
+        "alpha_025": 4906.455502731,
+        "alpha_05": 3863.5732610719997,
+        "alpha_1": 3331.682260155,
+        "alpha_2": 4967.256729818,
+        "alpha_4": 5311.848913471999
+      },
+      "embryo_alpha": [
+        {"embryo": "44b6", "alpha": 0.25, "score": 0.8865038484168534, "division_jaccard": 0.0, "valid_sample_count": 71},
+        {"embryo": "44b6", "alpha": 0.5, "score": 0.9066527176727937, "division_jaccard": 0.0, "valid_sample_count": 71},
+        {"embryo": "44b6", "alpha": 1.0, "score": 0.9061411877889494, "division_jaccard": 0.0, "valid_sample_count": 71},
+        {"embryo": "44b6", "alpha": 2.0, "score": 0.9036626645370643, "division_jaccard": 0.03968253968253968, "valid_sample_count": 71},
+        {"embryo": "44b6", "alpha": 4.0, "score": 0.8798458552902726, "division_jaccard": 0.023734177215189875, "valid_sample_count": 71},
+        {"embryo": "6bba", "alpha": 0.25, "score": 0.9030627757292727, "division_jaccard": 0.0, "valid_sample_count": 128},
+        {"embryo": "6bba", "alpha": 0.5, "score": 0.916798008840978, "division_jaccard": 0.0, "valid_sample_count": 128},
+        {"embryo": "6bba", "alpha": 1.0, "score": 0.9165304582867454, "division_jaccard": 0.0, "valid_sample_count": 128},
+        {"embryo": "6bba", "alpha": 2.0, "score": 0.9174934386075031, "division_jaccard": 0.06560283687943262, "valid_sample_count": 128},
+        {"embryo": "6bba", "alpha": 4.0, "score": 0.9010719424034987, "division_jaccard": 0.041348600508905854, "valid_sample_count": 128}
+      ],
+      "directions": [
+        {
+          "calibration_embryo": "44b6",
+          "heldout_embryo": "6bba",
+          "selected_alpha": 0.5,
+          "heldout_baseline_score": 0.9165304582867454,
+          "heldout_selected_score": 0.916798008840978,
+          "heldout_combined_score_delta": 0.00026755055423255403,
+          "heldout_baseline_division_jaccard": 0.0,
+          "heldout_selected_division_jaccard": 0.0,
+          "heldout_division_jaccard_delta": 0.0,
+          "complete_coverage": true,
+          "combined_score_strictly_improved": true,
+          "division_jaccard_not_worse": true,
+          "direction_passed": true
+        },
+        {
+          "calibration_embryo": "6bba",
+          "heldout_embryo": "44b6",
+          "selected_alpha": 2.0,
+          "heldout_baseline_score": 0.9061411877889494,
+          "heldout_selected_score": 0.9036626645370643,
+          "heldout_combined_score_delta": -0.002478523251885023,
+          "heldout_baseline_division_jaccard": 0.0,
+          "heldout_selected_division_jaccard": 0.03968253968253968,
+          "heldout_division_jaccard_delta": 0.03968253968253968,
+          "complete_coverage": true,
+          "combined_score_strictly_improved": false,
+          "division_jaccard_not_worse": true,
+          "direction_passed": false
+        }
+      ],
+      "promotion_gate_passed": false,
+      "next_stage": "stop_without_full_repair"
+    }
+  },
+  "notes": "All five Kaggle CPU alpha shards and aggregate version 2 completed with full coverage and no metric failures. The bidirectional promotion gate failed because alpha=2 selected on 6bba reduced the held-out 44b6 combined score, so the fixed-repair stage was not run. On 2026-09-16, the user confirmed the experiment complete and the graph_cost_scale method discarded."
+}
