@@ -666,7 +666,7 @@ exp002のfull training所要時間の既存予測は約10.10hだが、これはs
 
 <a id="frozen_image_encoder"></a>
 
-**[frozen_image_encoder](../../backlog/frozen_image_encoder.md)** — 画像モデルを固定し接続を学習
+**[frozen_image_encoder](../../experiments/exp016_frozen_image_encoder/)** — 画像モデルを固定し接続を学習
 
 - 確認結果: 固定した画像特徴でも窓やaugmentationが変われば値が変わる。exp002の保存重みは現時点で未取得。
 - 最初の比較案: 学習胚だけで作った画像モデルを固定し、同じ2時点窓の特徴から接続器のみ学習する。全層更新との時間・精度を比較する。

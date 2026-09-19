@@ -9,12 +9,12 @@
 - 最終更新日: 2026-09-14
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: 未記録の第2娘を負例にしないの成立条件と反証可能な一変更の比較を具体化する。
-- 親実験 / 比較対象: [exp011](../experiments/exp011_public_detector_selection/)で採用し、[exp013](../experiments/exp013_public_notebook_replay/)でPublic LB 0.944を再現した固定公開検出器・既存トラッカーを主対照とする。後続の学習比較は同じ固定検出器下のトラッカー同士で行う。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
+- 親実験 / 比較対象: [exp016](../experiments/exp016_frozen_image_encoder/)の固定特徴・2fold学習で得た再学習trackerと公式graph評価を、損失mask変更の主対照とする。[exp011](../experiments/exp011_public_detector_selection/)で選定し、[exp013](../experiments/exp013_public_notebook_replay/)でPublic LB 0.944を再現した公開trackerは外部参照として残す。exp002の設定は構成の参考に限り、評価の独立性と保存済み実験の扱いは[今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
 - 優先度: P2
 - 優先度の理由: 固定候補を使い教師maskの一変更を比較できる。検出器再学習への依存を外し、基準成立後に優先する。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI01、検証候補2（同節の2項目目）。
-- 先行条件 / 依存: [exp015](../experiments/exp015_oracle_stage_limits/)で生成済みのtrain cacheと段階別診断、固定公開検出器のトラッカー学習基準。正例のある子列だけに限定する教師mask仕様は設計済みで、sparse_det_maskの実行は不要。
+- 先行条件 / 依存: [exp015](../experiments/exp015_oracle_stage_limits/)で生成済みのtrain cacheと段階別診断、および[exp016](../experiments/exp016_frozen_image_encoder/)のtracker学習・公式graph評価基準。正例のある子列だけに限定する教師mask仕様は設計済みで、sparse_det_maskの実行は不要。
 
 
 ## 2026-09-12の方針反映
@@ -40,7 +40,7 @@
   - [E02](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02): 133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotation maskなし。
   - [E03](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03): compute_loss55行、compute_detection_loss528行、detect_and_match620行、train_epoch794行。実学習も検出候補を使う。
 - 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI01。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
-- 利用する保存済み生成物とSHA: 公開model・checkpoint・feature contractは[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)、公開test基準予測は[exp013 metrics](../experiments/exp013_public_notebook_replay/metrics.json)、cache schemaとpublic test同値性は[exp014 metrics](../experiments/exp014_exact_window_cache/metrics.json)を正とする。[exp015 metrics](../experiments/exp015_oracle_stage_limits/metrics.json)にtrain 199動画・19,701 window cacheのSHA、candidate/final graph各199件、candidate edge recall 94.829%、final edge recall 91.602%を記録した。大容量生成物はKaggle上に保存し、後続Notebookから直接参照する。exp005・exp006は自前学習の補助診断に限る。
+- 利用する保存済み生成物とSHA: 公開model・checkpoint・feature contractは[exp011 manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)、公開test基準予測は[exp013 metrics](../experiments/exp013_public_notebook_replay/metrics.json)、cache schemaとpublic test同値性は[exp014 metrics](../experiments/exp014_exact_window_cache/metrics.json)を正とする。[exp015 metrics](../experiments/exp015_oracle_stage_limits/metrics.json)にtrain 199動画・19,701 window cacheのSHA、candidate/final graph各199件、candidate edge recall 94.829%、final edge recall 91.602%を記録した。[exp016 metrics](../experiments/exp016_frozen_image_encoder/metrics.json)にfold別再学習tracker 2件と固定graph公式評価の証拠を記録した。大容量生成物はGitへ含めず、保存先とSHAを各実験の記録から解決する。exp005・exp006は自前学習の補助診断に限る。
 - 仮定: Assumption: 検出と対応の損失で、未注釈の実在細胞や第2娘への接続を負例として押し下げる学習を減らせば、暗い細胞・疎い注釈の胚・分裂の見逃しを改善できる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。
 
 ## この候補が直接検証する仮説と範囲
@@ -71,14 +71,14 @@
 
 - 変更するもの: 対照と同じ候補・注釈の一意対応および正例行列を使い、接続損失の対象を正例のある子列だけにする。親候補softmaxの分母・正例の対応・復号は変えず、未知親や重複への勾配は別診断する。
 - 固定するもの: 公開検出器・画像特徴抽出器の重みと学習状態、および本候補で変更すると明記した箇所以外の候補生成・前処理・分割・復号。公開版と比較の対象一覧は設計時に確定する。
-- 再利用するコード / config / 生成物: exp002のconfigと公式sourceの版は照合済み。未知の重み・cache・独立予測を存在すると仮定せず、取得後に学習来歴から再利用可否を確認する。
+- 再利用するコード / config / 生成物: exp016のtracker学習コード、config、保存済みfold別modelと固定graph評価を主対照として引き継ぐ。公開sourceとexp002のconfigは構成の参照に限る。入力の版・SHAと学習来歴を確認し、独立CVとは呼ばない。
 - 新しく作るもの: 最小検証に必要な本候補の処理・診断・差分記録。実験化後に確定し、今回は候補文書だけを作成する。
 
 ## 最小の反証可能な検証
 
 - 検証方法: 片娘だけ注釈・別親既知・重複検出の例で負例勾配を確認し、maskだけを比較 成立した場合だけ、学習側で方法を固定して胚を入れ替える2方向の比較へ進む。
 - variant / config / fold / booster数: 候補固有の最小比較に限定し、同じ固定検出器と対象一覧を使う。学習量は小規模実測から週の残量内で設定する。両胚別に報告し、公開重みを含む分割の独立性は別記する。条件の選択は学習側内部のみ。booster数は0。
-- control再学習: 検出器と画像特徴抽出器は再学習しない。学習変更は同じ固定特徴・分割・初期化方針のトラッカーを対照とし、同条件の保存済み対照がなければ下流部分だけを学習する。診断・推論のみの比較は再学習なし。
+- control再学習: 検出器と画像特徴抽出器は再学習しない。同じ固定特徴・分割・初期化方針で保存済みのexp016 trackerを対照とし、原則として再学習しない。追加学習を行うのはmask変更variantのprimary trackerだけとする。診断・推論のみの比較は再学習なし。
 - 想定runtime / resource: Kaggle Notebookのみ・週30時間のGPU枠を上限とし、初回抽出、下流学習、評価・提出用推論を別計上する。CPU Notebookで可能な保存済み集計はGPUを使わない。本候補の追加抽出・候補数・最大入力での時間とメモリは未実測。実行前に残量と小規模実測で上限を決める。
 - 候補の回収と実選別: 正解を診断だけに使う候補上限と、推論画像だけでの選別・補正を別々に記録する。評価・集計だけの候補ではモデル改善と診断結果を区別する。
 

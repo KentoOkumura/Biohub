@@ -50,7 +50,7 @@
 - 仮説が正しい場合に期待する観測: 本候補の変更だけで期待する誤りが減り、同じ候補数・学習量・時間など必要な対照を揃えた公式指標へ改善が残ること。改善の判定方針は調査レポートのD3で選ぶ。測定前に改善幅や誤差幅を推定せず、両方向の差と費用を記録する。
 - 仮説を棄却する観測: 速くなるだけで最終精度改善がない、temporal条件の違うcacheを再利用、全hiddenを処理する前に予算超過。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: public testのcache等価性と読込費用は[exp014](../experiments/exp014_exact_window_cache/)で確認済み。train全件とhidden testでの最悪時の費用、解禁した処理の最終精度、および別候補 [`sparse_motion_graph`](sparse_motion_graph.md)、[`uncertain_highres`](uncertain_highres.md)、[`frozen_image_encoder`](frozen_image_encoder.md) の検証が残る。
+- 上位仮説の判断に残る検証: public testのcache等価性と読込費用は[exp014](../experiments/exp014_exact_window_cache/)で確認済み。[exp016](../experiments/exp016_frozen_image_encoder/)で固定特徴からのtracker再学習と公式graph評価の基準を確立した。train全件とhidden testでの最悪時の費用、解禁した処理の最終精度、および別候補 [`sparse_motion_graph`](sparse_motion_graph.md)、[`uncertain_highres`](uncertain_highres.md) の検証が残る。
 
 ## 入力・予測対象・出力・推論方法
 

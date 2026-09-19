@@ -65,6 +65,29 @@ Mount Drive with `colab drivemount -s <session-name>`. Distinguish the Colab not
 
 `colab exec -f FILE` reads a local file, not a remote `/content` file. For remote scripts, send a small local wrapper through standard input.
 
+### Direct-upload smoke runs
+
+For a small, explicitly authorized, non-secret payload, Drive is not required for a short smoke run. This is useful for validating the Colab runtime and experiment code before arranging persistent full-run inputs.
+
+```bash
+colab new -s <session-name> --gpu T4
+colab upload -s <session-name> <local-input> <input-name>
+colab upload -s <session-name> <local-code> <code-name>
+colab ls -s <session-name> .
+colab exec -s <session-name> -f <local-wrapper.py> --timeout <seconds>
+colab stop -s <session-name>
+```
+
+- `colab upload` addresses the Jupyter contents API, not an assumed `/content` filesystem path. Upload to a simple CLI-root name, inspect it with `colab ls`, and have the executed wrapper resolve or move the uploaded file into `/content`. In the observed CLI runtime, a root upload named `payload.zip` appeared as `/payload.zip`; a nested `content/...` upload returned 404.
+- Obtain explicit authorization before transferring experiment data or model weights. Authorization to run an experiment does not by itself authorize transfer to Colab.
+- Treat materially different external payloads separately when obtaining authorization: support/model archives, signed download manifests, resume seeds or generated outputs, and large experiment caches are distinct transfers.
+- Never transfer Kaggle, Google, or other account credentials with `colab upload`. Use Colab Secrets or the provider's interactive authorization flow.
+- Treat signed URL manifests as temporary sensitive transport material. Create them immediately before use, avoid logging their contents, and delete both local and remote copies after the download completes.
+- Do not infer liveness from `colab status` alone; it can be stale. Prove session access with an actual `exec`, `ls`, upload, or download operation.
+- Do not treat the CLI process exit code alone as notebook success. `colab exec` can return exit code 0 while the captured IPython output contains a traceback. Require an explicit success marker and validate its content.
+- Verify the completion marker, expected artifacts, archive integrity, byte count, and SHA locally before reporting success. Confirm that the named session is stopped afterward.
+- Treat direct upload as a smoke/debug route. For large inputs, long execution, or resumable batches, use Drive-backed inputs, logs, receipts, and outputs so a lost Colab VM does not erase the run.
+
 ## Long-running execution
 
 - Write stdout and stderr to Drive-backed logs.
@@ -72,6 +95,8 @@ Mount Drive with `colab drivemount -s <session-name>`. Distinguish the Colab not
 - Poll no more often than needed and report progress to the user during long runs.
 - Check both the process state and expected artifacts; an exited process without metrics is not success.
 - Copy only the minimal outputs needed for local review after completion.
+- Do not assume that outputs remain downloadable after `colab exec` returns. A runtime can expire immediately after successful computation. For material non-Drive outputs, emit bounded batches while the process is live, verify each batch locally by byte count and SHA, and keep resumable receipts; use Drive persistence when available.
+- When using time-limited download manifests, prepare them before allocating the GPU session or keep the session active, then begin continuous work immediately so URL expiry and idle teardown do not consume the execution window.
 
 When a Colab run produces official experiment evidence, record it in the same `metrics.json`, `SESSION_NOTES.md`, and `result.md` roles defined by `AGENTS.md`. Colab preflight results are not CV or Kaggle execution evidence.
 
