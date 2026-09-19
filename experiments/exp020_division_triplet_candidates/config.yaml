@@ -1,0 +1,74 @@
+experiment:
+  name: exp020_division_triplet_candidates
+  description: 固定中心候補から母と2娘の組を列挙し、既知分裂の回収率と教師候補を診断する
+  route: division_triplet_candidate_diagnostic
+  notebooks: [diagnostic]
+  created_at: "2026-09-19"
+
+lineage:
+  parent: exp015_oracle_stage_limits
+  hypothesis_id: N/A
+  backlog_candidate: N/A
+  diff_summary: 固定公開検出器の保存済み中心候補から隣接2時刻の組を作り、GTを診断にだけ使う
+
+validation:
+  diagnostic_only: true
+  expected_sample_count: 199
+  expected_window_count: 19701
+  expected_frames_per_sample: 100
+  expected_embryo_counts: {44b6: 71, 6bba: 128}
+  matching_radius_um: 7.0
+  voxel_scale_zyx_um: [1.625, 0.40625, 0.40625]
+  geometry:
+    safe_repair: {parent_daughter_max_um: 9.0, sister_max_um: 14.0}
+    final_division_filter: {parent_daughter_max_um: 10.5, sister_max_um: 8.0}
+    broad_diagnostic: {parent_daughter_max_um: 14.0, sister_max_um: 14.0}
+  max_triplets_per_parent_guard: 10000
+
+data:
+  source: exp015_train_window_cache_and_competition_train_geff
+  cache:
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    directory: window_cache
+    summary_file: window_cache_summary.json
+    summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+    identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+    schema_version: 1
+
+model:
+  name: none_diagnostic_only
+  params: {}
+
+runtime:
+  use_amp: false
+  num_workers: 0
+  kaggle:
+    diagnostic:
+      enable_gpu: false
+      enable_internet: false
+      kernel_sources: [kentookumura/exp015-oracle-stage-limits-inference]
+      dataset_sources: [pilkwang/biohub-tracking-support-pack-50ep-v1]
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_random_sampling
+  stochastic_components: []
+  parallel_rng_policy: sequential_sorted_samples_windows_candidates
+  feature_sha_policy: exp015_cache_summary_and_sorted_window_identity
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: false
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - 公開画像モデルはtrainに由来するため独立CVと呼ばない。
+    - 正解GEFFは一対一対応と診断集計だけに使う。
+
+notes:
+  - booster 0、model 0、fold学習 0、control再学習なし。
+  - この診断ではtriplet score、loss、decode、submissionを実装しない。
+  - division_tripletsのbacklog候補は学習設計が未確定なので移行しない。

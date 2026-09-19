@@ -1,0 +1,100 @@
+{
+  "experiment": "exp020_division_triplet_candidates",
+  "status": "completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp020-division-triplet-candidates-diagnostic",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp020-division-triplet-candidates-diagnostic",
+      "kernel_source_ids": [
+        "kentookumura/exp015-oracle-stage-limits-inference"
+      ],
+      "resource": "cpu",
+      "notebook_runtime_seconds": null,
+      "internet_enabled": false,
+      "last_sse_event_seconds": 1257.49
+    },
+    "artifacts": {
+      "input_file_sha": "fc6af6d1d5cb771bd31de6b8ec863877b33fd9f8c7995511333e1082fe2f7f01",
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": 597,
+      "group_count": 199,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": 0,
+      "model_shas": {},
+      "selected_mode": "triplet_candidate_diagnostic",
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [],
+    "diagnostics": {
+      "cache_identity_sha256": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "gt_content_bundle_sha256": "05459d7c5b398690849590d1032c8883061bd3e26c9df617e10c6110c9dbf2d4",
+      "summary_sha256": "b28beb7c24a36df5b7677bfae40704aa6351a32c5a645bac0f4dae7bdbcd7899",
+      "per_sample_sha256": "2f299da75b333ce659503716b815827b8d14b68696351089c231ac018a179247",
+      "diagnostic_elapsed_seconds": 1209.545716567,
+      "known_divisions": 151,
+      "three_centers_matched": 145,
+      "single_outgoing_annotations": 128581,
+      "confirmed_continuations": 0,
+      "safe_repair": {
+        "triplet_count": 8807617,
+        "triplet_recovered": 100,
+        "known_wrong_pairs": 4,
+        "embryo_44b6_recovered": 20,
+        "embryo_6bba_recovered": 80
+      },
+      "final_division_filter": {
+        "triplet_count": 4078872,
+        "triplet_recovered": 23,
+        "known_wrong_pairs": 1,
+        "embryo_44b6_recovered": 4,
+        "embryo_6bba_recovered": 19
+      },
+      "broad_diagnostic": {
+        "triplet_count": 61810786,
+        "triplet_recovered": 129,
+        "known_wrong_pairs": 11,
+        "embryo_44b6_recovered": 24,
+        "embryo_6bba_recovered": 105
+      }
+    }
+  },
+  "notes": "Kaggle CPU version 1 completed all 199 samples and 19,701 windows. User accepted diagnostic completion on 2026-09-19. The division_triplets learning candidate remains open; no model, CV, LB, or submission.",
+  "key_idea": "固定中心からの分裂組候補の回収と疎い教師の成立件数を診断",
+  "updated_at": "2026-09-19T12:58:39.848610+00:00"
+}
