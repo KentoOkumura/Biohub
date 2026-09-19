@@ -1,0 +1,86 @@
+{
+  "experiment": "exp021_division_teacher_audit",
+  "status": "completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp021-division-teacher-audit-diagnostic",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp021-division-teacher-audit-diagnostic",
+      "kernel_source_ids": [
+        "kentookumura/exp015-oracle-stage-limits-inference"
+      ],
+      "resource": "CPU",
+      "notebook_runtime_seconds": null,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": "05459d7c5b398690849590d1032c8883061bd3e26c9df617e10c6110c9dbf2d4",
+      "cache_file_sha": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+      "feature_schema_sha": null,
+      "feature_content_sha": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "row_count": 199,
+      "group_count": 2,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": null,
+      "model_shas": {},
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [],
+    "diagnostic": {
+      "window_count": 19701,
+      "triplet_count": 8807617,
+      "known_divisions": 151,
+      "known_positive": 100,
+      "strict_wrong": 4,
+      "foreign_parent_wrong": 3933,
+      "strict_foreign_overlap": 2,
+      "confirmed_wrong_union": 3935,
+      "foreign_on_division_parent": 3,
+      "foreign_on_single_edge_parent": 3811,
+      "foreign_on_no_edge_parent": 119,
+      "positive_mothers_with_foreign_wrong": 1,
+      "positive_mothers_with_strict_wrong": 2,
+      "single_outgoing_with_known_child": 89703,
+      "v2_summary_sha256": "5efbe85936643be7676a3014bf384b811e4d727f57730f27922631d719fed1ba",
+      "v2_per_sample_sha256": "683725138ab575f4442e12eb9fbc13448663959a7ac2294e1715665698ba9834",
+      "diagnostic_elapsed_seconds": 495.430945713
+    }
+  },
+  "notes": "Kaggle CPU version 2 completed 199 samples/19,701 windows. User accepted the teacher diagnostic as completed on 2026-09-19 and chose to seek additional teachers before training division_triplets. No model, CV, LB, or submission.",
+  "key_idea": "既知GEFF edgeに基づく分裂組の教師候補を分類",
+  "updated_at": "2026-09-19T13:43:14.365409+00:00"
+}
