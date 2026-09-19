@@ -41,6 +41,14 @@
 - GT edgeが正しく、7 µm一対一対応が正しく、1娘に複数の母がない条件で、正例100件と組そのものの誤り3,935件を区別できる。残りは未知とする教師maskは構成可能。ただしこの3,935件は「通常継続の母」の確定負例ではない。単一edge母に既知娘を含む89,703組も第2娘不在を保証しない。
 - 同じ母内の正しい娘組と誤組を比べられる正例母が最大2/100件であり、母内順位学習をこの教師だけで支える根拠は不足する。異なる母間の二値分類には注釈選択とGT対応の偏りが残る。教師maskの採用、loss、復号、候補上限はユーザー判断待ちで、状態とP2を維持する。
 
+## 2026-09-19の追加教師の公開資料調査
+
+- [コンペ規則](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/rules)は、無償で他参加者にも利用できる外部データを認める。[主催者の概要](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/)はhidden testでinternet無効、CPU/GPU Notebookは12時間以内とする。外部データを使う場合もNotebookへ事前に添付する必要がある。
+- 参加者が[公開した合成3D顕微鏡データ](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/732103)は、作者の報告ではCC0、18.5 GB、2,174時系列、4,056,226 node、165,267分裂母で、全node・edge・分裂の系譜を持つ。`divisions`は分裂母nodeのindexで、娘2点と通常継続の区別が合成世界内でできる。現時点で実ファイルの版・schema・SHA、候補生成との整合、固定公開検出器の回収は独立確認していない。分裂率4.07%は実データについて作者が述べる約0.26%より高く、核のtexture・contrastの分布差も作者自身が明示する。このデータを実画像の確定負例として扱わない。
+- [Linajeaのzebrafish公開データ](https://janelia.figshare.com/articles/dataset/Zebrafish_data_for_whole-embryo_lineage_reconstruction_with_linajea/24968724)はBSD 3-Clauseと表示され、手動の疎な完全系譜trackと、限られた時点の比較的完全な分裂点を含む。元画像は別配布であり、Biohubの同一胚・撮像条件ではない。分裂点は論文の評価用で、同一データでの学習・評価には分割の再設計が必要。[原論文](https://pmc.ncbi.nlm.nih.gov/articles/PMC7614077/)も疎なGTからfalse positive edgeを計算できないと明記する。Biohubの未注釈候補を確定負例にはできない。
+- [Cell Tracking Challengeの3Dデータ](https://celltrackingchallenge.net/3d-datasets/)には3D核と追跡注釈があるが、このコンペと異なる生物・撮像条件であり、[利用条件](https://celltrackingchallenge.net/datasets/)はCTC以外の公開科学利用に主催者の明示許可を要する。今回の教師として無条件には使わない。[RIKEN SSBD zebrafish](https://ssbd.riken.jp/database/project/5-Keller-FishEmbryo/)は公開座標軌跡があるがCC BY-NC-SAで画像データ0と表示され、賞金コンペへの利用条件と画像特徴の対応が未解決。
+- 推奨する次の判断は、公開合成系譜の小規模なKaggle CPU診断を行い、版・schema・実際の分裂数・同じ母内の正誤組数・9/14 µm候補回収と、実データexp021との幾何差を測ること。学習、損失、復号はその結果まで決めない。合成教師を採用するか、Linajeaの実系譜を先に調べるかは比較方針に影響するため、ユーザー判断を要する。
+
 ## 2026-09-12の方針反映
 
 - 適用する方針: [今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)を正とする。今回の依頼は方針・バックログ更新であり、新規実験の実装・実行承認ではない。
