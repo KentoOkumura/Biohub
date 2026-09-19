@@ -26,5 +26,7 @@
 | exp016_frozen_image_encoder | frozen_feature_primary_tracker | exp011_public_detector_selection | 完了 | - | - | - | 2026-09-18 |
 | exp017_cross_crop_registration_audit | cross_crop_registration_audit | N/A | 完了 | - | - | - | 2026-09-14 |
 | exp018_graph_cost_scale | fixed_candidate_graph_cost_scale | exp015_oracle_stage_limits | 破棄 | - | - | - | 2026-09-15 |
+| exp020_division_triplet_candidates | division_triplet_candidate_diagnostic | exp015_oracle_stage_limits | 完了 | - | - | - | 2026-09-19 |
+| exp021_division_teacher_audit | division_triplet_teacher_diagnostic | exp020_division_triplet_candidates | 完了 | - | - | - | 2026-09-19 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->
