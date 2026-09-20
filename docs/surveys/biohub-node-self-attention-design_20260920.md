@@ -27,7 +27,7 @@ Model Bの逆方向Cross-Attentionは、現行どおり更新済みt側特徴を
 
 指定された`src/tracking_cellmot/models/simple_node_transformer.py`はリポジトリ直下には存在しない。[exp001の保存source](../../experiments/exp001_temporal_unet3d_baseline/official_source/src/tracking_cellmot/models/simple_node_transformer.py)と、exp002・004・005・006・007・009・010の同名ファイルを確認した。
 
-現在の固定画像特徴からの学習基準[exp016](../../experiments/exp016_frozen_image_encoder/config.yaml)は、Kaggle input内の`repo/src/biohub_tracking/models/simple_node_transformer.py`をimportする。[exp014の回収済みsource](../../experiments/exp014_exact_window_cache/artifacts/kaggle-v1/tracking_repo/src/biohub_tracking/models/simple_node_transformer.py)を確認したところ、上記保存sourceすべてとファイル全体のSHA-256が一致した。
+現在の固定画像特徴からの学習基準[exp016](../../experiments/exp016_frozen_image_encoder/config.yaml)は、Kaggle input内の`repo/src/biohub_tracking/models/simple_node_transformer.py`をimportする。exp014の回収済みsource（Git管理外の `experiments/exp014_exact_window_cache/artifacts/kaggle-v1/tracking_repo/src/biohub_tracking/models/simple_node_transformer.py`）を確認したところ、上記保存sourceすべてとファイル全体のSHA-256が一致した。
 
 ```text
 b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e

@@ -28,6 +28,7 @@
 
 ## 運用ルール
 
+- 通常の実装・実験記録は `main` で進める。別ブランチへの変更の蓄積はユーザーが明示的に依頼した場合に限る。競合解決や検証のために一時worktreeを使った場合も、成果は確認後に `main` へ統合する。既存の未コミット変更は所有者を確認せず破棄・上書きしない。
 - リポジトリ内の自動化コマンドは、対応するターゲットと`task`コマンドの両方が利用できる場合は`task <target>`を使います。`task`コマンドがない場合は同名の`make <target>`を使います。対応ターゲットがないrepo-local Python scriptだけ、リポジトリルートから`uv run python <script> ...`で実行します。PATH上の裸の`python` / `python3`を試してからfallbackしません。TaskfileとMakefileは`UV_CACHE_DIR=/tmp/uv-cache`と`PYTHONDONTWRITEBYTECODE=1`を既定で設定します。Ruff cacheは`/tmp/ruff-cache`へ置き、pytest cache providerは無効化します。managed sandboxでTask/Makeを経由せず`uv`を直接実行するときは、repo-local script、Kaggle CLI、`uv sync`などの用途を問わず、既定のuv cacheが書き込み可能だと確認できない場合は最初から`PYTHONDONTWRITEBYTECODE=1 UV_CACHE_DIR=/tmp/uv-cache uv ...`を使います。Makefile内部の`.venv/bin/...`は許可された実装です。`uv`も対応ターゲットも利用できず`.venv/`が準備済みの場合は、repo-local scriptを`PYTHONDONTWRITEBYTECODE=1 .venv/bin/python`で直接実行できます。Kaggle Notebook、Colab、外部containerなど、リポジトリ外の実行環境内で指定されたinterpreterはこの規則の対象外です。
 - リポジトリ内でKaggle CLIを直接実行する場合は、lockfileで固定した版を使うため`uv run kaggle ...`を使います。Taskfileは`uv run kaggle`、Makefileは`.venv/bin/kaggle`を使います。CLI構文を説明するだけの記載は裸の`kaggle`表記でも構いません。
 - 検証範囲は変更範囲に合わせます。通常の実験変更では対象実験の`task check-exp`と`task test-exp`を使います。同梱skillだけの変更では`task check-skills`、共通コードやルート設定の限定変更では影響するルートテスト、テンプレート変更ではそれらに加えて`task validate-template`を実行します。複数のルート共通領域へ広く影響するが実験固有テストには影響しない変更では`task test-common`を使います。全実験のテストを収集する`task test`は、変更が複数の実験固有テストにも影響する場合、またはユーザーが全件確認を明示した場合だけ実行します。

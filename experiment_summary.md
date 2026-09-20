@@ -32,9 +32,10 @@
 | exp022_synthetic_division_teacher_audit | synthetic_division_teacher_diagnostic | exp021_division_teacher_audit | 完了 | - | - | - | 2026-09-20 |
 | exp023_synthetic_detector_teacher_audit | synthetic_detector_teacher_diagnostic | exp022_synthetic_division_teacher_audit | 完了 | - | - | - | 2026-09-20 |
 | exp024_tracker_six_epochs | frozen_feature_primary_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-20 |
-
+| exp025_frame_self_attention | frozen_feature_frame_self_attention_tracker | exp016_frozen_image_encoder | 実行中 | - | - | - | 2026-09-20 |
 | exp025_kalman_hungarian_links | kalman_hungarian_fixed_divisions | exp016_frozen_image_encoder | 破棄 | 0.8733317200940277 | - | - | 2026-09-20 |
 | exp027_multi_frame_tracker | frozen_feature_local_three_frame_tracker | exp016_frozen_image_encoder | 完了 | - | - | - | 2026-09-20 |
+| exp028_direct_graph_prediction | direct_parent_selection | exp016_frozen_image_encoder | デバッグ完了 | - | - | - | 2026-09-20 |
 | exp030_frame_self_attention_diagnostics | frozen_feature_primary_tracker_diagnostic | exp016_frozen_image_encoder | 完了 | - | - | - | 2026-09-20 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->
