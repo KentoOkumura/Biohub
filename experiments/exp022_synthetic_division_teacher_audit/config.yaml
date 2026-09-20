@@ -1,0 +1,67 @@
+experiment:
+  name: exp022_synthetic_division_teacher_audit
+  description: 公開合成系譜の完全ラベルから分裂組と通常継続の教師件数を診断する
+  route: synthetic_division_teacher_diagnostic
+  notebooks:
+    - diagnostic
+  created_at: '2026-09-19'
+lineage:
+  parent: exp021_division_teacher_audit
+  hypothesis_id: N/A
+  backlog_candidate: N/A
+  diff_summary: 公開合成系譜の先頭32時系列で9/14 µmの正誤組と通常継続を完全ラベルから数える
+validation:
+  diagnostic_only: true
+  sample_count: 32
+  sample_selection: manifest_sequence_order_first_32
+  expected_source_sequences: 2174
+  expected_source_divisions: 165267
+  expected_source_nodes: 4056226
+  parent_daughter_max_um: 9.0
+  sister_max_um: 14.0
+  max_triplets_per_parent_guard: 10000
+  expected_sequence_length: 6
+  native_voxel_zyx_um: [1.625, 0.40625, 0.40625]
+  expected_pooled_voxel_zyx_um: [1.625, 1.625, 1.625]
+  require_complete_adjacent_lineage: true
+  expected_manifest_sha256: e8b5376b2ac6fdd55bd6e45d1b07b401339d375b211b6f67be93fb0de4d8ce14
+  expected_metadata_sha256: 328b9bb2545309e545cf68663ef985034ec68c36c0b709408a0f91801fedf89e
+  source_notebook_sha256: 04ed49b48c896dea94b2d47d5f59c00479d53a1cba109925642be0dccb9a97e5
+data:
+  source: public_synthetic_kaggle_notebook_output
+  kernel_source: josefreitasalvesneto/biohub-synthetic-dataset
+  output_directory: biohub_synthetic
+  sequence_directory: sequences
+model:
+  name: none_diagnostic_only
+  params: {}
+runtime:
+  use_amp: false
+  num_workers: 0
+  kaggle:
+    diagnostic:
+      enable_gpu: false
+      enable_internet: false
+      kernel_sources:
+        - josefreitasalvesneto/biohub-synthetic-dataset
+      dataset_sources: []
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_random_sampling
+  stochastic_components: []
+  parallel_rng_policy: sorted_manifest_and_candidate_ids
+  feature_sha_policy: source_manifest_and_selected_file_sha256
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: false
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - 合成系譜はsourceの生成過程内で完全。Biohub実画像の教師としての正しさは主張しない。
+notes:
+  - CPUで32時系列のnode・edge・division配列だけを読む。画像model・tracker・submissionは実行しない。
+  - 元のdivision_tripletsは未着手候補のまま。学習方式と復号は未決。

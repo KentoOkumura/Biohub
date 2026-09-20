@@ -1,0 +1,107 @@
+{
+  "experiment": "exp022_synthetic_division_teacher_audit",
+  "status": "completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp022-synthetic-division-teacher-audit",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp022-synthetic-division-teacher-audit",
+      "kernel_source_ids": [
+        "josefreitasalvesneto/biohub-synthetic-dataset"
+      ],
+      "resource": "CPU",
+      "notebook_runtime_seconds": null,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": "e8b5376b2ac6fdd55bd6e45d1b07b401339d375b211b6f67be93fb0de4d8ce14",
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": 32,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": null,
+      "model_shas": {},
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [],
+    "diagnostic": {
+      "source_notebook_sha256": "04ed49b48c896dea94b2d47d5f59c00479d53a1cba109925642be0dccb9a97e5",
+      "source_manifest_sha256": "e8b5376b2ac6fdd55bd6e45d1b07b401339d375b211b6f67be93fb0de4d8ce14",
+      "source_metadata_sha256": "328b9bb2545309e545cf68663ef985034ec68c36c0b709408a0f91801fedf89e",
+      "selected_sequences": 32,
+      "candidate_triplets": 84922,
+      "continuation_mothers": 42220,
+      "continuation_triplets": 76092,
+      "continuation_with_triplet": 25808,
+      "division_mothers": 2266,
+      "division_recovered": 2193,
+      "division_with_wrong_triplet": 1422,
+      "edges": 46752,
+      "max_triplets_per_mother": 53,
+      "nodes": 54786,
+      "positive_triplets": 2193,
+      "recovered_division_with_wrong_triplet": 1385,
+      "wrong_division_triplets": 6637,
+      "division_recovery_rate": 0.9677846425419241,
+      "recovered_division_with_wrong_rate": 0.6315549475604195,
+      "mother_daughter_distance_um": {
+        "count": 4532,
+        "max": 20.985930088310464,
+        "p50": 3.9692687335025982,
+        "p90": 6.4166183964363235,
+        "p95": 7.494946132163541,
+        "p99": 10.830852842522452
+      },
+      "sister_distance_um": {
+        "count": 2266,
+        "max": 12.406900928935967,
+        "p50": 7.06167590831765,
+        "p90": 9.138678154693672,
+        "p95": 9.725579822157048,
+        "p99": 10.87593481006914
+      },
+      "v2_summary_sha256": "f34970334f4eaba90f057fbaa4ea5fd6079d91c39b14396580da554b266710db",
+      "v2_per_sequence_sha256": "2f7971596f4a1b36cc99d681baa610bb26fecdae722beab0119da9370eb8a24f",
+      "diagnostic_elapsed_seconds": 9.721601159999977
+    }
+  },
+  "notes": "Kaggle CPU version 2 completed 32 synthetic sequences. User accepted the diagnostic as completed on 2026-09-20 and approved a small fixed-detector connection audit next. No model, CV, LB, or submission.",
+  "key_idea": "公開合成系譜の完全な生成edgeから分裂組と通常継続の教師件数を診断",
+  "updated_at": "2026-09-20T01:13:37.208753+00:00"
+}
