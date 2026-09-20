@@ -1,4 +1,6 @@
-# direct_graph_prediction
+# exp028_direct_graph_prediction 要件と実装方法
+
+この文書の前半はbacklog候補の判断履歴をそのまま引き継いだ記録である。候補段階の状態と未決事項は、後半の「実験化の入口」以降に記した2026-09-20の承認済み設計で解消した。実行中の進捗はSESSION_NOTES.mdを正とする。
 
 - 候補名: `direct_graph_prediction`
 - 説明: 主催者注釈から固定検出候補の接続を直接選ぶTransformer
@@ -9,10 +11,10 @@
 - 最終更新日: 2026-09-20
 - 依頼原文: 「トランスフォーマーが直接ILPの出力相当を予測することはできないんですか」。その説明の「主催者注釈で学習する場合」を選択し、「この方針でいきたいです」。
 - 期待する成果: 固定検出候補から採用する接続・分裂をTransformerが直接選び、主催者注釈を教師として学習する。接続スコアとILPによる選択の対照に対し、構造を守りながら両胚の追跡精度を改善できるかを検証する。
-- 親実験 / 比較対象: [exp016の契約](../experiments/exp016_frozen_image_encoder/requirements.md)・[設定](../experiments/exp016_frozen_image_encoder/config.yaml)・[結果](../experiments/exp016_frozen_image_encoder/result.md)。同じ固定候補と画像特徴を使う保存済みトラッカー・ILP経路を比較基準とする。
+- 親実験 / 比較対象: [exp016の契約](../exp016_frozen_image_encoder/requirements.md)・[設定](../exp016_frozen_image_encoder/config.yaml)・[結果](../exp016_frozen_image_encoder/result.md)。同じ固定候補と画像特徴を使う保存済みトラッカー・ILP経路を比較基準とする。
 - 優先度: P2
 - 優先度の理由: ユーザーが直接予測と主催者教師の方向を選択したため、具体設計を進める候補として記録する。既承認のexp024の最優先とexp025の実行を取り消さず、他候補の優先度を変更しない。出力形式・部分注釈の損失・比較境界を先に確定する。
-- `backlog/KAGGLE_DIRECTION.md` の対応箇所: [今後の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)、[検証中の仮説](KAGGLE_DIRECTION.md#検証中の仮説)、[未着手バックログ](KAGGLE_DIRECTION.md#未着手バックログ)
+- `backlog/KAGGLE_DIRECTION.md` の対応箇所: [今後の学習方針](../../backlog/KAGGLE_DIRECTION.md#今後の学習方針)、[検証中の仮説](../../backlog/KAGGLE_DIRECTION.md#検証中の仮説)、[未着手バックログ](../../backlog/KAGGLE_DIRECTION.md#未着手バックログ)
 - 先行条件 / 依存: exp015の固定候補・特徴cache、exp016の教師対応・胚別分割・保存済み対照、exp019とexp021の教師監査の結論。frame_self_attentionや合成分裂学習の成功を必須の先行条件にしない。
 
 ## 承認された方針と範囲
@@ -24,10 +26,10 @@
 
 ## 観測事実と根拠
 
-- 実測済みの事実: exp016で固定画像特徴からトラッカーだけを学習する比較基準を保存済み。[exp015](../experiments/exp015_oracle_stage_limits/result.md)では接続候補と最終選択で回収率に差がある。ただし、この差のすべてをILPだけの失敗や本候補で改善できる量とはみなさない。
-- 教師に関する事実: [exp019](../experiments/exp019_partial_edge_mask/result.md)の正例子列だけへの損失mask変更は、両胚改善の条件を満たさず不採用。未知を除外するだけで改善すると仮定しない。[exp021](../experiments/exp021_division_teacher_audit/result.md)の固定分裂組では、同じ正例母の正誤組を比較できたのは最大2/100件。GT出力1本だけでは非分裂を確定できず、GT出力0本だけでは消失・接続なしを確定できない。
-- 根拠ファイル / 一次資料: 上記実験記録、[元の接続教師・損失](../experiments/exp016_frozen_image_encoder/frozen_tracker.py)、[公式評価仕様](../docs/official/evaluation.md)。会話で参照した[Pointer Networks](https://arxiv.org/abs/1506.03134)は入力候補を選ぶ出力、[MOTR](https://arxiv.org/abs/2105.03247)は追跡する対象の表現を時刻間で引き継ぐ参考であり、細胞分裂と疎い注釈に適合した実装を確認済みとは扱わない。
-- 利用する保存済み生成物とSHA: [exp015 metrics](../experiments/exp015_oracle_stage_limits/metrics.json)のcacheとmanifest、[exp016 config](../experiments/exp016_frozen_image_encoder/config.yaml)のcache identity・公開checkpoint・教師対応、[exp016 metrics](../experiments/exp016_frozen_image_encoder/metrics.json)のfold別モデルと評価生成物を正とする。取得・同一性確認は先行入力の準備であり、性能の事前実証を要求しない。
+- 実測済みの事実: exp016で固定画像特徴からトラッカーだけを学習する比較基準を保存済み。[exp015](../exp015_oracle_stage_limits/result.md)では接続候補と最終選択で回収率に差がある。ただし、この差のすべてをILPだけの失敗や本候補で改善できる量とはみなさない。
+- 教師に関する事実: [exp019](../exp019_partial_edge_mask/result.md)の正例子列だけへの損失mask変更は、両胚改善の条件を満たさず不採用。未知を除外するだけで改善すると仮定しない。[exp021](../exp021_division_teacher_audit/result.md)の固定分裂組では、同じ正例母の正誤組を比較できたのは最大2/100件。GT出力1本だけでは非分裂を確定できず、GT出力0本だけでは消失・接続なしを確定できない。
+- 根拠ファイル / 一次資料: 上記実験記録、[元の接続教師・損失](../exp016_frozen_image_encoder/frozen_tracker.py)、[公式評価仕様](../../docs/official/evaluation.md)。会話で参照した[Pointer Networks](https://arxiv.org/abs/1506.03134)は入力候補を選ぶ出力、[MOTR](https://arxiv.org/abs/2105.03247)は追跡する対象の表現を時刻間で引き継ぐ参考であり、細胞分裂と疎い注釈に適合した実装を確認済みとは扱わない。
+- 利用する保存済み生成物とSHA: [exp015 metrics](../exp015_oracle_stage_limits/metrics.json)のcacheとmanifest、[exp016 config](../exp016_frozen_image_encoder/config.yaml)のcache identity・公開checkpoint・教師対応、[exp016 metrics](../exp016_frozen_image_encoder/metrics.json)のfold別モデルと評価生成物を正とする。取得・同一性確認は先行入力の準備であり、性能の事前実証を要求しない。
 - 仮定: Assumption: 固定画像特徴と周囲の検出候補、先に決めた接続を使う出力が、既存のスコアとILPによる選択より曖昧な対応を解ける。精度・速度の改善と、ILPの目的関数上の最適性は未実証。
 
 ## この候補が直接検証する仮説と範囲
@@ -106,3 +108,67 @@
 - 最小検証と停止条件を一意に説明できる: 制約・教師の小例確認、胚別の単体診断、条件成立後の全graph公式評価。具体的な進行条件は実装前の契約に記す。
 - 実行しないことを一意に説明できる: ILP擬似教師・未知の負例化・画像model更新・未承認の教師追加は行わない。
 - 未決事項が明示されている: 教師の出所は確定済み。出力・損失・推論仕様を確認する際に、同じ教師方針を問い直さない。
+
+## 実験化の入口・引き継ぎ・承認
+
+- 実験化の入口と承認: 2026-09-20の「direct_graph_predictionを実装してください」。同日、娘ごとの親選択、既知注釈だけの損失、隣接2-frame先行評価、ILPなしの構造制約、全graphで固定graph repairのみを適用する方式をユーザーが選択した。
+- 移行元backlog: backlog/direct_graph_prediction.md。この文書の上半分へ候補詳細の根拠、境界、採らなかった案、判断履歴を移した。
+- 親実験: exp016_frozen_image_encoder。固定cacheの生成元はexp015_oracle_stage_limits。
+- 対応する上位仮説: HYP-20260910-11。
+- 固定するものと変更するもの、最小検証、成功条件、停止条件、禁止する代替実装は上半分の同名節を正とする。以下の2026-09-20の承認済み設計で候補段階の「未決」を解消する。
+- 未決事項: なし。候補段階の「検討メモ・設計不可」は実験化前の状態であり、以下の設計を正とする。
+
+## 判断履歴
+
+- 2026-09-20: ユーザーはILP擬似教師ではなく主催者注釈を選択した。
+- 2026-09-20: ユーザーは娘ごとの親選択と2-frame先行評価を選択した。
+- 2026-09-20: ユーザーは接続選択からsecondary tracker、順逆融合、ILPを外し、全graphに固定graph repairのみを適用する比較を選択した。
+
+## 手法契約
+
+- input: exp015 cacheにある同一windowの固定候補ID、物理座標、primary画像特徴、位置特徴、検出得点。未注釈候補も含め、注釈の有無はモデル入力へ渡さない。
+- target / objective: 5µm対応でGT nodeと結びつく娘候補に、主催者GEFFの既知入edgeが1本あれば、その母候補を選ぶ。既知母GTが固定候補の外なら「候補内に母なし」とする。入edgeが未記録の娘と曖昧な対応は未知として損失から除く。
+- output: 娘候補ごとの母候補IDまたは対応なし。1娘最大1母、1母最大2娘。同じ母が2娘を選ぶと分裂となる。
+- loss: 教師が確定した娘だけのcategorical cross entropy。既知母が候補内なら他の母候補と対応なしは誤選択。既知母が候補外なら対応なし。教師不明の娘は全classを除外し、GT出力0本を終了、1本を非分裂と解釈しない。
+- decode: Transformerの選択確率を内部検証で固定した対応なし閾値と比較する。母の選択を確信度順に処理し、2娘で満杯になった母をmaskする。同点は候補ID順。ILPは使わない。全graphでは既存の固定graph repairを適用し、適用前後を別々に記録する。
+- context unit: 隣接2-frame。windowを時刻順に結合し、候補IDの一意性と時刻整合を検査する。
+- 実装区分: 特定論文の再現ではない。Pointer NetworksとMOTRは参考であり、faithfulやproxyという再現の主張はしない。
+- 省略する機構と理由: 画像の再推論、secondary、順逆融合、ILPを外し、直接選択を比較する。画像encoderと検出器は固定cacheで表す。
+- proxyで検証できない主張: N/A。固定候補外の正解、独立CV、hidden test精度は判断できない。
+- この実験が支持 / 棄却できる主張: 主催者の既知接続を教師にした直接選択が、固定候補内と全graphで対照より改善するか。
+
+## 実装方法
+
+- アプローチ: 両frameの候補をTransformerで符号化し、各娘の母候補と対応なしのlogitを出す。公開trackerの異なる構造の重みを無理に流用しない。各fold1モデル、2foldで学習する。
+- 教師: exp016のcache検証と5µm対応を利用し、既知母が候補内・候補外・未知を別のcategoryで数える。GTは教師構築だけに使う。
+- 学習: 既知娘だけのmasked categorical cross entropy。学習量と閾値は学習側の小規模benchmarkと内部分割で決め、外側胚では調整しない。保存済みexp016対照をGPUで再学習しない。
+- 単体診断: 同じ対象の2-frameで既知edge回収、観測可能な誤接続、既知分裂、接続数、構造違反を胚別に比較する。対照にはexp016の保存済みfold別primary trackerを再学習せず読み込み、元の0.48閾値でILP・repair前の接続を算出する。全graphではexp016保存済み最終graphと公式指標を比較する。
+- 全graphへ進む条件: 両胚で構造違反0、既知edge recallが対照から1 percentage point超低下しない、観測可能な誤接続率が対照以下、既知分裂母の回収率が対照以上。少数の分裂件数と部分注釈の限界を併記する。
+- 全graph: gate成立後、固定候補IDから直接選択edgeを組み立て、固定graph repairを適用し、repair前後を別々に公式評価器で評価する。
+- 変更するcomponent: この実験のconfig、train/inference Notebook、診断と選択の実装、テスト、実験記録。
+- 固定事項の確認: cache identity、候補座標、胚別split、GTの推論非使用、modelと予測内容SHA、graph構造を検査する。
+- テスト: 既知母、候補外の既知母、未知娘、分裂、母の競合、同点、空候補、窓間ID整合の小例。
+
+## 探索幅とpivot判定
+
+- 変更class: representation。pair scoreをILPへ渡す方式から、娘ごとの親または対応なしの選択へ変更する。
+- exp015の既知edgeはcandidate graphで94.829%、final graphで91.602%。差をすべてILPの改善余地とはみなさない。
+- 比較した案: ILP模倣、母ごとの娘集合選択、frame_self_attention、division_local_ilp。今回はユーザーが選んだ主催者教師と直接選択を実装する。
+- kaggle-idea-forgeは不要。ユーザーが候補と具体方式を指定した実装作業である。
+
+## 再現性・リスク
+
+- seed policy: project seed 42をfoldごとに固定し、DataLoader shuffleとworkerへ渡す。対応なし閾値は内部検証だけで選ぶ。
+- stochastic処理: dropout、GPU演算、DataLoader shuffle。特徴再生成、augmentation、seed baggingは行わない。
+- 記録: exp015 cache summary・identity・window content、2fold modelとmanifest、予測内容、Kaggle kernel version、所要時間、最大メモリを記録する。deterministic anchorとは呼ばない。
+- leakage: 公開checkpointの学習来歴に評価胚が含まれ得るため、条件付き胚別評価と記載する。GTの有無は推論入力へ渡さない。
+- runtime/memory: 全候補attentionの二乗費用を小規模benchmarkで測り、週30 GPU時間と12時間の制約でfull runの可否を判定する。
+- 手法忠実性: 単なるpair score改善に戻さず、親IDまたは対応なしを出力し、ILPに選択を任せない。
+
+## 受け入れ基準
+
+- [ ] 教師とlossが未知を負例化しない小例テストを通る。
+- [ ] 1娘最大1母、1母最大2娘、時刻整合、候補ID一意性が成立する。
+- [ ] 2foldのKaggle学習と胚別2-frame診断を記録する。
+- [ ] gate成立時だけ全graphの公式評価を行い、repair前後を区別する。
+- [ ] 生成物とSHAを記録し、採否と完了はユーザーへ判断を求める。

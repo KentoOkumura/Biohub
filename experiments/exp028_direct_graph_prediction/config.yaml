@@ -1,0 +1,171 @@
+experiment:
+  name: exp028_direct_graph_prediction
+  description: 固定候補の娘ごとに母または対応なしをTransformerが選び、主催者の既知接続で学習する
+  route: direct_parent_selection
+  notebooks:
+    - train
+    - inference
+  created_at: '2026-09-20'
+lineage:
+  parent: exp016_frozen_image_encoder
+  hypothesis_id: HYP-20260910-11
+  backlog_candidate: direct_graph_prediction
+  diff_summary: primary trackerのpair scoreとILPを、娘ごとの母選択と構造制約に置換する
+validation:
+  strategy: leave_one_embryo_out
+  seed: 42
+  n_folds: 2
+  group_key: embryo_id_from_sample_prefix
+  outer_folds:
+    - fold: 0
+      train_embryo: 44b6
+      evaluation_embryo: 6bba
+    - fold: 1
+      train_embryo: 6bba
+      evaluation_embryo: 44b6
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  checkpoint_selection_metric: observed_parent_selection_accuracy
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  early_gate:
+    maximum_structural_violations: 0
+    minimum_known_division_parents: 1
+    maximum_known_edge_recall_drop: 0.01
+    maximum_observable_false_edge_rate_increase: 0.0
+    minimum_division_recall_delta: 0.0
+    require_same_unit_control: true
+data:
+  source: exp015_train_window_cache_and_competition_geff
+  cache:
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    summary_file: window_cache_summary.json
+    summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+    identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+    directory: window_cache
+    schema_version: 1
+    expected_dataset_count: 199
+    expected_window_count: 19701
+    feature_channels: 32
+    primary_checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  annotation:
+    voxel_scale_zyx_um: [1.625, 0.40625, 0.40625]
+  teacher:
+    matching: greedy_distance_order_one_to_one
+    max_matching_distance_um: 5.0
+    positive: unique_annotated_incoming_edge_with_matched_parent_candidate
+    no_match: unique_annotated_incoming_edge_without_parent_candidate
+    unknown: no_annotated_incoming_edge_or_ambiguous_match
+model:
+  name: DirectParentSelectionTransformer
+  input_feature_dim: 65
+  hidden_dim: 128
+  n_heads: 4
+  n_layers: 4
+  dropout: 0.3
+  coordinate_units: original_voxel_zyx
+  downsample_zyx: [1, 4, 4]
+  output: parent_candidate_id_or_no_match
+  control:
+    source_kernel: kentookumura/exp016-frozen-image-encoder-train
+    source_manifest_sha256: 6f9548739ae6f58d3c8beb7ccb78464ddc10243841b1fc7e071ed876f757ea56
+    model_source_sha256: b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e
+    edge_threshold: 0.48
+    retrain: false
+  loss: masked_categorical_cross_entropy
+  training:
+    active_variants:
+      - direct_parent_selection
+    folds: 2
+    models_per_fold: 1
+    control_retrain: false
+    initialization: random_seed_42_plus_fold
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.01
+    gradient_clip_norm: 1.0
+    batch_size: 2
+    benchmark_windows_per_fold: 64
+    runtime_projection_multiplier: 1.5
+    runtime_gate_hours: 12.0
+  decoding:
+    parent_capacity: 2
+    child_capacity: 1
+    no_match_threshold_initial: 0.5
+    threshold_selection: internal_validation_only
+    threshold_grid: [0.3, 0.4, 0.5, 0.6, 0.7]
+    order: descending_parent_probability_minus_no_match_probability
+    tie_breaker: candidate_id
+    use_ilp: false
+    use_secondary_tracker: false
+    use_bidirectional_fusion: false
+  inference:
+    fold_model_by_evaluation_embryo:
+      6bba: 0
+      44b6: 1
+    cache_source: exp015_saved_window_cache
+    main_image_encoder_forward_count: 0
+    graph_repair: fixed_exp016_pipeline
+    early_gate_passed: false
+    early_gate_evidence_sha256: null
+    evaluate_before_and_after_repair: true
+    submission_created: false
+runtime:
+  use_amp: false
+  num_workers: 2
+  batch_size: 2
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+    train:
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+        - kentookumura/exp015-oracle-stage-limits-inference
+        - kentookumura/exp016-frozen-image-encoder-train
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+        - kentookumura/exp015-oracle-stage-limits-inference
+        - kentookumura/exp028-direct-graph-prediction-train
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      bootstrap_dependency_files:
+        - source: experiments/exp015_oracle_stage_limits/exp015_oracle_stage_limits_inference.py
+          destination: exp015_inference_base.py
+        - source: experiments/exp015_oracle_stage_limits/window_cache.py
+          destination: window_cache.py
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_fold_offset_and_seeded_dataloader_generator
+  stochastic_components:
+    - dataloader_shuffle
+    - transformer_dropout
+    - cuda_kernels
+  parallel_rng_policy: dataloader_generator_and_worker_seed_per_fold
+  feature_sha_policy: exp015_cache_identity_and_window_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - 公開画像encoderの学習来歴にtrain動画が含まれるため独立CVやdeterministic anchorとは呼ばない。
+notes:
+  - train variant 1、model config 1、fold 2、booster 0。control再学習なし。
+  - 2-frame gateを通る前に全graph inferenceを実行しない。
+  - Kaggle submissionは行わない。

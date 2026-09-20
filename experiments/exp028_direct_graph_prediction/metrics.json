@@ -1,0 +1,183 @@
+{
+  "experiment": "exp028_direct_graph_prediction",
+  "status": "debug_completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp028-direct-graph-prediction-train",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp028-direct-graph-prediction-train",
+      "kernel_source_ids": [
+        "kentookumura/exp015-oracle-stage-limits-inference",
+        "kentookumura/exp016-frozen-image-encoder-train"
+      ],
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": 4995.766513242,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": null,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "e1309da80ca7d55a0496582c4b89fbc8d7e0e1917a93c185a17e0c2ed1b03244",
+      "model_count": 2,
+      "model_shas": {
+        "0": "1e6b45055a82c1fd14b3b3916510a436b48cf4be5d1d05bb5d2125ef2473f9fa",
+        "1": "0e52cd13ca1f7a0f0afc7d5286725a10eb3ccf4e3358ad3762f094f2825ffb5b"
+      },
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [],
+    "train_stage": {
+      "cache_identity_sha256": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "cache_summary_sha256": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+      "early_gate_passed": false,
+      "early_gate_sha256": "82e3ae09c4f6748823d4199605193cd26664dae0a939ec2aa92d731b7f1f0b00",
+      "folds": [
+        {
+          "control_two_frame": {
+            "edge_threshold": 0.48,
+            "known_division_parents": 108,
+            "known_division_recall": 0.46296296296296297,
+            "known_edge_recall": 0.9719903668526882,
+            "known_edges": 103393,
+            "known_null": 1983,
+            "observable_false_edge_rate": 0.029427953234133008,
+            "observable_false_edges": 3101,
+            "recovered_division_parents": 50,
+            "selected_edges": 2145202,
+            "stage": "exp016_saved_primary_tracker_before_ilp_and_repair",
+            "true_positive_edges": 100497
+          },
+          "evaluation_embryo": "6bba",
+          "fold": 0,
+          "model_sha256": "1e6b45055a82c1fd14b3b3916510a436b48cf4be5d1d05bb5d2125ef2473f9fa",
+          "outer": {
+            "correct_null": 129,
+            "known_division_parents": 108,
+            "known_division_recall": 0.4166666666666667,
+            "known_edge_recall": 0.9535365063398876,
+            "known_edges": 103393,
+            "known_null": 1983,
+            "observable_false_edge_rate": 0.05933039781354388,
+            "observable_false_edges": 6252,
+            "recovered_division_parents": 45,
+            "selected_edges": 2341671,
+            "selected_unknown_children": 2236830,
+            "selection_accuracy": 0.9368167324627998,
+            "structural_violations": 0,
+            "teacher": {
+              "ambiguous_incoming": 0,
+              "known_parent": 103393,
+              "known_parent_outside_candidates": 1983,
+              "unknown": 2290192
+            },
+            "threshold": 0.3,
+            "true_positive_edges": 98589,
+            "unknown_children": 2290192
+          }
+        },
+        {
+          "control_two_frame": {
+            "edge_threshold": 0.48,
+            "known_division_parents": 22,
+            "known_division_recall": 0.2727272727272727,
+            "known_edge_recall": 0.9529790490263338,
+            "known_edges": 18949,
+            "known_null": 379,
+            "observable_false_edge_rate": 0.036061672185430466,
+            "observable_false_edges": 697,
+            "recovered_division_parents": 6,
+            "selected_edges": 1900345,
+            "stage": "exp016_saved_primary_tracker_before_ilp_and_repair",
+            "true_positive_edges": 18058
+          },
+          "evaluation_embryo": "44b6",
+          "fold": 1,
+          "model_sha256": "0e52cd13ca1f7a0f0afc7d5286725a10eb3ccf4e3358ad3762f094f2825ffb5b",
+          "outer": {
+            "correct_null": 19,
+            "known_division_parents": 22,
+            "known_division_recall": 0.5454545454545454,
+            "known_edge_recall": 0.9437437331785319,
+            "known_edges": 18949,
+            "known_null": 379,
+            "observable_false_edge_rate": 0.07212334437086093,
+            "observable_false_edges": 1394,
+            "recovered_division_parents": 12,
+            "selected_edges": 2054479,
+            "selected_unknown_children": 2035202,
+            "selection_accuracy": 0.9262210264900662,
+            "structural_violations": 0,
+            "teacher": {
+              "ambiguous_incoming": 0,
+              "known_parent": 18949,
+              "known_parent_outside_candidates": 379,
+              "unknown": 2099393
+            },
+            "threshold": 0.3,
+            "true_positive_edges": 17883,
+            "unknown_children": 2099393
+          }
+        }
+      ],
+      "model_count": 2,
+      "model_manifest_sha256": "e1309da80ca7d55a0496582c4b89fbc8d7e0e1917a93c185a17e0c2ed1b03244",
+      "notebook_runtime_seconds": 4995.766513242,
+      "peak_gpu_memory_bytes": 3611434496,
+      "verified_output": {
+        "source": "private_kaggle_train_kernel_version_1",
+        "output_directory": "experiments/exp028_direct_graph_prediction/artifacts/kaggle_train_v1",
+        "early_gate_sha256": "82e3ae09c4f6748823d4199605193cd26664dae0a939ec2aa92d731b7f1f0b00",
+        "model_manifest_sha256": "e1309da80ca7d55a0496582c4b89fbc8d7e0e1917a93c185a17e0c2ed1b03244",
+        "fold_summary_sha256": {
+          "0": "a877d99d9c18f56c2045380453e5943a4676ea55515e0a0899a04a14b9837e2f",
+          "1": "38bbc766c117cff112a34ea56d1276710bd61decffd359c35c699411f187a49a"
+        },
+        "model_sha256": {
+          "0": "1e6b45055a82c1fd14b3b3916510a436b48cf4be5d1d05bb5d2125ef2473f9fa",
+          "1": "0e52cd13ca1f7a0f0afc7d5286725a10eb3ccf4e3358ad3762f094f2825ffb5b"
+        },
+        "gate_passed": false,
+        "official_graph_score_measured": false
+      }
+    }
+  },
+  "notes": "Kaggle train v1 completed; two-frame early gate failed for both embryos. Full graph inference and official score were not run. Adoption/completion awaits user judgment."
+}
