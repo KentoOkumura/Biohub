@@ -1,0 +1,172 @@
+{
+  "experiment": "exp023_synthetic_detector_teacher_audit",
+  "status": "completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp023-synthetic-detector-teacher-audit",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp023-synthetic-detector-teacher-audit",
+      "kernel_source_ids": [
+        "josefreitasalvesneto/biohub-synthetic-dataset"
+      ],
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": null,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": "e8b5376b2ac6fdd55bd6e45d1b07b401339d375b211b6f67be93fb0de4d8ce14",
+      "cache_file_sha": null,
+      "feature_schema_sha": "7d89c6e7c3226f8769d1ce7a68a3416b071e5e3fedf21b8382cce85e1a3ca46b",
+      "feature_content_sha": "6af8c00ba0287cfcdbaf32dfa64ab8ab4626afeb30e1a123350984225563fe34",
+      "row_count": 160,
+      "group_count": 32,
+      "feature_count": 64,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": 2,
+      "model_shas": {
+        "primary": "12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771",
+        "secondary": "9bac2fa0dadc4a6fc1899e0caf187f4b553e0a7cd90ba1261a68b35ffe9e305f"
+      },
+      "selected_mode": "fixed_public_detector_synthetic_diagnostic",
+      "selected_model": "dual_temporal_unet3d",
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [
+      {
+        "kernel_version": 1,
+        "selected_sequences": 2,
+        "window_count": 10,
+        "summary_sha256": "d2b9ebf5e551d2b585b6f648dbae42490af643e78182e24fac6146b288506d47",
+        "manifest_sha256": "d2fe99fc6b2eeeab716fc6dd2260d17ee6b8aec88b82c0949ab92f3e6a965110",
+        "positive_triplets": 69,
+        "wrong_division_triplets": 179,
+        "continuation_triplets": 2482,
+        "positive_with_wrong_mother": 28
+      }
+    ],
+    "diagnostic": {
+      "all_triplets": 35812,
+      "continuation_triplets": 32087,
+      "detected_divisions": 1035,
+      "detected_src": 40153,
+      "detected_tgt": 40364,
+      "gt_divisions": 2266,
+      "gt_geometric_divisions": 2193,
+      "gt_nodes_src": 44486,
+      "gt_nodes_tgt": 46752,
+      "matched_all_division_centers": 1077,
+      "matched_division_mothers": 2034,
+      "matched_src": 39933,
+      "matched_tgt": 40141,
+      "max_triplets_per_mother": 20,
+      "positive_triplets": 1035,
+      "positive_with_wrong_mother": 445,
+      "unmatched_triplets": 438,
+      "wrong_division_triplets": 2252,
+      "selected_sequences": 32,
+      "window_count": 160,
+      "gpu_forward_seconds": 304.39229074199966,
+      "peak_gpu_memory_bytes": 659688960,
+      "diagnostic_elapsed_seconds": 680.707314383,
+      "source_manifest_sha256": "e8b5376b2ac6fdd55bd6e45d1b07b401339d375b211b6f67be93fb0de4d8ce14",
+      "source_metadata_sha256": "328b9bb2545309e545cf68663ef985034ec68c36c0b709408a0f91801fedf89e",
+      "per_window_sha256": "da4dc468a3514c4751a53a198df49df78605b87d8571f22925077c7f13574196",
+      "summary_sha256": "959a7b603fb445bde1b5ef6acd546d19b3676dbb5a874cac38922a0cf3e3e775",
+      "manifest_sha256": "8a60864a4adb6ee7151557f6f09037e451f3cc981810e8789c2c73343bfb159c",
+      "feature_bundle_sha256": "6af8c00ba0287cfcdbaf32dfa64ab8ab4626afeb30e1a123350984225563fe34",
+      "audit_report_sha256": "f717baef94a5efa078113c0b785ae12fd815b8ada9c9aebe8e5223d6bf7e0b2b",
+      "per_sequence_distribution": {
+        "continuation_triplets": {
+          "max": 2702,
+          "median": 820.5,
+          "min": 288
+        },
+        "gt_divisions": {
+          "max": 147,
+          "median": 61.5,
+          "min": 47
+        },
+        "gt_geometric_divisions": {
+          "max": 144,
+          "median": 61.0,
+          "min": 45
+        },
+        "positive_triplets": {
+          "max": 62,
+          "median": 31.0,
+          "min": 18
+        },
+        "positive_with_wrong_mother": {
+          "max": 32,
+          "median": 13.0,
+          "min": 3
+        },
+        "unmatched_triplets": {
+          "max": 40,
+          "median": 13.0,
+          "min": 0
+        },
+        "wrong_division_triplets": {
+          "max": 160,
+          "median": 63.0,
+          "min": 19
+        }
+      },
+      "first_two": {
+        "continuation_triplets": 2482,
+        "gt_divisions": 194,
+        "gt_geometric_divisions": 189,
+        "positive_triplets": 69,
+        "positive_with_wrong_mother": 28,
+        "unmatched_triplets": 28,
+        "wrong_division_triplets": 179
+      },
+      "remaining_thirty": {
+        "continuation_triplets": 29605,
+        "gt_divisions": 2072,
+        "gt_geometric_divisions": 2004,
+        "positive_triplets": 966,
+        "positive_with_wrong_mother": 417,
+        "unmatched_triplets": 410,
+        "wrong_division_triplets": 2073
+      },
+      "division_recovery_rate": 0.4567519858781995,
+      "positive_with_wrong_mother_rate": 0.42995169082125606,
+      "preprocessing_difference": "Synthetic 6-frame quantiles replace real Zarr image_statistics quantiles."
+    }
+  },
+  "notes": "ユーザー判断で診断実験を完了。合成教師の学習効果は未検証。",
+  "key_idea": "固定公開検出器の候補と特徴に合成GT教師を接続",
+  "updated_at": "2026-09-20T02:35:49.037331+00:00"
+}

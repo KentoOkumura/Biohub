@@ -1,0 +1,96 @@
+experiment:
+  name: exp023_synthetic_detector_teacher_audit
+  description: 固定公開検出器の合成候補・特徴へ完全合成系譜の教師を対応付ける小規模診断
+  route: synthetic_detector_teacher_diagnostic
+  notebooks:
+    - diagnostic
+  created_at: '2026-09-20'
+lineage:
+  parent: exp022_synthetic_division_teacher_audit
+  hypothesis_id: N/A
+  backlog_candidate: N/A
+  diff_summary: 合成GT中心の幾何候補を固定公開検出器の候補・画像特徴へ置き換える
+validation:
+  diagnostic_only: true
+  sample_count: 32
+  sample_selection: manifest_sequence_order_first_32
+  expected_sequence_length: 6
+  expected_windows: 160
+  expected_volume_zyx: [64, 64, 64]
+  parent_daughter_max_um: 9.0
+  sister_max_um: 14.0
+  gt_match_max_um: 7.0
+  max_candidates_per_frame_guard: 2000
+  max_triplets_per_parent_guard: 10000
+  max_triplets_per_window_guard: 500000
+  native_voxel_zyx_um: [1.625, 0.40625, 0.40625]
+  pooled_voxel_zyx_um: [1.625, 1.625, 1.625]
+  source_manifest_sha256: e8b5376b2ac6fdd55bd6e45d1b07b401339d375b211b6f67be93fb0de4d8ce14
+  source_metadata_sha256: 328b9bb2545309e545cf68663ef985034ec68c36c0b709408a0f91801fedf89e
+  exp022_summary_sha256: f34970334f4eaba90f057fbaa4ea5fd6079d91c39b14396580da554b266710db
+  feature_channels_per_branch: 32
+  quantile_low: 0.001
+  quantile_high: 0.999
+  quantile_scope: six_frame_synthetic_sequence
+  compare_gt_after_detection_only: true
+data:
+  source: public_synthetic_kaggle_notebook_output
+  kernel_source: josefreitasalvesneto/biohub-synthetic-dataset
+  output_directory: biohub_synthetic
+  sequence_directory: sequences
+model:
+  name: fixed_public_dual_temporal_unet3d
+  selection_manifest: experiments/exp011_public_detector_selection/assets/public_detector_selection.json
+  primary_dataset: pilkwang/biohub-tracking-support-pack-50ep-v1
+  secondary_dataset: pilkwang/biohub-temporal-unet3d-seed314159-v1
+  primary_artifact_manifest_sha256: bc20f1f04cfb682af3b27a836ce9a57f44a2fe27508dc59039200b2a23188103
+  secondary_artifact_manifest_sha256: 7f01c0b2f9491606a1b543339e072230e25317d9c70fb9a18aea59e002a995eb
+  primary_checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  secondary_checkpoint_sha256: 9bac2fa0dadc4a6fc1899e0caf187f4b553e0a7cd90ba1261a68b35ffe9e305f
+  temporal_unet_source_sha256: d809c35d42f504161074ddeaaa7aee5b407e5bca7f9b4e1d5f9b2ff345666cac
+  checkpoint_relative: weights/unet_transformer/split_0/edge_predictor_best.pth
+  params:
+    window_size: 2
+    downsample_zyx: [1, 4, 4]
+    detector_threshold: 0.965
+    detection_blend_secondary: 0.80
+    d4_views: 8
+    pool_kernel_um: 3.0
+    primary_feature_tta: true
+    secondary_feature_tta: false
+    update_weights: false
+runtime:
+  use_amp: false
+  num_workers: 0
+  kaggle:
+    diagnostic:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+        - josefreitasalvesneto/biohub-synthetic-dataset
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_random_sampling
+  stochastic_components:
+    - cuda_kernels_not_forced_deterministic
+  parallel_rng_policy: sorted_manifest_and_window_order
+  feature_sha_policy: per_window_arrays_and_summary_sha256
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - GTは候補生成・検出閾値・正規化に使わず、一対一対応と集計にだけ使う。
+    - 合成画像には実データZarrのquantiles属性がないため、同じ0.001/0.999定義を6時刻全体へ適用する。
+notes:
+  - 先頭32時系列・160窓をT4でforwardし、検出器・画像特徴抽出器は固定する。
+  - downstream tracker、loss、decode、公式評価、submissionは実行しない。

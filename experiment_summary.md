@@ -30,5 +30,6 @@
 | exp020_division_triplet_candidates | division_triplet_candidate_diagnostic | exp015_oracle_stage_limits | 完了 | - | - | - | 2026-09-19 |
 | exp021_division_teacher_audit | division_triplet_teacher_diagnostic | exp020_division_triplet_candidates | 完了 | - | - | - | 2026-09-19 |
 | exp022_synthetic_division_teacher_audit | synthetic_division_teacher_diagnostic | exp021_division_teacher_audit | 完了 | - | - | - | 2026-09-20 |
+| exp023_synthetic_detector_teacher_audit | synthetic_detector_teacher_diagnostic | exp022_synthetic_division_teacher_audit | 完了 | - | - | - | 2026-09-20 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->
