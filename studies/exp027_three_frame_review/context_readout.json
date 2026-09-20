@@ -1,0 +1,258 @@
+{
+  "integrity": "PASS",
+  "no_previous_frame_checks": [
+    {
+      "path": "pair_logits/44b6_81c256f0/000000_000001.npz",
+      "max_abs_logit_difference": 3.814697265625e-06
+    }
+  ],
+  "window_count": 128,
+  "diagnostic_summary_sha256": "1068577f58c6a5d5a7ec9d2b8eae4eff4ae20e3eebb1bd4f53d3ba64f9734d75",
+  "metrics": {
+    "44b6": {
+      "three_frame_full": {
+        "positive_edge_count": 192,
+        "true_positive_count": 162,
+        "positive_edge_recall": 0.84375,
+        "top1_correct_count": 181,
+        "top1_accuracy": 0.9427083333333334,
+        "false_positive_active_pair_count": 18,
+        "mean_true_parent_probability": 0.7100591255972782,
+        "mean_reciprocal_rank": 0.9713541666666666,
+        "top1_below_threshold_count": 19
+      },
+      "three_frame_masked": {
+        "positive_edge_count": 192,
+        "true_positive_count": 164,
+        "positive_edge_recall": 0.8541666666666666,
+        "top1_correct_count": 181,
+        "top1_accuracy": 0.9427083333333334,
+        "false_positive_active_pair_count": 18,
+        "mean_true_parent_probability": 0.7160887568024918,
+        "mean_reciprocal_rank": 0.9713541666666666,
+        "top1_below_threshold_count": 17
+      },
+      "two_frame_saved": {
+        "positive_edge_count": 192,
+        "true_positive_count": 160,
+        "positive_edge_recall": 0.8333333333333334,
+        "top1_correct_count": 181,
+        "top1_accuracy": 0.9427083333333334,
+        "false_positive_active_pair_count": 19,
+        "mean_true_parent_probability": 0.7047217312889794,
+        "mean_reciprocal_rank": 0.970486111111111,
+        "top1_below_threshold_count": 21
+      }
+    },
+    "6bba": {
+      "three_frame_full": {
+        "positive_edge_count": 522,
+        "true_positive_count": 479,
+        "positive_edge_recall": 0.9176245210727969,
+        "top1_correct_count": 509,
+        "top1_accuracy": 0.975095785440613,
+        "false_positive_active_pair_count": 21,
+        "mean_true_parent_probability": 0.7590127010397985,
+        "mean_reciprocal_rank": 0.9862707535121327,
+        "top1_below_threshold_count": 30
+      },
+      "three_frame_masked": {
+        "positive_edge_count": 522,
+        "true_positive_count": 476,
+        "positive_edge_recall": 0.9118773946360154,
+        "top1_correct_count": 509,
+        "top1_accuracy": 0.975095785440613,
+        "false_positive_active_pair_count": 20,
+        "mean_true_parent_probability": 0.7609386764737952,
+        "mean_reciprocal_rank": 0.9862251413975552,
+        "top1_below_threshold_count": 33
+      },
+      "two_frame_saved": {
+        "positive_edge_count": 522,
+        "true_positive_count": 489,
+        "positive_edge_recall": 0.9367816091954023,
+        "top1_correct_count": 509,
+        "top1_accuracy": 0.975095785440613,
+        "false_positive_active_pair_count": 23,
+        "mean_true_parent_probability": 0.8036823011577928,
+        "mean_reciprocal_rank": 0.986225141397555,
+        "top1_below_threshold_count": 20
+      }
+    }
+  },
+  "comparisons": {
+    "44b6": {
+      "full_minus_masked": {
+        "both_top1": 181,
+        "harmed_threshold": 2,
+        "harmed_top1": 0,
+        "mean_probability_delta": -0.006029631205213566,
+        "paired_video_bootstrap": {
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.027333788706739505,
+            0.0
+          ],
+          "repeats": 2000,
+          "top1_delta_interval": [
+            0.0,
+            0.0
+          ],
+          "unit": "video",
+          "video_count": 64
+        },
+        "positive_edge_count": 192,
+        "recall_delta": -0.010416666666666666,
+        "rescued_threshold": 0,
+        "rescued_top1": 0,
+        "threshold_harms_with_both_top1": 2,
+        "threshold_rescues_with_both_top1": 0,
+        "top1_delta": 0.0
+      },
+      "full_minus_two_frame": {
+        "both_top1": 180,
+        "harmed_threshold": 4,
+        "harmed_top1": 1,
+        "mean_probability_delta": 0.005337394308298826,
+        "paired_video_bootstrap": {
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.022349507250015686,
+            0.04368998355350416
+          ],
+          "repeats": 2000,
+          "top1_delta_interval": [
+            -0.015042364795236815,
+            0.014705882352941176
+          ],
+          "unit": "video",
+          "video_count": 64
+        },
+        "positive_edge_count": 192,
+        "recall_delta": 0.010416666666666666,
+        "rescued_threshold": 6,
+        "rescued_top1": 1,
+        "threshold_harms_with_both_top1": 4,
+        "threshold_rescues_with_both_top1": 6,
+        "top1_delta": 0.0
+      },
+      "masked_minus_two_frame": {
+        "both_top1": 180,
+        "harmed_threshold": 3,
+        "harmed_top1": 1,
+        "mean_probability_delta": 0.011367025513512393,
+        "paired_video_bootstrap": {
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.010586277521761384,
+            0.05263854079643549
+          ],
+          "repeats": 2000,
+          "top1_delta_interval": [
+            -0.015042364795236815,
+            0.014705882352941176
+          ],
+          "unit": "video",
+          "video_count": 64
+        },
+        "positive_edge_count": 192,
+        "recall_delta": 0.020833333333333332,
+        "rescued_threshold": 7,
+        "rescued_top1": 1,
+        "threshold_harms_with_both_top1": 3,
+        "threshold_rescues_with_both_top1": 7,
+        "top1_delta": 0.0
+      }
+    },
+    "6bba": {
+      "full_minus_masked": {
+        "both_top1": 508,
+        "harmed_threshold": 3,
+        "harmed_top1": 1,
+        "mean_probability_delta": -0.0019259754339968108,
+        "paired_video_bootstrap": {
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.006211825777043167,
+            0.01828274573027474
+          ],
+          "repeats": 2000,
+          "top1_delta_interval": [
+            -0.005629314312011044,
+            0.005628517823639775
+          ],
+          "unit": "video",
+          "video_count": 64
+        },
+        "positive_edge_count": 522,
+        "recall_delta": 0.005747126436781609,
+        "rescued_threshold": 6,
+        "rescued_top1": 1,
+        "threshold_harms_with_both_top1": 3,
+        "threshold_rescues_with_both_top1": 6,
+        "top1_delta": 0.0
+      },
+      "full_minus_two_frame": {
+        "both_top1": 507,
+        "harmed_threshold": 13,
+        "harmed_top1": 2,
+        "mean_probability_delta": -0.04466960011799445,
+        "paired_video_bootstrap": {
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.036609589894359175,
+            -0.0037379696827302966
+          ],
+          "repeats": 2000,
+          "top1_delta_interval": [
+            -0.00731396096572296,
+            0.007312949086258042
+          ],
+          "unit": "video",
+          "video_count": 64
+        },
+        "positive_edge_count": 522,
+        "recall_delta": -0.019157088122605363,
+        "rescued_threshold": 3,
+        "rescued_top1": 2,
+        "threshold_harms_with_both_top1": 13,
+        "threshold_rescues_with_both_top1": 3,
+        "top1_delta": 0.0
+      },
+      "masked_minus_two_frame": {
+        "both_top1": 508,
+        "harmed_threshold": 13,
+        "harmed_top1": 1,
+        "mean_probability_delta": -0.04274362468399764,
+        "paired_video_bootstrap": {
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.04115286855482934,
+            -0.010599959659044223
+          ],
+          "repeats": 2000,
+          "top1_delta_interval": [
+            -0.005639629734714143,
+            0.0054249547920434
+          ],
+          "unit": "video",
+          "video_count": 64
+        },
+        "positive_edge_count": 522,
+        "recall_delta": -0.02490421455938697,
+        "rescued_threshold": 0,
+        "rescued_top1": 1,
+        "threshold_harms_with_both_top1": 13,
+        "threshold_rescues_with_both_top1": 0,
+        "top1_delta": 0.0
+      }
+    }
+  },
+  "notebook_runtime_seconds": 611.6167841209999
+}

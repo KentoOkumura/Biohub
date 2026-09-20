@@ -1,0 +1,1669 @@
+{
+  "integrity": "PASS",
+  "mean_rounding_differences": [
+    {
+      "fold": 1,
+      "mode": "three_frame_full",
+      "key": "known_child_mean_max_probability",
+      "local": 0.8542165160179138,
+      "kaggle": 0.8542165756225586
+    },
+    {
+      "fold": 1,
+      "mode": "two_frame_saved",
+      "key": "mean_true_parent_probability",
+      "local": 0.8525599837303162,
+      "kaggle": 0.8525599241256714
+    }
+  ],
+  "internal_summary_sha256": "1aaffa968e896dc47030e69eff845d6e6d19333d7f2e8e4c15c59010446bced6",
+  "selected_thresholds_sha256": "bc55f6600a55c93c4e9c87aa0fc632551ca2a2abbd6f179cc79335ef1ff60214",
+  "outer_summary_sha256": "1068577f58c6a5d5a7ec9d2b8eae4eff4ae20e3eebb1bd4f53d3ba64f9734d75",
+  "internal_prediction_content_sha256": "e8fc1657923b7d576953ef8f30999b975c4829fc0e19a5628b4f8ba8c5d71704",
+  "max_reconstructed_known_probability_difference": 1.7410697420450205e-06,
+  "minimum_negative_threshold_distance": 0.00020109485767039192,
+  "maximum_roundoff_allowance": 0.00011622905731201172,
+  "internal_selected_thresholds": {
+    "0": {
+      "internal_embryo": "44b6",
+      "modes": {
+        "three_frame_full": {
+          "fixed": {
+            "false_positive_active_pair_count": 132,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": 1.0,
+                "count": 1,
+                "lower": 0.0,
+                "mean_confidence": 0.09914179146289825,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.4,
+                "count": 5,
+                "lower": 0.1,
+                "mean_confidence": 0.17034459114074707,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.5384615384615384,
+                "count": 13,
+                "lower": 0.2,
+                "mean_confidence": 0.24921366572380066,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.5384615384615384,
+                "count": 26,
+                "lower": 0.3,
+                "mean_confidence": 0.35119539499282837,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.6621621621621622,
+                "count": 74,
+                "lower": 0.4,
+                "mean_confidence": 0.4597303569316864,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8761061946902655,
+                "count": 113,
+                "lower": 0.5,
+                "mean_confidence": 0.555372416973114,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.943609022556391,
+                "count": 266,
+                "lower": 0.6,
+                "mean_confidence": 0.6528896689414978,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9791231732776617,
+                "count": 479,
+                "lower": 0.7,
+                "mean_confidence": 0.7576393485069275,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9975216852540273,
+                "count": 807,
+                "lower": 0.8,
+                "mean_confidence": 0.8524754047393799,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 1.0,
+                "count": 463,
+                "lower": 0.9,
+                "mean_confidence": 0.9326688647270203,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.7861371040344238,
+            "known_child_top1_accuracy": 0.9612817089452603,
+            "known_unique_parent_child_count": 2247,
+            "mean_true_parent_probability": 0.7736120820045471,
+            "positive_edge_count": 2247,
+            "positive_edge_recall": 0.9287939474855362,
+            "teacher_negative_pair_count": 1694048,
+            "threshold": 0.5,
+            "true_parent_probability_quantiles": [
+              0.007183894980698824,
+              0.5693567395210266,
+              0.718334823846817,
+              0.8219097256660461,
+              0.888965517282486,
+              0.9295698404312134,
+              0.9817575812339783
+            ],
+            "true_positive_count": 2087
+          },
+          "selected": {
+            "false_positive_active_pair_count": 151,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": 1.0,
+                "count": 1,
+                "lower": 0.0,
+                "mean_confidence": 0.09914179146289825,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.4,
+                "count": 5,
+                "lower": 0.1,
+                "mean_confidence": 0.17034459114074707,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.5384615384615384,
+                "count": 13,
+                "lower": 0.2,
+                "mean_confidence": 0.24921366572380066,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.5384615384615384,
+                "count": 26,
+                "lower": 0.3,
+                "mean_confidence": 0.35119539499282837,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.6621621621621622,
+                "count": 74,
+                "lower": 0.4,
+                "mean_confidence": 0.4597303569316864,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8761061946902655,
+                "count": 113,
+                "lower": 0.5,
+                "mean_confidence": 0.555372416973114,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.943609022556391,
+                "count": 266,
+                "lower": 0.6,
+                "mean_confidence": 0.6528896689414978,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9791231732776617,
+                "count": 479,
+                "lower": 0.7,
+                "mean_confidence": 0.7576393485069275,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9975216852540273,
+                "count": 807,
+                "lower": 0.8,
+                "mean_confidence": 0.8524754047393799,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 1.0,
+                "count": 463,
+                "lower": 0.9,
+                "mean_confidence": 0.9326688647270203,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.7861371040344238,
+            "known_child_top1_accuracy": 0.9612817089452603,
+            "known_unique_parent_child_count": 2247,
+            "mean_true_parent_probability": 0.7736120820045471,
+            "positive_edge_count": 2247,
+            "positive_edge_recall": 0.940809968847352,
+            "teacher_negative_pair_count": 1694048,
+            "threshold": 0.46585172414779663,
+            "true_parent_probability_quantiles": [
+              0.007183894980698824,
+              0.5693567395210266,
+              0.718334823846817,
+              0.8219097256660461,
+              0.888965517282486,
+              0.9295698404312134,
+              0.9817575812339783
+            ],
+            "true_positive_count": 2114
+          },
+          "selected_threshold": 0.46585172414779663
+        },
+        "three_frame_masked": {
+          "fixed": {
+            "false_positive_active_pair_count": 139,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.5,
+                "count": 6,
+                "lower": 0.1,
+                "mean_confidence": 0.16604338586330414,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.5454545454545454,
+                "count": 11,
+                "lower": 0.2,
+                "mean_confidence": 0.2399492710828781,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.4666666666666667,
+                "count": 30,
+                "lower": 0.3,
+                "mean_confidence": 0.3534117341041565,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.6956521739130435,
+                "count": 69,
+                "lower": 0.4,
+                "mean_confidence": 0.4613637924194336,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8620689655172413,
+                "count": 116,
+                "lower": 0.5,
+                "mean_confidence": 0.5573050379753113,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9453125,
+                "count": 256,
+                "lower": 0.6,
+                "mean_confidence": 0.6555525064468384,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9755011135857461,
+                "count": 449,
+                "lower": 0.7,
+                "mean_confidence": 0.7563744187355042,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9975874547647768,
+                "count": 829,
+                "lower": 0.8,
+                "mean_confidence": 0.8521633744239807,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 1.0,
+                "count": 481,
+                "lower": 0.9,
+                "mean_confidence": 0.9337285161018372,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.7893725037574768,
+            "known_child_top1_accuracy": 0.960836671117045,
+            "known_unique_parent_child_count": 2247,
+            "mean_true_parent_probability": 0.7767999768257141,
+            "positive_edge_count": 2247,
+            "positive_edge_recall": 0.9292389853137517,
+            "teacher_negative_pair_count": 1694048,
+            "threshold": 0.5,
+            "true_parent_probability_quantiles": [
+              0.008500796742737293,
+              0.5782073974609375,
+              0.7219522595405579,
+              0.8256028294563293,
+              0.8910810947418213,
+              0.9333712339401246,
+              0.9846528172492981
+            ],
+            "true_positive_count": 2088
+          },
+          "selected": {
+            "false_positive_active_pair_count": 151,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.5,
+                "count": 6,
+                "lower": 0.1,
+                "mean_confidence": 0.16604338586330414,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.5454545454545454,
+                "count": 11,
+                "lower": 0.2,
+                "mean_confidence": 0.2399492710828781,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.4666666666666667,
+                "count": 30,
+                "lower": 0.3,
+                "mean_confidence": 0.3534117341041565,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.6956521739130435,
+                "count": 69,
+                "lower": 0.4,
+                "mean_confidence": 0.4613637924194336,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8620689655172413,
+                "count": 116,
+                "lower": 0.5,
+                "mean_confidence": 0.5573050379753113,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9453125,
+                "count": 256,
+                "lower": 0.6,
+                "mean_confidence": 0.6555525064468384,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9755011135857461,
+                "count": 449,
+                "lower": 0.7,
+                "mean_confidence": 0.7563744187355042,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9975874547647768,
+                "count": 829,
+                "lower": 0.8,
+                "mean_confidence": 0.8521633744239807,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 1.0,
+                "count": 481,
+                "lower": 0.9,
+                "mean_confidence": 0.9337285161018372,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.7893725037574768,
+            "known_child_top1_accuracy": 0.960836671117045,
+            "known_unique_parent_child_count": 2247,
+            "mean_true_parent_probability": 0.7767999768257141,
+            "positive_edge_count": 2247,
+            "positive_edge_recall": 0.9390298175344904,
+            "teacher_negative_pair_count": 1694048,
+            "threshold": 0.476699560880661,
+            "true_parent_probability_quantiles": [
+              0.008500796742737293,
+              0.5782073974609375,
+              0.7219522595405579,
+              0.8256028294563293,
+              0.8910810947418213,
+              0.9333712339401246,
+              0.9846528172492981
+            ],
+            "true_positive_count": 2110
+          },
+          "selected_threshold": 0.476699560880661
+        },
+        "two_frame_saved": {
+          "fixed": {
+            "false_positive_active_pair_count": 151,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.5,
+                "count": 2,
+                "lower": 0.1,
+                "mean_confidence": 0.1756170094013214,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.42857142857142855,
+                "count": 14,
+                "lower": 0.2,
+                "mean_confidence": 0.2485823780298233,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.5,
+                "count": 20,
+                "lower": 0.3,
+                "mean_confidence": 0.36839038133621216,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.6029411764705882,
+                "count": 68,
+                "lower": 0.4,
+                "mean_confidence": 0.45293962955474854,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.9152542372881356,
+                "count": 118,
+                "lower": 0.5,
+                "mean_confidence": 0.5514453053474426,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9357798165137615,
+                "count": 218,
+                "lower": 0.6,
+                "mean_confidence": 0.6570115685462952,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9776674937965261,
+                "count": 403,
+                "lower": 0.7,
+                "mean_confidence": 0.755771815776825,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.993368700265252,
+                "count": 754,
+                "lower": 0.8,
+                "mean_confidence": 0.8561885952949524,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 0.9984615384615385,
+                "count": 650,
+                "lower": 0.9,
+                "mean_confidence": 0.9411200284957886,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.8064835071563721,
+            "known_child_top1_accuracy": 0.9621717846016912,
+            "known_unique_parent_child_count": 2247,
+            "mean_true_parent_probability": 0.7936187982559204,
+            "positive_edge_count": 2247,
+            "positive_edge_recall": 0.936359590565198,
+            "teacher_negative_pair_count": 1694048,
+            "threshold": 0.5,
+            "true_parent_probability_quantiles": [
+              0.010442310944199562,
+              0.5764262080192566,
+              0.7346151471138,
+              0.844900906085968,
+              0.9103639721870422,
+              0.9527681112289429,
+              0.9936184883117676
+            ],
+            "true_positive_count": 2104
+          },
+          "selected": {
+            "false_positive_active_pair_count": 151,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.5,
+                "count": 2,
+                "lower": 0.1,
+                "mean_confidence": 0.1756170094013214,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.42857142857142855,
+                "count": 14,
+                "lower": 0.2,
+                "mean_confidence": 0.2485823780298233,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.5,
+                "count": 20,
+                "lower": 0.3,
+                "mean_confidence": 0.36839038133621216,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.6029411764705882,
+                "count": 68,
+                "lower": 0.4,
+                "mean_confidence": 0.45293962955474854,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.9152542372881356,
+                "count": 118,
+                "lower": 0.5,
+                "mean_confidence": 0.5514453053474426,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9357798165137615,
+                "count": 218,
+                "lower": 0.6,
+                "mean_confidence": 0.6570115685462952,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9776674937965261,
+                "count": 403,
+                "lower": 0.7,
+                "mean_confidence": 0.755771815776825,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.993368700265252,
+                "count": 754,
+                "lower": 0.8,
+                "mean_confidence": 0.8561885952949524,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 0.9984615384615385,
+                "count": 650,
+                "lower": 0.9,
+                "mean_confidence": 0.9411200284957886,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.8064835071563721,
+            "known_child_top1_accuracy": 0.9621717846016912,
+            "known_unique_parent_child_count": 2247,
+            "mean_true_parent_probability": 0.7936187982559204,
+            "positive_edge_count": 2247,
+            "positive_edge_recall": 0.936359590565198,
+            "teacher_negative_pair_count": 1694048,
+            "threshold": 0.49899232387542725,
+            "true_parent_probability_quantiles": [
+              0.010442310944199562,
+              0.5764262080192566,
+              0.7346151471138,
+              0.844900906085968,
+              0.9103639721870422,
+              0.9527681112289429,
+              0.9936184883117676
+            ],
+            "true_positive_count": 2104
+          },
+          "selected_threshold": 0.49899232387542725
+        }
+      },
+      "negative_budget": 151,
+      "outer_embryo": "6bba"
+    },
+    "1": {
+      "internal_embryo": "6bba",
+      "modes": {
+        "three_frame_full": {
+          "fixed": {
+            "false_positive_active_pair_count": 286,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.0,
+                "count": 2,
+                "lower": 0.1,
+                "mean_confidence": 0.15651392936706543,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.625,
+                "count": 32,
+                "lower": 0.2,
+                "mean_confidence": 0.25978654623031616,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.6417910447761194,
+                "count": 67,
+                "lower": 0.3,
+                "mean_confidence": 0.3503396809101105,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.7554347826086957,
+                "count": 184,
+                "lower": 0.4,
+                "mean_confidence": 0.4564967453479767,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8708708708708709,
+                "count": 333,
+                "lower": 0.5,
+                "mean_confidence": 0.5507819652557373,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9634146341463414,
+                "count": 574,
+                "lower": 0.6,
+                "mean_confidence": 0.6543397307395935,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9876288659793815,
+                "count": 970,
+                "lower": 0.7,
+                "mean_confidence": 0.7533345818519592,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9945273631840796,
+                "count": 2010,
+                "lower": 0.8,
+                "mean_confidence": 0.8558042645454407,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 0.99956979995698,
+                "count": 4649,
+                "lower": 0.9,
+                "mean_confidence": 0.9483861923217773,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.8542165756225586,
+            "known_child_top1_accuracy": 0.9805010769753996,
+            "known_unique_parent_child_count": 8821,
+            "mean_true_parent_probability": 0.8481510281562805,
+            "positive_edge_count": 8821,
+            "positive_edge_recall": 0.957601179004648,
+            "teacher_negative_pair_count": 3398846,
+            "threshold": 0.5,
+            "true_parent_probability_quantiles": [
+              0.0009268173016607761,
+              0.6466186046600342,
+              0.802568793296814,
+              0.9077496528625488,
+              0.9521501064300537,
+              0.9712578058242798,
+              0.995545506477356
+            ],
+            "true_positive_count": 8447
+          },
+          "selected": {
+            "false_positive_active_pair_count": 288,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.0,
+                "count": 2,
+                "lower": 0.1,
+                "mean_confidence": 0.15651392936706543,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.625,
+                "count": 32,
+                "lower": 0.2,
+                "mean_confidence": 0.25978654623031616,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.6417910447761194,
+                "count": 67,
+                "lower": 0.3,
+                "mean_confidence": 0.3503396809101105,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.7554347826086957,
+                "count": 184,
+                "lower": 0.4,
+                "mean_confidence": 0.4564967453479767,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8708708708708709,
+                "count": 333,
+                "lower": 0.5,
+                "mean_confidence": 0.5507819652557373,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9634146341463414,
+                "count": 574,
+                "lower": 0.6,
+                "mean_confidence": 0.6543397307395935,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9876288659793815,
+                "count": 970,
+                "lower": 0.7,
+                "mean_confidence": 0.7533345818519592,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9945273631840796,
+                "count": 2010,
+                "lower": 0.8,
+                "mean_confidence": 0.8558042645454407,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 0.99956979995698,
+                "count": 4649,
+                "lower": 0.9,
+                "mean_confidence": 0.9483861923217773,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.8542165756225586,
+            "known_child_top1_accuracy": 0.9805010769753996,
+            "known_unique_parent_child_count": 8821,
+            "mean_true_parent_probability": 0.8481510281562805,
+            "positive_edge_count": 8821,
+            "positive_edge_recall": 0.958508105656955,
+            "teacher_negative_pair_count": 3398846,
+            "threshold": 0.49593573808670044,
+            "true_parent_probability_quantiles": [
+              0.0009268173016607761,
+              0.6466186046600342,
+              0.802568793296814,
+              0.9077496528625488,
+              0.9521501064300537,
+              0.9712578058242798,
+              0.995545506477356
+            ],
+            "true_positive_count": 8455
+          },
+          "selected_threshold": 0.49593573808670044
+        },
+        "three_frame_masked": {
+          "fixed": {
+            "false_positive_active_pair_count": 290,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.25,
+                "count": 4,
+                "lower": 0.1,
+                "mean_confidence": 0.17653396725654602,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.59375,
+                "count": 32,
+                "lower": 0.2,
+                "mean_confidence": 0.26591727137565613,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.6617647058823529,
+                "count": 68,
+                "lower": 0.3,
+                "mean_confidence": 0.3572577238082886,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.7017543859649122,
+                "count": 171,
+                "lower": 0.4,
+                "mean_confidence": 0.45960327982902527,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8888888888888888,
+                "count": 324,
+                "lower": 0.5,
+                "mean_confidence": 0.552414059638977,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9563636363636364,
+                "count": 550,
+                "lower": 0.6,
+                "mean_confidence": 0.6552408933639526,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.98659793814433,
+                "count": 970,
+                "lower": 0.7,
+                "mean_confidence": 0.7541295886039734,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9950347567030785,
+                "count": 2014,
+                "lower": 0.8,
+                "mean_confidence": 0.8561674952507019,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 0.9995733788395904,
+                "count": 4688,
+                "lower": 0.9,
+                "mean_confidence": 0.9473779201507568,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.8557533025741577,
+            "known_child_top1_accuracy": 0.9801609794807845,
+            "known_unique_parent_child_count": 8821,
+            "mean_true_parent_probability": 0.8496509194374084,
+            "positive_edge_count": 8821,
+            "positive_edge_recall": 0.9591883006461852,
+            "teacher_negative_pair_count": 3398846,
+            "threshold": 0.5,
+            "true_parent_probability_quantiles": [
+              0.0011147580808028579,
+              0.6536204218864441,
+              0.8054726719856262,
+              0.9081341028213501,
+              0.9511033892631531,
+              0.9704899191856384,
+              0.9953539371490479
+            ],
+            "true_positive_count": 8461
+          },
+          "selected": {
+            "false_positive_active_pair_count": 288,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.25,
+                "count": 4,
+                "lower": 0.1,
+                "mean_confidence": 0.17653396725654602,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.59375,
+                "count": 32,
+                "lower": 0.2,
+                "mean_confidence": 0.26591727137565613,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.6617647058823529,
+                "count": 68,
+                "lower": 0.3,
+                "mean_confidence": 0.3572577238082886,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.7017543859649122,
+                "count": 171,
+                "lower": 0.4,
+                "mean_confidence": 0.45960327982902527,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8888888888888888,
+                "count": 324,
+                "lower": 0.5,
+                "mean_confidence": 0.552414059638977,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9563636363636364,
+                "count": 550,
+                "lower": 0.6,
+                "mean_confidence": 0.6552408933639526,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.98659793814433,
+                "count": 970,
+                "lower": 0.7,
+                "mean_confidence": 0.7541295886039734,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9950347567030785,
+                "count": 2014,
+                "lower": 0.8,
+                "mean_confidence": 0.8561674952507019,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 0.9995733788395904,
+                "count": 4688,
+                "lower": 0.9,
+                "mean_confidence": 0.9473779201507568,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.8557533025741577,
+            "known_child_top1_accuracy": 0.9801609794807845,
+            "known_unique_parent_child_count": 8821,
+            "mean_true_parent_probability": 0.8496509194374084,
+            "positive_edge_count": 8821,
+            "positive_edge_recall": 0.9590749348146469,
+            "teacher_negative_pair_count": 3398846,
+            "threshold": 0.5007961392402649,
+            "true_parent_probability_quantiles": [
+              0.0011147580808028579,
+              0.6536204218864441,
+              0.8054726719856262,
+              0.9081341028213501,
+              0.9511033892631531,
+              0.9704899191856384,
+              0.9953539371490479
+            ],
+            "true_positive_count": 8460
+          },
+          "selected_threshold": 0.5007961392402649
+        },
+        "two_frame_saved": {
+          "fixed": {
+            "false_positive_active_pair_count": 288,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.8,
+                "count": 5,
+                "lower": 0.1,
+                "mean_confidence": 0.1663893163204193,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.6538461538461539,
+                "count": 26,
+                "lower": 0.2,
+                "mean_confidence": 0.26072150468826294,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.6266666666666667,
+                "count": 75,
+                "lower": 0.3,
+                "mean_confidence": 0.3570975065231323,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.7761904761904762,
+                "count": 210,
+                "lower": 0.4,
+                "mean_confidence": 0.4566315710544586,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8869047619047619,
+                "count": 336,
+                "lower": 0.5,
+                "mean_confidence": 0.5530508756637573,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9518304431599229,
+                "count": 519,
+                "lower": 0.6,
+                "mean_confidence": 0.652866542339325,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9825378346915018,
+                "count": 859,
+                "lower": 0.7,
+                "mean_confidence": 0.75557941198349,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9967759269210102,
+                "count": 1861,
+                "lower": 0.8,
+                "mean_confidence": 0.8588162064552307,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 0.9991886409736308,
+                "count": 4930,
+                "lower": 0.9,
+                "mean_confidence": 0.9475491046905518,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.8585948348045349,
+            "known_child_top1_accuracy": 0.9803877111438613,
+            "known_unique_parent_child_count": 8821,
+            "mean_true_parent_probability": 0.8525599241256714,
+            "positive_edge_count": 8821,
+            "positive_edge_recall": 0.9542002040584968,
+            "teacher_negative_pair_count": 3398846,
+            "threshold": 0.5,
+            "true_parent_probability_quantiles": [
+              0.0006450763903558254,
+              0.6421579122543335,
+              0.8147283792495728,
+              0.9138360023498535,
+              0.9530514478683472,
+              0.9712314009666443,
+              0.9950866103172302
+            ],
+            "true_positive_count": 8417
+          },
+          "selected": {
+            "false_positive_active_pair_count": 288,
+            "known_child_confidence_bins": [
+              {
+                "accuracy": null,
+                "count": 0,
+                "lower": 0.0,
+                "mean_confidence": null,
+                "upper": 0.1
+              },
+              {
+                "accuracy": 0.8,
+                "count": 5,
+                "lower": 0.1,
+                "mean_confidence": 0.1663893163204193,
+                "upper": 0.2
+              },
+              {
+                "accuracy": 0.6538461538461539,
+                "count": 26,
+                "lower": 0.2,
+                "mean_confidence": 0.26072150468826294,
+                "upper": 0.3
+              },
+              {
+                "accuracy": 0.6266666666666667,
+                "count": 75,
+                "lower": 0.3,
+                "mean_confidence": 0.3570975065231323,
+                "upper": 0.4
+              },
+              {
+                "accuracy": 0.7761904761904762,
+                "count": 210,
+                "lower": 0.4,
+                "mean_confidence": 0.4566315710544586,
+                "upper": 0.5
+              },
+              {
+                "accuracy": 0.8869047619047619,
+                "count": 336,
+                "lower": 0.5,
+                "mean_confidence": 0.5530508756637573,
+                "upper": 0.6
+              },
+              {
+                "accuracy": 0.9518304431599229,
+                "count": 519,
+                "lower": 0.6,
+                "mean_confidence": 0.652866542339325,
+                "upper": 0.7
+              },
+              {
+                "accuracy": 0.9825378346915018,
+                "count": 859,
+                "lower": 0.7,
+                "mean_confidence": 0.75557941198349,
+                "upper": 0.8
+              },
+              {
+                "accuracy": 0.9967759269210102,
+                "count": 1861,
+                "lower": 0.8,
+                "mean_confidence": 0.8588162064552307,
+                "upper": 0.9
+              },
+              {
+                "accuracy": 0.9991886409736308,
+                "count": 4930,
+                "lower": 0.9,
+                "mean_confidence": 0.9475491046905518,
+                "upper": 1.0
+              }
+            ],
+            "known_child_mean_max_probability": 0.8585948348045349,
+            "known_child_top1_accuracy": 0.9803877111438613,
+            "known_unique_parent_child_count": 8821,
+            "mean_true_parent_probability": 0.8525599241256714,
+            "positive_edge_count": 8821,
+            "positive_edge_recall": 0.9545403015531119,
+            "teacher_negative_pair_count": 3398846,
+            "threshold": 0.49915361404418945,
+            "true_parent_probability_quantiles": [
+              0.0006450763903558254,
+              0.6421579122543335,
+              0.8147283792495728,
+              0.9138360023498535,
+              0.9530514478683472,
+              0.9712314009666443,
+              0.9950866103172302
+            ],
+            "true_positive_count": 8420
+          },
+          "selected_threshold": 0.49915361404418945
+        }
+      },
+      "negative_budget": 288,
+      "outer_embryo": "44b6"
+    }
+  },
+  "outer_results": {
+    "44b6": {
+      "three_frame_full": {
+        "fixed": {
+          "positive_edge_count": 192,
+          "true_positive_count": 162,
+          "top1_correct_count": 181,
+          "false_positive_active_pair_count": 18,
+          "active_pair_count": 140130,
+          "correct_active_pair_count": 140082,
+          "division_parent_count": 0,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.84375,
+          "top1_accuracy": 0.9427083333333334,
+          "edge_accuracy": 0.9996574609291372,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7100591255972782,
+          "mean_reciprocal_rank": 0.9713541666666666,
+          "threshold_curve": [
+            {
+              "threshold": 0.5,
+              "true_positive_count": 162,
+              "positive_edge_recall": 0.84375,
+              "false_positive_active_pair_count": 18
+            }
+          ]
+        },
+        "selected": {
+          "positive_edge_count": 192,
+          "true_positive_count": 163,
+          "top1_correct_count": 181,
+          "false_positive_active_pair_count": 18,
+          "active_pair_count": 140130,
+          "correct_active_pair_count": 140083,
+          "division_parent_count": 0,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.8489583333333334,
+          "top1_accuracy": 0.9427083333333334,
+          "edge_accuracy": 0.9996645971597802,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7100591255972782,
+          "mean_reciprocal_rank": 0.9713541666666666,
+          "threshold_curve": [
+            {
+              "threshold": 0.49593573808670044,
+              "true_positive_count": 163,
+              "positive_edge_recall": 0.8489583333333334,
+              "false_positive_active_pair_count": 18
+            }
+          ]
+        }
+      },
+      "three_frame_masked": {
+        "fixed": {
+          "positive_edge_count": 192,
+          "true_positive_count": 164,
+          "top1_correct_count": 181,
+          "false_positive_active_pair_count": 18,
+          "active_pair_count": 140130,
+          "correct_active_pair_count": 140084,
+          "division_parent_count": 0,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.8541666666666666,
+          "top1_accuracy": 0.9427083333333334,
+          "edge_accuracy": 0.9996717333904231,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7160887568024918,
+          "mean_reciprocal_rank": 0.9713541666666666,
+          "threshold_curve": [
+            {
+              "threshold": 0.5,
+              "true_positive_count": 164,
+              "positive_edge_recall": 0.8541666666666666,
+              "false_positive_active_pair_count": 18
+            }
+          ]
+        },
+        "selected": {
+          "positive_edge_count": 192,
+          "true_positive_count": 164,
+          "top1_correct_count": 181,
+          "false_positive_active_pair_count": 18,
+          "active_pair_count": 140130,
+          "correct_active_pair_count": 140084,
+          "division_parent_count": 0,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.8541666666666666,
+          "top1_accuracy": 0.9427083333333334,
+          "edge_accuracy": 0.9996717333904231,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7160887568024918,
+          "mean_reciprocal_rank": 0.9713541666666666,
+          "threshold_curve": [
+            {
+              "threshold": 0.5007961392402649,
+              "true_positive_count": 164,
+              "positive_edge_recall": 0.8541666666666666,
+              "false_positive_active_pair_count": 18
+            }
+          ]
+        }
+      },
+      "two_frame_saved": {
+        "fixed": {
+          "positive_edge_count": 192,
+          "true_positive_count": 160,
+          "top1_correct_count": 181,
+          "false_positive_active_pair_count": 19,
+          "active_pair_count": 140130,
+          "correct_active_pair_count": 140079,
+          "division_parent_count": 0,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.8333333333333334,
+          "top1_accuracy": 0.9427083333333334,
+          "edge_accuracy": 0.9996360522372083,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7047217312889794,
+          "mean_reciprocal_rank": 0.970486111111111,
+          "threshold_curve": [
+            {
+              "threshold": 0.5,
+              "true_positive_count": 160,
+              "positive_edge_recall": 0.8333333333333334,
+              "false_positive_active_pair_count": 19
+            }
+          ]
+        },
+        "selected": {
+          "positive_edge_count": 192,
+          "true_positive_count": 160,
+          "top1_correct_count": 181,
+          "false_positive_active_pair_count": 19,
+          "active_pair_count": 140130,
+          "correct_active_pair_count": 140079,
+          "division_parent_count": 0,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.8333333333333334,
+          "top1_accuracy": 0.9427083333333334,
+          "edge_accuracy": 0.9996360522372083,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7047217312889794,
+          "mean_reciprocal_rank": 0.970486111111111,
+          "threshold_curve": [
+            {
+              "threshold": 0.49915361404418945,
+              "true_positive_count": 160,
+              "positive_edge_recall": 0.8333333333333334,
+              "false_positive_active_pair_count": 19
+            }
+          ]
+        }
+      }
+    },
+    "6bba": {
+      "three_frame_full": {
+        "fixed": {
+          "positive_edge_count": 522,
+          "true_positive_count": 479,
+          "top1_correct_count": 509,
+          "false_positive_active_pair_count": 21,
+          "active_pair_count": 186691,
+          "correct_active_pair_count": 186627,
+          "division_parent_count": 1,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.9176245210727969,
+          "top1_accuracy": 0.975095785440613,
+          "edge_accuracy": 0.999657187545195,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7590127010397985,
+          "mean_reciprocal_rank": 0.9862707535121327,
+          "threshold_curve": [
+            {
+              "threshold": 0.5,
+              "true_positive_count": 479,
+              "positive_edge_recall": 0.9176245210727969,
+              "false_positive_active_pair_count": 21
+            }
+          ]
+        },
+        "selected": {
+          "positive_edge_count": 522,
+          "true_positive_count": 484,
+          "top1_correct_count": 509,
+          "false_positive_active_pair_count": 23,
+          "active_pair_count": 186691,
+          "correct_active_pair_count": 186630,
+          "division_parent_count": 1,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.9272030651340997,
+          "top1_accuracy": 0.975095785440613,
+          "edge_accuracy": 0.999673256879014,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7590127010397985,
+          "mean_reciprocal_rank": 0.9862707535121327,
+          "threshold_curve": [
+            {
+              "threshold": 0.46585172414779663,
+              "true_positive_count": 484,
+              "positive_edge_recall": 0.9272030651340997,
+              "false_positive_active_pair_count": 23
+            }
+          ]
+        }
+      },
+      "three_frame_masked": {
+        "fixed": {
+          "positive_edge_count": 522,
+          "true_positive_count": 476,
+          "top1_correct_count": 509,
+          "false_positive_active_pair_count": 20,
+          "active_pair_count": 186691,
+          "correct_active_pair_count": 186625,
+          "division_parent_count": 1,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.9118773946360154,
+          "top1_accuracy": 0.975095785440613,
+          "edge_accuracy": 0.9996464746559823,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7609386764737952,
+          "mean_reciprocal_rank": 0.9862251413975552,
+          "threshold_curve": [
+            {
+              "threshold": 0.5,
+              "true_positive_count": 476,
+              "positive_edge_recall": 0.9118773946360154,
+              "false_positive_active_pair_count": 20
+            }
+          ]
+        },
+        "selected": {
+          "positive_edge_count": 522,
+          "true_positive_count": 485,
+          "top1_correct_count": 509,
+          "false_positive_active_pair_count": 24,
+          "active_pair_count": 186691,
+          "correct_active_pair_count": 186630,
+          "division_parent_count": 1,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.9291187739463601,
+          "top1_accuracy": 0.975095785440613,
+          "edge_accuracy": 0.999673256879014,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.7609386764737952,
+          "mean_reciprocal_rank": 0.9862251413975552,
+          "threshold_curve": [
+            {
+              "threshold": 0.476699560880661,
+              "true_positive_count": 485,
+              "positive_edge_recall": 0.9291187739463601,
+              "false_positive_active_pair_count": 24
+            }
+          ]
+        }
+      },
+      "two_frame_saved": {
+        "fixed": {
+          "positive_edge_count": 522,
+          "true_positive_count": 489,
+          "top1_correct_count": 509,
+          "false_positive_active_pair_count": 23,
+          "active_pair_count": 186691,
+          "correct_active_pair_count": 186635,
+          "division_parent_count": 1,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.9367816091954023,
+          "top1_accuracy": 0.975095785440613,
+          "edge_accuracy": 0.9997000391020456,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.8036823011577928,
+          "mean_reciprocal_rank": 0.986225141397555,
+          "threshold_curve": [
+            {
+              "threshold": 0.5,
+              "true_positive_count": 489,
+              "positive_edge_recall": 0.9367816091954023,
+              "false_positive_active_pair_count": 23
+            }
+          ]
+        },
+        "selected": {
+          "positive_edge_count": 522,
+          "true_positive_count": 489,
+          "top1_correct_count": 509,
+          "false_positive_active_pair_count": 23,
+          "active_pair_count": 186691,
+          "correct_active_pair_count": 186635,
+          "division_parent_count": 1,
+          "recovered_division_parent_count": 0,
+          "positive_edge_recall": 0.9367816091954023,
+          "top1_accuracy": 0.975095785440613,
+          "edge_accuracy": 0.9997000391020456,
+          "division_parent_recall": 0.0,
+          "window_count": 64,
+          "mean_true_parent_probability": 0.8036823011577928,
+          "mean_reciprocal_rank": 0.986225141397555,
+          "threshold_curve": [
+            {
+              "threshold": 0.49899232387542725,
+              "true_positive_count": 489,
+              "positive_edge_recall": 0.9367816091954023,
+              "false_positive_active_pair_count": 23
+            }
+          ]
+        }
+      }
+    }
+  },
+  "outer_comparisons": {
+    "44b6": {
+      "selected_full_minus_fixed_two": {
+        "positive_edge_count": 192,
+        "rescued_threshold": 7,
+        "harmed_threshold": 4,
+        "rescued_top1": 1,
+        "harmed_top1": 1,
+        "both_top1": 180,
+        "threshold_rescues_with_both_top1": 7,
+        "threshold_harms_with_both_top1": 4,
+        "mean_probability_delta": 0.005337394308298826,
+        "recall_delta": 0.015625,
+        "top1_delta": 0.0,
+        "video_bootstrap": {
+          "unit": "video",
+          "video_count": 64,
+          "repeats": 2000,
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.01835502453595049,
+            0.04891570758738277
+          ],
+          "top1_delta_interval": [
+            -0.015042364795236815,
+            0.014705882352941176
+          ]
+        }
+      },
+      "selected_full_minus_selected_two": {
+        "positive_edge_count": 192,
+        "rescued_threshold": 7,
+        "harmed_threshold": 4,
+        "rescued_top1": 1,
+        "harmed_top1": 1,
+        "both_top1": 180,
+        "threshold_rescues_with_both_top1": 7,
+        "threshold_harms_with_both_top1": 4,
+        "mean_probability_delta": 0.005337394308298826,
+        "recall_delta": 0.015625,
+        "top1_delta": 0.0,
+        "video_bootstrap": {
+          "unit": "video",
+          "video_count": 64,
+          "repeats": 2000,
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.01835502453595049,
+            0.04891570758738277
+          ],
+          "top1_delta_interval": [
+            -0.015042364795236815,
+            0.014705882352941176
+          ]
+        }
+      },
+      "selected_full_minus_selected_masked": {
+        "positive_edge_count": 192,
+        "rescued_threshold": 0,
+        "harmed_threshold": 1,
+        "rescued_top1": 0,
+        "harmed_top1": 0,
+        "both_top1": 181,
+        "threshold_rescues_with_both_top1": 0,
+        "threshold_harms_with_both_top1": 1,
+        "mean_probability_delta": -0.006029631205213566,
+        "recall_delta": -0.005208333333333333,
+        "top1_delta": 0.0,
+        "video_bootstrap": {
+          "unit": "video",
+          "video_count": 64,
+          "repeats": 2000,
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.017152882205513767,
+            0.0
+          ],
+          "top1_delta_interval": [
+            0.0,
+            0.0
+          ]
+        }
+      }
+    },
+    "6bba": {
+      "selected_full_minus_fixed_two": {
+        "positive_edge_count": 522,
+        "rescued_threshold": 3,
+        "harmed_threshold": 8,
+        "rescued_top1": 2,
+        "harmed_top1": 2,
+        "both_top1": 507,
+        "threshold_rescues_with_both_top1": 3,
+        "threshold_harms_with_both_top1": 8,
+        "mean_probability_delta": -0.04466960011799445,
+        "recall_delta": -0.009578544061302681,
+        "top1_delta": 0.0,
+        "video_bootstrap": {
+          "unit": "video",
+          "video_count": 64,
+          "repeats": 2000,
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.02547945046259705,
+            0.003984262550596018
+          ],
+          "top1_delta_interval": [
+            -0.00731396096572296,
+            0.007312949086258042
+          ]
+        }
+      },
+      "selected_full_minus_selected_two": {
+        "positive_edge_count": 522,
+        "rescued_threshold": 3,
+        "harmed_threshold": 8,
+        "rescued_top1": 2,
+        "harmed_top1": 2,
+        "both_top1": 507,
+        "threshold_rescues_with_both_top1": 3,
+        "threshold_harms_with_both_top1": 8,
+        "mean_probability_delta": -0.04466960011799445,
+        "recall_delta": -0.009578544061302681,
+        "top1_delta": 0.0,
+        "video_bootstrap": {
+          "unit": "video",
+          "video_count": 64,
+          "repeats": 2000,
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.02547945046259705,
+            0.003984262550596018
+          ],
+          "top1_delta_interval": [
+            -0.00731396096572296,
+            0.007312949086258042
+          ]
+        }
+      },
+      "selected_full_minus_selected_masked": {
+        "positive_edge_count": 522,
+        "rescued_threshold": 2,
+        "harmed_threshold": 3,
+        "rescued_top1": 1,
+        "harmed_top1": 1,
+        "both_top1": 508,
+        "threshold_rescues_with_both_top1": 2,
+        "threshold_harms_with_both_top1": 3,
+        "mean_probability_delta": -0.0019259754339968108,
+        "recall_delta": -0.0019157088122605363,
+        "top1_delta": 0.0,
+        "video_bootstrap": {
+          "unit": "video",
+          "video_count": 64,
+          "repeats": 2000,
+          "confidence": 0.95,
+          "nonempty_repeats": 2000,
+          "recall_delta_interval": [
+            -0.012568267881658947,
+            0.007692307692307693
+          ],
+          "top1_delta_interval": [
+            -0.005629314312011044,
+            0.005628517823639775
+          ]
+        }
+      }
+    }
+  },
+  "notebook_runtime_seconds": 360.147944469
+}

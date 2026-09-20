@@ -28,6 +28,7 @@ task validate-surveys
 
 | 日付 | レポート | 種類 | 上位仮説 | 実験 | トピック | 状態 | 後継 | 一行要約 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 2026-09-20 | [Biohub exp027の3時点attention予備結果の原因考察](biohub-exp027-three-frame-analysis_20260920.md) | `survey` | `HYP-20260910-10` | `exp027` | `architecture`, `tracking`, `validation` | `final` | - | 内部validationで教師負例数を揃えて閾値を固定すると外側6bbaの3時点の不足は10件から5件へ縮小した。固定0.5の影響はあるが、両胚での改善にはならなかった。 |
 | 2026-09-20 | [Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設計](biohub-node-self-attention-design_20260920.md) | `survey` | `HYP-20260920-02` | `exp016` | `architecture`, `tracking` | `final` | - | 現行の入出力・lossを維持し、共有Encoderによるフレーム内Self-AttentionとCross-Attentionを切り替える設計。Model Bの逐次更新はユーザー確認済み。実装・学習は未実施。 |
 | 2026-09-15 | [Biohub・トラッキングの6技術を図で理解する](biohub-tracking-techniques-illustrated_20260915.md) | `survey` | - | - | `tracking`, `algorithms`, `tutorial` | `final` | - | ILP、ハンガリアン法、SORT、DoG、HOG、対照学習を8枚の図と具体例で解説。コンペで確認した用途と一般的な追跡手法を区別する。 |
 | 2026-09-13 | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md) | `survey` | `HYP-20260910-12` | `exp011` | `public-notebooks`, `baseline`, `architecture` | `final` | - | 採用した公開0.946 Notebookについて、入力、2つのTemporalUNet3D、D4 TTA、候補点検出、Node Transformer、ILP、軌跡修復、出力検証をコードに沿って解説する。 |
@@ -52,7 +53,7 @@ task validate-surveys
 | `HYP-20260910-07` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260910-08` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260910-09` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
-| `HYP-20260910-10` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
+| `HYP-20260910-10` | [Biohub exp027の3時点attention予備結果の原因考察](biohub-exp027-three-frame-analysis_20260920.md)<br>[Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260910-11` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260910-12` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `HYP-20260910-13` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
@@ -69,12 +70,13 @@ task validate-surveys
 | `exp003` | [Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `exp011` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md) |
 | `exp016` | [Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設計](biohub-node-self-attention-design_20260920.md) |
+| `exp027` | [Biohub exp027の3時点attention予備結果の原因考察](biohub-exp027-three-frame-analysis_20260920.md) |
 
 ## 種類別
 
 | キー | レポート |
 | --- | --- |
-| `survey` | [Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設計](biohub-node-self-attention-design_20260920.md)<br>[Biohub・トラッキングの6技術を図で理解する](biohub-tracking-techniques-illustrated_20260915.md)<br>[Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
+| `survey` | [Biohub exp027の3時点attention予備結果の原因考察](biohub-exp027-three-frame-analysis_20260920.md)<br>[Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設計](biohub-node-self-attention-design_20260920.md)<br>[Biohub・トラッキングの6技術を図で理解する](biohub-tracking-techniques-illustrated_20260915.md)<br>[Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 
 ## トピック別
 
@@ -82,7 +84,7 @@ task validate-surveys
 | --- | --- |
 | `algorithms` | [Biohub・トラッキングの6技術を図で理解する](biohub-tracking-techniques-illustrated_20260915.md) |
 | `annotation` | [Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md) |
-| `architecture` | [Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設計](biohub-node-self-attention-design_20260920.md)<br>[Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md) |
+| `architecture` | [Biohub exp027の3時点attention予備結果の原因考察](biohub-exp027-three-frame-analysis_20260920.md)<br>[Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設計](biohub-node-self-attention-design_20260920.md)<br>[Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md) |
 | `backlog` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md) |
 | `baseline` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md) |
 | `data` | [Biohub 公式アノテーション分布調査](biohub-official-annotation-distribution_20260815.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
@@ -90,7 +92,7 @@ task validate-surveys
 | `model-selection` | [Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md) |
 | `public-notebooks` | [Biohub Cell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md)<br>[Biohub 公開検出器・トラッカー選定](biohub-public-detector-selection_20260912.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 | `readiness` | [Biohub バックログ64候補の状態分類監査](biohub-backlog-status-audit_20260912.md) |
-| `tracking` | [Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設計](biohub-node-self-attention-design_20260920.md)<br>[Biohub・トラッキングの6技術を図で理解する](biohub-tracking-techniques-illustrated_20260915.md) |
+| `tracking` | [Biohub exp027の3時点attention予備結果の原因考察](biohub-exp027-three-frame-analysis_20260920.md)<br>[Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設計](biohub-node-self-attention-design_20260920.md)<br>[Biohub・トラッキングの6技術を図で理解する](biohub-tracking-techniques-illustrated_20260915.md) |
 | `tutorial` | [Biohub・トラッキングの6技術を図で理解する](biohub-tracking-techniques-illustrated_20260915.md) |
-| `validation` | [Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
+| `validation` | [Biohub exp027の3時点attention予備結果の原因考察](biohub-exp027-three-frame-analysis_20260920.md)<br>[Biohub 精度向上の仮説と最小検証](biohub-accuracy-hypotheses_20260910.md)<br>[Biohub 最新公開ベースライン調査](biohub-public-baselines_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness_20260910.md)<br>[Biohub リポジトリ設定・validation調査](biohub-repository-setup-validation_20260814.md) |
 <!-- END AUTO SURVEY INDEX -->

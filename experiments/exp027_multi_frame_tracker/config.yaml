@@ -1,0 +1,364 @@
+experiment:
+  name: exp027_multi_frame_tracker
+  description: 固定画像特徴の近傍3時点attentionで中央ペアの接続を学習し、同構造2時点条件と比較する
+  route: frozen_feature_local_three_frame_tracker
+  notebooks:
+  - train
+  - diagnostic
+  - validation_diagnostic
+  created_at: '2026-09-20'
+lineage:
+  parent: exp016_frozen_image_encoder
+  hypothesis_id: HYP-20260910-10
+  backlog_candidate: multi_frame_tracker
+  diff_summary: 固定候補と中央ペア教師を維持し、15 µm以内の全近傍を使う局所attentionで前フレームを追加する
+validation:
+  strategy: leave_one_embryo_out
+  seed: 42
+  n_folds: 2
+  group_key: embryo_id_from_sample_prefix
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_train_sample_count: 64
+    expected_internal_validation_sample_count: 7
+    expected_evaluation_sample_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_train_sample_count: 116
+    expected_internal_validation_sample_count: 12
+    expected_evaluation_sample_count: 71
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  checkpoint_selection_metric: edge_accuracy_times_candidate_node_recall
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  train_stage_metrics:
+  - legacy_mask_loss
+  - edge_accuracy
+  - positive_edge_recall
+  - division_parent_recall
+  - candidate_node_recall
+  conditional_validation: 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるため、 trackerの外側胚分割を独立CVとは呼ばない
+data:
+  source: exp015_train_window_cache_and_competition_geff
+  cache:
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    summary_file: window_cache_summary.json
+    summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+    identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+    directory: window_cache
+    schema_version: 1
+    expected_dataset_count: 199
+    expected_window_count: 19701
+    feature_channels: 32
+    primary_feature_contract: 8_view_d4_inverse_aligned_mean_at_detected_candidates
+    arrays:
+    - candidate_ids_src
+    - candidate_ids_tgt
+    - coords_src_grid
+    - coords_tgt_grid
+    - coords_src_physical
+    - coords_tgt_physical
+    - detection_scores_src
+    - detection_scores_tgt
+    - position_features_src
+    - position_features_tgt
+    - candidate_mask_src
+    - candidate_mask_tgt
+    - primary_features_src
+    - primary_features_tgt
+    - secondary_features_src
+    - secondary_features_tgt
+  annotation:
+    source: competition_train_geff
+    voxel_scale_zyx_um:
+    - 1.625
+    - 0.40625
+    - 0.40625
+  expected_frames_per_sample: 100
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+model:
+  name: LocalThreeFrameTracker
+  public_source:
+    dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+    train_script: repo/scripts/train_unet_transformer.py
+    train_script_sha256: c4f6317736bb3bb1ec8f3f6e9a6d935a463e3f0f1f685481b2d13218d35dc9ea
+    model_source: repo/src/biohub_tracking/models/simple_node_transformer.py
+    model_source_sha256: b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e
+    checkpoint: weights/unet_transformer/split_0/edge_predictor_best.pth
+    checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  frozen_components:
+  - primary_TemporalUNet3D
+  - primary_detection_head
+  - secondary_TemporalUNet3D
+  - secondary_SimpleNodeTransformer
+  - DeepCenter
+  - image_normalization_statistics
+  - detector_candidates
+  - decode_and_graph_repair
+  trainable_components:
+  - primary_LocalThreeFrameTracker
+  params:
+    image_feature_dim: 32
+    position_feature_dim: 32
+    feature_dim: 64
+    hidden_dim: 128
+    n_heads: 4
+    n_blocks: 4
+    dropout: 0.3
+    pair_chunk_size: 32
+    model_coordinate_units: original_voxel_zyx
+    downsample_zyx:
+    - 1
+    - 4
+    - 4
+    attention_radius_um: 15.0
+    max_neighbors: 1024
+    time_embedding_initialization: zeros
+  teacher:
+    matching: greedy_distance_order_one_to_one
+    max_matching_distance_um: 5.0
+    target: annotated_adjacent_frame_geff_edges
+    unmatched_candidate_label: unknown_but_legacy_mask_can_include_as_negative
+  loss:
+    edge_activation: source_axis_softmax
+    function: focal_weighted_binary_cross_entropy
+    focal_gamma: 2.0
+    mask: pair_touches_source_or_target_with_positive_annotated_edge
+    division_weight: 1.0
+    detection_loss: disabled
+  training:
+    stage: pilot
+    active_variants:
+    - two_frame_local
+    - three_frame_local
+    initialization: public_primary_tracker_checkpoint
+    seed: 42
+    epochs: 1
+    optimizer: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.01
+    batch_size: 2
+    num_workers: 2
+    gradient_clip_norm: 1.0
+    augmentations: []
+    mixed_precision: false
+    benchmark_windows_per_fold: 64
+    outer_evaluation_windows_per_embryo: 64
+    outer_evaluation_sampling_seed: 42
+    outer_evaluation_sampling: sha256_ranked_samples_one_eligible_window_each
+    runtime_projection_multiplier: 1.5
+    runtime_gate_hours: 12.0
+    control_retrain: false
+  control:
+    source: exp011_public_detector_selection
+    retrain: false
+    evaluate_same_outer_windows: true
+  output:
+    model_count: 4
+    model_dir: models
+    model_manifest: model_manifest.json
+    training_summary: training_summary.json
+  inference:
+    implemented: false
+    mode: fold_specific_primary_tracker_cached_graph_replay
+    fold_model_by_evaluation_embryo:
+      6bba: 0
+      44b6: 1
+    control_graph_source: exp015_saved_final_graphs
+    control_candidate_graph_source: exp015_saved_pre_ilp_candidate_graphs
+    cache_source: exp015_saved_window_cache
+    post_retention_candidates_reused_from_exp015: true
+    main_image_encoder_forward_count: 0
+    official_metric_max_matching_distance_um: 7.0
+    require_exact_candidate_coordinates: true
+    require_exact_public_control_candidate_graphs: true
+    official_evaluator_preflight: saved_public_control_graph_end_to_end
+    superseded_raw_image_prediction_seconds: 23217.361345529556
+    runtime_gate_hours: 12.0
+    runtime_gate_scope: notebook_setup_cache_replay_and_graph_repair
+    replay:
+      worker_count: 2
+      expected_sample_count: 199
+      expected_window_count: 19701
+      tracker_forward_count_per_window: 5
+      expected_tracker_forward_count: 98505
+      downsample_zyx:
+      - 1
+      - 4
+      - 4
+      edge_threshold: 0.48
+      bidirectional_weight: 0.15
+      secondary_edge_weight: 0.15
+      secondary_link_mode: low_margin_consensus
+      secondary_low_margin_max: 0.35
+      secondary_mix_temperature: 1.0
+      use_ilp: true
+      ilp_edge_weight: -1.0
+      ilp_appearance_weight: 0.0
+      ilp_disappearance_weight: 2.0
+      ilp_division_weight: 1.2
+    active_variants: []
+    retrain_models: 0
+    submission_created: false
+    base_pipeline_source:
+      experiment: exp015_oracle_stage_limits
+      bootstrap_path: exp015_inference_base.py
+      sha256: d9a7f46dda21a01d03ffa0072e4e4396dd2542ec4d4996b934bec5b116f49e04
+    public_evaluator_source:
+      dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+      path: repo/scripts/evaluate.py
+      sha256: 614813cc51c3581c6ccda4bb20725a19da8ecac4a27620654bfca58319cffa3c
+      entrypoint: evaluate_run
+      metrics_module: biohub_tracking.metrics
+    required_before_official_metric_claim: true
+runtime:
+  execution: cached_feature_local_three_frame_tracker_train
+  use_amp: false
+  num_workers: 2
+  batch_size: 2
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+    include_experiment_sources: true
+    dataset_sources:
+    - pilkwang/biohub-tracking-support-pack-50ep-v1
+    train:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+      source: exp027_multi_frame_tracker_train.py
+      notebook: exp027_multi_frame_tracker_train.ipynb
+    diagnostic:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources: &id001
+      - kentookumura/exp015-oracle-stage-limits-inference
+      - kentookumura/exp027-multi-frame-tracker-train
+      source: exp027_multi_frame_tracker_diagnostic.py
+      notebook: exp027_multi_frame_tracker_diagnostic.ipynb
+    validation_diagnostic:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources: *id001
+      source: exp027_multi_frame_tracker_validation_diagnostic.py
+      notebook: exp027_multi_frame_tracker_validation_diagnostic.ipynb
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_fold_offset_and_seeded_dataloader_generator
+  stochastic_components:
+  - dataloader_shuffle
+  - transformer_dropout
+  - cuda_kernels
+  - local_attention_dropout
+  parallel_rng_policy: DataLoader order uses a fold-specific torch.Generator and workers
+    receive deterministic seeds; cache content itself is fixed and contains no augmentation
+  feature_sha_policy: exp015_sorted_window_cache_identity_and_per_window_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるためdeterministic anchorまたは独立CVとは扱わない。
+  - 同じfoldを再実行したmodel SHAが一致しなくても、seed、入力cache、実行環境と数値差を記録する。
+notes:
+- active variant 2、outer fold 2、計4 tracker、booster 0。exp016と公開trackerは再学習しない。
+- 中央ペアの特徴・候補・教師・lossはexp016と同一。前フレームは直前cacheのsource側。
+- train前段診断が両胚の進行条件を満たすまで全graph推論と公式評価を開始しない。
+- Kaggle submissionは行わない。
+diagnostic:
+  purpose: same_checkpoint_previous_context_ablation
+  source_kernel: kentookumura/exp027-multi-frame-tracker-train
+  source_kernel_version: 4
+  model_manifest_sha256: da33cd9df862ed0e86f0ec5539e9d0e0befeda78e277e37f3e4d88a05a92ee52
+  selection_sha256: b46432e42ebb56fadd98d3c358ca28f712e27dbcf399a895939510c504a6016f
+  training_summary_sha256: 5588f21a6b6d8e8619312d8c1603260c23f71c1b4f55c24e145d89ee73602770
+  model_source_sha256: ae025926d14120c9d5c564ab948b440abc47ef66b3dcada6e5ef258f6e91541e
+  modes:
+  - name: two_frame_saved
+    variant: two_frame_local
+    include_previous: false
+  - name: three_frame_full
+    variant: three_frame_local
+    include_previous: true
+  - name: three_frame_masked
+    variant: three_frame_local
+    include_previous: false
+  windows_per_embryo: 64
+  batch_size: 2
+  seed: 42
+  probability_threshold: 0.5
+  threshold_grid:
+  - 0.1
+  - 0.2
+  - 0.3
+  - 0.4
+  - 0.45
+  - 0.48
+  - 0.5
+  - 0.55
+  - 0.6
+  - 0.7
+  - 0.8
+  - 0.9
+  rank_tie_policy: descending_logit_then_original_source_index
+  bootstrap_samples: 2000
+  bootstrap_seed: 42
+  bootstrap_confidence: 0.95
+  save_full_logits: true
+  log_every_windows: 16
+  benchmark_min_windows: 8
+  runtime_projection_multiplier: 2.0
+  runtime_gate_hours: 1.0
+  reference_loss_atol: 1.0e-06
+  retrain_model_count: 0
+  official_graph_evaluation: false
+validation_diagnostic:
+  split_manifest_sha256: 401b073ee952514982e40f69f116dca08ff0aee02c4d0a81b7454b4b71112e61
+  expected_window_counts:
+  - 693
+  - 1156
+  baseline_mode: two_frame_saved
+  baseline_threshold: 0.5
+  threshold_selection: smallest_threshold_with_internal_teacher_negative_count_at_most_baseline
+  threshold_comparison: strict_greater_than
+  threshold_scope: per_fold_and_mode
+  outer_evaluation: saved_context_diagnostic_v1_predictions_only
+  outer_summary_sha256: 1068577f58c6a5d5a7ec9d2b8eae4eff4ae20e3eebb1bd4f53d3ba64f9734d75
+  probability_quantiles:
+  - 0.0
+  - 0.1
+  - 0.25
+  - 0.5
+  - 0.75
+  - 0.9
+  - 1.0
+  confidence_bin_edges:
+  - 0.0
+  - 0.1
+  - 0.2
+  - 0.3
+  - 0.4
+  - 0.5
+  - 0.6
+  - 0.7
+  - 0.8
+  - 0.9
+  - 1.0
+  save_active_pair_scores: true
