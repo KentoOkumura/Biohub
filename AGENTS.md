@@ -117,6 +117,7 @@
 ## 常時品質基準
 
 - Kaggle Notebook の最初のフル実行と公式評価を Kaggle 上で行います。local smoke に必要な入力、依存関係、生成物がローカルに揃っている場合は、別途のユーザー承認なしに `task train-local` / `task infer-local` / `task execute-notebook-local` による smoke debug を許可します。local smoke の結果だけで公式スコアや Kaggle 実行完了を判断しません。
+- 固定画像特徴からトラッカーだけを学習する実験では、費用の大きい全動画のgraph推論より先に、保存済み対照と同じ入力・教師対応・評価条件で、graphを作らない処理単位（現行は隣接2-frame）の指標を胚別に比較します。実装前に`requirements.md`へ比較対象、確認する指標、graph推論へ進む条件、単体評価で測れない効果を記します。既知edgeのrecallだけで判断せず、取得可能な誤接続・分裂指標、両胚別の結果と部分注釈の限界を確認し、数値は`metrics.json`、graph推論を進めるか保留するかの理由は`SESSION_NOTES.md`へ記録します。条件に届かない場合は全graph推論を自動で始めず、公式score未計測と明記して結果をユーザーへ示します。単体指標を公式scoreの代用にせず、公式scoreを主張するときはKaggleで全graphと公式評価器を実行します。候補生成・復号の変更など単体指標で効果を測れない場合は、代わりの早期診断と進行条件を`requirements.md`へ記します。ユーザーが全graph実行を明示した場合も、取得可能な単体指標を記録したうえで、理由を残して進めます。
 - ハイパーパラメータは `config.yaml` に置きます。notebook や補助モジュール内の暗黙の定数は避けてください。
 
 ## GitHub 自動化

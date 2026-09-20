@@ -196,6 +196,8 @@ task test-exp EXP=expXXX_title
 - 学習完了時は、推論に必要なモデル、前処理状態、特徴量名と順序、variant / mode / fold、ファイル形式、相対パス、SHA が保存され、model manifest から同じ実験の inference notebook が再学習なしで解決・読み込みできることを確認する。
 - logs や notebook 表示に CV、fold 別 score、variant/config、保存先パスが不足している場合は、まず notebook 側の表示を改善し、解消していない証拠不足を記録する。実行済みNotebookから追加証拠を取得するかの判断は`kaggle-platform`に従う。
 
+固定画像特徴からトラッカーだけを学習する実験では、inference Notebookのprepare・push前に[AGENTS.mdの前段評価](../../../AGENTS.md#常時品質基準)を行う。`requirements.md`で事前に定めた対照・指標・続行条件と学習側の外側胚評価を照合し、数値を`metrics.json`、続行または保留の理由を`SESSION_NOTES.md`、単体評価の解釈と公式scoreの未計測範囲を`result.md`へ記録する。条件に届かない場合は全graph推論を自動で開始しない。単体指標で変更の効果を測れない場合は事前に定めた別の早期診断を使う。ユーザーが全graph実行を明示した場合も、取得可能な単体指標と進行理由を記録して進める。
+
 train CV が良かった候補を推論化または提出する場合も、同じ `EXP=expXXX_title` のまま inference notebook を作成・実行する。
 
 ### Code competition の推論実装
