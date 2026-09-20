@@ -66,7 +66,7 @@
 | `HYP-20260911-01` | nnU-Netのデータに応じた前処理・構造・学習設定を中心マップの予測へ適応すると、疎注釈を適切に扱う条件で現行検出器より細胞を回収でき、両胚の公式接続・分裂指標が改善する。 | [`nnunet_center_detection`](nnunet_center_detection.md) | - | 中心教師とnnU-Net設定の寄与、背景と未知領域の識別、時間入力と接続特徴、学習・推論費用。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 | `HYP-20260915-01` | 固定画像特徴から学ぶtrackerへ、正しい親子対応を近づけ確定した誤親から離す対照損失を加えると、接続分類損失だけの場合より近傍の取り違えと両胚の公式graph誤りを減らせる。 | [`contrastive_parent_child`](contrastive_parent_child.md) | - | 共有tracker特徴への寄与、疎い教師と分裂の整合、固定候補内の順位から公式指標への移行。履歴・欠落への頑健性・候補回収は関連仮説で別比較する。 |
 | `HYP-20260920-01` | 公開画像特徴を固定して既存のprimary trackerを追加学習する際、学習を3エポックより長くすると、同じ教師・損失・復号でも両胚の公式graph精度を改善できる。 | - | [`exp024_tracker_six_epochs`](../experiments/exp024_tracker_six_epochs/) | 6エポックで後半の重みが内部検証から選ばれるか、両胚の公式scoreへ改善が残るか。異なる学習率や長さでも成立するかは別検証。 |
-| `HYP-20260920-02` | 固定した公開画像特徴から隣接時刻の接続を学ぶ際、各時刻のcell間を先にSelf-Attentionで文脈化してから既存のCross-Attentionを行うと、現行のCross-Attentionのみより親候補の取り違えが減り、両胚の公式graph指標が改善する。 | [`frame_self_attention`](frame_self_attention.md) | - | Model B対現行で両胚の接続・分裂成分に改善が残るか。Model AでCross-Attentionの有無を分け、追加計算が週30 GPU時間と推論12時間に収まるか。 |
+| `HYP-20260920-02` | 固定した公開画像特徴から隣接時刻の接続を学ぶ際、各時刻のcell間を先にSelf-Attentionで文脈化してから既存のCross-Attentionを行うと、現行のCross-Attentionのみより親候補の取り違えが減り、両胚の公式graph指標が改善する。 | [`frame_self_attention`](frame_self_attention.md) | [`exp030_frame_self_attention_diagnostics`](../experiments/exp030_frame_self_attention_diagnostics/) | Model B対現行で両胚の接続・分裂成分に改善が残るか。Model AでCross-Attentionの有無を分け、追加計算が週30 GPU時間と推論12時間に収まるか。 |
 | `HYP-20260920-03` | 固定候補の検出得点・DoG・HOGを個別入力すると、同構造対照より両胚の公式指標が改善する。 | [`detection_score_features`](detection_score_features.md)<br>[`dog_features`](dog_features.md)<br>[`hog_features`](hog_features.md) | - | 寄与・冗長性・入力・費用。 |
 
 ### 未着手バックログ

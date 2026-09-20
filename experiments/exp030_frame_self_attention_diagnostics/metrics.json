@@ -1,0 +1,215 @@
+{
+  "experiment": "exp030_frame_self_attention_diagnostics",
+  "status": "completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp030-self-attention-diagnostic",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp030-self-attention-diagnostic",
+      "kernel_source_ids": [
+        "kentookumura/exp015-oracle-stage-limits-inference"
+      ],
+      "resource": "Tesla T4",
+      "notebook_runtime_seconds": null,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": "12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771",
+      "cache_file_sha": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+      "feature_schema_sha": null,
+      "feature_content_sha": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "row_count": 19701,
+      "group_count": 199,
+      "feature_count": 64,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": 0,
+      "model_shas": {},
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null,
+      "diagnostic_report_sha256": "23cec4571be0d8c462558d53bcde8cd44470327c98c58d3dcd516ec9e4fc3d15",
+      "diagnostic_model_source_sha256": "6f869d3151b64b9e7d8178aa9e74a41f0533974e06a9fff0703687617ee5161e"
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": []
+  },
+  "notes": "User confirmed diagnostic experiment completion on 2026-09-20. Checkpoint compatibility and representative/largest-window T4 execution were verified. No model accuracy, official graph score, or submission was measured; architecture adoption remains for exp031.",
+  "updated_at": "2026-09-20T12:15:38.748179+00:00",
+  "frame_self_attention_diagnostic": {
+    "report_sha256": "23cec4571be0d8c462558d53bcde8cd44470327c98c58d3dcd516ec9e4fc3d15",
+    "kernel_status": "KernelWorkerStatus.COMPLETE",
+    "notebook_body_elapsed_seconds": 494.373994136,
+    "notebook_body_runtime_scope": "from_config_cell_to_report_write",
+    "window_scan_seconds": 99.83148509199998,
+    "legacy_exact_match": true,
+    "legacy_max_abs_logit_diff": 0.0,
+    "model_a_b_same_encoder_initialization": true,
+    "windows": {
+      "largest": {
+        "n_src": 1056,
+        "n_tgt": 1038,
+        "path": "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_57b7cc1e/000039_000040.npz"
+      },
+      "representative": {
+        "n_src": 205,
+        "n_tgt": 202,
+        "path": "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_c73a1d11/000008_000009.npz"
+      }
+    },
+    "variant_flags": {
+      "current": {
+        "use_cross_attention": true,
+        "use_temporal_self_attention": false
+      },
+      "model_a": {
+        "use_cross_attention": false,
+        "use_temporal_self_attention": true
+      },
+      "model_b": {
+        "use_cross_attention": true,
+        "use_temporal_self_attention": true
+      }
+    },
+    "parameters": {
+      "current": {
+        "forward_used": 580353,
+        "total": 580353
+      },
+      "model_a": {
+        "forward_used": 315393,
+        "total": 845313
+      },
+      "model_b": {
+        "forward_used": 845313,
+        "total": 845313
+      }
+    },
+    "benchmarks": {
+      "largest": {
+        "current": {
+          "forward": {
+            "max_peak_allocated_bytes": 119544320,
+            "max_peak_increment_bytes": 75231744,
+            "median_seconds": 0.06593308200001502,
+            "repeats": 3
+          },
+          "forward_backward": {
+            "max_peak_allocated_bytes": 156255744,
+            "max_peak_increment_bytes": 111943168,
+            "median_seconds": 0.2558383960000583,
+            "repeats": 3
+          }
+        },
+        "model_a": {
+          "forward": {
+            "max_peak_allocated_bytes": 125634048,
+            "max_peak_increment_bytes": 80261632,
+            "median_seconds": 0.060794698999984575,
+            "repeats": 3
+          },
+          "forward_backward": {
+            "max_peak_allocated_bytes": 153552896,
+            "max_peak_increment_bytes": 108180480,
+            "median_seconds": 0.22942571699991277,
+            "repeats": 3
+          }
+        },
+        "model_b": {
+          "forward": {
+            "max_peak_allocated_bytes": 123514368,
+            "max_peak_increment_bytes": 80261632,
+            "median_seconds": 0.06934280300004048,
+            "repeats": 3
+          },
+          "forward_backward": {
+            "max_peak_allocated_bytes": 156278272,
+            "max_peak_increment_bytes": 113025536,
+            "median_seconds": 0.27811157400003594,
+            "repeats": 3
+          }
+        }
+      },
+      "representative": {
+        "current": {
+          "forward": {
+            "max_peak_allocated_bytes": 39369216,
+            "max_peak_increment_bytes": 13942784,
+            "median_seconds": 0.010991457000045557,
+            "repeats": 3
+          },
+          "forward_backward": {
+            "max_peak_allocated_bytes": 57013760,
+            "max_peak_increment_bytes": 22019072,
+            "median_seconds": 0.06712282099999811,
+            "repeats": 3
+          }
+        },
+        "model_a": {
+          "forward": {
+            "max_peak_allocated_bytes": 51050496,
+            "max_peak_increment_bytes": 13733376,
+            "median_seconds": 0.0062406939999846145,
+            "repeats": 3
+          },
+          "forward_backward": {
+            "max_peak_allocated_bytes": 58604544,
+            "max_peak_increment_bytes": 21287424,
+            "median_seconds": 0.04066663300000073,
+            "repeats": 3
+          }
+        },
+        "model_b": {
+          "forward": {
+            "max_peak_allocated_bytes": 52522496,
+            "max_peak_increment_bytes": 13942784,
+            "median_seconds": 0.013184614000010697,
+            "repeats": 3
+          },
+          "forward_backward": {
+            "max_peak_allocated_bytes": 60811264,
+            "max_peak_increment_bytes": 22231552,
+            "median_seconds": 0.08562518600001567,
+            "repeats": 3
+          }
+        }
+      }
+    },
+    "epochs_trained": 0,
+    "official_graph_score_computed": false,
+    "submission_created": false,
+    "gpu_quota_before_used_hours": 15.99,
+    "gpu_quota_after_used_hours": 16.32,
+    "gpu_quota_delta_account_hours": 0.33,
+    "gpu_quota_after_internal_limit_remaining_hours": 13.68
+  }
+}

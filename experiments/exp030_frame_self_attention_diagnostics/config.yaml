@@ -1,0 +1,85 @@
+experiment:
+  name: exp030_frame_self_attention_diagnostics
+  description: 固定画像特徴上でフレーム内Self-Attentionの互換性と計算費用を診断する
+  route: frozen_feature_primary_tracker_diagnostic
+  notebooks: [diagnostic]
+  created_at: '2026-09-20'
+lineage:
+  parent: exp016_frozen_image_encoder
+  hypothesis_id: HYP-20260920-02
+  backlog_candidate: frame_self_attention
+  diff_summary: 3構成のモデル互換性と代表・最大windowのGPU費用を測る。学習とgraph評価は実施しない
+validation:
+  strategy: fixed_cache_diagnostic
+  seed: 42
+  n_folds: 2
+data:
+  source: exp015_train_window_cache
+  cache_kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+  cache_directory: window_cache
+  cache_summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+  cache_identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+  expected_window_count: 19701
+  public_dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+  public_model_source: repo/src/biohub_tracking/models/simple_node_transformer.py
+  public_model_source_sha256: b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e
+  public_checkpoint: weights/unet_transformer/split_0/edge_predictor_best.pth
+  public_checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+model:
+  name: SimpleNodeTransformer
+  params:
+    feat_dim: 64
+    hidden_dim: 128
+    n_heads: 4
+    n_blocks: 4
+    n_self_blocks: 2
+    mlp_ratio: 2.0
+    dropout: 0.3
+    pair_chunk_size: 32
+  variants:
+    current: {use_temporal_self_attention: false, use_cross_attention: true}
+    model_a: {use_temporal_self_attention: true, use_cross_attention: false}
+    model_b: {use_temporal_self_attention: true, use_cross_attention: true}
+  trainable_components: [primary_SimpleNodeTransformer]
+  image_encoder_frozen: true
+  epochs: 0
+  optimizer: AdamW
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  loss: synthetic_logit_square_for_gradient_benchmark_only
+runtime:
+  use_amp: false
+  num_workers: 0
+  batch_size: 1
+  benchmark_repeats: 3
+  benchmark_warmup: 1
+  downsample_zyx: [1, 4, 4]
+  weekly_gpu_hours_limit: 30
+  full_inference_hours_limit: 12
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    kernel_sources: [kentookumura/exp015-oracle-stage-limits-inference]
+    dataset_sources: [pilkwang/biohub-tracking-support-pack-50ep-v1]
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_seed_and_shared_encoder_initialization_for_model_a_b
+  stochastic_components: [transformer_dropout, cuda_kernels]
+  parallel_rng_policy: single_process_benchmark
+  feature_sha_policy: exp015_fixed_cache_summary_and_identity_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: false
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - 診断のgradient計算は学習指標・公式scoreではない。
+notes:
+  - 現行、Model A、Model Bの各1 config、0 fold学習、0 booster、control再学習なし。
+  - 先行する診断のみ。後続の学習と公式graph評価はexp031_frame_self_attention_spatialで管理する。
