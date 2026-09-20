@@ -31,5 +31,6 @@
 | exp021_division_teacher_audit | division_triplet_teacher_diagnostic | exp020_division_triplet_candidates | 完了 | - | - | - | 2026-09-19 |
 | exp022_synthetic_division_teacher_audit | synthetic_division_teacher_diagnostic | exp021_division_teacher_audit | 完了 | - | - | - | 2026-09-20 |
 | exp023_synthetic_detector_teacher_audit | synthetic_detector_teacher_diagnostic | exp022_synthetic_division_teacher_audit | 完了 | - | - | - | 2026-09-20 |
+| exp024_tracker_six_epochs | frozen_feature_primary_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-20 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->
