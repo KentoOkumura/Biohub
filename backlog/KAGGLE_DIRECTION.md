@@ -57,7 +57,7 @@
 | `HYP-20260910-07` | 関係が既知の画像変形・合成分裂・未注釈画像の予測を使うと、少ない実注釈だけの学習より実画像の対応と分裂を学べる。 | [`synthetic_divisions`](synthetic_divisions.md)<br>[`division_lookalikes`](division_lookalikes.md)<br>[`masked_video_pretrain`](masked_video_pretrain.md) | [`exp008_deformation_pair_aux`](../experiments/exp008_deformation_pair_aux/) | 実画像への移行、合成の識別可能性、変形と系譜の整合 |
 | `HYP-20260910-08` | 細胞の集合・領域・軌跡を画像から直接推定する表現なら、既存の極大値検出で失う細胞や接続を別の誤り方で回収できる。 | [`voxel_time_affinity`](voxel_time_affinity.md)<br>[`trajectory_set`](trajectory_set.md)<br>[`inverse_cell_image`](inverse_cell_image.md)<br>[`slice_3d_instances`](slice_3d_instances.md)<br>[`direct_center_set`](direct_center_set.md)<br>[`nnunet_instance_segmentation`](nnunet_instance_segmentation.md) | - | 部分注釈からの個数識別、領域教師の品質、接触細胞の分離と中心への変換、開発・推論費用。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 | `HYP-20260910-09` | 異なる観測・表現・接続方法の候補と不確実性を残し画像から選ぶと、同系統の平均では直らない誤りを回収できる。 | [`candidate_union`](candidate_union.md)<br>[`position_mixture`](position_mixture.md)<br>[`graph_support_fusion`](graph_support_fusion.md)<br>[`image_condition_gate`](image_condition_gate.md)<br>[`one_two_cells`](one_two_cells.md)<br>[`whole_graph_choice`](whole_graph_choice.md)<br>[`contrastive_edge_candidates`](contrastive_edge_candidates.md) | - | 候補数を揃えた追加回収、正解なしの選別、相関した誤り |
-| `HYP-20260910-10` | 複数時点の画像と軌跡を使って接続を選べば、短い観測だけで起きる取り違えや一時的な見逃しを修正できる。 | [`kalman_hungarian_links`](kalman_hungarian_links.md)<br>[`long_window_links`](long_window_links.md)<br>[`tracklet_join`](tracklet_join.md)<br>[`latent_missing_nodes`](latent_missing_nodes.md)<br>[`neighbor_dynamics`](neighbor_dynamics.md) | - | 自己予測履歴による通常接続の改善、長窓・実欠測、分裂と窓境界の整合 |
+| `HYP-20260910-10` | 複数時点の画像と軌跡を使って接続を選べば、短い観測だけで起きる取り違えや一時的な見逃しを修正できる。 | [`multi_frame_tracker`](multi_frame_tracker.md)<br>[`position_history_tracker`](position_history_tracker.md)<br>[`kalman_hungarian_links`](kalman_hungarian_links.md)<br>[`long_window_links`](long_window_links.md)<br>[`tracklet_join`](tracklet_join.md)<br>[`latent_missing_nodes`](latent_missing_nodes.md)<br>[`neighbor_dynamics`](neighbor_dynamics.md) | - | 前後の検出点の同時入力と予測位置列の学習、自己予測履歴の誤り、長窓・実欠測、分裂と窓境界の整合 |
 | `HYP-20260910-11` | 対応なしと観測可能な構造制約を学習・復号へ明示すると、誤接続を抑えながら正しい継続と分裂を保持できる。 | [`explicit_no_match`](explicit_no_match.md)<br>[`known_parent_constraint`](known_parent_constraint.md)<br>[`image_count_prior`](image_count_prior.md) | [`exp018_graph_cost_scale`](../experiments/exp018_graph_cost_scale/) | 棄権の教師、既存softmaxとの差、費用校正と細胞数の誤差 |
 | `HYP-20260910-12` | 等価な処理の再利用や局所的な計算配分により、高解像度・多時点・密な候補の手法を予算内で比較し最終精度を改善できる。 | [`sparse_motion_graph`](sparse_motion_graph.md)<br>[`uncertain_highres`](uncertain_highres.md)<br>[`distill_reinvest`](distill_reinvest.md) | [`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)<br>[`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)<br>[`exp014_exact_window_cache`](../experiments/exp014_exact_window_cache/)<br>[`exp016_frozen_image_encoder`](../experiments/exp016_frozen_image_encoder/) | exp013のPublic LBは`0.944`。exp015でtrain 199動画・19,701 windowの4.15GB cacheを生成した。exp016で固定特徴からprimary trackerだけを学習し、199動画の公式graph評価まで完了した。hidden test全件の費用と精度は未確認 |
 | `HYP-20260910-13` | 位置と系譜を保って撮像条件や境界・密度を変える学習により、別の胚の見え方に対する性能低下を抑えられる。 | [`anisotropic_blur`](anisotropic_blur.md)<br>[`photometric_shift`](photometric_shift.md)<br>[`lineage_density_aug`](lineage_density_aug.md)<br>[`crop_boundary_aug`](crop_boundary_aug.md) | - | 実際の胚差との対応、ラベル整合、片側胚の悪化。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
@@ -73,21 +73,24 @@
 
 公開重みとトラッカー初期値は[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)で選定し、固定するSHA・特徴取得方法を採用済みである。[`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)は公開test全件を同じKaggle T4環境で2回実行し、候補座標、graph topology、決定的なrun統計、raw `submission.csv`の一致とPublic LB `0.944`を確認した。
 
-[`exp014_exact_window_cache`](../experiments/exp014_exact_window_cache/)ではpublic test全396 windowの配列・edge logits・exp013最終出力が完全一致し、cache読込時間は特徴抽出時間の0.141%だったため、後続tracker比較用cacheとして利用可能と判断した。[`exp015_oracle_stage_limits`](../experiments/exp015_oracle_stage_limits/)ではtrain全199動画・19,701 windowのcacheを4.15GBで生成し、Kaggle output内でarray round-trip完全一致とmanifest SHAを確認した。段階別診断は199/199件で有効だった。中心候補99.286%に対してcandidate edge 94.829%、final edge 91.602%、candidate division triplet 40.397%、final division 9.934%であり、固定tracker基準を先に確定した後、安全側は`partial_edge_mask`、選択側のCPU診断は[`exp018_graph_cost_scale`](../experiments/exp018_graph_cost_scale/)、候補形成まで変える高upside側は`division_triplets`とする。
+[exp014](../experiments/exp014_exact_window_cache/)で公開testのcache再生一致、[exp015](../experiments/exp015_oracle_stage_limits/)でtrain 199動画の特徴保存と段階別診断を確認した。数値は上の「現在の重点」と各metricsを参照する。候補形成まで変える比較は`division_triplets`に分離し、固定特徴trackerの基準と同時に変更しない。
 
 `partial_edge_mask`から`sparse_det_mask`への依存を外し、同一検出器で複数トラッカーを比較できる融合案も`candidate_union`への依存を外した。検出・画像モデルの学習や未取得の領域教師が必要な原案は、代替処理へ読み替えずP4に保存する。
 
 2026-09-15の対照学習案を4件追加し、履歴照合は既存の`appearance_reference`へ統合した。固定tracker基準と既存の教師mask比較を先行し、`contrastive_feature_audit`、`contrastive_parent_child`をP2、履歴・文脈欠落・接続候補追加をP3とする。既存の検出点補正や分裂集合の採点は置き換えない。残る方式判断を詳細へ記録し、今回の追加を実験化承認とは扱わない。他候補の優先度は維持する。
 
-2026-09-20に`tracker_six_epochs`をユーザー指定のP0として追加し、同日の実装依頼で[`exp024_tracker_six_epochs`](../experiments/exp024_tracker_six_epochs/)へ移した。未着手のP0はなくなった。exp016の固定特徴と保存済み3エポック対照を使う一変更の比較であり、両foldとも既存3エポックの内部検証では2エポック目が選ばれたため、改善は未実証と明記する。他候補の先行条件と優先度は見直し、現時点では変更しない。
+2026-09-20、ユーザー指定P0の`tracker_six_epochs`を[exp024](../experiments/exp024_tracker_six_epochs/)へ移行した。保存済み3エポック対照との比較であり、改善は未実証。未着手P0はなく、既承認の最優先は維持する。
 
 2026-09-20に`frame_self_attention`も追加した。exp016の固定特徴・教師・loss・復号を用いて、同一フレーム内のSelf-Attentionの有無と後段Cross-Attentionの有無を比較する。設計は[調査レポート](../docs/surveys/biohub-node-self-attention-design_20260920.md)へ保存済みで、精度とGPU費用は未測定。現在の未着手は62件、設計可能6件・設計判断が残る候補56件。ユーザー指定のP0はexp024へ実験化し、本候補はその後のP2とした。他候補の優先度も見直したが、先行条件や実測証拠は変わらず、変更しない。今回の追加は実験化承認ではない。
 
 2026-09-20のカルマン＋分裂別処理案を新設3件・既存1件へ反映した。通常接続はP1、分裂候補制限と合成事前学習はP2、局所ILPはP3。実験化済みexp024のユーザー指定の最優先は維持する。他の未着手候補も再点検し、固定方針・先行条件は変わらないため優先度を維持した。方式上の未決事項と測定待ちを分け、今回の4件は設計判断が残る状態で記録する。実験化・実装・Kaggle実行は行わない。
 
+2026-09-20、前後フレーム入力をP2、予測位置履歴の入力をP3へ追加した。方式の未決事項・早期診断は各詳細へ保存した。全候補の優先度を再確認し、既存の依存・証拠に変更がないため維持する。既承認実験の順序も維持し、今回は実験化しない。
+
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
 | P1 | `HYP-20260910-10` | [`kalman_hungarian_links`](kalman_hungarian_links.md) | 分裂予約を揃えて通常接続のカルマン予測を比較 | exp016の候補・画像得点・予測分裂を固定。運動雑音、対応なし費用、状態初期化と修復時の予約保持方式を確定する。 | `検討メモ・設計不可` |
+| P2 | `HYP-20260910-10` | [`multi_frame_tracker`](multi_frame_tracker.md) | 前後3時点の検出点と固定特徴で隣接接続を予測 | exp015 cache・exp016対照。窓間の特徴集約・attention・境界処理を確定し、同構造の2時点条件と比較する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260920-02` | [`frame_self_attention`](frame_self_attention.md) | tとt+1を別々にSelf-Attentionで文脈化し、Model A/Bと現行を比較 | [`exp016_frozen_image_encoder`](../experiments/exp016_frozen_image_encoder/)の固定特徴・教師・loss・2fold・復号と公開初期checkpoint。先行する[`exp024_tracker_six_epochs`](../experiments/exp024_tracker_six_epochs/)の結果を確認し、実行前にGPU費用を測る。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-03` | [`division_candidate_budget`](division_candidate_budget.md) | 同じ組数で距離のみと画像・運動の候補を比較 | exp020/021、exp016得点、kalman_hungarian_links。初段で候補契約を固定し、分裂学習後に同じ得点で実選別を確認する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-03` | [`division_triplets`](division_triplets.md) | 同じ分裂組モデルで合成事前学習の有無を比較 | 完了したexp023の検出後教師（32時系列・正例1,035件）とdivision_candidate_budgetの初段契約。合成分割・sampling、実画像の未知組を除外する教師mask、損失・共通復号を確定する。 | `検討メモ・設計不可` |
@@ -117,6 +120,7 @@
 | P3 | `HYP-20260910-09` | [`image_condition_gate`](image_condition_gate.md) | 画像条件で複数トラッカーの出力を重み付け | graph_support_fusionで用意する同一検出器由来の複数トラッカー出力と学習側の画像条件。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-09` | [`one_two_cells`](one_two_cells.md) | 1細胞か2細胞かを前後で選ぶ | [`exp015_oracle_stage_limits`](../experiments/exp015_oracle_stage_limits/)、同一の固定公開検出器の抑制前候補と前後の画像支持。candidate_unionは不要。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-09` | [`whole_graph_choice`](whole_graph_choice.md) | 同一検出器の候補graphを1つ選ぶ | graph_support_fusionと同じ固定候補・複数トラッカー出力、学習側の選択指標。 | `検討メモ・設計不可` |
+| P3 | `HYP-20260910-10` | [`position_history_tracker`](position_history_tracker.md) | 予測位置履歴を入力して接続を学習 | exp015・exp016、学習側の分割外予測履歴。履歴生成・集約・分裂後の処理を確定する。multi_frame_trackerを先に検討する。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-10` | [`tracklet_join`](tracklet_join.md) | 短い軌跡の端同士を接続 | [`exp015_oracle_stage_limits`](../experiments/exp015_oracle_stage_limits/)。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-10` | [`latent_missing_nodes`](latent_missing_nodes.md) | 見逃した時点を画像から回収 | missing_frame_noise。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-10` | [`neighbor_dynamics`](neighbor_dynamics.md) | 周囲の動きを接続特徴へ追加 | relative_neighbors。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
