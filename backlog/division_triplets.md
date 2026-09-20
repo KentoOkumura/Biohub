@@ -25,7 +25,7 @@
 - exp023はユーザー判断で完了済み。検出後の正例は時系列あたり18～62件（中央値31件）で、合成データを使う学習の効果と実画像への転移は未実証。教師量をGT中心の件数から見積もらない。数値・SHAは[exp023 metrics](../experiments/exp023_synthetic_detector_teacher_audit/metrics.json)を正とする。
 - 次のアクションは、合成事前学習に使う時系列の分割と正誤組のsampling、GT対応が曖昧な組の除外、合成の分類・同母順位損失、実画像で確認できた組だけを使う教師mask、両条件で共通の分裂判定と通常接続への費用校正を確定すること。主比較案は同じ候補・娘順序不変モデル・実教師・復号で「合成事前学習なし／あり」。出次数1を非分裂教師にせず、2本の独立辺対組採点は副比較として分ける。
 - 実画像ではexp020/021の既知分裂100/151件の候補回収と確認済み誤組3,935件の選別を条件付きで診断し、全graphの公式combined scoreと分裂成分を両胚別に比較する。正例母内の正誤比較は最大2/100件なので主な学習効果の根拠にせず、未知組や通常継続の確定負例0件を負例に変換しない。
-- 候補制限は[division_candidate_budget](division_candidate_budget.md)、運動予測は[kalman_hungarian_links](kalman_hungarian_links.md)、競合接続の再選択は[division_local_ilp](division_local_ilp.md)で比較する。候補生成・分裂モデル・復号を同時に変えない。
+- 候補制限は[division_candidate_budget](division_candidate_budget.md)、運動予測は[exp025_kalman_hungarian_links](../experiments/exp025_kalman_hungarian_links/result.md)、競合接続の再選択は[division_local_ilp](division_local_ilp.md)で比較する。候補生成・分裂モデル・復号を同時に変えない。
 - 以下の2026-09-19以前の節は当時の診断・判断履歴。現在の比較と未決事項は本節と下記の現行設計節を優先する。
 
 ## 2026-09-19の候補・教師診断

@@ -1,0 +1,141 @@
+{
+  "benchmark_role": "official_evaluation_from_verified_kaggle_v5_repaired_graphs",
+  "conditional_validation": true,
+  "control": {
+    "by_embryo": {
+      "44b6": {
+        "adj_edge_jaccard": 0.9024083452628103,
+        "division_fn": 21,
+        "division_fp": 25,
+        "division_jaccard": 0.09803921568627451,
+        "division_tp": 5,
+        "edge_jaccard": 0.8878593040847201,
+        "n": 71,
+        "n_adj": 71,
+        "node_recall": 0.9885280947410928,
+        "score": 0.9122122668314377
+      },
+      "6bba": {
+        "adj_edge_jaccard": 0.902479737592832,
+        "division_fn": 107,
+        "division_fp": 71,
+        "division_jaccard": 0.09183673469387756,
+        "division_tp": 18,
+        "edge_jaccard": 0.9022866664921786,
+        "n": 128,
+        "n_adj": 128,
+        "node_recall": 0.9802654846265002,
+        "score": 0.9116634110622197
+      }
+    },
+    "compact_graph_content_sha256": "15a82a50f51341a54d84b5cdc01f48b36b7befa3d0ee4b18492019e28b39e44a",
+    "evaluated_count": 199,
+    "label": "fixed_public_control",
+    "overall": {
+      "adj_edge_jaccard": 0.9024686154215268,
+      "division_fn": 128,
+      "division_fp": 96,
+      "division_jaccard": 0.0931174089068826,
+      "division_tp": 23,
+      "edge_jaccard": 0.9000390357434837,
+      "n": 199,
+      "n_adj": 199,
+      "node_recall": 0.9832134510492945,
+      "score": 0.9117803563122151
+    },
+    "recomputed_from_saved_graphs": true,
+    "recomputed_summary_matches": true,
+    "skipped": []
+  },
+  "delta_retrained_minus_control": {
+    "by_embryo": {
+      "44b6": {
+        "adj_edge_jaccard": -0.002257813736660119,
+        "division_jaccard": -0.0018853695324283493,
+        "edge_jaccard": -0.0016450690409746116,
+        "node_recall": -0.003936777803935643,
+        "score": -0.002446350689902954
+      },
+      "6bba": {
+        "adj_edge_jaccard": -0.0003653949676020174,
+        "division_jaccard": 0.012329931972789115,
+        "edge_jaccard": -6.20412599926512e-05,
+        "node_recall": 0.0006504093750606676,
+        "score": 0.0008675982296768581
+      }
+    },
+    "overall": {
+      "adj_edge_jaccard": -0.0006600157550796792,
+      "division_jaccard": 0.00934160748656003,
+      "edge_jaccard": -0.00030704540361203847,
+      "node_recall": -0.0009862252465911991,
+      "score": 0.000274144993576253
+    }
+  },
+  "evaluator_dataset_loader": "pinned_open_dataset_with_load_image_false",
+  "execution_environment": "kaggle",
+  "experiment": "exp016_frozen_image_encoder",
+  "fixed_candidate_coordinates_exact": true,
+  "fold_model_by_evaluation_embryo": {
+    "44b6": 1,
+    "6bba": 0
+  },
+  "graph_repair_complete": true,
+  "graph_repair_reused_from_kernel_version": 5,
+  "main_image_encoder_forward_count": 0,
+  "max_matching_distance_um": 7.0,
+  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "official_metric_computed": true,
+  "post_retention_candidates_reused_from_exp015": true,
+  "public_control_candidate_graphs_exact": true,
+  "retrained": {
+    "by_embryo": {
+      "44b6": {
+        "adj_edge_jaccard": 0.9001505315261502,
+        "division_fn": 21,
+        "division_fp": 26,
+        "division_jaccard": 0.09615384615384616,
+        "division_tp": 5,
+        "edge_jaccard": 0.8862142350437455,
+        "n": 71,
+        "n_adj": 71,
+        "node_recall": 0.9845913169371572,
+        "score": 0.9097659161415348
+      },
+      "6bba": {
+        "adj_edge_jaccard": 0.9021143426252299,
+        "division_fn": 105,
+        "division_fp": 67,
+        "division_jaccard": 0.10416666666666667,
+        "division_tp": 20,
+        "edge_jaccard": 0.9022246252321859,
+        "n": 128,
+        "n_adj": 128,
+        "node_recall": 0.9809158940015609,
+        "score": 0.9125310092918966
+      }
+    },
+    "compact_graph_content_sha256": "22af437949d27d1d0afb6c85c76f1fb3ab4a9bfc4198f570515d6c05bb75aafb",
+    "evaluated_count": 199,
+    "label": "fold_specific_retrained_primary_tracker",
+    "overall": {
+      "adj_edge_jaccard": 0.9018085996664471,
+      "division_fn": 126,
+      "division_fp": 93,
+      "division_jaccard": 0.10245901639344263,
+      "division_tp": 25,
+      "edge_jaccard": 0.8997319903398716,
+      "n": 199,
+      "n_adj": 199,
+      "node_recall": 0.9822272258027033,
+      "score": 0.9120545013057914
+    },
+    "recomputed_from_saved_graphs": true,
+    "recomputed_summary_matches": true,
+    "skipped": []
+  },
+  "source_full_replay_summary_sha256": "49a3a90758bc64f169f9e2950559d2b0827e864257c5c6d1e98fb1ace2368245",
+  "source_ilp_runtime": "colab_t4_cache_replay",
+  "submission_created": false,
+  "tracker_forward_count_in_this_stage": 0
+}

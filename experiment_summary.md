@@ -33,4 +33,6 @@
 | exp023_synthetic_detector_teacher_audit | synthetic_detector_teacher_diagnostic | exp022_synthetic_division_teacher_audit | 完了 | - | - | - | 2026-09-20 |
 | exp024_tracker_six_epochs | frozen_feature_primary_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-20 |
 
+| exp025_kalman_hungarian_links | kalman_hungarian_fixed_divisions | exp016_frozen_image_encoder | 破棄 | 0.8733317200940277 | - | - | 2026-09-20 |
+
 <!-- END AUTO EXPERIMENT SUMMARY -->
