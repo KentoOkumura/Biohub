@@ -14,6 +14,7 @@
 - 最初に使用する公開Notebook・モデル版・checkpoint・ライセンス等の利用条件・学習来歴は[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)で選定し、2026-09-12にユーザーが採用した。過去の自前重みを「公開検出器」と読み替えない。公開の既存トラッカーを基準とし、同じ固定検出器でトラッカーを学習した結果を比較する。後続案も同じ固定検出器下のトラッカー同士で比較し、自前検出器の再学習や全層更新の対照を必須にしない。
 - 検出候補・物理座標・検出得点・必要な画像特徴を保存して再利用する。時間を扱う画像モデルの特徴は入力窓に依存するため、元の全時間窓・前処理・crop・変形・padding・精度・抽出座標・重みの版を対応付ける。初回は候補点特徴を中心に等価性と容量を測り、全voxel特徴の一括保存やframe単独の特徴への置換を前提にしない。画像・窓・候補座標等を変える比較は必要な特徴を再抽出し、費用に含める。
 - トラッカーの入力は固定検出器の予測と画像特徴、正解の根拠は主催者のGEFFに記録された中心・接続・分裂とする。予測候補を既知注釈に対応付けて教師を作り、検出予測自体を正解とはみなさない。疎い注釈の未知部分を真の負例と断定せず、既存lossの教師maskとその変更を明示的に比較する。未承認の人手注釈や未取得の密な領域教師をあるものとして設計しない。
+- [`direct_graph_prediction`](direct_graph_prediction.md)は、主催者注釈で学習し、固定候補の接続・分裂を直接選ぶ方針（2026-09-20承認）。ILP出力を擬似教師にせず、未知を接続なしと教えない。具体的な出力・損失・制約は候補詳細で定める。
 - 初回の学習比較では検出候補生成・座標・前処理・復号を対照と揃える。候補回収、中心補正、局所再推論は後続の別比較として明示し、公開検出器の重み更新を含めない。検出不足が判明しても検出器の学習を自動で再開せず、固定候補の上限と追加候補回収の条件を記録する。
 - 評価は現行公式指標とその成分を使い、両胚別の改善・悪化、失敗と有効件数を示す。公開重みが評価胚を学習した、または来歴不明の場合は、固定公開モデル下の条件付きの比較と明記し、独立した交差検証（CV）とは呼ばない。トラッカーだけの分割では画像モデル由来の学習内評価は解消しない。既存の胚を分けた自前予測は補助診断として区別し、教師・設定の選択は学習側内部に限定する。
 - 検出器の再学習、画像特徴抽出器の更新・事前学習、新規画像モデルの学習を要する原案はP4で保留し、再開条件を各詳細に記す。方針変更の明示承認なしに全層更新へ戻さない。固定特徴で別の比較に組み直す場合も、入力・学習対象・対照の変更を詳細へ明記する。
@@ -58,7 +59,7 @@
 | `HYP-20260910-08` | 細胞の集合・領域・軌跡を画像から直接推定する表現なら、既存の極大値検出で失う細胞や接続を別の誤り方で回収できる。 | [`voxel_time_affinity`](voxel_time_affinity.md)<br>[`trajectory_set`](trajectory_set.md)<br>[`inverse_cell_image`](inverse_cell_image.md)<br>[`slice_3d_instances`](slice_3d_instances.md)<br>[`direct_center_set`](direct_center_set.md)<br>[`nnunet_instance_segmentation`](nnunet_instance_segmentation.md) | - | 部分注釈からの個数識別、領域教師の品質、接触細胞の分離と中心への変換、開発・推論費用。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 | `HYP-20260910-09` | 異なる観測・表現・接続方法の候補と不確実性を残し画像から選ぶと、同系統の平均では直らない誤りを回収できる。 | [`candidate_union`](candidate_union.md)<br>[`position_mixture`](position_mixture.md)<br>[`graph_support_fusion`](graph_support_fusion.md)<br>[`image_condition_gate`](image_condition_gate.md)<br>[`one_two_cells`](one_two_cells.md)<br>[`whole_graph_choice`](whole_graph_choice.md)<br>[`contrastive_edge_candidates`](contrastive_edge_candidates.md) | - | 候補数を揃えた追加回収、正解なしの選別、相関した誤り |
 | `HYP-20260910-10` | 複数時点の画像と軌跡を使って接続を選べば、短い観測だけで起きる取り違えや一時的な見逃しを修正できる。 | [`multi_frame_tracker`](multi_frame_tracker.md)<br>[`position_history_tracker`](position_history_tracker.md)<br>[`kalman_hungarian_links`](kalman_hungarian_links.md)<br>[`long_window_links`](long_window_links.md)<br>[`tracklet_join`](tracklet_join.md)<br>[`latent_missing_nodes`](latent_missing_nodes.md)<br>[`neighbor_dynamics`](neighbor_dynamics.md) | - | 前後の検出点の同時入力と予測位置列の学習、自己予測履歴の誤り、長窓・実欠測、分裂と窓境界の整合 |
-| `HYP-20260910-11` | 対応なしと観測可能な構造制約を学習・復号へ明示すると、誤接続を抑えながら正しい継続と分裂を保持できる。 | [`explicit_no_match`](explicit_no_match.md)<br>[`known_parent_constraint`](known_parent_constraint.md)<br>[`image_count_prior`](image_count_prior.md) | [`exp018_graph_cost_scale`](../experiments/exp018_graph_cost_scale/) | 棄権の教師、既存softmaxとの差、費用校正と細胞数の誤差 |
+| `HYP-20260910-11` | 対応なしと観測可能な構造制約を学習・復号へ明示すると、誤接続を抑えながら正しい継続と分裂を保持できる。 | [`explicit_no_match`](explicit_no_match.md)<br>[`known_parent_constraint`](known_parent_constraint.md)<br>[`image_count_prior`](image_count_prior.md)<br>[`direct_graph_prediction`](direct_graph_prediction.md) | [`exp018_graph_cost_scale`](../experiments/exp018_graph_cost_scale/) | 棄権の教師、既存softmaxとの差、費用校正と細胞数の誤差、主催者教師で接続を直接選ぶ出力と構造制約 |
 | `HYP-20260910-12` | 等価な処理の再利用や局所的な計算配分により、高解像度・多時点・密な候補の手法を予算内で比較し最終精度を改善できる。 | [`sparse_motion_graph`](sparse_motion_graph.md)<br>[`uncertain_highres`](uncertain_highres.md)<br>[`distill_reinvest`](distill_reinvest.md) | [`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)<br>[`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)<br>[`exp014_exact_window_cache`](../experiments/exp014_exact_window_cache/)<br>[`exp016_frozen_image_encoder`](../experiments/exp016_frozen_image_encoder/) | exp013のPublic LBは`0.944`。exp015でtrain 199動画・19,701 windowの4.15GB cacheを生成した。exp016で固定特徴からprimary trackerだけを学習し、199動画の公式graph評価まで完了した。hidden test全件の費用と精度は未確認 |
 | `HYP-20260910-13` | 位置と系譜を保って撮像条件や境界・密度を変える学習により、別の胚の見え方に対する性能低下を抑えられる。 | [`anisotropic_blur`](anisotropic_blur.md)<br>[`photometric_shift`](photometric_shift.md)<br>[`lineage_density_aug`](lineage_density_aug.md)<br>[`crop_boundary_aug`](crop_boundary_aug.md) | - | 実際の胚差との対応、ラベル整合、片側胚の悪化。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 | `HYP-20260910-14` | 現行公式指標・胚を分けた評価・段階別の上限検査を用いると、独自proxyや学習内指標では見えない候補の順位差と失敗箇所を識別できる。 | [`contrastive_feature_audit`](contrastive_feature_audit.md) | [`exp003_official_metric_audit`](../experiments/exp003_official_metric_audit/)<br>[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)<br>[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)<br>[`exp007_graph_checkpoint_selection`](../experiments/exp007_graph_checkpoint_selection/)<br>[`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)<br>[`exp015_oracle_stage_limits`](../experiments/exp015_oracle_stage_limits/) | 固定公開モデル下で対照学習の教師と特徴の識別力を監査し、候補順位の差を公式graph指標へ引き継げるか |
@@ -69,7 +70,7 @@
 
 ### 未着手バックログ
 
-2026-09-12に全63候補を公開検出器固定の方針で見直した後、公開モデルの選定を独立候補として追加し、同日に`exp011_public_detector_selection`へ移行した。2026-09-13に`group_error_readout`を`exp012_group_error_readout`へ移行し、同日に追加した`public_notebook_replay`を`exp013_public_notebook_replay`、`exact_window_cache`を`exp014_exact_window_cache`、`oracle_stage_limits`を`exp015_oracle_stage_limits`へ移行したため、未着手候補は60件である。P1は公開基準の再現、診断・特徴保存・トラッカー学習基準の準備、P2はその後の優先比較、P3は誤りと費用の証拠を要する後続、P4は再開条件が揃うまで保留とする。既存64候補の[状態監査](../docs/surveys/biohub-backlog-status-audit_20260912.md)で測定待ちと設計判断を分離した。移行後の未着手候補は設計可能6件、設計上の未決事項が残る候補54件。先行成果物待ちは実行の依存として扱い、優先度と設計状態を混同しない。2026-09-14にexp015のKaggle実測で60候補の索引とP0〜P2詳細を再点検した。P1は固定特徴トラッカー基準、P2は教師mask、分裂triplet、候補制限、graph費用校正を維持する。ただし分裂tripletは現行candidate edge内だけではなく、既存中心候補から組候補を作る設計を成立条件に追加した。
+未着手候補・状態は下表を正とする。分類の根拠は[状態監査](../docs/surveys/biohub-backlog-status-audit_20260912.md)、実験化済みの候補は仮説表と各実験のrequirementsを参照する。先行成果物待ちは実行の依存とし、優先度と設計状態を分ける。
 
 公開重みとトラッカー初期値は[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)で選定し、固定するSHA・特徴取得方法を採用済みである。[`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)は公開test全件を同じKaggle T4環境で2回実行し、候補座標、graph topology、決定的なrun統計、raw `submission.csv`の一致とPublic LB `0.944`を確認した。
 
@@ -81,16 +82,19 @@
 
 2026-09-20、ユーザー指定P0の`tracker_six_epochs`を[exp024](../experiments/exp024_tracker_six_epochs/)へ移行した。保存済み3エポック対照との比較であり、改善は未実証。未着手P0はなく、既承認の最優先は維持する。
 
-2026-09-20に`frame_self_attention`も追加した。exp016の固定特徴・教師・loss・復号を用いて、同一フレーム内のSelf-Attentionの有無と後段Cross-Attentionの有無を比較する。設計は[調査レポート](../docs/surveys/biohub-node-self-attention-design_20260920.md)へ保存済みで、精度とGPU費用は未測定。現在の未着手は62件、設計可能6件・設計判断が残る候補56件。ユーザー指定のP0はexp024へ実験化し、本候補はその後のP2とした。他候補の優先度も見直したが、先行条件や実測証拠は変わらず、変更しない。今回の追加は実験化承認ではない。
+2026-09-20に`frame_self_attention`も追加した。exp016の固定特徴・教師・loss・復号を用いて、同一フレーム内のSelf-Attentionの有無と後段Cross-Attentionの有無を比較する。設計は[調査レポート](../docs/surveys/biohub-node-self-attention-design_20260920.md)へ保存済みで、精度とGPU費用は未測定。追加時点の未着手は62件、設計可能6件・設計判断が残る候補56件。ユーザー指定のP0はexp024へ実験化し、本候補はその後のP2とした。他候補の優先度も見直したが、先行条件や実測証拠は変わらず、変更しない。今回の追加は実験化承認ではない。
 
 2026-09-20のカルマン＋分裂別処理案を新設3件・既存1件へ反映した。通常接続はP1、分裂候補制限と合成事前学習はP2、局所ILPはP3。実験化済みexp024のユーザー指定の最優先は維持する。他の未着手候補も再点検し、固定方針・先行条件は変わらないため優先度を維持した。方式上の未決事項と測定待ちを分け、今回の4件は設計判断が残る状態で記録する。実験化・実装・Kaggle実行は行わない。
 
 2026-09-20、前後フレーム入力をP2、予測位置履歴の入力をP3へ追加した。方式の未決事項・早期診断は各詳細へ保存した。全候補の優先度を再確認し、既存の依存・証拠に変更がないため維持する。既承認実験の順序も維持し、今回は実験化しない。
 
+2026-09-20に`direct_graph_prediction`をP2で追加。教師の出所は承認済みで、出力・損失・制約の具体方式は未決。既承認実験の優先順と他候補の優先度を維持する。
+
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
 | P1 | `HYP-20260910-10` | [`kalman_hungarian_links`](kalman_hungarian_links.md) | 分裂予約を揃えて通常接続のカルマン予測を比較 | exp016の候補・画像得点・予測分裂を固定。運動雑音、対応なし費用、状態初期化と修復時の予約保持方式を確定する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-10` | [`multi_frame_tracker`](multi_frame_tracker.md) | 前後3時点の検出点と固定特徴で隣接接続を予測 | exp015 cache・exp016対照。窓間の特徴集約・attention・境界処理を確定し、同構造の2時点条件と比較する。 | `検討メモ・設計不可` |
+| P2 | `HYP-20260910-11` | [`direct_graph_prediction`](direct_graph_prediction.md) | 主催者の疎い注釈から採用する接続・分裂を直接予測 | exp015固定候補・特徴、exp016対照、exp019/021教師監査。出力形式・部分注釈の損失・制約を確定する。ILP出力は教師にしない。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260920-02` | [`frame_self_attention`](frame_self_attention.md) | tとt+1を別々にSelf-Attentionで文脈化し、Model A/Bと現行を比較 | [`exp016_frozen_image_encoder`](../experiments/exp016_frozen_image_encoder/)の固定特徴・教師・loss・2fold・復号と公開初期checkpoint。先行する[`exp024_tracker_six_epochs`](../experiments/exp024_tracker_six_epochs/)の結果を確認し、実行前にGPU費用を測る。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-03` | [`division_candidate_budget`](division_candidate_budget.md) | 同じ組数で距離のみと画像・運動の候補を比較 | exp020/021、exp016得点、kalman_hungarian_links。初段で候補契約を固定し、分裂学習後に同じ得点で実選別を確認する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-03` | [`division_triplets`](division_triplets.md) | 同じ分裂組モデルで合成事前学習の有無を比較 | 完了したexp023の検出後教師（32時系列・正例1,035件）とdivision_candidate_budgetの初段契約。合成分割・sampling、実画像の未知組を除外する教師mask、損失・共通復号を確定する。 | `検討メモ・設計不可` |
