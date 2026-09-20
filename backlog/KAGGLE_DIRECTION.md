@@ -64,6 +64,7 @@
 | `HYP-20260910-14` | 現行公式指標・胚を分けた評価・段階別の上限検査を用いると、独自proxyや学習内指標では見えない候補の順位差と失敗箇所を識別できる。 | [`contrastive_feature_audit`](contrastive_feature_audit.md) | [`exp003_official_metric_audit`](../experiments/exp003_official_metric_audit/)<br>[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)<br>[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)<br>[`exp007_graph_checkpoint_selection`](../experiments/exp007_graph_checkpoint_selection/)<br>[`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)<br>[`exp015_oracle_stage_limits`](../experiments/exp015_oracle_stage_limits/) | 固定公開モデル下で対照学習の教師と特徴の識別力を監査し、候補順位の差を公式graph指標へ引き継げるか |
 | `HYP-20260911-01` | nnU-Netのデータに応じた前処理・構造・学習設定を中心マップの予測へ適応すると、疎注釈を適切に扱う条件で現行検出器より細胞を回収でき、両胚の公式接続・分裂指標が改善する。 | [`nnunet_center_detection`](nnunet_center_detection.md) | - | 中心教師とnnU-Net設定の寄与、背景と未知領域の識別、時間入力と接続特徴、学習・推論費用。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 | `HYP-20260915-01` | 固定画像特徴から学ぶtrackerへ、正しい親子対応を近づけ確定した誤親から離す対照損失を加えると、接続分類損失だけの場合より近傍の取り違えと両胚の公式graph誤りを減らせる。 | [`contrastive_parent_child`](contrastive_parent_child.md) | - | 共有tracker特徴への寄与、疎い教師と分裂の整合、固定候補内の順位から公式指標への移行。履歴・欠落への頑健性・候補回収は関連仮説で別比較する。 |
+| `HYP-20260920-02` | 固定した公開画像特徴から隣接時刻の接続を学ぶ際、各時刻のcell間を先にSelf-Attentionで文脈化してから既存のCross-Attentionを行うと、現行のCross-Attentionのみより親候補の取り違えが減り、両胚の公式graph指標が改善する。 | [`frame_self_attention`](frame_self_attention.md) | - | Model B対現行で両胚の接続・分裂成分に改善が残るか。Model AでCross-Attentionの有無を分け、追加計算が週30 GPU時間と推論12時間に収まるか。 |
 
 ### 未着手バックログ
 
@@ -77,8 +78,11 @@
 
 2026-09-15の対照学習案を4件追加し、履歴照合は既存の`appearance_reference`へ統合した。固定tracker基準と既存の教師mask比較を先行し、`contrastive_feature_audit`、`contrastive_parent_child`をP2、履歴・文脈欠落・接続候補追加をP3とする。既存の検出点補正や分裂集合の採点は置き換えない。残る方式判断を詳細へ記録し、今回の追加を実験化承認とは扱わない。他候補の優先度は維持する。
 
+2026-09-20に`frame_self_attention`を追加した。exp016の固定特徴・教師・loss・復号を用い、同一フレーム内のSelf-Attentionの有無と後段Cross-Attentionの有無を比較する。設計は[調査レポート](../docs/surveys/biohub-node-self-attention-design_20260920.md)へ保存済みで、精度とGPU費用は未測定。固定tracker基準に続くP2とし、他候補の優先度は見直したうえで維持する。今回の追加は実験化承認ではない。
+
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
+| P2 | `HYP-20260920-02` | [`frame_self_attention`](frame_self_attention.md) | tとt+1を別々にSelf-Attentionで文脈化し、Model A/Bと現行を比較 | [`exp016_frozen_image_encoder`](../experiments/exp016_frozen_image_encoder/)の固定特徴・教師・loss・2fold・復号と公開初期checkpoint。実行前にGPU費用を測る。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-03` | [`division_triplets`](division_triplets.md) | 母と2娘の組を採点する | exp015では既知151分裂中、現行candidate graphにtripletが61件、final graphに15件。[exp020診断](../experiments/exp020_division_triplet_candidates/)では固定中心から9/14 µmで100/151件を回収したが、880万組に対し厳格な誤組は4件。[exp021診断](../experiments/exp021_division_teacher_audit/)ではGT条件付き誤組3,935件、同じ正例母に誤組があるのは最大2/100件。ユーザー判断により追加の教師を探してから、候補上限・通常継続の確定条件・教師mask・loss・decodeを決める。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-12` | [`sparse_motion_graph`](sparse_motion_graph.md) | 近傍候補で多時点予測を可能に | exp015のGPU予測区間6時間39分54秒、peak GPU memory 688MB、candidate edge recall 94.829%。初回tracker学習で候補間計算が時間・メモリを支配すると実測された場合だけ、学習前に候補制限を診断する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-14` | [`contrastive_feature_audit`](contrastive_feature_audit.md) | 対照学習の教師と固定特徴を診断 | exp015 cacheと固定tracker基準。確定負例・重複対応を監査し、距離のみと小型特徴モデルの親候補順位を比較する。 | `検討メモ・設計不可` |
