@@ -1,0 +1,893 @@
+{
+  "experiment": "exp029_mother_daughter_set_selection",
+  "status": "debug_completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp029-mother-daughter-set-selection-train",
+      "kernel_version": 4,
+      "url": "https://www.kaggle.com/code/kentookumura/exp029-mother-daughter-set-selection-train",
+      "kernel_source_ids": [],
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": 5708.2147400680005,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": null,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "4c7f440e079147f34e68305be08992d1e1a11e24544495144bd5570824c7b51d",
+      "model_count": 2,
+      "model_shas": {
+        "fold_0": "85318b8c64c1b102e4452e885619514a31721cc64188237dea3b12715d2807a0",
+        "fold_1": "04da9548b6152882a28d07e95714a6121cd196974e510c4cf4480bd854dea589"
+      },
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [],
+    "train_attempts": {
+      "v1": {
+        "kernel_version": 1,
+        "status": "ERROR",
+        "failure_stage": "candidate_audit_json_serialization",
+        "model_training_started": false
+      },
+      "v2": {
+        "kernel_version": 2,
+        "status": "ERROR",
+        "failure_stage": "fold_1_runtime_projection",
+        "fold_0_completed": true,
+        "failure_reason": "runtime projection counted completed fold 0 again"
+      },
+      "v3": {
+        "kernel_version": 3,
+        "status": "ERROR",
+        "failure_stage": "resume_audit_file_not_in_kaggle_working_directory",
+        "model_training_started": false,
+        "fold_0_retrained": false
+      },
+      "v4": {
+        "status": "PUSH_REJECTED",
+        "reason": "Kaggle API rejects notebook source of 5.3 MB; 1 MB maximum",
+        "kernel_version_created": false
+      },
+      "v5": {
+        "status": "COMPLETE",
+        "continuation": "read SHA-verified v2 resume artifacts from a private Kaggle Dataset",
+        "dataset_source": "kentookumura/exp029-mother-daughter-set-selection-resume-v2",
+        "dataset_created": true,
+        "kernel_version": 4,
+        "resume_dataset_verified_in_kernel": true,
+        "fold_0_restored_in_kernel": true,
+        "fold_1_completed": true,
+        "early_gate_passed": false,
+        "fold_1_summary_sha256": "49c78da22fb12c051302b7b4c26ba9e17ad9198f66451c68dbd587399d968edb",
+        "notebook_runtime_seconds": 5708.2147400680005,
+        "log_sha256": "7cd4e25f186a89af4271d49bbc9a9f763992b00ed2a8b1f8b7e7d619c4c7a109"
+      }
+    },
+    "preflight_audit": {
+      "observed_sha256": "e52fefd1718adca0907707acda4b1a65350ea3deaaced03d130de74ec7b72c2e",
+      "window_count": 18707,
+      "embryo_6bba": {
+        "known_two_daughter_parent": 108,
+        "known_two_daughter_set_recovered": 107,
+        "missing_known_daughters": 131
+      },
+      "embryo_44b6": {
+        "known_two_daughter_parent": 22,
+        "known_two_daughter_set_recovered": 21,
+        "missing_known_daughters": 8
+      },
+      "sha_file_download_verified": true
+    },
+    "runtime_gate": {
+      "fold_0": {
+        "projected_total_seconds": 37514.85154853187,
+        "projected_decode_seconds": 22180.00446416389,
+        "projected_train_seconds": 2829.8965681906902,
+        "passed": true
+      },
+      "fold_1_v2": {
+        "projected_total_seconds": 59272.023203529345,
+        "projected_decode_seconds": 37428.425971874654,
+        "projected_train_seconds": 2086.2561638115762,
+        "passed": false,
+        "invalid_projection": true,
+        "reason": "v2 projected two folds at fold 1 despite completed fold 0"
+      },
+      "fold_1_v3_corrected_estimate": {
+        "projected_remaining_seconds": 29636.011601764672,
+        "source": "v2 fold 1 benchmark, excluding completed fold 0",
+        "kaggle_run_verified": false
+      },
+      "fold_1_v5": {
+        "projected_total_seconds": 28522.13822674059,
+        "projected_decode_seconds": 17948.122846244067,
+        "projected_train_seconds": 1066.6359715829935,
+        "remaining_folds": 1,
+        "passed": true,
+        "source": "Kaggle kernel version 4 live log"
+      }
+    },
+    "two_frame_partial": {
+      "fold_0": {
+        "evaluation_embryo": "6bba",
+        "summary_sha256": "7bb4f30bccf2d54fcc0dba9924a0126c2da496e486ee846d0bd03cb2ff8de764",
+        "model_sha256": "85318b8c64c1b102e4452e885619514a31721cc64188237dea3b12715d2807a0",
+        "selected_epoch": 3,
+        "edge_cost": 0.0,
+        "direct": {
+          "candidate_sets": 53338730,
+          "correct_null": 563,
+          "edge_cost": 0.0,
+          "known_division_parents": 108,
+          "known_division_recall": 0.0,
+          "known_edge_recall": 0.9201976923002524,
+          "known_edges": 103393,
+          "known_null": 1983,
+          "observable_false_edge_rate": 0.06779532341330094,
+          "observable_false_edges": 7144,
+          "optimized_sets": 30530266,
+          "pruned_sets": 22808464,
+          "recovered_division_parents": 0,
+          "selected_edges": 2108118,
+          "selected_unknown_children": 2005832,
+          "selection_accuracy": 0.9082238839963559,
+          "set_teacher": {
+            "candidate_sets": 53338730,
+            "known_negative_candidate_daughters": 283463,
+            "known_outdegree_0": 2296586,
+            "known_outdegree_1": 103177,
+            "known_outdegree_2": 108,
+            "known_two_daughter_parent": 108,
+            "known_two_daughter_set_recovered": 107,
+            "missing_known_daughters": 131,
+            "mothers": 2399871,
+            "parent_with_missing_known_daughter": 131,
+            "supervised_negative_only_parents": 255361,
+            "supervised_parents": 358515,
+            "supervised_positive_parents": 103154,
+            "unknown_candidate_daughters": 13001452
+          },
+          "structural_violations": 0,
+          "teacher": {
+            "ambiguous_incoming": 0,
+            "known_parent": 103393,
+            "known_parent_outside_candidates": 1983,
+            "unknown": 2290192
+          },
+          "true_positive_edges": 95142,
+          "unknown_children": 2290192
+        },
+        "control": {
+          "edge_threshold": 0.48,
+          "known_division_parents": 108,
+          "known_division_recall": 0.46296296296296297,
+          "known_edge_recall": 0.9719903668526882,
+          "known_edges": 103393,
+          "known_null": 1983,
+          "observable_false_edge_rate": 0.029427953234133008,
+          "observable_false_edges": 3101,
+          "recovered_division_parents": 50,
+          "selected_edges": 2145202,
+          "stage": "exp016_saved_primary_tracker_before_ilp_and_repair",
+          "true_positive_edges": 100497
+        },
+        "early_gate_checks": {
+          "same_supervised_children": true,
+          "structural_violations": true,
+          "known_division_evidence": true,
+          "known_edge_recall": false,
+          "observable_false_edge_rate": false,
+          "known_division_recall": false
+        },
+        "early_gate_passed": false
+      },
+      "fold_1_pending": false,
+      "full_graph_eligible": false,
+      "fold_1": {
+        "evaluation_embryo": "44b6",
+        "summary_sha256": "49c78da22fb12c051302b7b4c26ba9e17ad9198f66451c68dbd587399d968edb",
+        "model_sha256": "04da9548b6152882a28d07e95714a6121cd196974e510c4cf4480bd854dea589",
+        "selected_epoch": 3,
+        "edge_cost": 0.0,
+        "direct": {
+          "candidate_sets": 52969861,
+          "correct_null": 181,
+          "edge_cost": 0.0,
+          "known_division_parents": 22,
+          "known_division_recall": 0.0,
+          "known_edge_recall": 0.9410522982743152,
+          "known_edges": 18949,
+          "known_null": 379,
+          "observable_false_edge_rate": 0.04842715231788079,
+          "observable_false_edges": 936,
+          "optimized_sets": 29565911,
+          "pruned_sets": 23403950,
+          "recovered_division_parents": 0,
+          "selected_edges": 1874580,
+          "selected_unknown_children": 1855812,
+          "selection_accuracy": 0.9319639900662252,
+          "set_teacher": {
+            "candidate_sets": 52969861,
+            "known_negative_candidate_daughters": 109341,
+            "known_outdegree_0": 2099863,
+            "known_outdegree_1": 18905,
+            "known_outdegree_2": 22,
+            "known_two_daughter_parent": 22,
+            "known_two_daughter_set_recovered": 21,
+            "missing_known_daughters": 8,
+            "mothers": 2118790,
+            "parent_with_missing_known_daughter": 8,
+            "supervised_negative_only_parents": 99942,
+            "supervised_parents": 118861,
+            "supervised_positive_parents": 18919,
+            "unknown_candidate_daughters": 12842685
+          },
+          "structural_violations": 0,
+          "teacher": {
+            "ambiguous_incoming": 0,
+            "known_parent": 18949,
+            "known_parent_outside_candidates": 379,
+            "unknown": 2099393
+          },
+          "true_positive_edges": 17832,
+          "unknown_children": 2099393
+        },
+        "control": {
+          "edge_threshold": 0.48,
+          "known_division_parents": 22,
+          "known_division_recall": 0.2727272727272727,
+          "known_edge_recall": 0.9529790490263338,
+          "known_edges": 18949,
+          "known_null": 379,
+          "observable_false_edge_rate": 0.036061672185430466,
+          "observable_false_edges": 697,
+          "recovered_division_parents": 6,
+          "selected_edges": 1900345,
+          "stage": "exp016_saved_primary_tracker_before_ilp_and_repair",
+          "true_positive_edges": 18058
+        },
+        "early_gate_checks": {
+          "known_division_evidence": true,
+          "known_division_recall": false,
+          "known_edge_recall": false,
+          "observable_false_edge_rate": false,
+          "same_supervised_children": true,
+          "structural_violations": true
+        },
+        "early_gate_passed": false
+      }
+    },
+    "resume_dataset": {
+      "dataset_id": "kentookumura/exp029-mother-daughter-set-selection-resume-v2",
+      "url": "https://www.kaggle.com/datasets/kentookumura/exp029-mother-daughter-set-selection-resume-v2",
+      "is_private": true,
+      "remote_download_sha_verified": true,
+      "files": {
+        "candidate_teacher_audit.json": "e52fefd1718adca0907707acda4b1a65350ea3deaaced03d130de74ec7b72c2e",
+        "fold_0_summary.json": "7bb4f30bccf2d54fcc0dba9924a0126c2da496e486ee846d0bd03cb2ff8de764",
+        "fold_0_best.pth": "85318b8c64c1b102e4452e885619514a31721cc64188237dea3b12715d2807a0"
+      }
+    },
+    "train_stage": {
+      "cache_identity_sha256": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "cache_summary_sha256": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+      "candidate_teacher_audit_sha256": "e52fefd1718adca0907707acda4b1a65350ea3deaaced03d130de74ec7b72c2e",
+      "early_gate_passed": false,
+      "early_gate_sha256": "4258e18a7ca89441e201ba9c76ab35094825303d9ea90bc416c7e585920f1014",
+      "folds": [
+        {
+          "control_two_frame": {
+            "edge_threshold": 0.48,
+            "known_division_parents": 108,
+            "known_division_recall": 0.46296296296296297,
+            "known_edge_recall": 0.9719903668526882,
+            "known_edges": 103393,
+            "known_null": 1983,
+            "observable_false_edge_rate": 0.029427953234133008,
+            "observable_false_edges": 3101,
+            "recovered_division_parents": 50,
+            "selected_edges": 2145202,
+            "stage": "exp016_saved_primary_tracker_before_ilp_and_repair",
+            "true_positive_edges": 100497
+          },
+          "evaluation_embryo": "6bba",
+          "fold": 0,
+          "model_sha256": "85318b8c64c1b102e4452e885619514a31721cc64188237dea3b12715d2807a0",
+          "outer": {
+            "candidate_sets": 53338730,
+            "correct_null": 563,
+            "edge_cost": 0.0,
+            "known_division_parents": 108,
+            "known_division_recall": 0.0,
+            "known_edge_recall": 0.9201976923002524,
+            "known_edges": 103393,
+            "known_null": 1983,
+            "observable_false_edge_rate": 0.06779532341330094,
+            "observable_false_edges": 7144,
+            "optimized_sets": 30530266,
+            "pruned_sets": 22808464,
+            "recovered_division_parents": 0,
+            "selected_edges": 2108118,
+            "selected_unknown_children": 2005832,
+            "selection_accuracy": 0.9082238839963559,
+            "set_teacher": {
+              "candidate_sets": 53338730,
+              "known_negative_candidate_daughters": 283463,
+              "known_outdegree_0": 2296586,
+              "known_outdegree_1": 103177,
+              "known_outdegree_2": 108,
+              "known_two_daughter_parent": 108,
+              "known_two_daughter_set_recovered": 107,
+              "missing_known_daughters": 131,
+              "mothers": 2399871,
+              "parent_with_missing_known_daughter": 131,
+              "supervised_negative_only_parents": 255361,
+              "supervised_parents": 358515,
+              "supervised_positive_parents": 103154,
+              "unknown_candidate_daughters": 13001452
+            },
+            "structural_violations": 0,
+            "teacher": {
+              "ambiguous_incoming": 0,
+              "known_parent": 103393,
+              "known_parent_outside_candidates": 1983,
+              "unknown": 2290192
+            },
+            "true_positive_edges": 95142,
+            "unknown_children": 2290192
+          }
+        },
+        {
+          "control_two_frame": {
+            "edge_threshold": 0.48,
+            "known_division_parents": 22,
+            "known_division_recall": 0.2727272727272727,
+            "known_edge_recall": 0.9529790490263338,
+            "known_edges": 18949,
+            "known_null": 379,
+            "observable_false_edge_rate": 0.036061672185430466,
+            "observable_false_edges": 697,
+            "recovered_division_parents": 6,
+            "selected_edges": 1900345,
+            "stage": "exp016_saved_primary_tracker_before_ilp_and_repair",
+            "true_positive_edges": 18058
+          },
+          "evaluation_embryo": "44b6",
+          "fold": 1,
+          "model_sha256": "04da9548b6152882a28d07e95714a6121cd196974e510c4cf4480bd854dea589",
+          "outer": {
+            "candidate_sets": 52969861,
+            "correct_null": 181,
+            "edge_cost": 0.0,
+            "known_division_parents": 22,
+            "known_division_recall": 0.0,
+            "known_edge_recall": 0.9410522982743152,
+            "known_edges": 18949,
+            "known_null": 379,
+            "observable_false_edge_rate": 0.04842715231788079,
+            "observable_false_edges": 936,
+            "optimized_sets": 29565911,
+            "pruned_sets": 23403950,
+            "recovered_division_parents": 0,
+            "selected_edges": 1874580,
+            "selected_unknown_children": 1855812,
+            "selection_accuracy": 0.9319639900662252,
+            "set_teacher": {
+              "candidate_sets": 52969861,
+              "known_negative_candidate_daughters": 109341,
+              "known_outdegree_0": 2099863,
+              "known_outdegree_1": 18905,
+              "known_outdegree_2": 22,
+              "known_two_daughter_parent": 22,
+              "known_two_daughter_set_recovered": 21,
+              "missing_known_daughters": 8,
+              "mothers": 2118790,
+              "parent_with_missing_known_daughter": 8,
+              "supervised_negative_only_parents": 99942,
+              "supervised_parents": 118861,
+              "supervised_positive_parents": 18919,
+              "unknown_candidate_daughters": 12842685
+            },
+            "structural_violations": 0,
+            "teacher": {
+              "ambiguous_incoming": 0,
+              "known_parent": 18949,
+              "known_parent_outside_candidates": 379,
+              "unknown": 2099393
+            },
+            "true_positive_edges": 17832,
+            "unknown_children": 2099393
+          }
+        }
+      ],
+      "model_count": 2,
+      "model_manifest_sha256": "4c7f440e079147f34e68305be08992d1e1a11e24544495144bd5570824c7b51d",
+      "notebook_runtime_seconds": 5708.2147400680005,
+      "peak_gpu_memory_bytes": 377721856
+    },
+    "division_diagnostic": {
+      "summary_file": "artifacts/division_diagnostic_v1/summary.json",
+      "summary_sha256": "e43394baa60f7acc10cf5d50db8ba2a2dac2abc5c369021d47189e9a3a29158c",
+      "division_rows_sha256": "0304b82f7799564213905efcf94f4bf2dc63fcf918b6101f2c71d4bffd4705ca",
+      "runtime": {
+        "python": "3.14.5",
+        "torch": "2.11.0+cpu",
+        "device": "cpu",
+        "threads": 4
+      },
+      "elapsed_seconds": 224.75253112200153,
+      "sources": {
+        "model_manifest_sha256": "4c7f440e079147f34e68305be08992d1e1a11e24544495144bd5570824c7b51d",
+        "train_source_sha256": "eb877ebe9e229de21a33c70c01037ef826019b00b2c1ddade1029e8278f862c0",
+        "diagnostic_source_sha256": "a00180721a1adbdc1486301882111f86de4acbef2986fa49af9dd1624852ae51",
+        "config_sha256": "21f9362f3cdc6aead013f4926b82d5ddaf31dce205e680c1306dbfff09e5f4c1",
+        "input_manifest_sha256": "9ebd0f184cfa1b85fcc5dbd6c5643ef8aedd4c0ba808568bbee8175ee14a0c25",
+        "cache_summary_sha256": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+        "geff_archive_sha256": "917b7d354bab6346cfb94dff6ccc478ad52f94a82effafeb2b7e543b5d344663"
+      },
+      "coverage": {
+        "windows_with_gt_division": 151,
+        "windows_with_matched_division": 130
+      },
+      "by_fold_split": {
+        "fold_0_gradient": {
+          "known_divisions": 19,
+          "candidate_covered": 19,
+          "true_set_retained": 17,
+          "independent_correct": 0,
+          "true_subset_dominated": 19,
+          "decoded_correct": 0,
+          "full_catalog_decoded_correct": 0,
+          "full_catalog_evaluated": 0,
+          "independent_cardinality": {
+            "1": 19
+          },
+          "decoded_cardinality": {
+            "1": 18,
+            "0": 1
+          },
+          "decoded_correct_daughters": {
+            "1": 16,
+            "0": 3
+          },
+          "true_set_rank_nonempty": {
+            "min": 3.0,
+            "p25": 6.5,
+            "median": 9.0,
+            "p75": 12.0,
+            "max": 24.0
+          },
+          "true_set_probability": {
+            "min": 1.615428449314317e-07,
+            "p25": 2.1141867193340313e-05,
+            "median": 0.0002146796034277713,
+            "p75": 0.0007118237499698515,
+            "max": 0.08548759538063809
+          },
+          "true_minus_best_own_subset": {
+            "min": -15.124536752700806,
+            "p25": -10.77518081665039,
+            "median": -7.9770194590091705,
+            "p75": -5.900840759277344,
+            "max": -1.829564094543457
+          },
+          "true_minus_best_singleton": {
+            "min": -15.4132719039917,
+            "p25": -10.77518081665039,
+            "median": -8.249605655670166,
+            "p75": -6.851818203926086,
+            "max": -1.829564094543457
+          },
+          "true_minus_best_pair": {
+            "min": -6.262024253606796,
+            "p25": -3.4198760986328125,
+            "median": -1.4414491653442383,
+            "p75": -0.4321378469467163,
+            "max": 0.0
+          },
+          "pair_probability_mass": {
+            "min": 1.5345965553273003e-06,
+            "p25": 0.000395820359496927,
+            "median": 0.0013645599124018667,
+            "p75": 0.01806178649742268,
+            "max": 0.09648912403847498
+          }
+        },
+        "fold_0_internal": {
+          "known_divisions": 3,
+          "candidate_covered": 2,
+          "true_set_retained": 2,
+          "independent_correct": 0,
+          "true_subset_dominated": 2,
+          "decoded_correct": 0,
+          "full_catalog_decoded_correct": 0,
+          "full_catalog_evaluated": 0,
+          "independent_cardinality": {
+            "1": 3
+          },
+          "decoded_cardinality": {
+            "1": 3
+          },
+          "decoded_correct_daughters": {
+            "1": 3
+          },
+          "true_set_rank_nonempty": {
+            "min": 5.0,
+            "p25": 6.75,
+            "median": 8.5,
+            "p75": 10.25,
+            "max": 12.0
+          },
+          "true_set_probability": {
+            "min": 0.00015720176351802714,
+            "p25": 0.00021377700230608814,
+            "median": 0.0002703522410941491,
+            "p75": 0.0003269274798822101,
+            "max": 0.0003835027186702711
+          },
+          "true_minus_best_own_subset": {
+            "min": -8.569406747817993,
+            "p25": -8.269245952367783,
+            "median": -7.969085156917572,
+            "p75": -7.6689243614673615,
+            "max": -7.368763566017151
+          },
+          "true_minus_best_singleton": {
+            "min": -8.569406747817993,
+            "p25": -8.269245952367783,
+            "median": -7.969085156917572,
+            "p75": -7.6689243614673615,
+            "max": -7.368763566017151
+          },
+          "true_minus_best_pair": {
+            "min": -2.4045064449310303,
+            "p25": -1.8033798336982727,
+            "median": -1.2022532224655151,
+            "p75": -0.6011266112327576,
+            "max": 0.0
+          },
+          "pair_probability_mass": {
+            "min": 0.0002609295604631791,
+            "p25": 0.003168763157733478,
+            "median": 0.006076596755003777,
+            "p75": 0.008837029095242074,
+            "max": 0.011597461435480372
+          }
+        },
+        "fold_0_outer": {
+          "known_divisions": 108,
+          "candidate_covered": 107,
+          "true_set_retained": 93,
+          "independent_correct": 0,
+          "true_subset_dominated": 107,
+          "decoded_correct": 0,
+          "full_catalog_decoded_correct": 0,
+          "full_catalog_evaluated": 108,
+          "independent_cardinality": {
+            "1": 108
+          },
+          "decoded_cardinality": {
+            "1": 107,
+            "0": 1
+          },
+          "decoded_correct_daughters": {
+            "1": 99,
+            "0": 9
+          },
+          "true_set_rank_nonempty": {
+            "min": 2.0,
+            "p25": 4.0,
+            "median": 7.0,
+            "p75": 10.0,
+            "max": 35.0
+          },
+          "true_set_probability": {
+            "min": 5.0988075256569344e-12,
+            "p25": 4.9352190796900736e-06,
+            "median": 0.00010135604556589487,
+            "p75": 0.000896452790602354,
+            "max": 0.04751815088868958
+          },
+          "true_minus_best_own_subset": {
+            "min": -25.07158660888672,
+            "p25": -11.587343335151672,
+            "median": -8.831577777862549,
+            "p75": -6.598929703235626,
+            "max": -0.5153863430023193
+          },
+          "true_minus_best_singleton": {
+            "min": -25.07158660888672,
+            "p25": -12.108268111944199,
+            "median": -8.8960120677948,
+            "p75": -6.708444267511368,
+            "max": -2.1185131072998047
+          },
+          "true_minus_best_pair": {
+            "min": -20.363480806350708,
+            "p25": -2.981363356113434,
+            "median": -1.082777976989746,
+            "p75": 0.0,
+            "max": 0.0
+          },
+          "pair_probability_mass": {
+            "min": 1.7756036080075204e-07,
+            "p25": 8.537501704470872e-05,
+            "median": 0.0007528562654138901,
+            "p75": 0.00823123761348295,
+            "max": 0.3375954795411977
+          }
+        },
+        "fold_1_gradient": {
+          "known_divisions": 99,
+          "candidate_covered": 98,
+          "true_set_retained": 83,
+          "independent_correct": 0,
+          "true_subset_dominated": 98,
+          "decoded_correct": 0,
+          "full_catalog_decoded_correct": 0,
+          "full_catalog_evaluated": 0,
+          "independent_cardinality": {
+            "1": 99
+          },
+          "decoded_cardinality": {
+            "1": 99
+          },
+          "decoded_correct_daughters": {
+            "1": 96,
+            "0": 3
+          },
+          "true_set_rank_nonempty": {
+            "min": 2.0,
+            "p25": 5.0,
+            "median": 7.0,
+            "p75": 12.0,
+            "max": 31.0
+          },
+          "true_set_probability": {
+            "min": 1.8335784202265413e-06,
+            "p25": 5.484575094617645e-05,
+            "median": 0.00012927657906458746,
+            "p75": 0.0006031710862462639,
+            "max": 0.0267326218218288
+          },
+          "true_minus_best_own_subset": {
+            "min": -13.20488452911377,
+            "p25": -9.691754043102264,
+            "median": -8.384055137634277,
+            "p75": -7.048051215708256,
+            "max": -3.5580484867095947
+          },
+          "true_minus_best_singleton": {
+            "min": -13.20488452911377,
+            "p25": -9.691754043102264,
+            "median": -8.524921238422394,
+            "p75": -7.048051215708256,
+            "max": -3.5580484867095947
+          },
+          "true_minus_best_pair": {
+            "min": -3.4053802490234375,
+            "p25": -0.938860297203064,
+            "median": -0.3704688549041748,
+            "p75": 0.0,
+            "max": 0.0
+          },
+          "pair_probability_mass": {
+            "min": 1.082821839334805e-05,
+            "p25": 0.0003097076561064515,
+            "median": 0.0010268608392156912,
+            "p75": 0.004469851409997966,
+            "max": 0.07297413809792688
+          }
+        },
+        "fold_1_internal": {
+          "known_divisions": 9,
+          "candidate_covered": 9,
+          "true_set_retained": 9,
+          "independent_correct": 0,
+          "true_subset_dominated": 9,
+          "decoded_correct": 0,
+          "full_catalog_decoded_correct": 0,
+          "full_catalog_evaluated": 0,
+          "independent_cardinality": {
+            "1": 9
+          },
+          "decoded_cardinality": {
+            "1": 9
+          },
+          "decoded_correct_daughters": {
+            "1": 9
+          },
+          "true_set_rank_nonempty": {
+            "min": 4.0,
+            "p25": 5.0,
+            "median": 6.0,
+            "p75": 11.0,
+            "max": 12.0
+          },
+          "true_set_probability": {
+            "min": 2.2561982183674605e-05,
+            "p25": 5.6560750097937235e-05,
+            "median": 0.0003316126965194358,
+            "p75": 0.0005162376579006777,
+            "max": 0.002555859872018721
+          },
+          "true_minus_best_own_subset": {
+            "min": -10.476640462875366,
+            "p25": -9.28473424911499,
+            "median": -7.734548091888428,
+            "p75": -7.357752203941345,
+            "max": -5.340312480926514
+          },
+          "true_minus_best_singleton": {
+            "min": -10.476640462875366,
+            "p25": -9.298973828554153,
+            "median": -7.734548091888428,
+            "p75": -7.357752203941345,
+            "max": -5.340312480926514
+          },
+          "true_minus_best_pair": {
+            "min": -1.7760624885559082,
+            "p25": -0.4992389678955078,
+            "median": -0.23362350463867188,
+            "p75": 0.0,
+            "max": 0.0
+          },
+          "pair_probability_mass": {
+            "min": 0.00013721465982992356,
+            "p25": 0.0002626161400484787,
+            "median": 0.0004916921305759204,
+            "p75": 0.006526654187347314,
+            "max": 0.04979504278219909
+          }
+        },
+        "fold_1_outer": {
+          "known_divisions": 22,
+          "candidate_covered": 21,
+          "true_set_retained": 16,
+          "independent_correct": 0,
+          "true_subset_dominated": 21,
+          "decoded_correct": 0,
+          "full_catalog_decoded_correct": 0,
+          "full_catalog_evaluated": 22,
+          "independent_cardinality": {
+            "1": 22
+          },
+          "decoded_cardinality": {
+            "1": 22
+          },
+          "decoded_correct_daughters": {
+            "1": 22
+          },
+          "true_set_rank_nonempty": {
+            "min": 3.0,
+            "p25": 10.0,
+            "median": 13.0,
+            "p75": 15.0,
+            "max": 32.0
+          },
+          "true_set_probability": {
+            "min": 1.1498228682002236e-07,
+            "p25": 2.27398917873474e-05,
+            "median": 0.0001945526306728859,
+            "p75": 0.0005100634728525241,
+            "max": 0.0012413411949129508
+          },
+          "true_minus_best_own_subset": {
+            "min": -15.975675582885742,
+            "p25": -9.92901074886322,
+            "median": -8.379069089889526,
+            "p75": -7.138322949409485,
+            "max": -5.983200788497925
+          },
+          "true_minus_best_singleton": {
+            "min": -15.975675582885742,
+            "p25": -9.92901074886322,
+            "median": -8.379069089889526,
+            "p75": -7.138322949409485,
+            "max": -6.106898903846741
+          },
+          "true_minus_best_pair": {
+            "min": -2.7504191398620605,
+            "p25": -1.171985149383545,
+            "median": -0.9982223510742188,
+            "p75": -0.611638069152832,
+            "max": 0.0
+          },
+          "pair_probability_mass": {
+            "min": 5.104765304304472e-06,
+            "p25": 0.0005748299882969483,
+            "median": 0.0026978268447564353,
+            "p75": 0.0052789624500735564,
+            "max": 0.04816066205521004
+          }
+        }
+      },
+      "window_counts": {
+        "fold_0_gradient": {
+          "windows": 19,
+          "mothers": 5475,
+          "decoded_two_daughter_mothers": 3,
+          "independent_two_daughter_mothers": 1
+        },
+        "fold_0_internal": {
+          "windows": 3,
+          "mothers": 1211,
+          "decoded_two_daughter_mothers": 1,
+          "independent_two_daughter_mothers": 0
+        },
+        "fold_0_outer": {
+          "windows": 108,
+          "mothers": 26006,
+          "decoded_two_daughter_mothers": 16,
+          "independent_two_daughter_mothers": 34
+        },
+        "fold_1_gradient": {
+          "windows": 99,
+          "mothers": 24155,
+          "decoded_two_daughter_mothers": 0,
+          "independent_two_daughter_mothers": 0
+        },
+        "fold_1_internal": {
+          "windows": 9,
+          "mothers": 1851,
+          "decoded_two_daughter_mothers": 0,
+          "independent_two_daughter_mothers": 0
+        },
+        "fold_1_outer": {
+          "windows": 22,
+          "mothers": 6686,
+          "decoded_two_daughter_mothers": 0,
+          "independent_two_daughter_mothers": 0
+        }
+      },
+      "outer_correct_pair_best_within_pairs": 42,
+      "outer_correct_pair_dominated_by_own_subset": 128,
+      "gradient_covered_divisions": 117,
+      "gradient_recovered_divisions": 0,
+      "same_known_division_counts_and_recovery_as_kaggle": true,
+      "interpretation": "Every covered true division has lower adjusted logit than its own singleton or empty subset; global optimization therefore cannot select it. Removing candidate-set pruning recovers no true divisions. Final weights also miss all 117 supervised training divisions with candidate coverage.",
+      "training_cause": "Not isolated; sparse confirmed divisions and accuracy-based checkpoint selection are supported contributors, not causal ablation results."
+    }
+  },
+  "notes": "Kaggle kernel version 4 completed fold 1 using SHA-verified v2 resume artifacts. Both outer embryos fail the two-frame early gate for known-edge recall, observable false-edge rate, and division recovery against saved exp016. Full graph and official score remain unmeasured; adoption and completion await user judgment. Division diagnostic on all 151 GT-division windows reproduced the saved counts. All 128 covered outer divisions are dominated by their own proper subset before decoding; removing pruning still recovers zero. The final models also recover none of the 117 covered training divisions.",
+  "updated_at": "2026-09-20T23:49:33.792562+00:00"
+}

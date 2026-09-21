@@ -36,6 +36,7 @@
 | exp025_kalman_hungarian_links | kalman_hungarian_fixed_divisions | exp016_frozen_image_encoder | 破棄 | 0.8733317200940277 | - | - | 2026-09-20 |
 | exp027_multi_frame_tracker | frozen_feature_local_three_frame_tracker | exp016_frozen_image_encoder | 完了 | - | - | - | 2026-09-20 |
 | exp028_direct_graph_prediction | direct_parent_selection | exp016_frozen_image_encoder | デバッグ完了 | - | - | - | 2026-09-20 |
+| exp029_mother_daughter_set_selection | mother_daughter_set_selection | exp028_direct_graph_prediction | デバッグ完了 | - | - | - | 2026-09-20 |
 | exp030_frame_self_attention_diagnostics | frozen_feature_primary_tracker_diagnostic | exp016_frozen_image_encoder | 完了 | - | - | - | 2026-09-20 |
 | exp032_three_frame_ten_epoch_training | frozen_feature_local_three_frame_tracker | exp027_multi_frame_tracker | デバッグ完了 | - | - | - | 2026-09-20 |
 | exp033_frame_self_attention_diagnostics | frozen_feature_primary_tracker_diagnostic | exp025_frame_self_attention | 完了 | - | - | - | 2026-09-21 |
