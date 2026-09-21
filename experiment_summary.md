@@ -37,5 +37,6 @@
 | exp027_multi_frame_tracker | frozen_feature_local_three_frame_tracker | exp016_frozen_image_encoder | 完了 | - | - | - | 2026-09-20 |
 | exp028_direct_graph_prediction | direct_parent_selection | exp016_frozen_image_encoder | デバッグ完了 | - | - | - | 2026-09-20 |
 | exp030_frame_self_attention_diagnostics | frozen_feature_primary_tracker_diagnostic | exp016_frozen_image_encoder | 完了 | - | - | - | 2026-09-20 |
+| exp032_three_frame_ten_epoch_training | frozen_feature_local_three_frame_tracker | exp027_multi_frame_tracker | デバッグ完了 | - | - | - | 2026-09-20 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->
