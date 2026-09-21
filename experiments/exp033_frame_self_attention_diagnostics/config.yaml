@@ -1,0 +1,128 @@
+experiment:
+  name: exp033_frame_self_attention_diagnostics
+  description: 保存済み4構成のpair確率と条件別誤りを同じ固定windowで比較する
+  route: frozen_feature_primary_tracker_diagnostic
+  notebooks: [diagnostic]
+  created_at: '2026-09-21'
+lineage:
+  parent: exp025_frame_self_attention
+  hypothesis_id: HYP-20260920-02
+  backlog_candidate: frame_self_attention_diagnostics
+  diff_summary: exp025 A/B/恒等初期化Bとexp016現行のPR曲線・条件別誤りを追加学習なしで比較
+validation:
+  strategy: leave_one_embryo_out_conditional_diagnostic
+  seed: 42
+  n_folds: 2
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  outer_folds:
+    - {fold: 0, train_embryo: 44b6, evaluation_embryo: 6bba, expected_train_sample_count: 64, expected_internal_validation_sample_count: 7, expected_evaluation_sample_count: 128}
+    - {fold: 1, train_embryo: 6bba, evaluation_embryo: 44b6, expected_train_sample_count: 116, expected_internal_validation_sample_count: 12, expected_evaluation_sample_count: 71}
+  benchmark_reference_metrics: experiments/exp025_frame_self_attention/metrics.json
+  target_precision: 0.95
+  tie_policy: include_all_pairs_with_equal_float32_score
+  threshold_for_legacy_reproduction: 0.5
+  threshold_comparator: strict_greater_than
+  pair_population: legacy_active_pair_mask
+  sensitivity_population: active_pairs_with_both_endpoints_matched
+  quantiles_from: gradient_update_windows_per_fold
+  quantile_points: [0.25, 0.5, 0.75]
+  min_positive_edges_per_bucket: 30
+  min_division_parents_for_ratio: 10
+data:
+  source: exp015_train_window_cache_and_competition_geff
+  cache:
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    summary_file: window_cache_summary.json
+    summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+    identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+    directory: window_cache
+    schema_version: 1
+    expected_dataset_count: 199
+    expected_window_count: 19701
+    feature_channels: 32
+    public_checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+    arrays: [candidate_ids_src, candidate_ids_tgt, coords_src_grid, coords_tgt_grid, coords_src_physical, coords_tgt_physical, detection_scores_src, detection_scores_tgt, position_features_src, position_features_tgt, candidate_mask_src, candidate_mask_tgt, primary_features_src, primary_features_tgt, secondary_features_src, secondary_features_tgt]
+  annotation:
+    voxel_scale_zyx_um: [1.625, 0.40625, 0.40625]
+  expected_embryo_counts: {44b6: 71, 6bba: 128}
+model:
+  name: SimpleNodeTransformer
+  training: disabled
+  loss: none
+  teacher:
+    matching: greedy_distance_order_one_to_one
+    max_matching_distance_um: 5.0
+  params:
+    feature_dim: 64
+    hidden_dim: 128
+    n_heads: 4
+    n_blocks: 4
+    n_self_blocks: 2
+    mlp_ratio: 2.0
+    dropout: 0.3
+    pair_chunk_size: 32
+    downsample_zyx: [1, 4, 4]
+  checkpoints:
+    current:
+      kernel_source: kentookumura/exp016-frozen-image-encoder-train
+      manifest_sha256: 6f9548739ae6f58d3c8beb7ccb78464ddc10243841b1fc7e071ed876f757ea56
+      model_source_sha256: b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e
+      file_sha256_by_fold: {'0': c775ddabc2df623b08c39e548bebc887a73e790cc89bd9a9e1cb2c3506eff9d2, '1': ef8b60dc1a34e336942f9abaefdd47606a457e0f569363434619992980d0c5e9}
+    model_a:
+      kernel_source: kentookumura/exp025-frame-self-attention-a-train
+      manifest_sha256: c0e70224a14de199119c0104e51c002f7b6121bc562dc4727f52703998e80e3c
+      model_source_sha256: e4477b188d835c269db2c61c7b62f129a41925cc8ff300ab06ca9a49a5559383
+      file_sha256_by_fold: {'0': 3360201c84349d96b2ae4ca8a4b0d61947478e40098dac7a5f55aaaa445fdb15, '1': a11d8ec53a75dd1f6b576882b8fdf8b796548f7f15ab0f480b461e4970c5da50}
+    model_b:
+      kernel_source: kentookumura/exp025-frame-self-attention-b-train
+      manifest_sha256: 123121e4e882220bfe86af249b6712d6cfe12fa64fed1fa415bdc50d2a21e6ea
+      model_source_sha256: e4477b188d835c269db2c61c7b62f129a41925cc8ff300ab06ca9a49a5559383
+      file_sha256_by_fold: {'0': ad064b9c259f4eaf2482308af7b28faaec41b22b56b32af59ef67de0b26dd2e7, '1': 63f3dcded84dfb33e3e8b594e9fe27cb9b88c498485e980eca44ffb1892857f8}
+    model_b_identity_init:
+      kernel_source: kentookumura/exp025-frame-self-attention-b-identity-train
+      manifest_sha256: 442c25536a64419d2460755a13513edd0f4aa76b39df29d954af5a92359faa4c
+      model_source_sha256: ffd50870b5097183063e43ee1eeec05838b14a9b7aa865ce340861141b447670
+      file_sha256_by_fold: {'0': be990153891f15484dba2f210fc91ef4e005e69ecc0fbd8ca15abb7ab425267d, '1': bb6150321ac5ace61d080889411ae3ee2cdc6d0f47e0eca3b4673d9bf0279e3a}
+runtime:
+  use_amp: false
+  num_workers: 0
+  batch_size: 1
+  benchmark_windows_per_fold: 8
+  projection_multiplier: 1.5
+  weekly_gpu_hours_limit: 30
+  full_notebook_hours_limit: 12
+  available_gpu_hours_limit: 6.3
+  kaggle:
+    diagnostic:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      bootstrap_files: [reference_pair_metrics.json]
+      kernel_sources:
+        - kentookumura/exp015-oracle-stage-limits-inference
+        - kentookumura/exp016-frozen-image-encoder-train
+        - kentookumura/exp025-frame-self-attention-a-train
+        - kentookumura/exp025-frame-self-attention-b-train
+        - kentookumura/exp025-frame-self-attention-b-identity-train
+      dataset_sources: [pilkwang/biohub-tracking-support-pack-50ep-v1]
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_training_sorted_samples_windows_candidates
+  stochastic_components: [cuda_float_reduction]
+  parallel_rng_policy: single_process_sorted_window_inference
+  feature_sha_policy: exp015_cache_summary_and_sorted_window_identity
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+    - 保存済み4構成の8 checkpointのみを再推論する。
+    - 外側胚で閾値・bucketを選ばない。
+notes:
+  - 診断のみ。公式graph scoreとsubmissionは計測しない。

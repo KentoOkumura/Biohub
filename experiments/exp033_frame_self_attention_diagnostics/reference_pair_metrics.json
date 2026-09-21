@@ -1,0 +1,94 @@
+{
+  "6bba": {
+    "control": {
+      "window_count": 12392,
+      "active_pair_count": 42351260,
+      "positive_edge_count": 103393,
+      "division_parent_count": 108,
+      "true_positive_edge_count": 100230,
+      "false_positive_pair_count": 4355,
+      "positive_edge_recall": 0.9694079870010542,
+      "positive_pair_precision": 0.9583592293349906,
+      "division_parent_recall": 0.4444444444444444
+    },
+    "model_a": {
+      "window_count": 12392,
+      "active_pair_count": 42351260,
+      "positive_edge_count": 103393,
+      "division_parent_count": 108,
+      "true_positive_edge_count": 98086,
+      "false_positive_pair_count": 7192,
+      "positive_edge_recall": 0.9486715735107792,
+      "positive_pair_precision": 0.931685632325842,
+      "division_parent_recall": 0.4166666666666667
+    },
+    "model_b": {
+      "window_count": 12392,
+      "active_pair_count": 42351260,
+      "positive_edge_count": 103393,
+      "division_parent_count": 108,
+      "true_positive_edge_count": 100029,
+      "false_positive_pair_count": 5176,
+      "positive_edge_recall": 0.967463948236341,
+      "positive_pair_precision": 0.950800817451642,
+      "division_parent_recall": 0.5185185185185185
+    },
+    "model_b_identity_init": {
+      "window_count": 12392,
+      "active_pair_count": 42351260,
+      "positive_edge_count": 103393,
+      "division_parent_count": 108,
+      "true_positive_edge_count": 99934,
+      "false_positive_pair_count": 4431,
+      "positive_edge_recall": 0.966545123944561,
+      "positive_pair_precision": 0.9575432376754659,
+      "division_parent_recall": 0.46296296296296297
+    }
+  },
+  "44b6": {
+    "control": {
+      "window_count": 6315,
+      "active_pair_count": 13721808,
+      "positive_edge_count": 18949,
+      "division_parent_count": 22,
+      "true_positive_edge_count": 17959,
+      "false_positive_pair_count": 1341,
+      "positive_edge_recall": 0.9477544989181487,
+      "positive_pair_precision": 0.9305181347150259,
+      "division_parent_recall": 0.2727272727272727
+    },
+    "model_a": {
+      "window_count": 6315,
+      "active_pair_count": 13721808,
+      "positive_edge_count": 18949,
+      "division_parent_count": 22,
+      "true_positive_edge_count": 17374,
+      "false_positive_pair_count": 1830,
+      "positive_edge_recall": 0.9168821573697821,
+      "positive_pair_precision": 0.9047073526348678,
+      "division_parent_recall": 0.22727272727272727
+    },
+    "model_b": {
+      "window_count": 6315,
+      "active_pair_count": 13721808,
+      "positive_edge_count": 18949,
+      "division_parent_count": 22,
+      "true_positive_edge_count": 18042,
+      "false_positive_pair_count": 1495,
+      "positive_edge_recall": 0.9521346772916777,
+      "positive_pair_precision": 0.92347852792138,
+      "division_parent_recall": 0.18181818181818182
+    },
+    "model_b_identity_init": {
+      "window_count": 6315,
+      "active_pair_count": 13721808,
+      "positive_edge_count": 18949,
+      "division_parent_count": 22,
+      "true_positive_edge_count": 17781,
+      "false_positive_pair_count": 1164,
+      "positive_edge_recall": 0.9383608633700987,
+      "positive_pair_precision": 0.9385589865399842,
+      "division_parent_recall": 0.18181818181818182
+    }
+  }
+}

@@ -1,0 +1,3478 @@
+{
+  "experiment": "exp033_frame_self_attention_diagnostics",
+  "status": "completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "conditional_fixed_candidate_pair_ranking",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp033-frame-self-attention-diagnostics-diagnostic",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp033-frame-self-attention-diagnostics-diagnostic",
+      "kernel_source_ids": [
+        "kentookumura/exp015-oracle-stage-limits-inference",
+        "kentookumura/exp016-frozen-image-encoder-train",
+        "kentookumura/exp025-frame-self-attention-a-train",
+        "kentookumura/exp025-frame-self-attention-b-train",
+        "kentookumura/exp025-frame-self-attention-b-identity-train"
+      ],
+      "resource": "Tesla T4",
+      "notebook_runtime_seconds": 3330.119322646,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": "998ed732767a4306c0f05f00a25bc6850318cef1b614cb261edd4106a80d9c7b",
+      "cache_file_sha": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+      "feature_schema_sha": "3c7f7870f27ed8b4f79e1ea3c226fde5a2197b750bee221eeb4a613989e7a2fe",
+      "feature_content_sha": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "row_count": 18707,
+      "group_count": 199,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "b52a3193bbc66cb11f4b4a0e96c13403328b174c51aa292a20afd887ea83ca05",
+      "model_count": 8,
+      "model_shas": {
+        "0/current": "c775ddabc2df623b08c39e548bebc887a73e790cc89bd9a9e1cb2c3506eff9d2",
+        "0/model_a": "3360201c84349d96b2ae4ca8a4b0d61947478e40098dac7a5f55aaaa445fdb15",
+        "0/model_b": "ad064b9c259f4eaf2482308af7b28faaec41b22b56b32af59ef67de0b26dd2e7",
+        "0/model_b_identity_init": "be990153891f15484dba2f210fc91ef4e005e69ecc0fbd8ca15abb7ab425267d",
+        "1/current": "ef8b60dc1a34e336942f9abaefdd47606a457e0f569363434619992980d0c5e9",
+        "1/model_a": "a11d8ec53a75dd1f6b576882b8fdf8b796548f7f15ab0f480b461e4970c5da50",
+        "1/model_b": "63f3dcded84dfb33e3e8b594e9fe27cb9b88c498485e980eca44ffb1892857f8",
+        "1/model_b_identity_init": "bb6150321ac5ace61d080889411ae3ee2cdc6d0f47e0eca3b4673d9bf0279e3a"
+      },
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": "2e34f8fd0b7408bcd0ee1a14cbdc335ebe56327f0b600a02bf64038f5226073d",
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": []
+  },
+  "notes": "Saved-checkpoint pair-ranking diagnostic completed on Kaggle. All eight reference 0.5 comparisons reproduced; official graph score and submission were not computed. The user marked exp033 complete on 2026-09-21; Self-Attention architecture adoption remains undecided.",
+  "pair_ranking_diagnostic": {
+    "target_precision": 0.95,
+    "reference_0_5_metrics_sha256": "a25402713ec96069ea7997964defa9871c1f92b83e84b89afc936b20a43100ac",
+    "pair_shard_manifest_sha256": "2e34f8fd0b7408bcd0ee1a14cbdc335ebe56327f0b600a02bf64038f5226073d",
+    "diagnostic_summary_sha256": "c5c93911407cbbe75a4570a02736b7a7a373e42b16a659d3d60ff1fef4fd9ebd",
+    "pair_shard_bytes": 977678779,
+    "fold_benchmarks": {
+      "0": {
+        "window_count": 8,
+        "elapsed_seconds": 6.31973129999983,
+        "seconds_per_window": 0.7899664124999788,
+        "peak_gpu_memory_bytes": 106755584,
+        "projected_seconds": 15505.065761343332,
+        "evaluation_window_count": 12392,
+        "internal_window_count": 693
+      },
+      "1": {
+        "window_count": 8,
+        "elapsed_seconds": 2.2159160500000326,
+        "seconds_per_window": 0.27698950625000407,
+        "peak_gpu_memory_bytes": 110694400,
+        "projected_seconds": 3104.0829017906703,
+        "evaluation_window_count": 6315,
+        "internal_window_count": 1156
+      }
+    },
+    "bucket_boundaries": {
+      "0": {
+        "target_candidate_count": [
+          226.0,
+          325.5,
+          433.0
+        ],
+        "target_nearest_um": [
+          6.700046539306641,
+          8.125,
+          9.334914207458496
+        ],
+        "pair_displacement_um": [
+          1.625,
+          2.814582586288452
+        ]
+      },
+      "1": {
+        "target_candidate_count": [
+          63.0,
+          97.0,
+          266.0
+        ],
+        "target_nearest_um": [
+          6.894290924072266,
+          8.285906791687012,
+          10.2774019241333
+        ],
+        "pair_displacement_um": [
+          1.625,
+          2.2980971336364746,
+          3.25
+        ]
+      }
+    },
+    "official_graph_score_computed": false,
+    "submission_created": false,
+    "input_and_model_audit_sha256": "0bedd9947256dedc5b622ab2b0e2364ee5abd62367730fc83a28a76297f946dc",
+    "verified_pair_shard_count": 218,
+    "verified_pr_curve_count": 32,
+    "sha_verification_passed": true,
+    "fold_results": {
+      "0": {
+        "evaluation_embryo": "6bba",
+        "splits": {
+          "internal_validation": {
+            "current": {
+              "fixed_0_5": {
+                "active_pair_count": 1696295,
+                "division_parent_count": 3,
+                "division_parent_recall": null,
+                "false_positive_pair_count": 126,
+                "positive_edge_count": 2247,
+                "positive_edge_recall": 0.9590565198041834,
+                "positive_pair_precision": 0.9447610697062692,
+                "recovered_division_parent_count": 1,
+                "true_positive_edge_count": 2155,
+                "unknown_endpoint_pair_count": 1685876,
+                "window_count": 693
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 1696295,
+                  "point_count": 1685430,
+                  "positive_count": 2247,
+                  "recall_at_target_precision": 0.9546061415220294,
+                  "sha256": "d346aa1f9a6c73c4d84e24f8a2a0c92657785829219d48a9347d4a6194c108bc",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.5288457870483398
+                },
+                "matched_endpoints": {
+                  "pair_count": 10419,
+                  "point_count": 10418,
+                  "positive_count": 2247,
+                  "recall_at_target_precision": 0.9982198486871384,
+                  "sha256": "4e3728519d90a4e600223ac85f129901c9df2e00fde1b69989d3ee8f7c804ff0",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.043717700988054276
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 407,
+                    "bucket": 0,
+                    "false_positive_pair_count": 10,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 394,
+                    "positive_edge_recall": 1.0,
+                    "positive_pair_precision": 0.9752475247524752,
+                    "true_positive_edge_count": 394,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 1313,
+                    "bucket": 1,
+                    "false_positive_pair_count": 42,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 1254,
+                    "positive_edge_recall": 0.9896331738437002,
+                    "positive_pair_precision": 0.9672642244738893,
+                    "true_positive_edge_count": 1241,
+                    "upper": 2.814582586288452
+                  },
+                  {
+                    "active_pair_count": 1694575,
+                    "bucket": 2,
+                    "false_positive_pair_count": 74,
+                    "lower": 2.814582586288452,
+                    "missing_value": false,
+                    "positive_edge_count": 599,
+                    "positive_edge_recall": 0.8681135225375626,
+                    "positive_pair_precision": 0.8754208754208754,
+                    "true_positive_edge_count": 520,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 169206,
+                    "bucket": 0,
+                    "false_positive_pair_count": 14,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 470,
+                    "positive_edge_recall": 0.9765957446808511,
+                    "positive_pair_precision": 0.9704016913319239,
+                    "true_positive_edge_count": 459,
+                    "upper": 226.0
+                  },
+                  {
+                    "active_pair_count": 151161,
+                    "bucket": 1,
+                    "false_positive_pair_count": 17,
+                    "lower": 226.0,
+                    "missing_value": false,
+                    "positive_edge_count": 259,
+                    "positive_edge_recall": 0.9613899613899614,
+                    "positive_pair_precision": 0.9360902255639098,
+                    "true_positive_edge_count": 249,
+                    "upper": 325.5
+                  },
+                  {
+                    "active_pair_count": 478659,
+                    "bucket": 2,
+                    "false_positive_pair_count": 28,
+                    "lower": 325.5,
+                    "missing_value": false,
+                    "positive_edge_count": 632,
+                    "positive_edge_recall": 0.9525316455696202,
+                    "positive_pair_precision": 0.9555555555555556,
+                    "true_positive_edge_count": 602,
+                    "upper": 433.0
+                  },
+                  {
+                    "active_pair_count": 897269,
+                    "bucket": 3,
+                    "false_positive_pair_count": 67,
+                    "lower": 433.0,
+                    "missing_value": false,
+                    "positive_edge_count": 886,
+                    "positive_edge_recall": 0.95372460496614,
+                    "positive_pair_precision": 0.9265350877192983,
+                    "true_positive_edge_count": 845,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 351351,
+                    "bucket": 0,
+                    "false_positive_pair_count": 76,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 433,
+                    "positive_edge_recall": 0.8983833718244804,
+                    "positive_pair_precision": 0.8365591397849462,
+                    "true_positive_edge_count": 389,
+                    "upper": 6.700046539306641
+                  },
+                  {
+                    "active_pair_count": 479493,
+                    "bucket": 1,
+                    "false_positive_pair_count": 26,
+                    "lower": 6.700046539306641,
+                    "missing_value": false,
+                    "positive_edge_count": 614,
+                    "positive_edge_recall": 0.9609120521172638,
+                    "positive_pair_precision": 0.9577922077922078,
+                    "true_positive_edge_count": 590,
+                    "upper": 8.125
+                  },
+                  {
+                    "active_pair_count": 417046,
+                    "bucket": 2,
+                    "false_positive_pair_count": 12,
+                    "lower": 8.125,
+                    "missing_value": false,
+                    "positive_edge_count": 514,
+                    "positive_edge_recall": 0.9688715953307393,
+                    "positive_pair_precision": 0.9764705882352941,
+                    "true_positive_edge_count": 498,
+                    "upper": 9.334914207458496
+                  },
+                  {
+                    "active_pair_count": 448405,
+                    "bucket": 3,
+                    "false_positive_pair_count": 12,
+                    "lower": 9.334914207458496,
+                    "missing_value": false,
+                    "positive_edge_count": 686,
+                    "positive_edge_recall": 0.9883381924198251,
+                    "positive_pair_precision": 0.9826086956521739,
+                    "true_positive_edge_count": 678,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 1695074,
+                  "bucket": 0,
+                  "false_positive_pair_count": 126,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 2241,
+                  "positive_edge_recall": 0.9598393574297188,
+                  "positive_pair_precision": 0.9446640316205533,
+                  "true_positive_edge_count": 2151,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 1221,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 6,
+                  "positive_edge_recall": null,
+                  "positive_pair_precision": null,
+                  "true_positive_edge_count": 4,
+                  "upper": null
+                }
+              ]
+            },
+            "model_a": {
+              "fixed_0_5": {
+                "active_pair_count": 1696295,
+                "division_parent_count": 3,
+                "division_parent_recall": null,
+                "false_positive_pair_count": 165,
+                "positive_edge_count": 2247,
+                "positive_edge_recall": 0.9390298175344904,
+                "positive_pair_precision": 0.9274725274725275,
+                "recovered_division_parent_count": 0,
+                "true_positive_edge_count": 2110,
+                "unknown_endpoint_pair_count": 1685876,
+                "window_count": 693
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 1696295,
+                  "point_count": 1684560,
+                  "positive_count": 2247,
+                  "recall_at_target_precision": 0.888295505117935,
+                  "sha256": "2743911326bdd056b498784e938b4acc74271b57cfc4d9e8829395dfae8bbd99",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.6307182312011719
+                },
+                "matched_endpoints": {
+                  "pair_count": 10419,
+                  "point_count": 10418,
+                  "positive_count": 2247,
+                  "recall_at_target_precision": 0.9906542056074766,
+                  "sha256": "6857137d5c09c69ee75af00c44f2175ed7b0ecb12a286af31b5e183de7fb438b",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.08051349222660065
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 407,
+                    "bucket": 0,
+                    "false_positive_pair_count": 12,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 394,
+                    "positive_edge_recall": 0.9949238578680203,
+                    "positive_pair_precision": 0.9702970297029703,
+                    "true_positive_edge_count": 392,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 1313,
+                    "bucket": 1,
+                    "false_positive_pair_count": 45,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 1254,
+                    "positive_edge_recall": 0.9936204146730463,
+                    "positive_pair_precision": 0.965143299767622,
+                    "true_positive_edge_count": 1246,
+                    "upper": 2.814582586288452
+                  },
+                  {
+                    "active_pair_count": 1694575,
+                    "bucket": 2,
+                    "false_positive_pair_count": 108,
+                    "lower": 2.814582586288452,
+                    "missing_value": false,
+                    "positive_edge_count": 599,
+                    "positive_edge_recall": 0.7879799666110183,
+                    "positive_pair_precision": 0.8137931034482758,
+                    "true_positive_edge_count": 472,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 169206,
+                    "bucket": 0,
+                    "false_positive_pair_count": 22,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 470,
+                    "positive_edge_recall": 0.9702127659574468,
+                    "positive_pair_precision": 0.9539748953974896,
+                    "true_positive_edge_count": 456,
+                    "upper": 226.0
+                  },
+                  {
+                    "active_pair_count": 151161,
+                    "bucket": 1,
+                    "false_positive_pair_count": 26,
+                    "lower": 226.0,
+                    "missing_value": false,
+                    "positive_edge_count": 259,
+                    "positive_edge_recall": 0.8957528957528957,
+                    "positive_pair_precision": 0.8992248062015504,
+                    "true_positive_edge_count": 232,
+                    "upper": 325.5
+                  },
+                  {
+                    "active_pair_count": 478659,
+                    "bucket": 2,
+                    "false_positive_pair_count": 38,
+                    "lower": 325.5,
+                    "missing_value": false,
+                    "positive_edge_count": 632,
+                    "positive_edge_recall": 0.9287974683544303,
+                    "positive_pair_precision": 0.9392,
+                    "true_positive_edge_count": 587,
+                    "upper": 433.0
+                  },
+                  {
+                    "active_pair_count": 897269,
+                    "bucket": 3,
+                    "false_positive_pair_count": 79,
+                    "lower": 433.0,
+                    "missing_value": false,
+                    "positive_edge_count": 886,
+                    "positive_edge_recall": 0.9424379232505643,
+                    "positive_pair_precision": 0.9135667396061269,
+                    "true_positive_edge_count": 835,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 351351,
+                    "bucket": 0,
+                    "false_positive_pair_count": 94,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 433,
+                    "positive_edge_recall": 0.8775981524249422,
+                    "positive_pair_precision": 0.8016877637130801,
+                    "true_positive_edge_count": 380,
+                    "upper": 6.700046539306641
+                  },
+                  {
+                    "active_pair_count": 479493,
+                    "bucket": 1,
+                    "false_positive_pair_count": 38,
+                    "lower": 6.700046539306641,
+                    "missing_value": false,
+                    "positive_edge_count": 614,
+                    "positive_edge_recall": 0.9381107491856677,
+                    "positive_pair_precision": 0.9381107491856677,
+                    "true_positive_edge_count": 576,
+                    "upper": 8.125
+                  },
+                  {
+                    "active_pair_count": 417046,
+                    "bucket": 2,
+                    "false_positive_pair_count": 18,
+                    "lower": 8.125,
+                    "missing_value": false,
+                    "positive_edge_count": 514,
+                    "positive_edge_recall": 0.9474708171206225,
+                    "positive_pair_precision": 0.9643564356435643,
+                    "true_positive_edge_count": 487,
+                    "upper": 9.334914207458496
+                  },
+                  {
+                    "active_pair_count": 448405,
+                    "bucket": 3,
+                    "false_positive_pair_count": 15,
+                    "lower": 9.334914207458496,
+                    "missing_value": false,
+                    "positive_edge_count": 686,
+                    "positive_edge_recall": 0.9723032069970845,
+                    "positive_pair_precision": 0.9780058651026393,
+                    "true_positive_edge_count": 667,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 1695074,
+                  "bucket": 0,
+                  "false_positive_pair_count": 165,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 2241,
+                  "positive_edge_recall": 0.9402052655064703,
+                  "positive_pair_precision": 0.9273767605633803,
+                  "true_positive_edge_count": 2107,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 1221,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 6,
+                  "positive_edge_recall": null,
+                  "positive_pair_precision": null,
+                  "true_positive_edge_count": 3,
+                  "upper": null
+                }
+              ]
+            },
+            "model_b": {
+              "fixed_0_5": {
+                "active_pair_count": 1696295,
+                "division_parent_count": 3,
+                "division_parent_recall": null,
+                "false_positive_pair_count": 138,
+                "positive_edge_count": 2247,
+                "positive_edge_recall": 0.9581664441477525,
+                "positive_pair_precision": 0.939764295067656,
+                "recovered_division_parent_count": 0,
+                "true_positive_edge_count": 2153,
+                "unknown_endpoint_pair_count": 1685876,
+                "window_count": 693
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 1696295,
+                  "point_count": 1685021,
+                  "positive_count": 2247,
+                  "recall_at_target_precision": 0.9510458388963062,
+                  "sha256": "72f0c881b0bb755fa697ed042c334f117f87955807ed6eea54662b829d201a9d",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.5438812971115112
+                },
+                "matched_endpoints": {
+                  "pair_count": 10419,
+                  "point_count": 10416,
+                  "positive_count": 2247,
+                  "recall_at_target_precision": 0.9986648865153538,
+                  "sha256": "db5b910facc210194f08d679e60adca8d28b381e6d0de849d19ad7051d26c3d9",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.04443206638097763
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 407,
+                    "bucket": 0,
+                    "false_positive_pair_count": 13,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 394,
+                    "positive_edge_recall": 1.0,
+                    "positive_pair_precision": 0.9680589680589681,
+                    "true_positive_edge_count": 394,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 1313,
+                    "bucket": 1,
+                    "false_positive_pair_count": 45,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 1254,
+                    "positive_edge_recall": 0.9960127591706539,
+                    "positive_pair_precision": 0.9652241112828439,
+                    "true_positive_edge_count": 1249,
+                    "upper": 2.814582586288452
+                  },
+                  {
+                    "active_pair_count": 1694575,
+                    "bucket": 2,
+                    "false_positive_pair_count": 80,
+                    "lower": 2.814582586288452,
+                    "missing_value": false,
+                    "positive_edge_count": 599,
+                    "positive_edge_recall": 0.8514190317195326,
+                    "positive_pair_precision": 0.864406779661017,
+                    "true_positive_edge_count": 510,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 169206,
+                    "bucket": 0,
+                    "false_positive_pair_count": 16,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 470,
+                    "positive_edge_recall": 0.9808510638297873,
+                    "positive_pair_precision": 0.9664570230607966,
+                    "true_positive_edge_count": 461,
+                    "upper": 226.0
+                  },
+                  {
+                    "active_pair_count": 151161,
+                    "bucket": 1,
+                    "false_positive_pair_count": 19,
+                    "lower": 226.0,
+                    "missing_value": false,
+                    "positive_edge_count": 259,
+                    "positive_edge_recall": 0.9498069498069498,
+                    "positive_pair_precision": 0.9283018867924528,
+                    "true_positive_edge_count": 246,
+                    "upper": 325.5
+                  },
+                  {
+                    "active_pair_count": 478659,
+                    "bucket": 2,
+                    "false_positive_pair_count": 32,
+                    "lower": 325.5,
+                    "missing_value": false,
+                    "positive_edge_count": 632,
+                    "positive_edge_recall": 0.9556962025316456,
+                    "positive_pair_precision": 0.949685534591195,
+                    "true_positive_edge_count": 604,
+                    "upper": 433.0
+                  },
+                  {
+                    "active_pair_count": 897269,
+                    "bucket": 3,
+                    "false_positive_pair_count": 71,
+                    "lower": 433.0,
+                    "missing_value": false,
+                    "positive_edge_count": 886,
+                    "positive_edge_recall": 0.9503386004514672,
+                    "positive_pair_precision": 0.9222343921139102,
+                    "true_positive_edge_count": 842,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 351351,
+                    "bucket": 0,
+                    "false_positive_pair_count": 83,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 433,
+                    "positive_edge_recall": 0.9145496535796767,
+                    "positive_pair_precision": 0.826722338204593,
+                    "true_positive_edge_count": 396,
+                    "upper": 6.700046539306641
+                  },
+                  {
+                    "active_pair_count": 479493,
+                    "bucket": 1,
+                    "false_positive_pair_count": 29,
+                    "lower": 6.700046539306641,
+                    "missing_value": false,
+                    "positive_edge_count": 614,
+                    "positive_edge_recall": 0.9543973941368078,
+                    "positive_pair_precision": 0.9528455284552846,
+                    "true_positive_edge_count": 586,
+                    "upper": 8.125
+                  },
+                  {
+                    "active_pair_count": 417046,
+                    "bucket": 2,
+                    "false_positive_pair_count": 13,
+                    "lower": 8.125,
+                    "missing_value": false,
+                    "positive_edge_count": 514,
+                    "positive_edge_recall": 0.9610894941634242,
+                    "positive_pair_precision": 0.9743589743589743,
+                    "true_positive_edge_count": 494,
+                    "upper": 9.334914207458496
+                  },
+                  {
+                    "active_pair_count": 448405,
+                    "bucket": 3,
+                    "false_positive_pair_count": 13,
+                    "lower": 9.334914207458496,
+                    "missing_value": false,
+                    "positive_edge_count": 686,
+                    "positive_edge_recall": 0.9868804664723032,
+                    "positive_pair_precision": 0.981159420289855,
+                    "true_positive_edge_count": 677,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 1695074,
+                  "bucket": 0,
+                  "false_positive_pair_count": 138,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 2241,
+                  "positive_edge_recall": 0.9593931280678268,
+                  "positive_pair_precision": 0.9396853146853147,
+                  "true_positive_edge_count": 2150,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 1221,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 6,
+                  "positive_edge_recall": null,
+                  "positive_pair_precision": null,
+                  "true_positive_edge_count": 3,
+                  "upper": null
+                }
+              ]
+            },
+            "model_b_identity_init": {
+              "fixed_0_5": {
+                "active_pair_count": 1696295,
+                "division_parent_count": 3,
+                "division_parent_recall": null,
+                "false_positive_pair_count": 130,
+                "positive_edge_count": 2247,
+                "positive_edge_recall": 0.9586114819759679,
+                "positive_pair_precision": 0.9430823117338003,
+                "recovered_division_parent_count": 1,
+                "true_positive_edge_count": 2154,
+                "unknown_endpoint_pair_count": 1685876,
+                "window_count": 693
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 1696295,
+                  "point_count": 1684747,
+                  "positive_count": 2247,
+                  "recall_at_target_precision": 0.9448153093012907,
+                  "sha256": "d8329bdc79220b91ea0802c762ff130fa873dc199ba1113b92ecbdc9906fd77f",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.5491765141487122
+                },
+                "matched_endpoints": {
+                  "pair_count": 10419,
+                  "point_count": 10417,
+                  "positive_count": 2247,
+                  "recall_at_target_precision": 0.9973297730307076,
+                  "sha256": "a4b1c0352cedc7639c58c646b3ad0809dce860bfafcea12d904586c62069d141",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.06576099991798401
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 407,
+                    "bucket": 0,
+                    "false_positive_pair_count": 12,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 394,
+                    "positive_edge_recall": 0.9974619289340102,
+                    "positive_pair_precision": 0.9703703703703703,
+                    "true_positive_edge_count": 393,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 1313,
+                    "bucket": 1,
+                    "false_positive_pair_count": 44,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 1254,
+                    "positive_edge_recall": 0.9944178628389154,
+                    "positive_pair_precision": 0.9659178931061193,
+                    "true_positive_edge_count": 1247,
+                    "upper": 2.814582586288452
+                  },
+                  {
+                    "active_pair_count": 1694575,
+                    "bucket": 2,
+                    "false_positive_pair_count": 74,
+                    "lower": 2.814582586288452,
+                    "missing_value": false,
+                    "positive_edge_count": 599,
+                    "positive_edge_recall": 0.8580968280467446,
+                    "positive_pair_precision": 0.8741496598639455,
+                    "true_positive_edge_count": 514,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 169206,
+                    "bucket": 0,
+                    "false_positive_pair_count": 15,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 470,
+                    "positive_edge_recall": 0.9744680851063829,
+                    "positive_pair_precision": 0.9682875264270613,
+                    "true_positive_edge_count": 458,
+                    "upper": 226.0
+                  },
+                  {
+                    "active_pair_count": 151161,
+                    "bucket": 1,
+                    "false_positive_pair_count": 17,
+                    "lower": 226.0,
+                    "missing_value": false,
+                    "positive_edge_count": 259,
+                    "positive_edge_recall": 0.9536679536679536,
+                    "positive_pair_precision": 0.9356060606060606,
+                    "true_positive_edge_count": 247,
+                    "upper": 325.5
+                  },
+                  {
+                    "active_pair_count": 478659,
+                    "bucket": 2,
+                    "false_positive_pair_count": 35,
+                    "lower": 325.5,
+                    "missing_value": false,
+                    "positive_edge_count": 632,
+                    "positive_edge_recall": 0.9572784810126582,
+                    "positive_pair_precision": 0.9453125,
+                    "true_positive_edge_count": 605,
+                    "upper": 433.0
+                  },
+                  {
+                    "active_pair_count": 897269,
+                    "bucket": 3,
+                    "false_positive_pair_count": 63,
+                    "lower": 433.0,
+                    "missing_value": false,
+                    "positive_edge_count": 886,
+                    "positive_edge_recall": 0.9525959367945824,
+                    "positive_pair_precision": 0.9305402425578831,
+                    "true_positive_edge_count": 844,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 351351,
+                    "bucket": 0,
+                    "false_positive_pair_count": 81,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 433,
+                    "positive_edge_recall": 0.9053117782909931,
+                    "positive_pair_precision": 0.828752642706131,
+                    "true_positive_edge_count": 392,
+                    "upper": 6.700046539306641
+                  },
+                  {
+                    "active_pair_count": 479493,
+                    "bucket": 1,
+                    "false_positive_pair_count": 26,
+                    "lower": 6.700046539306641,
+                    "missing_value": false,
+                    "positive_edge_count": 614,
+                    "positive_edge_recall": 0.9609120521172638,
+                    "positive_pair_precision": 0.9577922077922078,
+                    "true_positive_edge_count": 590,
+                    "upper": 8.125
+                  },
+                  {
+                    "active_pair_count": 417046,
+                    "bucket": 2,
+                    "false_positive_pair_count": 12,
+                    "lower": 8.125,
+                    "missing_value": false,
+                    "positive_edge_count": 514,
+                    "positive_edge_recall": 0.9649805447470817,
+                    "positive_pair_precision": 0.9763779527559056,
+                    "true_positive_edge_count": 496,
+                    "upper": 9.334914207458496
+                  },
+                  {
+                    "active_pair_count": 448405,
+                    "bucket": 3,
+                    "false_positive_pair_count": 11,
+                    "lower": 9.334914207458496,
+                    "missing_value": false,
+                    "positive_edge_count": 686,
+                    "positive_edge_recall": 0.9854227405247813,
+                    "positive_pair_precision": 0.9839883551673945,
+                    "true_positive_edge_count": 676,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 1695074,
+                  "bucket": 0,
+                  "false_positive_pair_count": 130,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 2241,
+                  "positive_edge_recall": 0.9593931280678268,
+                  "positive_pair_precision": 0.9429824561403509,
+                  "true_positive_edge_count": 2150,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 1221,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 6,
+                  "positive_edge_recall": null,
+                  "positive_pair_precision": null,
+                  "true_positive_edge_count": 4,
+                  "upper": null
+                }
+              ]
+            }
+          },
+          "outer_evaluation": {
+            "current": {
+              "fixed_0_5": {
+                "active_pair_count": 42351260,
+                "division_parent_count": 108,
+                "division_parent_recall": 0.4444444444444444,
+                "false_positive_pair_count": 4355,
+                "positive_edge_count": 103393,
+                "positive_edge_recall": 0.9694079870010542,
+                "positive_pair_precision": 0.9583592293349906,
+                "recovered_division_parent_count": 48,
+                "true_positive_edge_count": 100230,
+                "unknown_endpoint_pair_count": 41165763,
+                "window_count": 12392
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 42351260,
+                  "point_count": 36325739,
+                  "positive_count": 103393,
+                  "recall_at_target_precision": 0.9762169585948759,
+                  "sha256": "2116935fcc6b98fae46cb706ef72c7b197dccf32c93f21d3baf2410855e77339",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.43885257840156555
+                },
+                "matched_endpoints": {
+                  "pair_count": 1185497,
+                  "point_count": 1171129,
+                  "positive_count": 103393,
+                  "recall_at_target_precision": 0.9992939560705271,
+                  "sha256": "f4fa0736ec35e6d3ab892720462391e526124c69a7287385fe88fbdf7c79e0fb",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.011351002380251884
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 22543,
+                    "bucket": 0,
+                    "false_positive_pair_count": 394,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 22107,
+                    "positive_edge_recall": 0.9965621748767359,
+                    "positive_pair_precision": 0.9824303232998886,
+                    "true_positive_edge_count": 22031,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 49154,
+                    "bucket": 1,
+                    "false_positive_pair_count": 1485,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 47037,
+                    "positive_edge_recall": 0.9926015689776133,
+                    "positive_pair_precision": 0.9691742433677918,
+                    "true_positive_edge_count": 46689,
+                    "upper": 2.814582586288452
+                  },
+                  {
+                    "active_pair_count": 42279563,
+                    "bucket": 2,
+                    "false_positive_pair_count": 2476,
+                    "lower": 2.814582586288452,
+                    "missing_value": false,
+                    "positive_edge_count": 34249,
+                    "positive_edge_recall": 0.9200268620981634,
+                    "positive_pair_precision": 0.9271464720767375,
+                    "true_positive_edge_count": 31510,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 12001325,
+                    "bucket": 0,
+                    "false_positive_pair_count": 1794,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 69275,
+                    "positive_edge_recall": 0.9858101768314688,
+                    "positive_pair_precision": 0.974402876466056,
+                    "true_positive_edge_count": 68292,
+                    "upper": 226.0
+                  },
+                  {
+                    "active_pair_count": 7827991,
+                    "bucket": 1,
+                    "false_positive_pair_count": 747,
+                    "lower": 226.0,
+                    "missing_value": false,
+                    "positive_edge_count": 14672,
+                    "positive_edge_recall": 0.9642175572519084,
+                    "positive_pair_precision": 0.9498455753994898,
+                    "true_positive_edge_count": 14147,
+                    "upper": 325.5
+                  },
+                  {
+                    "active_pair_count": 4489379,
+                    "bucket": 2,
+                    "false_positive_pair_count": 415,
+                    "lower": 325.5,
+                    "missing_value": false,
+                    "positive_edge_count": 6191,
+                    "positive_edge_recall": 0.9403973509933775,
+                    "positive_pair_precision": 0.9334616001282668,
+                    "true_positive_edge_count": 5822,
+                    "upper": 433.0
+                  },
+                  {
+                    "active_pair_count": 18032565,
+                    "bucket": 3,
+                    "false_positive_pair_count": 1399,
+                    "lower": 433.0,
+                    "missing_value": false,
+                    "positive_edge_count": 13255,
+                    "positive_edge_recall": 0.902980007544323,
+                    "positive_pair_precision": 0.8953470975463794,
+                    "true_positive_edge_count": 11969,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 6831931,
+                    "bucket": 0,
+                    "false_positive_pair_count": 2183,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 7309,
+                    "positive_edge_recall": 0.857299220139554,
+                    "positive_pair_precision": 0.7416262279559711,
+                    "true_positive_edge_count": 6266,
+                    "upper": 6.700046539306641
+                  },
+                  {
+                    "active_pair_count": 9719671,
+                    "bucket": 1,
+                    "false_positive_pair_count": 959,
+                    "lower": 6.700046539306641,
+                    "missing_value": false,
+                    "positive_edge_count": 11652,
+                    "positive_edge_recall": 0.9277377274287676,
+                    "positive_pair_precision": 0.9185147421191265,
+                    "true_positive_edge_count": 10810,
+                    "upper": 8.125
+                  },
+                  {
+                    "active_pair_count": 8970540,
+                    "bucket": 2,
+                    "false_positive_pair_count": 569,
+                    "lower": 8.125,
+                    "missing_value": false,
+                    "positive_edge_count": 13643,
+                    "positive_edge_recall": 0.9594663930220626,
+                    "positive_pair_precision": 0.9583424848085511,
+                    "true_positive_edge_count": 13090,
+                    "upper": 9.334914207458496
+                  },
+                  {
+                    "active_pair_count": 16829118,
+                    "bucket": 3,
+                    "false_positive_pair_count": 644,
+                    "lower": 9.334914207458496,
+                    "missing_value": false,
+                    "positive_edge_count": 70789,
+                    "positive_edge_recall": 0.9897582957804179,
+                    "positive_pair_precision": 0.9908921197035696,
+                    "true_positive_edge_count": 70064,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 42325037,
+                  "bucket": 0,
+                  "false_positive_pair_count": 4351,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 103177,
+                  "positive_edge_recall": 0.9699739282979734,
+                  "positive_pair_precision": 0.9583357272814326,
+                  "true_positive_edge_count": 100079,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 26223,
+                  "bucket": 1,
+                  "false_positive_pair_count": 4,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 216,
+                  "positive_edge_recall": 0.6990740740740741,
+                  "positive_pair_precision": 0.9741935483870968,
+                  "true_positive_edge_count": 151,
+                  "upper": null
+                }
+              ]
+            },
+            "model_a": {
+              "fixed_0_5": {
+                "active_pair_count": 42351260,
+                "division_parent_count": 108,
+                "division_parent_recall": 0.4166666666666667,
+                "false_positive_pair_count": 7192,
+                "positive_edge_count": 103393,
+                "positive_edge_recall": 0.9486715735107792,
+                "positive_pair_precision": 0.931685632325842,
+                "recovered_division_parent_count": 45,
+                "true_positive_edge_count": 98086,
+                "unknown_endpoint_pair_count": 41165763,
+                "window_count": 12392
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 42351260,
+                  "point_count": 36132580,
+                  "positive_count": 103393,
+                  "recall_at_target_precision": 0.9218225605215054,
+                  "sha256": "ad2defae1c33f1aa80cc8d61bd9334e8beba5230fd7b3f15a4f1142879f62b80",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.6052677631378174
+                },
+                "matched_endpoints": {
+                  "pair_count": 1185497,
+                  "point_count": 1174243,
+                  "positive_count": 103393,
+                  "recall_at_target_precision": 0.9960925788012728,
+                  "sha256": "4eb3b17f80a11e7ac379cc2f341c9a5861650013a5d1800e6d389f18c11b32b0",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.03292743116617203
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 22543,
+                    "bucket": 0,
+                    "false_positive_pair_count": 421,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 22107,
+                    "positive_edge_recall": 0.9961098294657801,
+                    "positive_pair_precision": 0.9812405311469566,
+                    "true_positive_edge_count": 22021,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 49154,
+                    "bucket": 1,
+                    "false_positive_pair_count": 1728,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 47037,
+                    "positive_edge_recall": 0.9917511746072241,
+                    "positive_pair_precision": 0.9642805465407115,
+                    "true_positive_edge_count": 46649,
+                    "upper": 2.814582586288452
+                  },
+                  {
+                    "active_pair_count": 42279563,
+                    "bucket": 2,
+                    "false_positive_pair_count": 5043,
+                    "lower": 2.814582586288452,
+                    "missing_value": false,
+                    "positive_edge_count": 34249,
+                    "positive_edge_recall": 0.8588863908435282,
+                    "positive_pair_precision": 0.8536521663426101,
+                    "true_positive_edge_count": 29416,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 12001325,
+                    "bucket": 0,
+                    "false_positive_pair_count": 3990,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 69275,
+                    "positive_edge_recall": 0.9751136773727896,
+                    "positive_pair_precision": 0.944227785465677,
+                    "true_positive_edge_count": 67551,
+                    "upper": 226.0
+                  },
+                  {
+                    "active_pair_count": 7827991,
+                    "bucket": 1,
+                    "false_positive_pair_count": 1098,
+                    "lower": 226.0,
+                    "missing_value": false,
+                    "positive_edge_count": 14672,
+                    "positive_edge_recall": 0.9348418756815703,
+                    "positive_pair_precision": 0.9258809234507898,
+                    "true_positive_edge_count": 13716,
+                    "upper": 325.5
+                  },
+                  {
+                    "active_pair_count": 4489379,
+                    "bucket": 2,
+                    "false_positive_pair_count": 528,
+                    "lower": 325.5,
+                    "missing_value": false,
+                    "positive_edge_count": 6191,
+                    "positive_edge_recall": 0.9047003715070263,
+                    "positive_pair_precision": 0.9138521781693588,
+                    "true_positive_edge_count": 5601,
+                    "upper": 433.0
+                  },
+                  {
+                    "active_pair_count": 18032565,
+                    "bucket": 3,
+                    "false_positive_pair_count": 1576,
+                    "lower": 433.0,
+                    "missing_value": false,
+                    "positive_edge_count": 13255,
+                    "positive_edge_recall": 0.8463221425877028,
+                    "positive_pair_precision": 0.8768172580897295,
+                    "true_positive_edge_count": 11218,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 6831931,
+                    "bucket": 0,
+                    "false_positive_pair_count": 2544,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 7309,
+                    "positive_edge_recall": 0.8062662470926255,
+                    "positive_pair_precision": 0.6984710205049188,
+                    "true_positive_edge_count": 5893,
+                    "upper": 6.700046539306641
+                  },
+                  {
+                    "active_pair_count": 9719671,
+                    "bucket": 1,
+                    "false_positive_pair_count": 1467,
+                    "lower": 6.700046539306641,
+                    "missing_value": false,
+                    "positive_edge_count": 11652,
+                    "positive_edge_recall": 0.881307929969104,
+                    "positive_pair_precision": 0.875,
+                    "true_positive_edge_count": 10269,
+                    "upper": 8.125
+                  },
+                  {
+                    "active_pair_count": 8970540,
+                    "bucket": 2,
+                    "false_positive_pair_count": 1214,
+                    "lower": 8.125,
+                    "missing_value": false,
+                    "positive_edge_count": 13643,
+                    "positive_edge_recall": 0.9242102176940555,
+                    "positive_pair_precision": 0.9121753599074007,
+                    "true_positive_edge_count": 12609,
+                    "upper": 9.334914207458496
+                  },
+                  {
+                    "active_pair_count": 16829118,
+                    "bucket": 3,
+                    "false_positive_pair_count": 1967,
+                    "lower": 9.334914207458496,
+                    "missing_value": false,
+                    "positive_edge_count": 70789,
+                    "positive_edge_recall": 0.9791775558349461,
+                    "positive_pair_precision": 0.9724053758312057,
+                    "true_positive_edge_count": 69315,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 42325037,
+                  "bucket": 0,
+                  "false_positive_pair_count": 7190,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 103177,
+                  "positive_edge_recall": 0.949281332079824,
+                  "positive_pair_precision": 0.9316110868035079,
+                  "true_positive_edge_count": 97944,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 26223,
+                  "bucket": 1,
+                  "false_positive_pair_count": 2,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 216,
+                  "positive_edge_recall": 0.6574074074074074,
+                  "positive_pair_precision": 0.9861111111111112,
+                  "true_positive_edge_count": 142,
+                  "upper": null
+                }
+              ]
+            },
+            "model_b": {
+              "fixed_0_5": {
+                "active_pair_count": 42351260,
+                "division_parent_count": 108,
+                "division_parent_recall": 0.5185185185185185,
+                "false_positive_pair_count": 5176,
+                "positive_edge_count": 103393,
+                "positive_edge_recall": 0.967463948236341,
+                "positive_pair_precision": 0.950800817451642,
+                "recovered_division_parent_count": 56,
+                "true_positive_edge_count": 100029,
+                "unknown_endpoint_pair_count": 41165763,
+                "window_count": 12392
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 42351260,
+                  "point_count": 36223779,
+                  "positive_count": 103393,
+                  "recall_at_target_precision": 0.9683440851895196,
+                  "sha256": "9c501784072df4305f8193da9dae15f8c12558ff456995791a823cbb0e61799e",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.49335867166519165
+                },
+                "matched_endpoints": {
+                  "pair_count": 1185497,
+                  "point_count": 1171082,
+                  "positive_count": 103393,
+                  "recall_at_target_precision": 0.998955441857766,
+                  "sha256": "efe7625006acb31f4d4495a71299ef66145c9192bd4c45fdcaf0fdc8d5d42aa1",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.010196001268923283
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 22543,
+                    "bucket": 0,
+                    "false_positive_pair_count": 407,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 22107,
+                    "positive_edge_recall": 0.9981001492739856,
+                    "positive_pair_precision": 0.9818885724457103,
+                    "true_positive_edge_count": 22065,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 49154,
+                    "bucket": 1,
+                    "false_positive_pair_count": 1655,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 47037,
+                    "positive_edge_recall": 0.9935157429257818,
+                    "positive_pair_precision": 0.9657965982598632,
+                    "true_positive_edge_count": 46732,
+                    "upper": 2.814582586288452
+                  },
+                  {
+                    "active_pair_count": 42279563,
+                    "bucket": 2,
+                    "false_positive_pair_count": 3114,
+                    "lower": 2.814582586288452,
+                    "missing_value": false,
+                    "positive_edge_count": 34249,
+                    "positive_edge_recall": 0.9119098367835557,
+                    "positive_pair_precision": 0.9093344203109532,
+                    "true_positive_edge_count": 31232,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 12001325,
+                    "bucket": 0,
+                    "false_positive_pair_count": 2320,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 69275,
+                    "positive_edge_recall": 0.9849151930710934,
+                    "positive_pair_precision": 0.967115520907158,
+                    "true_positive_edge_count": 68230,
+                    "upper": 226.0
+                  },
+                  {
+                    "active_pair_count": 7827991,
+                    "bucket": 1,
+                    "false_positive_pair_count": 851,
+                    "lower": 226.0,
+                    "missing_value": false,
+                    "positive_edge_count": 14672,
+                    "positive_edge_recall": 0.9615594329334788,
+                    "positive_pair_precision": 0.9431111705327896,
+                    "true_positive_edge_count": 14108,
+                    "upper": 325.5
+                  },
+                  {
+                    "active_pair_count": 4489379,
+                    "bucket": 2,
+                    "false_positive_pair_count": 482,
+                    "lower": 325.5,
+                    "missing_value": false,
+                    "positive_edge_count": 6191,
+                    "positive_edge_recall": 0.9376514294944274,
+                    "positive_pair_precision": 0.9233338635279148,
+                    "true_positive_edge_count": 5805,
+                    "upper": 433.0
+                  },
+                  {
+                    "active_pair_count": 18032565,
+                    "bucket": 3,
+                    "false_positive_pair_count": 1523,
+                    "lower": 433.0,
+                    "missing_value": false,
+                    "positive_edge_count": 13255,
+                    "positive_edge_recall": 0.8967182195397964,
+                    "positive_pair_precision": 0.8864195689462302,
+                    "true_positive_edge_count": 11886,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 6831931,
+                    "bucket": 0,
+                    "false_positive_pair_count": 2426,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 7309,
+                    "positive_edge_recall": 0.8605828430701874,
+                    "positive_pair_precision": 0.7216613125286829,
+                    "true_positive_edge_count": 6290,
+                    "upper": 6.700046539306641
+                  },
+                  {
+                    "active_pair_count": 9719671,
+                    "bucket": 1,
+                    "false_positive_pair_count": 1144,
+                    "lower": 6.700046539306641,
+                    "missing_value": false,
+                    "positive_edge_count": 11652,
+                    "positive_edge_recall": 0.9234466186062479,
+                    "positive_pair_precision": 0.9038978494623656,
+                    "true_positive_edge_count": 10760,
+                    "upper": 8.125
+                  },
+                  {
+                    "active_pair_count": 8970540,
+                    "bucket": 2,
+                    "false_positive_pair_count": 719,
+                    "lower": 8.125,
+                    "missing_value": false,
+                    "positive_edge_count": 13643,
+                    "positive_edge_recall": 0.9533826870922818,
+                    "positive_pair_precision": 0.9476176599154889,
+                    "true_positive_edge_count": 13007,
+                    "upper": 9.334914207458496
+                  },
+                  {
+                    "active_pair_count": 16829118,
+                    "bucket": 3,
+                    "false_positive_pair_count": 887,
+                    "lower": 9.334914207458496,
+                    "missing_value": false,
+                    "positive_edge_count": 70789,
+                    "positive_edge_recall": 0.9884586588311743,
+                    "positive_pair_precision": 0.9874821829266571,
+                    "true_positive_edge_count": 69972,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 42325037,
+                  "bucket": 0,
+                  "false_positive_pair_count": 5174,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 103177,
+                  "positive_edge_recall": 0.967967667212654,
+                  "positive_pair_precision": 0.9507453877348971,
+                  "true_positive_edge_count": 99872,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 26223,
+                  "bucket": 1,
+                  "false_positive_pair_count": 2,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 216,
+                  "positive_edge_recall": 0.7268518518518519,
+                  "positive_pair_precision": 0.9874213836477987,
+                  "true_positive_edge_count": 157,
+                  "upper": null
+                }
+              ]
+            },
+            "model_b_identity_init": {
+              "fixed_0_5": {
+                "active_pair_count": 42351260,
+                "division_parent_count": 108,
+                "division_parent_recall": 0.46296296296296297,
+                "false_positive_pair_count": 4431,
+                "positive_edge_count": 103393,
+                "positive_edge_recall": 0.966545123944561,
+                "positive_pair_precision": 0.9575432376754659,
+                "recovered_division_parent_count": 50,
+                "true_positive_edge_count": 99934,
+                "unknown_endpoint_pair_count": 41165763,
+                "window_count": 12392
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 42351260,
+                  "point_count": 36062021,
+                  "positive_count": 103393,
+                  "recall_at_target_precision": 0.9729865658216708,
+                  "sha256": "9d3cbb14a51f71bf0ac2acc33efdc15a6db5174a17bcaf641ab40f76c4430c26",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.44961854815483093
+                },
+                "matched_endpoints": {
+                  "pair_count": 1185497,
+                  "point_count": 1171969,
+                  "positive_count": 103393,
+                  "recall_at_target_precision": 0.9992165813933245,
+                  "sha256": "91e00a78a03071b987b52cce0536ca536c77559684d2721e4120550f22545a8f",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.012753624469041824
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 22543,
+                    "bucket": 0,
+                    "false_positive_pair_count": 389,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 22107,
+                    "positive_edge_recall": 0.9963812367123536,
+                    "positive_pair_precision": 0.982646324054247,
+                    "true_positive_edge_count": 22027,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 49154,
+                    "bucket": 1,
+                    "false_positive_pair_count": 1498,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 47037,
+                    "positive_edge_recall": 0.9911346386886919,
+                    "positive_pair_precision": 0.9688681990107652,
+                    "true_positive_edge_count": 46620,
+                    "upper": 2.814582586288452
+                  },
+                  {
+                    "active_pair_count": 42279563,
+                    "bucket": 2,
+                    "false_positive_pair_count": 2544,
+                    "lower": 2.814582586288452,
+                    "missing_value": false,
+                    "positive_edge_count": 34249,
+                    "positive_edge_recall": 0.9135157230868055,
+                    "positive_pair_precision": 0.9248026957524165,
+                    "true_positive_edge_count": 31287,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 12001325,
+                    "bucket": 0,
+                    "false_positive_pair_count": 1933,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 69275,
+                    "positive_edge_recall": 0.9860267051605919,
+                    "positive_pair_precision": 0.9724800683371299,
+                    "true_positive_edge_count": 68307,
+                    "upper": 226.0
+                  },
+                  {
+                    "active_pair_count": 7827991,
+                    "bucket": 1,
+                    "false_positive_pair_count": 746,
+                    "lower": 226.0,
+                    "missing_value": false,
+                    "positive_edge_count": 14672,
+                    "positive_edge_recall": 0.961423118865867,
+                    "positive_pair_precision": 0.9497710746027471,
+                    "true_positive_edge_count": 14106,
+                    "upper": 325.5
+                  },
+                  {
+                    "active_pair_count": 4489379,
+                    "bucket": 2,
+                    "false_positive_pair_count": 424,
+                    "lower": 325.5,
+                    "missing_value": false,
+                    "positive_edge_count": 6191,
+                    "positive_edge_recall": 0.931028912938136,
+                    "positive_pair_precision": 0.9314802844214609,
+                    "true_positive_edge_count": 5764,
+                    "upper": 433.0
+                  },
+                  {
+                    "active_pair_count": 18032565,
+                    "bucket": 3,
+                    "false_positive_pair_count": 1328,
+                    "lower": 433.0,
+                    "missing_value": false,
+                    "positive_edge_count": 13255,
+                    "positive_edge_recall": 0.8869860430026405,
+                    "positive_pair_precision": 0.8985097439816584,
+                    "true_positive_edge_count": 11757,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 6831931,
+                    "bucket": 0,
+                    "false_positive_pair_count": 2186,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 7309,
+                    "positive_edge_recall": 0.8433438226843617,
+                    "positive_pair_precision": 0.7382035928143713,
+                    "true_positive_edge_count": 6164,
+                    "upper": 6.700046539306641
+                  },
+                  {
+                    "active_pair_count": 9719671,
+                    "bucket": 1,
+                    "false_positive_pair_count": 958,
+                    "lower": 6.700046539306641,
+                    "missing_value": false,
+                    "positive_edge_count": 11652,
+                    "positive_edge_recall": 0.9207861311362856,
+                    "positive_pair_precision": 0.9180285787627278,
+                    "true_positive_edge_count": 10729,
+                    "upper": 8.125
+                  },
+                  {
+                    "active_pair_count": 8970540,
+                    "bucket": 2,
+                    "false_positive_pair_count": 592,
+                    "lower": 8.125,
+                    "missing_value": false,
+                    "positive_edge_count": 13643,
+                    "positive_edge_recall": 0.953529282415891,
+                    "positive_pair_precision": 0.9564737886920079,
+                    "true_positive_edge_count": 13009,
+                    "upper": 9.334914207458496
+                  },
+                  {
+                    "active_pair_count": 16829118,
+                    "bucket": 3,
+                    "false_positive_pair_count": 695,
+                    "lower": 9.334914207458496,
+                    "missing_value": false,
+                    "positive_edge_count": 70789,
+                    "positive_edge_recall": 0.9893062481458984,
+                    "positive_pair_precision": 0.9901734839594497,
+                    "true_positive_edge_count": 70032,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 42325037,
+                  "bucket": 0,
+                  "false_positive_pair_count": 4428,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 103177,
+                  "positive_edge_recall": 0.9671438401969431,
+                  "positive_pair_precision": 0.9575109149354699,
+                  "true_positive_edge_count": 99787,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 26223,
+                  "bucket": 1,
+                  "false_positive_pair_count": 3,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 216,
+                  "positive_edge_recall": 0.6805555555555556,
+                  "positive_pair_precision": 0.98,
+                  "true_positive_edge_count": 147,
+                  "upper": null
+                }
+              ]
+            }
+          }
+        }
+      },
+      "1": {
+        "evaluation_embryo": "44b6",
+        "splits": {
+          "internal_validation": {
+            "current": {
+              "fixed_0_5": {
+                "active_pair_count": 3407667,
+                "division_parent_count": 9,
+                "division_parent_recall": null,
+                "false_positive_pair_count": 220,
+                "positive_edge_count": 8821,
+                "positive_edge_recall": 0.9803877111438613,
+                "positive_pair_precision": 0.975191700496166,
+                "recovered_division_parent_count": 6,
+                "true_positive_edge_count": 8648,
+                "unknown_endpoint_pair_count": 3315274,
+                "window_count": 1156
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 3407667,
+                  "point_count": 3354858,
+                  "positive_count": 8821,
+                  "recall_at_target_precision": 0.991497562634622,
+                  "sha256": "7ecd5ba37c077e6dd7604956abb1877ff34ea47df4f2ea5df47e8c685b54853e",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.33174195885658264
+                },
+                "matched_endpoints": {
+                  "pair_count": 92393,
+                  "point_count": 92158,
+                  "positive_count": 8821,
+                  "recall_at_target_precision": 0.9998866341684616,
+                  "sha256": "d581bd264bd12f6f9f0568c13579d9e85ce2fedded37798c3f24012fa9d25a21",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.013846639543771744
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 1582,
+                    "bucket": 0,
+                    "false_positive_pair_count": 24,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 1555,
+                    "positive_edge_recall": 0.9980707395498393,
+                    "positive_pair_precision": 0.9847715736040609,
+                    "true_positive_edge_count": 1552,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 1970,
+                    "bucket": 1,
+                    "false_positive_pair_count": 41,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 1916,
+                    "positive_edge_recall": 0.9979123173277662,
+                    "positive_pair_precision": 0.9790066564260113,
+                    "true_positive_edge_count": 1912,
+                    "upper": 2.2980971336364746
+                  },
+                  {
+                    "active_pair_count": 2646,
+                    "bucket": 2,
+                    "false_positive_pair_count": 43,
+                    "lower": 2.2980971336364746,
+                    "missing_value": false,
+                    "positive_edge_count": 2559,
+                    "positive_edge_recall": 0.993747557639703,
+                    "positive_pair_precision": 0.9833720030935809,
+                    "true_positive_edge_count": 2543,
+                    "upper": 3.25
+                  },
+                  {
+                    "active_pair_count": 3401469,
+                    "bucket": 3,
+                    "false_positive_pair_count": 112,
+                    "lower": 3.25,
+                    "missing_value": false,
+                    "positive_edge_count": 2791,
+                    "positive_edge_recall": 0.946255822285919,
+                    "positive_pair_precision": 0.9593171086087904,
+                    "true_positive_edge_count": 2641,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 115736,
+                    "bucket": 0,
+                    "false_positive_pair_count": 10,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 1062,
+                    "positive_edge_recall": 0.9915254237288136,
+                    "positive_pair_precision": 0.9905926622765757,
+                    "true_positive_edge_count": 1053,
+                    "upper": 63.0
+                  },
+                  {
+                    "active_pair_count": 461372,
+                    "bucket": 1,
+                    "false_positive_pair_count": 23,
+                    "lower": 63.0,
+                    "missing_value": false,
+                    "positive_edge_count": 3252,
+                    "positive_edge_recall": 0.9953874538745388,
+                    "positive_pair_precision": 0.9929447852760737,
+                    "true_positive_edge_count": 3237,
+                    "upper": 97.0
+                  },
+                  {
+                    "active_pair_count": 1106285,
+                    "bucket": 2,
+                    "false_positive_pair_count": 63,
+                    "lower": 97.0,
+                    "missing_value": false,
+                    "positive_edge_count": 3011,
+                    "positive_edge_recall": 0.9837263367651943,
+                    "positive_pair_precision": 0.9791735537190083,
+                    "true_positive_edge_count": 2962,
+                    "upper": 266.0
+                  },
+                  {
+                    "active_pair_count": 1724274,
+                    "bucket": 3,
+                    "false_positive_pair_count": 124,
+                    "lower": 266.0,
+                    "missing_value": false,
+                    "positive_edge_count": 1496,
+                    "positive_edge_recall": 0.9331550802139037,
+                    "positive_pair_precision": 0.9184210526315789,
+                    "true_positive_edge_count": 1396,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 608308,
+                    "bucket": 0,
+                    "false_positive_pair_count": 114,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 507,
+                    "positive_edge_recall": 0.8974358974358975,
+                    "positive_pair_precision": 0.7996485061511424,
+                    "true_positive_edge_count": 455,
+                    "upper": 6.894290924072266
+                  },
+                  {
+                    "active_pair_count": 630588,
+                    "bucket": 1,
+                    "false_positive_pair_count": 51,
+                    "lower": 6.894290924072266,
+                    "missing_value": false,
+                    "positive_edge_count": 711,
+                    "positive_edge_recall": 0.9437412095639943,
+                    "positive_pair_precision": 0.9293628808864266,
+                    "true_positive_edge_count": 671,
+                    "upper": 8.285906791687012
+                  },
+                  {
+                    "active_pair_count": 1045999,
+                    "bucket": 2,
+                    "false_positive_pair_count": 41,
+                    "lower": 8.285906791687012,
+                    "missing_value": false,
+                    "positive_edge_count": 1919,
+                    "positive_edge_recall": 0.9729025534132361,
+                    "positive_pair_precision": 0.9785115303983228,
+                    "true_positive_edge_count": 1867,
+                    "upper": 10.2774019241333
+                  },
+                  {
+                    "active_pair_count": 1122772,
+                    "bucket": 3,
+                    "false_positive_pair_count": 14,
+                    "lower": 10.2774019241333,
+                    "missing_value": false,
+                    "positive_edge_count": 5684,
+                    "positive_edge_recall": 0.9948979591836735,
+                    "positive_pair_precision": 0.9975304286470277,
+                    "true_positive_edge_count": 5655,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 3405849,
+                  "bucket": 0,
+                  "false_positive_pair_count": 220,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 8803,
+                  "positive_edge_recall": 0.980688401681245,
+                  "positive_pair_precision": 0.9751496667796228,
+                  "true_positive_edge_count": 8633,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 1818,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 18,
+                  "positive_edge_recall": null,
+                  "positive_pair_precision": null,
+                  "true_positive_edge_count": 15,
+                  "upper": null
+                }
+              ]
+            },
+            "model_a": {
+              "fixed_0_5": {
+                "active_pair_count": 3407667,
+                "division_parent_count": 9,
+                "division_parent_recall": null,
+                "false_positive_pair_count": 334,
+                "positive_edge_count": 8821,
+                "positive_edge_recall": 0.9698446888107924,
+                "positive_pair_precision": 0.962425469681629,
+                "recovered_division_parent_count": 2,
+                "true_positive_edge_count": 8555,
+                "unknown_endpoint_pair_count": 3315274,
+                "window_count": 1156
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 3407667,
+                  "point_count": 3354356,
+                  "positive_count": 8821,
+                  "recall_at_target_precision": 0.9785738578392472,
+                  "sha256": "9a81ac10ce7fa87c50ce03bb7acf77420a47ca7add9b69e8e2b7d51dea526ef9",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.4123852550983429
+                },
+                "matched_endpoints": {
+                  "pair_count": 92393,
+                  "point_count": 92176,
+                  "positive_count": 8821,
+                  "recall_at_target_precision": 0.998186146695386,
+                  "sha256": "a99d7ede696c252492dbf4e663599cb64c64131906399f4476ce81b944f624b8",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.026874594390392303
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 1582,
+                    "bucket": 0,
+                    "false_positive_pair_count": 25,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 1555,
+                    "positive_edge_recall": 0.9993569131832798,
+                    "positive_pair_precision": 0.9841671944268524,
+                    "true_positive_edge_count": 1554,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 1970,
+                    "bucket": 1,
+                    "false_positive_pair_count": 44,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 1916,
+                    "positive_edge_recall": 0.9984342379958246,
+                    "positive_pair_precision": 0.9775166070516096,
+                    "true_positive_edge_count": 1913,
+                    "upper": 2.2980971336364746
+                  },
+                  {
+                    "active_pair_count": 2646,
+                    "bucket": 2,
+                    "false_positive_pair_count": 55,
+                    "lower": 2.2980971336364746,
+                    "missing_value": false,
+                    "positive_edge_count": 2559,
+                    "positive_edge_recall": 0.9933567799921844,
+                    "positive_pair_precision": 0.9788217173661917,
+                    "true_positive_edge_count": 2542,
+                    "upper": 3.25
+                  },
+                  {
+                    "active_pair_count": 3401469,
+                    "bucket": 3,
+                    "false_positive_pair_count": 210,
+                    "lower": 3.25,
+                    "missing_value": false,
+                    "positive_edge_count": 2791,
+                    "positive_edge_recall": 0.912217843067001,
+                    "positive_pair_precision": 0.9238026124818578,
+                    "true_positive_edge_count": 2546,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 115736,
+                    "bucket": 0,
+                    "false_positive_pair_count": 19,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 1062,
+                    "positive_edge_recall": 0.9868173258003766,
+                    "positive_pair_precision": 0.9821930646672915,
+                    "true_positive_edge_count": 1048,
+                    "upper": 63.0
+                  },
+                  {
+                    "active_pair_count": 461372,
+                    "bucket": 1,
+                    "false_positive_pair_count": 46,
+                    "lower": 63.0,
+                    "missing_value": false,
+                    "positive_edge_count": 3252,
+                    "positive_edge_recall": 0.991389913899139,
+                    "positive_pair_precision": 0.9859327217125382,
+                    "true_positive_edge_count": 3224,
+                    "upper": 97.0
+                  },
+                  {
+                    "active_pair_count": 1106285,
+                    "bucket": 2,
+                    "false_positive_pair_count": 113,
+                    "lower": 97.0,
+                    "missing_value": false,
+                    "positive_edge_count": 3011,
+                    "positive_edge_recall": 0.9674526735303886,
+                    "positive_pair_precision": 0.9626569729015202,
+                    "true_positive_edge_count": 2913,
+                    "upper": 266.0
+                  },
+                  {
+                    "active_pair_count": 1724274,
+                    "bucket": 3,
+                    "false_positive_pair_count": 156,
+                    "lower": 266.0,
+                    "missing_value": false,
+                    "positive_edge_count": 1496,
+                    "positive_edge_recall": 0.9157754010695187,
+                    "positive_pair_precision": 0.8977719528178244,
+                    "true_positive_edge_count": 1370,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 608308,
+                    "bucket": 0,
+                    "false_positive_pair_count": 143,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 507,
+                    "positive_edge_recall": 0.873767258382643,
+                    "positive_pair_precision": 0.7559726962457338,
+                    "true_positive_edge_count": 443,
+                    "upper": 6.894290924072266
+                  },
+                  {
+                    "active_pair_count": 630588,
+                    "bucket": 1,
+                    "false_positive_pair_count": 67,
+                    "lower": 6.894290924072266,
+                    "missing_value": false,
+                    "positive_edge_count": 711,
+                    "positive_edge_recall": 0.9282700421940928,
+                    "positive_pair_precision": 0.9078404401650619,
+                    "true_positive_edge_count": 660,
+                    "upper": 8.285906791687012
+                  },
+                  {
+                    "active_pair_count": 1045999,
+                    "bucket": 2,
+                    "false_positive_pair_count": 86,
+                    "lower": 8.285906791687012,
+                    "missing_value": false,
+                    "positive_edge_count": 1919,
+                    "positive_edge_recall": 0.95205836373111,
+                    "positive_pair_precision": 0.9550444328280188,
+                    "true_positive_edge_count": 1827,
+                    "upper": 10.2774019241333
+                  },
+                  {
+                    "active_pair_count": 1122772,
+                    "bucket": 3,
+                    "false_positive_pair_count": 38,
+                    "lower": 10.2774019241333,
+                    "missing_value": false,
+                    "positive_edge_count": 5684,
+                    "positive_edge_recall": 0.9896199859254047,
+                    "positive_pair_precision": 0.9932897757372418,
+                    "true_positive_edge_count": 5625,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 3405849,
+                  "bucket": 0,
+                  "false_positive_pair_count": 334,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 8803,
+                  "positive_edge_recall": 0.9706918096103601,
+                  "positive_pair_precision": 0.962383151255772,
+                  "true_positive_edge_count": 8545,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 1818,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 18,
+                  "positive_edge_recall": null,
+                  "positive_pair_precision": null,
+                  "true_positive_edge_count": 10,
+                  "upper": null
+                }
+              ]
+            },
+            "model_b": {
+              "fixed_0_5": {
+                "active_pair_count": 3407667,
+                "division_parent_count": 9,
+                "division_parent_recall": null,
+                "false_positive_pair_count": 239,
+                "positive_edge_count": 8821,
+                "positive_edge_recall": 0.9803877111438613,
+                "positive_pair_precision": 0.9731067851918532,
+                "recovered_division_parent_count": 3,
+                "true_positive_edge_count": 8648,
+                "unknown_endpoint_pair_count": 3315274,
+                "window_count": 1156
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 3407667,
+                  "point_count": 3354367,
+                  "positive_count": 8821,
+                  "recall_at_target_precision": 0.9901371726561614,
+                  "sha256": "62ee9297e6cb825e968f5b16492452180fe524aded39829d5eecd5755ed9ee18",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.33366140723228455
+                },
+                "matched_endpoints": {
+                  "pair_count": 92393,
+                  "point_count": 92169,
+                  "positive_count": 8821,
+                  "recall_at_target_precision": 1.0,
+                  "sha256": "e0c7e915b3b0c028c0121349019d8df2a74b2baac6e55645b8bfa1fc1c6aee74",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.009611728601157665
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 1582,
+                    "bucket": 0,
+                    "false_positive_pair_count": 25,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 1555,
+                    "positive_edge_recall": 0.9980707395498393,
+                    "positive_pair_precision": 0.984147114774889,
+                    "true_positive_edge_count": 1552,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 1970,
+                    "bucket": 1,
+                    "false_positive_pair_count": 40,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 1916,
+                    "positive_edge_recall": 0.9994780793319415,
+                    "positive_pair_precision": 0.979539641943734,
+                    "true_positive_edge_count": 1915,
+                    "upper": 2.2980971336364746
+                  },
+                  {
+                    "active_pair_count": 2646,
+                    "bucket": 2,
+                    "false_positive_pair_count": 44,
+                    "lower": 2.2980971336364746,
+                    "missing_value": false,
+                    "positive_edge_count": 2559,
+                    "positive_edge_recall": 0.9953106682297772,
+                    "positive_pair_precision": 0.983018139714396,
+                    "true_positive_edge_count": 2547,
+                    "upper": 3.25
+                  },
+                  {
+                    "active_pair_count": 3401469,
+                    "bucket": 3,
+                    "false_positive_pair_count": 130,
+                    "lower": 3.25,
+                    "missing_value": false,
+                    "positive_edge_count": 2791,
+                    "positive_edge_recall": 0.9437477606592619,
+                    "positive_pair_precision": 0.9529667149059334,
+                    "true_positive_edge_count": 2634,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 115736,
+                    "bucket": 0,
+                    "false_positive_pair_count": 11,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 1062,
+                    "positive_edge_recall": 0.9896421845574388,
+                    "positive_pair_precision": 0.9896421845574388,
+                    "true_positive_edge_count": 1051,
+                    "upper": 63.0
+                  },
+                  {
+                    "active_pair_count": 461372,
+                    "bucket": 1,
+                    "false_positive_pair_count": 27,
+                    "lower": 63.0,
+                    "missing_value": false,
+                    "positive_edge_count": 3252,
+                    "positive_edge_recall": 0.9935424354243543,
+                    "positive_pair_precision": 0.9917127071823204,
+                    "true_positive_edge_count": 3231,
+                    "upper": 97.0
+                  },
+                  {
+                    "active_pair_count": 1106285,
+                    "bucket": 2,
+                    "false_positive_pair_count": 66,
+                    "lower": 97.0,
+                    "missing_value": false,
+                    "positive_edge_count": 3011,
+                    "positive_edge_recall": 0.9827299900365327,
+                    "positive_pair_precision": 0.9781818181818182,
+                    "true_positive_edge_count": 2959,
+                    "upper": 266.0
+                  },
+                  {
+                    "active_pair_count": 1724274,
+                    "bucket": 3,
+                    "false_positive_pair_count": 135,
+                    "lower": 266.0,
+                    "missing_value": false,
+                    "positive_edge_count": 1496,
+                    "positive_edge_recall": 0.9405080213903744,
+                    "positive_pair_precision": 0.9124513618677043,
+                    "true_positive_edge_count": 1407,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 608308,
+                    "bucket": 0,
+                    "false_positive_pair_count": 123,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 507,
+                    "positive_edge_recall": 0.8954635108481263,
+                    "positive_pair_precision": 0.7868284228769498,
+                    "true_positive_edge_count": 454,
+                    "upper": 6.894290924072266
+                  },
+                  {
+                    "active_pair_count": 630588,
+                    "bucket": 1,
+                    "false_positive_pair_count": 54,
+                    "lower": 6.894290924072266,
+                    "missing_value": false,
+                    "positive_edge_count": 711,
+                    "positive_edge_recall": 0.9507735583684951,
+                    "positive_pair_precision": 0.9260273972602739,
+                    "true_positive_edge_count": 676,
+                    "upper": 8.285906791687012
+                  },
+                  {
+                    "active_pair_count": 1045999,
+                    "bucket": 2,
+                    "false_positive_pair_count": 42,
+                    "lower": 8.285906791687012,
+                    "missing_value": false,
+                    "positive_edge_count": 1919,
+                    "positive_edge_recall": 0.9713392391870767,
+                    "positive_pair_precision": 0.9779643231899265,
+                    "true_positive_edge_count": 1864,
+                    "upper": 10.2774019241333
+                  },
+                  {
+                    "active_pair_count": 1122772,
+                    "bucket": 3,
+                    "false_positive_pair_count": 20,
+                    "lower": 10.2774019241333,
+                    "missing_value": false,
+                    "positive_edge_count": 5684,
+                    "positive_edge_recall": 0.9947220267417312,
+                    "positive_pair_precision": 0.9964751498061333,
+                    "true_positive_edge_count": 5654,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 3405849,
+                  "bucket": 0,
+                  "false_positive_pair_count": 239,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 8803,
+                  "positive_edge_recall": 0.9811427922299216,
+                  "positive_pair_precision": 0.9730734565119423,
+                  "true_positive_edge_count": 8637,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 1818,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 18,
+                  "positive_edge_recall": null,
+                  "positive_pair_precision": null,
+                  "true_positive_edge_count": 11,
+                  "upper": null
+                }
+              ]
+            },
+            "model_b_identity_init": {
+              "fixed_0_5": {
+                "active_pair_count": 3407667,
+                "division_parent_count": 9,
+                "division_parent_recall": null,
+                "false_positive_pair_count": 195,
+                "positive_edge_count": 8821,
+                "positive_edge_recall": 0.9764199070400181,
+                "positive_pair_precision": 0.9778610354223434,
+                "recovered_division_parent_count": 3,
+                "true_positive_edge_count": 8613,
+                "unknown_endpoint_pair_count": 3315274,
+                "window_count": 1156
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 3407667,
+                  "point_count": 3353768,
+                  "positive_count": 8821,
+                  "recall_at_target_precision": 0.9904772701507766,
+                  "sha256": "abbe00b8a43cd2fa85e4a8a584a7df1e2717e503f50f0d5bc5c9586d9c07c0ad",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.320997953414917
+                },
+                "matched_endpoints": {
+                  "pair_count": 92393,
+                  "point_count": 92177,
+                  "positive_count": 8821,
+                  "recall_at_target_precision": 0.9998866341684616,
+                  "sha256": "e6bd7a59bfc3094ab9c0a4791db4b467563ce007cdeee5fccf30c667811d5ca5",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.014839855954051018
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 1582,
+                    "bucket": 0,
+                    "false_positive_pair_count": 23,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 1555,
+                    "positive_edge_recall": 0.9954983922829582,
+                    "positive_pair_precision": 0.9853596435391471,
+                    "true_positive_edge_count": 1548,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 1970,
+                    "bucket": 1,
+                    "false_positive_pair_count": 35,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 1916,
+                    "positive_edge_recall": 0.9958246346555324,
+                    "positive_pair_precision": 0.981986618630983,
+                    "true_positive_edge_count": 1908,
+                    "upper": 2.2980971336364746
+                  },
+                  {
+                    "active_pair_count": 2646,
+                    "bucket": 2,
+                    "false_positive_pair_count": 41,
+                    "lower": 2.2980971336364746,
+                    "missing_value": false,
+                    "positive_edge_count": 2559,
+                    "positive_edge_recall": 0.9906213364595545,
+                    "positive_pair_precision": 0.984083850931677,
+                    "true_positive_edge_count": 2535,
+                    "upper": 3.25
+                  },
+                  {
+                    "active_pair_count": 3401469,
+                    "bucket": 3,
+                    "false_positive_pair_count": 96,
+                    "lower": 3.25,
+                    "missing_value": false,
+                    "positive_edge_count": 2791,
+                    "positive_edge_recall": 0.9394482264421354,
+                    "positive_pair_precision": 0.9646799116997793,
+                    "true_positive_edge_count": 2622,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 115736,
+                    "bucket": 0,
+                    "false_positive_pair_count": 12,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 1062,
+                    "positive_edge_recall": 0.9887005649717514,
+                    "positive_pair_precision": 0.9887005649717514,
+                    "true_positive_edge_count": 1050,
+                    "upper": 63.0
+                  },
+                  {
+                    "active_pair_count": 461372,
+                    "bucket": 1,
+                    "false_positive_pair_count": 22,
+                    "lower": 63.0,
+                    "missing_value": false,
+                    "positive_edge_count": 3252,
+                    "positive_edge_recall": 0.993849938499385,
+                    "positive_pair_precision": 0.9932390903503381,
+                    "true_positive_edge_count": 3232,
+                    "upper": 97.0
+                  },
+                  {
+                    "active_pair_count": 1106285,
+                    "bucket": 2,
+                    "false_positive_pair_count": 53,
+                    "lower": 97.0,
+                    "missing_value": false,
+                    "positive_edge_count": 3011,
+                    "positive_edge_recall": 0.9794088342743275,
+                    "positive_pair_precision": 0.9823451032644903,
+                    "true_positive_edge_count": 2949,
+                    "upper": 266.0
+                  },
+                  {
+                    "active_pair_count": 1724274,
+                    "bucket": 3,
+                    "false_positive_pair_count": 108,
+                    "lower": 266.0,
+                    "missing_value": false,
+                    "positive_edge_count": 1496,
+                    "positive_edge_recall": 0.9237967914438503,
+                    "positive_pair_precision": 0.9275167785234899,
+                    "true_positive_edge_count": 1382,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 608308,
+                    "bucket": 0,
+                    "false_positive_pair_count": 103,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 507,
+                    "positive_edge_recall": 0.8579881656804734,
+                    "positive_pair_precision": 0.8085501858736059,
+                    "true_positive_edge_count": 435,
+                    "upper": 6.894290924072266
+                  },
+                  {
+                    "active_pair_count": 630588,
+                    "bucket": 1,
+                    "false_positive_pair_count": 44,
+                    "lower": 6.894290924072266,
+                    "missing_value": false,
+                    "positive_edge_count": 711,
+                    "positive_edge_recall": 0.9437412095639943,
+                    "positive_pair_precision": 0.9384615384615385,
+                    "true_positive_edge_count": 671,
+                    "upper": 8.285906791687012
+                  },
+                  {
+                    "active_pair_count": 1045999,
+                    "bucket": 2,
+                    "false_positive_pair_count": 38,
+                    "lower": 8.285906791687012,
+                    "missing_value": false,
+                    "positive_edge_count": 1919,
+                    "positive_edge_recall": 0.9682126107347577,
+                    "positive_pair_precision": 0.979957805907173,
+                    "true_positive_edge_count": 1858,
+                    "upper": 10.2774019241333
+                  },
+                  {
+                    "active_pair_count": 1122772,
+                    "bucket": 3,
+                    "false_positive_pair_count": 10,
+                    "lower": 10.2774019241333,
+                    "missing_value": false,
+                    "positive_edge_count": 5684,
+                    "positive_edge_recall": 0.9938423645320197,
+                    "positive_pair_precision": 0.9982329033398127,
+                    "true_positive_edge_count": 5649,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 3405849,
+                  "bucket": 0,
+                  "false_positive_pair_count": 195,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 8803,
+                  "positive_edge_recall": 0.9772804725661707,
+                  "positive_pair_precision": 0.977835871789043,
+                  "true_positive_edge_count": 8603,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 1818,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 18,
+                  "positive_edge_recall": null,
+                  "positive_pair_precision": null,
+                  "true_positive_edge_count": 10,
+                  "upper": null
+                }
+              ]
+            }
+          },
+          "outer_evaluation": {
+            "current": {
+              "fixed_0_5": {
+                "active_pair_count": 13721808,
+                "division_parent_count": 22,
+                "division_parent_recall": 0.2727272727272727,
+                "false_positive_pair_count": 1341,
+                "positive_edge_count": 18949,
+                "positive_edge_recall": 0.9477544989181487,
+                "positive_pair_precision": 0.9305181347150259,
+                "recovered_division_parent_count": 6,
+                "true_positive_edge_count": 17959,
+                "unknown_endpoint_pair_count": 13623411,
+                "window_count": 6315
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 13721808,
+                  "point_count": 13020284,
+                  "positive_count": 18949,
+                  "recall_at_target_precision": 0.9101799567259486,
+                  "sha256": "3b223f01e3f793313a299645ac6f38c46b614fbe7558ffb942e7a3d128236bf6",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.5963470935821533
+                },
+                "matched_endpoints": {
+                  "pair_count": 98397,
+                  "point_count": 98335,
+                  "positive_count": 18949,
+                  "recall_at_target_precision": 0.9996833605995039,
+                  "sha256": "ee7701ff546eae626e839ac31e8b81b7f9ba2c038682ee1b23a8b68b5d1f8967",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.02616295777261257
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 3769,
+                    "bucket": 0,
+                    "false_positive_pair_count": 179,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 3582,
+                    "positive_edge_recall": 0.9944165270798436,
+                    "positive_pair_precision": 0.9521518310612136,
+                    "true_positive_edge_count": 3562,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 6255,
+                    "bucket": 1,
+                    "false_positive_pair_count": 263,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 5919,
+                    "positive_edge_recall": 0.9881736779861463,
+                    "positive_pair_precision": 0.9569698952879581,
+                    "true_positive_edge_count": 5849,
+                    "upper": 2.2980971336364746
+                  },
+                  {
+                    "active_pair_count": 6434,
+                    "bucket": 2,
+                    "false_positive_pair_count": 337,
+                    "lower": 2.2980971336364746,
+                    "missing_value": false,
+                    "positive_edge_count": 5875,
+                    "positive_edge_recall": 0.9748085106382979,
+                    "positive_pair_precision": 0.9444261213720316,
+                    "true_positive_edge_count": 5727,
+                    "upper": 3.25
+                  },
+                  {
+                    "active_pair_count": 13705350,
+                    "bucket": 3,
+                    "false_positive_pair_count": 562,
+                    "lower": 3.25,
+                    "missing_value": false,
+                    "positive_edge_count": 3573,
+                    "positive_edge_recall": 0.7895326056535125,
+                    "positive_pair_precision": 0.8338752586461721,
+                    "true_positive_edge_count": 2821,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 24643,
+                    "bucket": 0,
+                    "false_positive_pair_count": 0,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 239,
+                    "positive_edge_recall": 1.0,
+                    "positive_pair_precision": 1.0,
+                    "true_positive_edge_count": 239,
+                    "upper": 63.0
+                  },
+                  {
+                    "active_pair_count": 57763,
+                    "bucket": 1,
+                    "false_positive_pair_count": 7,
+                    "lower": 63.0,
+                    "missing_value": false,
+                    "positive_edge_count": 337,
+                    "positive_edge_recall": 0.9910979228486647,
+                    "positive_pair_precision": 0.9794721407624634,
+                    "true_positive_edge_count": 334,
+                    "upper": 97.0
+                  },
+                  {
+                    "active_pair_count": 1667478,
+                    "bucket": 2,
+                    "false_positive_pair_count": 226,
+                    "lower": 97.0,
+                    "missing_value": false,
+                    "positive_edge_count": 4371,
+                    "positive_edge_recall": 0.9709448638755434,
+                    "positive_pair_precision": 0.9494407158836689,
+                    "true_positive_edge_count": 4244,
+                    "upper": 266.0
+                  },
+                  {
+                    "active_pair_count": 11971924,
+                    "bucket": 3,
+                    "false_positive_pair_count": 1108,
+                    "lower": 266.0,
+                    "missing_value": false,
+                    "positive_edge_count": 14002,
+                    "positive_edge_recall": 0.9385802028281675,
+                    "positive_pair_precision": 0.9222456140350878,
+                    "true_positive_edge_count": 13142,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 4007745,
+                    "bucket": 0,
+                    "false_positive_pair_count": 903,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 5318,
+                    "positive_edge_recall": 0.8967657013915006,
+                    "positive_pair_precision": 0.8407968970380818,
+                    "true_positive_edge_count": 4769,
+                    "upper": 6.894290924072266
+                  },
+                  {
+                    "active_pair_count": 3774922,
+                    "bucket": 1,
+                    "false_positive_pair_count": 238,
+                    "lower": 6.894290924072266,
+                    "missing_value": false,
+                    "positive_edge_count": 5229,
+                    "positive_edge_recall": 0.9563970166379805,
+                    "positive_pair_precision": 0.9545714831074632,
+                    "true_positive_edge_count": 5001,
+                    "upper": 8.285906791687012
+                  },
+                  {
+                    "active_pair_count": 4404782,
+                    "bucket": 2,
+                    "false_positive_pair_count": 174,
+                    "lower": 8.285906791687012,
+                    "missing_value": false,
+                    "positive_edge_count": 6014,
+                    "positive_edge_recall": 0.9700698370468905,
+                    "positive_pair_precision": 0.9710386151797603,
+                    "true_positive_edge_count": 5834,
+                    "upper": 10.2774019241333
+                  },
+                  {
+                    "active_pair_count": 1534359,
+                    "bucket": 3,
+                    "false_positive_pair_count": 26,
+                    "lower": 10.2774019241333,
+                    "missing_value": false,
+                    "positive_edge_count": 2388,
+                    "positive_edge_recall": 0.9861809045226131,
+                    "positive_pair_precision": 0.9890802183956321,
+                    "true_positive_edge_count": 2355,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 13715159,
+                  "bucket": 0,
+                  "false_positive_pair_count": 1340,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 18905,
+                  "positive_edge_recall": 0.9484792382967469,
+                  "positive_pair_precision": 0.9304654662446162,
+                  "true_positive_edge_count": 17931,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 6649,
+                  "bucket": 1,
+                  "false_positive_pair_count": 1,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 44,
+                  "positive_edge_recall": 0.6363636363636364,
+                  "positive_pair_precision": 0.9655172413793104,
+                  "true_positive_edge_count": 28,
+                  "upper": null
+                }
+              ]
+            },
+            "model_a": {
+              "fixed_0_5": {
+                "active_pair_count": 13721808,
+                "division_parent_count": 22,
+                "division_parent_recall": 0.22727272727272727,
+                "false_positive_pair_count": 1830,
+                "positive_edge_count": 18949,
+                "positive_edge_recall": 0.9168821573697821,
+                "positive_pair_precision": 0.9047073526348678,
+                "recovered_division_parent_count": 5,
+                "true_positive_edge_count": 17374,
+                "unknown_endpoint_pair_count": 13623411,
+                "window_count": 6315
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 13721808,
+                  "point_count": 12979159,
+                  "positive_count": 18949,
+                  "recall_at_target_precision": 0.7171354688901789,
+                  "sha256": "08ff8991f0f7cbe049e35372363ec01ff8e7ca2ea076736c888c5b327ebb8367",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.7235232591629028
+                },
+                "matched_endpoints": {
+                  "pair_count": 98397,
+                  "point_count": 98321,
+                  "positive_count": 18949,
+                  "recall_at_target_precision": 0.9970446989287034,
+                  "sha256": "8fdc1c1710116450baa2c73acd2c84402b8ac4c62ae37635b92fcd10ed770f88",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.028522521257400513
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 3769,
+                    "bucket": 0,
+                    "false_positive_pair_count": 183,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 3582,
+                    "positive_edge_recall": 0.9930206588498046,
+                    "positive_pair_precision": 0.9510695187165775,
+                    "true_positive_edge_count": 3557,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 6255,
+                    "bucket": 1,
+                    "false_positive_pair_count": 285,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 5919,
+                    "positive_edge_recall": 0.9815847271498563,
+                    "positive_pair_precision": 0.9532403609515997,
+                    "true_positive_edge_count": 5810,
+                    "upper": 2.2980971336364746
+                  },
+                  {
+                    "active_pair_count": 6434,
+                    "bucket": 2,
+                    "false_positive_pair_count": 384,
+                    "lower": 2.2980971336364746,
+                    "missing_value": false,
+                    "positive_edge_count": 5875,
+                    "positive_edge_recall": 0.9644255319148937,
+                    "positive_pair_precision": 0.9365289256198347,
+                    "true_positive_edge_count": 5666,
+                    "upper": 3.25
+                  },
+                  {
+                    "active_pair_count": 13705350,
+                    "bucket": 3,
+                    "false_positive_pair_count": 978,
+                    "lower": 3.25,
+                    "missing_value": false,
+                    "positive_edge_count": 3573,
+                    "positive_edge_recall": 0.6551917156451161,
+                    "positive_pair_precision": 0.7053329316059054,
+                    "true_positive_edge_count": 2341,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 24643,
+                    "bucket": 0,
+                    "false_positive_pair_count": 0,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 239,
+                    "positive_edge_recall": 1.0,
+                    "positive_pair_precision": 1.0,
+                    "true_positive_edge_count": 239,
+                    "upper": 63.0
+                  },
+                  {
+                    "active_pair_count": 57763,
+                    "bucket": 1,
+                    "false_positive_pair_count": 9,
+                    "lower": 63.0,
+                    "missing_value": false,
+                    "positive_edge_count": 337,
+                    "positive_edge_recall": 0.9821958456973294,
+                    "positive_pair_precision": 0.9735294117647059,
+                    "true_positive_edge_count": 331,
+                    "upper": 97.0
+                  },
+                  {
+                    "active_pair_count": 1667478,
+                    "bucket": 2,
+                    "false_positive_pair_count": 369,
+                    "lower": 97.0,
+                    "missing_value": false,
+                    "positive_edge_count": 4371,
+                    "positive_edge_recall": 0.9245024021962938,
+                    "positive_pair_precision": 0.9163265306122449,
+                    "true_positive_edge_count": 4041,
+                    "upper": 266.0
+                  },
+                  {
+                    "active_pair_count": 11971924,
+                    "bucket": 3,
+                    "false_positive_pair_count": 1452,
+                    "lower": 266.0,
+                    "missing_value": false,
+                    "positive_edge_count": 14002,
+                    "positive_edge_recall": 0.9115126410512784,
+                    "positive_pair_precision": 0.8978543791769258,
+                    "true_positive_edge_count": 12763,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 4007745,
+                    "bucket": 0,
+                    "false_positive_pair_count": 1112,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 5318,
+                    "positive_edge_recall": 0.8593456186536291,
+                    "positive_pair_precision": 0.8042942625835974,
+                    "true_positive_edge_count": 4570,
+                    "upper": 6.894290924072266
+                  },
+                  {
+                    "active_pair_count": 3774922,
+                    "bucket": 1,
+                    "false_positive_pair_count": 361,
+                    "lower": 6.894290924072266,
+                    "missing_value": false,
+                    "positive_edge_count": 5229,
+                    "positive_edge_recall": 0.919104991394148,
+                    "positive_pair_precision": 0.9301335397716276,
+                    "true_positive_edge_count": 4806,
+                    "upper": 8.285906791687012
+                  },
+                  {
+                    "active_pair_count": 4404782,
+                    "bucket": 2,
+                    "false_positive_pair_count": 303,
+                    "lower": 8.285906791687012,
+                    "missing_value": false,
+                    "positive_edge_count": 6014,
+                    "positive_edge_recall": 0.9436315264383106,
+                    "positive_pair_precision": 0.9493141518902644,
+                    "true_positive_edge_count": 5675,
+                    "upper": 10.2774019241333
+                  },
+                  {
+                    "active_pair_count": 1534359,
+                    "bucket": 3,
+                    "false_positive_pair_count": 54,
+                    "lower": 10.2774019241333,
+                    "missing_value": false,
+                    "positive_edge_count": 2388,
+                    "positive_edge_recall": 0.9727805695142379,
+                    "positive_pair_precision": 0.9772822885990745,
+                    "true_positive_edge_count": 2323,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 13715159,
+                  "bucket": 0,
+                  "false_positive_pair_count": 1830,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 18905,
+                  "positive_edge_recall": 0.9179582121131976,
+                  "positive_pair_precision": 0.9046080066722268,
+                  "true_positive_edge_count": 17354,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 6649,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 44,
+                  "positive_edge_recall": 0.45454545454545453,
+                  "positive_pair_precision": 1.0,
+                  "true_positive_edge_count": 20,
+                  "upper": null
+                }
+              ]
+            },
+            "model_b": {
+              "fixed_0_5": {
+                "active_pair_count": 13721808,
+                "division_parent_count": 22,
+                "division_parent_recall": 0.18181818181818182,
+                "false_positive_pair_count": 1495,
+                "positive_edge_count": 18949,
+                "positive_edge_recall": 0.9521346772916777,
+                "positive_pair_precision": 0.92347852792138,
+                "recovered_division_parent_count": 4,
+                "true_positive_edge_count": 18042,
+                "unknown_endpoint_pair_count": 13623411,
+                "window_count": 6315
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 13721808,
+                  "point_count": 12986132,
+                  "positive_count": 18949,
+                  "recall_at_target_precision": 0.8987281650746741,
+                  "sha256": "4edf02b465879ef018853932798e1362f5202d5ca2976a483a572c14c4ddaecc",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.6461677551269531
+                },
+                "matched_endpoints": {
+                  "pair_count": 98397,
+                  "point_count": 98291,
+                  "positive_count": 18949,
+                  "recall_at_target_precision": 0.9994194944324238,
+                  "sha256": "7bd06f9bd8402f82f4af3a182a58fd55a69d0da3dfc67dda352ae8e550959f7d",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.01717400923371315
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 3769,
+                    "bucket": 0,
+                    "false_positive_pair_count": 180,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 3582,
+                    "positive_edge_recall": 0.9952540480178671,
+                    "positive_pair_precision": 0.951935914552737,
+                    "true_positive_edge_count": 3565,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 6255,
+                    "bucket": 1,
+                    "false_positive_pair_count": 280,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 5919,
+                    "positive_edge_recall": 0.9915526271329617,
+                    "positive_pair_precision": 0.9544641405106521,
+                    "true_positive_edge_count": 5869,
+                    "upper": 2.2980971336364746
+                  },
+                  {
+                    "active_pair_count": 6434,
+                    "bucket": 2,
+                    "false_positive_pair_count": 351,
+                    "lower": 2.2980971336364746,
+                    "missing_value": false,
+                    "positive_edge_count": 5875,
+                    "positive_edge_recall": 0.9826382978723405,
+                    "positive_pair_precision": 0.9426845199216198,
+                    "true_positive_edge_count": 5773,
+                    "upper": 3.25
+                  },
+                  {
+                    "active_pair_count": 13705350,
+                    "bucket": 3,
+                    "false_positive_pair_count": 684,
+                    "lower": 3.25,
+                    "missing_value": false,
+                    "positive_edge_count": 3573,
+                    "positive_edge_recall": 0.7934508816120907,
+                    "positive_pair_precision": 0.8056265984654731,
+                    "true_positive_edge_count": 2835,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 24643,
+                    "bucket": 0,
+                    "false_positive_pair_count": 0,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 239,
+                    "positive_edge_recall": 1.0,
+                    "positive_pair_precision": 1.0,
+                    "true_positive_edge_count": 239,
+                    "upper": 63.0
+                  },
+                  {
+                    "active_pair_count": 57763,
+                    "bucket": 1,
+                    "false_positive_pair_count": 7,
+                    "lower": 63.0,
+                    "missing_value": false,
+                    "positive_edge_count": 337,
+                    "positive_edge_recall": 0.9910979228486647,
+                    "positive_pair_precision": 0.9794721407624634,
+                    "true_positive_edge_count": 334,
+                    "upper": 97.0
+                  },
+                  {
+                    "active_pair_count": 1667478,
+                    "bucket": 2,
+                    "false_positive_pair_count": 244,
+                    "lower": 97.0,
+                    "missing_value": false,
+                    "positive_edge_count": 4371,
+                    "positive_edge_recall": 0.9707160832761382,
+                    "positive_pair_precision": 0.9456206819701359,
+                    "true_positive_edge_count": 4243,
+                    "upper": 266.0
+                  },
+                  {
+                    "active_pair_count": 11971924,
+                    "bucket": 3,
+                    "false_positive_pair_count": 1244,
+                    "lower": 266.0,
+                    "missing_value": false,
+                    "positive_edge_count": 14002,
+                    "positive_edge_recall": 0.9445793458077417,
+                    "positive_pair_precision": 0.9140290255701451,
+                    "true_positive_edge_count": 13226,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 4007745,
+                    "bucket": 0,
+                    "false_positive_pair_count": 1007,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 5318,
+                    "positive_edge_recall": 0.9125611132004513,
+                    "positive_pair_precision": 0.8281569965870307,
+                    "true_positive_edge_count": 4853,
+                    "upper": 6.894290924072266
+                  },
+                  {
+                    "active_pair_count": 3774922,
+                    "bucket": 1,
+                    "false_positive_pair_count": 273,
+                    "lower": 6.894290924072266,
+                    "missing_value": false,
+                    "positive_edge_count": 5229,
+                    "positive_edge_recall": 0.9573532224134633,
+                    "positive_pair_precision": 0.9482856601629096,
+                    "true_positive_edge_count": 5006,
+                    "upper": 8.285906791687012
+                  },
+                  {
+                    "active_pair_count": 4404782,
+                    "bucket": 2,
+                    "false_positive_pair_count": 185,
+                    "lower": 8.285906791687012,
+                    "missing_value": false,
+                    "positive_edge_count": 6014,
+                    "positive_edge_recall": 0.9702361157299634,
+                    "positive_pair_precision": 0.9692691029900332,
+                    "true_positive_edge_count": 5835,
+                    "upper": 10.2774019241333
+                  },
+                  {
+                    "active_pair_count": 1534359,
+                    "bucket": 3,
+                    "false_positive_pair_count": 30,
+                    "lower": 10.2774019241333,
+                    "missing_value": false,
+                    "positive_edge_count": 2388,
+                    "positive_edge_recall": 0.983249581239531,
+                    "positive_pair_precision": 0.9873843566021867,
+                    "true_positive_edge_count": 2348,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 13715159,
+                  "bucket": 0,
+                  "false_positive_pair_count": 1494,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 18905,
+                  "positive_edge_recall": 0.953081195450939,
+                  "positive_pair_precision": 0.9234317343173432,
+                  "true_positive_edge_count": 18018,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 6649,
+                  "bucket": 1,
+                  "false_positive_pair_count": 1,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 44,
+                  "positive_edge_recall": 0.5454545454545454,
+                  "positive_pair_precision": 0.96,
+                  "true_positive_edge_count": 24,
+                  "upper": null
+                }
+              ]
+            },
+            "model_b_identity_init": {
+              "fixed_0_5": {
+                "active_pair_count": 13721808,
+                "division_parent_count": 22,
+                "division_parent_recall": 0.18181818181818182,
+                "false_positive_pair_count": 1164,
+                "positive_edge_count": 18949,
+                "positive_edge_recall": 0.9383608633700987,
+                "positive_pair_precision": 0.9385589865399842,
+                "recovered_division_parent_count": 4,
+                "true_positive_edge_count": 17781,
+                "unknown_endpoint_pair_count": 13623411,
+                "window_count": 6315
+              },
+              "pr_curves": {
+                "active_mask": {
+                  "pair_count": 13721808,
+                  "point_count": 12979176,
+                  "positive_count": 18949,
+                  "recall_at_target_precision": 0.9136629901314054,
+                  "sha256": "ad6cd5d6b802e8a4b16903745b0cbbea120e796135500bf030cc1700346ca5d9",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.5578535795211792
+                },
+                "matched_endpoints": {
+                  "pair_count": 98397,
+                  "point_count": 98341,
+                  "positive_count": 18949,
+                  "recall_at_target_precision": 0.9997889070663359,
+                  "sha256": "af5cd7415385d323d305e4fcfb1875d6c47847b4c991054d3ce49c07de512672",
+                  "target_reachable": true,
+                  "threshold_at_target_precision": 0.025866292417049408
+                }
+              },
+              "buckets": {
+                "pair_displacement_um": [
+                  {
+                    "active_pair_count": 3769,
+                    "bucket": 0,
+                    "false_positive_pair_count": 178,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 3582,
+                    "positive_edge_recall": 0.9913456169737577,
+                    "positive_pair_precision": 0.9522660230624832,
+                    "true_positive_edge_count": 3551,
+                    "upper": 1.625
+                  },
+                  {
+                    "active_pair_count": 6255,
+                    "bucket": 1,
+                    "false_positive_pair_count": 250,
+                    "lower": 1.625,
+                    "missing_value": false,
+                    "positive_edge_count": 5919,
+                    "positive_edge_recall": 0.984794728839331,
+                    "positive_pair_precision": 0.9588748149366673,
+                    "true_positive_edge_count": 5829,
+                    "upper": 2.2980971336364746
+                  },
+                  {
+                    "active_pair_count": 6434,
+                    "bucket": 2,
+                    "false_positive_pair_count": 319,
+                    "lower": 2.2980971336364746,
+                    "missing_value": false,
+                    "positive_edge_count": 5875,
+                    "positive_edge_recall": 0.9673191489361702,
+                    "positive_pair_precision": 0.9468510496501167,
+                    "true_positive_edge_count": 5683,
+                    "upper": 3.25
+                  },
+                  {
+                    "active_pair_count": 13705350,
+                    "bucket": 3,
+                    "false_positive_pair_count": 417,
+                    "lower": 3.25,
+                    "missing_value": false,
+                    "positive_edge_count": 3573,
+                    "positive_edge_recall": 0.760705289672544,
+                    "positive_pair_precision": 0.8669856459330143,
+                    "true_positive_edge_count": 2718,
+                    "upper": null
+                  }
+                ],
+                "target_candidate_count": [
+                  {
+                    "active_pair_count": 24643,
+                    "bucket": 0,
+                    "false_positive_pair_count": 0,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 239,
+                    "positive_edge_recall": 1.0,
+                    "positive_pair_precision": 1.0,
+                    "true_positive_edge_count": 239,
+                    "upper": 63.0
+                  },
+                  {
+                    "active_pair_count": 57763,
+                    "bucket": 1,
+                    "false_positive_pair_count": 4,
+                    "lower": 63.0,
+                    "missing_value": false,
+                    "positive_edge_count": 337,
+                    "positive_edge_recall": 0.9910979228486647,
+                    "positive_pair_precision": 0.9881656804733728,
+                    "true_positive_edge_count": 334,
+                    "upper": 97.0
+                  },
+                  {
+                    "active_pair_count": 1667478,
+                    "bucket": 2,
+                    "false_positive_pair_count": 199,
+                    "lower": 97.0,
+                    "missing_value": false,
+                    "positive_edge_count": 4371,
+                    "positive_edge_recall": 0.9629375428963624,
+                    "positive_pair_precision": 0.9548548094373865,
+                    "true_positive_edge_count": 4209,
+                    "upper": 266.0
+                  },
+                  {
+                    "active_pair_count": 11971924,
+                    "bucket": 3,
+                    "false_positive_pair_count": 961,
+                    "lower": 266.0,
+                    "missing_value": false,
+                    "positive_edge_count": 14002,
+                    "positive_edge_recall": 0.9283673760891301,
+                    "positive_pair_precision": 0.9311604584527221,
+                    "true_positive_edge_count": 12999,
+                    "upper": null
+                  }
+                ],
+                "target_nearest_um": [
+                  {
+                    "active_pair_count": 4007745,
+                    "bucket": 0,
+                    "false_positive_pair_count": 775,
+                    "lower": null,
+                    "missing_value": false,
+                    "positive_edge_count": 5318,
+                    "positive_edge_recall": 0.8792779240315908,
+                    "positive_pair_precision": 0.8578242524307467,
+                    "true_positive_edge_count": 4676,
+                    "upper": 6.894290924072266
+                  },
+                  {
+                    "active_pair_count": 3774922,
+                    "bucket": 1,
+                    "false_positive_pair_count": 205,
+                    "lower": 6.894290924072266,
+                    "missing_value": false,
+                    "positive_edge_count": 5229,
+                    "positive_edge_recall": 0.9445400650219927,
+                    "positive_pair_precision": 0.9601477449455676,
+                    "true_positive_edge_count": 4939,
+                    "upper": 8.285906791687012
+                  },
+                  {
+                    "active_pair_count": 4404782,
+                    "bucket": 2,
+                    "false_positive_pair_count": 154,
+                    "lower": 8.285906791687012,
+                    "missing_value": false,
+                    "positive_edge_count": 6014,
+                    "positive_edge_recall": 0.966744263385434,
+                    "positive_pair_precision": 0.974195710455764,
+                    "true_positive_edge_count": 5814,
+                    "upper": 10.2774019241333
+                  },
+                  {
+                    "active_pair_count": 1534359,
+                    "bucket": 3,
+                    "false_positive_pair_count": 30,
+                    "lower": 10.2774019241333,
+                    "missing_value": false,
+                    "positive_edge_count": 2388,
+                    "positive_edge_recall": 0.9849246231155779,
+                    "positive_pair_precision": 0.9874055415617129,
+                    "true_positive_edge_count": 2352,
+                    "upper": null
+                  }
+                ]
+              },
+              "division_parent_pair_buckets": [
+                {
+                  "active_pair_count": 13715159,
+                  "bucket": 0,
+                  "false_positive_pair_count": 1164,
+                  "lower": null,
+                  "missing_value": false,
+                  "positive_edge_count": 18905,
+                  "positive_edge_recall": 0.9393282200476064,
+                  "positive_pair_precision": 0.9384843039847797,
+                  "true_positive_edge_count": 17758,
+                  "upper": 0.5
+                },
+                {
+                  "active_pair_count": 6649,
+                  "bucket": 1,
+                  "false_positive_pair_count": 0,
+                  "lower": 0.5,
+                  "missing_value": false,
+                  "positive_edge_count": 44,
+                  "positive_edge_recall": 0.5227272727272727,
+                  "positive_pair_precision": 1.0,
+                  "true_positive_edge_count": 23,
+                  "upper": null
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

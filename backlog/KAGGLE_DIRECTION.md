@@ -66,7 +66,7 @@
 | `HYP-20260911-01` | nnU-Netのデータに応じた前処理・構造・学習設定を中心マップの予測へ適応すると、疎注釈を適切に扱う条件で現行検出器より細胞を回収でき、両胚の公式接続・分裂指標が改善する。 | [`nnunet_center_detection`](nnunet_center_detection.md) | - | 中心教師とnnU-Net設定の寄与、背景と未知領域の識別、時間入力と接続特徴、学習・推論費用。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 | `HYP-20260915-01` | 固定画像特徴から学ぶtrackerへ、正しい親子対応を近づけ確定した誤親から離す対照損失を加えると、接続分類損失だけの場合より近傍の取り違えと両胚の公式graph誤りを減らせる。 | [`contrastive_parent_child`](contrastive_parent_child.md) | - | 共有tracker特徴への寄与、疎い教師と分裂の整合、固定候補内の順位から公式指標への移行。履歴・欠落への頑健性・候補回収は関連仮説で別比較する。 |
 | `HYP-20260920-01` | 公開画像特徴を固定して既存のprimary trackerを追加学習する際、学習を3エポックより長くすると、同じ教師・損失・復号でも両胚の公式graph精度を改善できる。 | - | [`exp024_tracker_six_epochs`](../experiments/exp024_tracker_six_epochs/) | 6エポックで後半の重みが内部検証から選ばれるか、両胚の公式scoreへ改善が残るか。異なる学習率や長さでも成立するかは別検証。 |
-| `HYP-20260920-02` | 固定した公開画像特徴から隣接時刻の接続を学ぶ際、各時刻のcell間を先にSelf-Attentionで文脈化してから既存のCross-Attentionを行うと、現行のCross-Attentionのみより親候補の取り違えが減り、両胚の公式graph指標が改善する。 | [`frame_self_attention_diagnostics`](frame_self_attention_diagnostics.md)<br>[`frame_self_attention_spatial`](frame_self_attention_spatial.md) | [`exp025_frame_self_attention`](../experiments/exp025_frame_self_attention/)<br>[`exp030_frame_self_attention_diagnostics`](../experiments/exp030_frame_self_attention_diagnostics/) | exp025はA/Bと恒等初期化Bのpair指標が混在し、公式graph指標は未計測。保存重みのPR曲線・条件別誤りで順位と確率の差を分けた後、フレーム内距離biasまたは近傍制限で改善できるか。実験・上位仮説の採否は未判断。 |
+| `HYP-20260920-02` | 固定した公開画像特徴から隣接時刻の接続を学ぶ際、各時刻のcell間を先にSelf-Attentionで文脈化してから既存のCross-Attentionを行うと、現行のCross-Attentionのみより親候補の取り違えが減り、両胚の公式graph指標が改善する。 | [`frame_self_attention_spatial`](frame_self_attention_spatial.md) | [`exp025_frame_self_attention`](../experiments/exp025_frame_self_attention/)<br>[`exp030_frame_self_attention_diagnostics`](../experiments/exp030_frame_self_attention_diagnostics/)<br>[`exp033_frame_self_attention_diagnostics`](../experiments/exp033_frame_self_attention_diagnostics/) | exp033ではprecision 0.95時recallの両胚一貫改善がなく、局所条件でもrecallとfalse-positive低下が両立しなかった。空間方式の選択根拠と公式graph改善は未検証。 |
 | `HYP-20260920-03` | 固定候補の検出得点・DoG・HOGを個別入力すると、同構造対照より両胚の公式指標が改善する。 | [`detection_score_features`](detection_score_features.md)<br>[`dog_features`](dog_features.md)<br>[`hog_features`](hog_features.md) | - | 寄与・冗長性・入力・費用。 |
 
 ### 未着手バックログ
@@ -82,12 +82,11 @@
 
 2026-09-21: `exp025_frame_self_attention` と `exp025_kalman_hungarian_links` は別実験であり、採番が重複する。実行証拠は元の正式名で参照する。
 
-2026-09-20のexp025恒等初期化Bでは初期logits一致を確認したが、学習後のpair指標は現行との比較で混在した。ユーザーの優先順位確認とバックログ追加依頼を受け、保存した4構成のPR曲線・条件別誤りを比較する`frame_self_attention_diagnostics`をP1、結果を受けて位置関係をフレーム内Attentionへ反映する`frame_self_attention_spatial`をP2へ追加した。両候補は既存の`HYP-20260920-02`を継承し、未決の集計・方式を詳細へ記録した。全候補の索引と先行条件を見直し、分裂・対照学習・候補制限の既存P2、後続P3、方針変更等を要するP4は維持する。詳細な設計と実験化は未承認であり、exp025の採否・完了も確定しない。
+2026-09-20のexp025恒等初期化Bでは初期logits一致を確認したが、学習後のpair指標は現行との比較で混在した。ユーザーの優先順位確認とバックログ追加依頼を受け、保存した4構成のPR曲線・条件別誤りを比較する`frame_self_attention_diagnostics`をP1、結果を受けて位置関係をフレーム内Attentionへ反映する`frame_self_attention_spatial`をP2へ追加した。2026-09-21に診断候補を[`exp033_frame_self_attention_diagnostics`](../experiments/exp033_frame_self_attention_diagnostics/)へ移行し、ユーザー判断で完了した。両胚で一貫した順位改善や空間方式の選択根拠が得られなかったため、`frame_self_attention_spatial`はP4の再開条件付き候補へ変更した。Self-Attention構成の採否は未判断。
 
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
-| P1 | `HYP-20260920-02` | [`frame_self_attention_diagnostics`](frame_self_attention_diagnostics.md) | 保存trackerのPR曲線と条件別誤りを比較 | exp016現行とexp025 A/B/恒等初期化Bを同じwindow・教師で再評価。再学習なし。比較precisionと混雑度・bucketの定義を実装前に確定する。 | `検討メモ・設計不可` |
-| P2 | `HYP-20260920-02` | [`frame_self_attention_spatial`](frame_self_attention_spatial.md) | フレーム内Attentionへ位置関係を反映 | frame_self_attention_diagnosticsを先行。距離biasか近傍制限か、座標・近傍定義・進行条件を確定してから学習比較を検討する。 | `検討メモ・設計不可` |
+| P4 | `HYP-20260920-02` | [`frame_self_attention_spatial`](frame_self_attention_spatial.md) | フレーム内Attentionへ位置関係を反映 | exp033の診断実行は完走したが、一貫した順位改善や空間方式の選択根拠はなかった。方式固有の根拠または高リスク探索の再開判断後、方式・座標・進行条件を確定する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260920-03` | [`detection_score_features`](detection_score_features.md) | 検出得点を入力 | exp015得点・exp016。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260920-03` | [`dog_features`](dog_features.md) | 固定点のDoG応答 | 元画像・画素間隔・exp015/016。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-10` | [`velocity_features`](velocity_features.md) | 予測履歴の移動方向・次候補とのずれを入力 | exp015/016の分割外履歴。exp027の診断を継承し、履歴の品質・費用を先に確認する。 | `検討メモ・設計不可` |
