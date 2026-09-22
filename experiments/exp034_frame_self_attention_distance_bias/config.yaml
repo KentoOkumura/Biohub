@@ -1,0 +1,326 @@
+experiment:
+  name: exp034_frame_self_attention_distance_bias
+  description: exp025の恒等初期化Model Bへ学習可能な物理距離biasを追加し、2fold×3epoch後のholdout最終グラフを公式指標で直接評価する
+  route: frozen_feature_frame_self_attention_distance_bias_tracker
+  notebooks:
+  - train
+  - inference
+  created_at: '2026-09-22'
+lineage:
+  parent: exp025_frame_self_attention
+  hypothesis_id: HYP-20260920-02
+  backlog_candidate: frame_self_attention_spatial
+  diff_summary: 恒等初期化したフレーム内Self-Attentionの各headへ、物理距離の負の二乗に非負の学習可能係数を掛けたattention
+    biasを追加する
+validation:
+  strategy: leave_one_embryo_out
+  seed: 42
+  n_folds: 2
+  group_key: embryo_id_from_sample_prefix
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_train_sample_count: 64
+    expected_internal_validation_sample_count: 7
+    expected_evaluation_sample_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_train_sample_count: 116
+    expected_internal_validation_sample_count: 12
+    expected_evaluation_sample_count: 71
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  checkpoint_selection_metric: edge_accuracy_times_candidate_node_recall
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  train_stage_metrics:
+  - legacy_mask_loss
+  - edge_accuracy
+  - positive_edge_recall
+  - division_parent_recall
+  - candidate_node_recall
+  conditional_validation: 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるため、 trackerの外側胚分割を独立CVとは呼ばない
+  final_graph_evaluation:
+    candidate: fold_specific_spatial_distance_bias_tracker
+    control: exp015_saved_final_graphs
+    fold_model_by_evaluation_embryo:
+      6bba: 0
+      44b6: 1
+    metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+    max_matching_distance_um: 7.0
+    report:
+    - overall
+    - by_embryo
+    - per_sample
+    decision_rule: 保存済み公開controlとの差を公式graph scoreと構成指標で直接報告する
+data:
+  source: exp015_train_window_cache_and_competition_geff
+  cache:
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    summary_file: window_cache_summary.json
+    summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+    identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+    directory: window_cache
+    schema_version: 1
+    expected_dataset_count: 199
+    expected_window_count: 19701
+    feature_channels: 32
+    primary_feature_contract: 8_view_d4_inverse_aligned_mean_at_detected_candidates
+    arrays:
+    - candidate_ids_src
+    - candidate_ids_tgt
+    - coords_src_grid
+    - coords_tgt_grid
+    - coords_src_physical
+    - coords_tgt_physical
+    - detection_scores_src
+    - detection_scores_tgt
+    - position_features_src
+    - position_features_tgt
+    - candidate_mask_src
+    - candidate_mask_tgt
+    - primary_features_src
+    - primary_features_tgt
+    - secondary_features_src
+    - secondary_features_tgt
+  annotation:
+    source: competition_train_geff
+    voxel_scale_zyx_um:
+    - 1.625
+    - 0.40625
+    - 0.40625
+  expected_frames_per_sample: 100
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+model:
+  name: SimpleNodeTransformer
+  public_source:
+    dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+    train_script: repo/scripts/train_unet_transformer.py
+    train_script_sha256: c4f6317736bb3bb1ec8f3f6e9a6d935a463e3f0f1f685481b2d13218d35dc9ea
+    model_source: repo/src/biohub_tracking/models/simple_node_transformer.py
+    model_source_sha256: b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e
+    checkpoint: weights/unet_transformer/split_0/edge_predictor_best.pth
+    checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  frozen_components:
+  - primary_TemporalUNet3D
+  - primary_detection_head
+  - secondary_TemporalUNet3D
+  - secondary_SimpleNodeTransformer
+  - DeepCenter
+  - image_normalization_statistics
+  - detector_candidates
+  - decode_and_graph_repair
+  trainable_components:
+  - primary_SimpleNodeTransformer
+  params:
+    image_feature_dim: 32
+    position_feature_dim: 32
+    feature_dim: 64
+    hidden_dim: 128
+    n_heads: 4
+    n_blocks: 4
+    dropout: 0.3
+    pair_chunk_size: 32
+    model_coordinate_units: original_voxel_zyx
+    downsample_zyx:
+    - 1
+    - 4
+    - 4
+    mlp_ratio: 2.0
+    n_self_blocks: 2
+    spatial_coordinate_scale_zyx_um:
+    - 1.625
+    - 0.40625
+    - 0.40625
+    spatial_distance_bias_function: negative_squared_euclidean
+    spatial_distance_bias_initial_coefficient: 1.0
+    spatial_distance_scale_source: exp033 training-side median nearest-neighbor physical
+      distance by fold
+  teacher:
+    matching: greedy_distance_order_one_to_one
+    max_matching_distance_um: 5.0
+    target: annotated_adjacent_frame_geff_edges
+    unmatched_candidate_label: unknown_but_legacy_mask_can_include_as_negative
+  loss:
+    edge_activation: source_axis_softmax
+    function: focal_weighted_binary_cross_entropy
+    focal_gamma: 2.0
+    mask: pair_touches_source_or_target_with_positive_annotated_edge
+    division_weight: 1.0
+    detection_loss: disabled
+  training:
+    active_variants:
+    - model_b_spatial_distance_bias
+    initialization: public_primary_tracker_checkpoint
+    seed: 42
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.01
+    batch_size: 2
+    num_workers: 2
+    gradient_clip_norm: 1.0
+    augmentations: []
+    mixed_precision: false
+    benchmark_windows_per_fold: 64
+    runtime_projection_multiplier: 1.5
+    runtime_gate_hours: 12.0
+    available_variants:
+    - model_b_spatial_distance_bias
+    control_retrain_approved: false
+    comparison_model_count: 2
+    comparison_scope: one candidate configuration times two outer folds
+  control:
+    source: exp015_oracle_stage_limits
+    retrain: false
+    graph_source: exp015_saved_final_graphs
+    candidate_graph_source: exp015_saved_pre_ilp_candidate_graphs
+  output:
+    model_count: 2
+    model_dir: models
+    model_manifest: model_manifest.json
+    training_summary: training_summary.json
+  inference:
+    implemented: true
+    mode: fold_specific_primary_tracker_cached_graph_replay
+    fold_model_by_evaluation_embryo:
+      6bba: 0
+      44b6: 1
+    control_graph_source: exp015_saved_final_graphs
+    control_candidate_graph_source: exp015_saved_pre_ilp_candidate_graphs
+    cache_source: exp015_saved_window_cache
+    post_retention_candidates_reused_from_exp015: true
+    main_image_encoder_forward_count: 0
+    official_metric_max_matching_distance_um: 7.0
+    require_exact_candidate_coordinates: true
+    require_exact_public_control_candidate_graphs: true
+    official_evaluator_preflight: saved_public_control_graph_end_to_end
+    runtime_gate_hours: 12.0
+    runtime_gate_scope: notebook_setup_cache_replay_graph_repair_and_official_evaluation
+    replay:
+      worker_count: 2
+      expected_sample_count: 199
+      expected_window_count: 19701
+      tracker_forward_count_per_window: 5
+      expected_tracker_forward_count: 98505
+      downsample_zyx:
+      - 1
+      - 4
+      - 4
+      edge_threshold: 0.48
+      bidirectional_weight: 0.15
+      secondary_edge_weight: 0.15
+      secondary_link_mode: low_margin_consensus
+      secondary_low_margin_max: 0.35
+      secondary_mix_temperature: 1.0
+      use_ilp: true
+      ilp_edge_weight: -1.0
+      ilp_appearance_weight: 0.0
+      ilp_disappearance_weight: 2.0
+      ilp_division_weight: 1.2
+    retrain_models: 0
+    submission_created: false
+    base_pipeline_source:
+      experiment: exp015_oracle_stage_limits
+      bootstrap_path: exp015_inference_base.py
+      sha256: d9a7f46dda21a01d03ffa0072e4e4396dd2542ec4d4996b934bec5b116f49e04
+    public_evaluator_source:
+      dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+      path: repo/scripts/evaluate.py
+      sha256: 614813cc51c3581c6ccda4bb20725a19da8ecac4a27620654bfca58319cffa3c
+      entrypoint: evaluate_run
+      metrics_module: biohub_tracking.metrics
+    selected_variant: model_b_spatial_distance_bias
+    train_output_manifest_sha256: df7a94d5a04651ac8922f3dd8fe5e672a99b91f99ab956a677b95616939c12e2
+  architectures:
+    current:
+      use_temporal_self_attention: false
+      use_cross_attention: true
+      use_spatial_distance_bias: false
+    model_b_spatial_distance_bias:
+      use_temporal_self_attention: true
+      use_cross_attention: true
+      identity_init_self_attention: true
+      use_spatial_distance_bias: true
+      spatial_distance_scale_um_by_fold:
+        '0': 8.125
+        '1': 8.285906791687012
+      spatial_distance_scale_statistic: training-side median nearest-neighbor physical
+        distance
+runtime:
+  execution: cached_feature_tracker_train_then_fixed_graph_official_evaluation
+  use_amp: false
+  num_workers: 2
+  batch_size: 2
+  benchmark:
+    canonical_environment: kaggle
+    canonical_source: exp034_frame_self_attention_distance_bias_inference.py
+    canonical_notebook: exp034_frame_self_attention_distance_bias_inference.ipynb
+    canonical_stage: cached_tracker_graph_repair_official_evaluation
+    expected_sample_count: 199
+    includes_graph_repair: true
+    includes_official_graph_evaluation: true
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+    include_experiment_sources: true
+    dataset_sources:
+    - pilkwang/biohub-tracking-support-pack-50ep-v1
+    train:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+    inference:
+      role: canonical_benchmark
+      source: exp034_frame_self_attention_distance_bias_inference.py
+      notebook: exp034_frame_self_attention_distance_bias_inference.ipynb
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+      - kentookumura/exp034-frame-distance-bias-train
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      bootstrap_dependency_files:
+      - source: experiments/exp015_oracle_stage_limits/exp015_oracle_stage_limits_inference.py
+        destination: exp015_inference_base.py
+      - source: experiments/exp015_oracle_stage_limits/window_cache.py
+        destination: window_cache.py
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_fold_offset_and_seeded_dataloader_generator
+  stochastic_components:
+  - dataloader_shuffle
+  - transformer_dropout
+  - cuda_kernels
+  parallel_rng_policy: DataLoader order uses a fold-specific torch.Generator and workers
+    receive deterministic seeds; cache content itself is fixed and contains no augmentation
+  feature_sha_policy: exp015_sorted_window_cache_identity_and_per_window_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるためdeterministic anchorまたは独立CVとは扱わない。
+  - 同じfoldを再実行したmodel SHAが一致しなくても、seed、入力cache、実行環境と数値差を記録する。
+notes:
+- 学習対象は距離bias付き恒等初期化Model Bの1構成×2fold×3epoch、booster 0、対照の再学習なし。
+- 公開画像特徴、教師、loss、逐次Cross-Attention、Pair MLP、候補、secondary tracker、ILP、graph repairを固定する。
+- pair診断による事前gateは使わず、holdout最終グラフを保存済み公開controlと同じ公式評価器で直接比較する。
+- Kaggle submissionは作成しない。

@@ -1,0 +1,172 @@
+{
+  "experiment": "exp034_frame_self_attention_distance_bias",
+  "status": "completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp034-frame-distance-bias-train",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp034-frame-distance-bias-train",
+      "kernel_source_ids": [
+        "kentookumura/exp015-oracle-stage-limits-inference",
+        "pilkwang/biohub-tracking-support-pack-50ep-v1"
+      ],
+      "resource": "Tesla T4",
+      "notebook_runtime_seconds": 3439.3933289550005,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+      "feature_schema_sha": null,
+      "feature_content_sha": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "row_count": 18707,
+      "group_count": 199,
+      "feature_count": 64,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "df7a94d5a04651ac8922f3dd8fe5e672a99b91f99ab956a677b95616939c12e2",
+      "model_count": 2,
+      "model_shas": {
+        "fold_0": "83dd2421921c80137dbe806f48584cad8d883269c494c868b7c5620ee864c845",
+        "fold_1": "0a39707a63b30afcacf59b6e5b3b2cb4c2c6125df2a80271237717438c3f54c1"
+      },
+      "selected_mode": "model_b_spatial_distance_bias",
+      "selected_model": "fold-specific best checkpoints: fold_0 epoch 0; fold_1 epoch 2",
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null,
+      "benchmark_summary_sha": "53b8ad2a5537af33e1379b99ed0c4b0785b3efaeb956a2b44df4d805247d220a",
+      "gt_window_filter_audit_sha": "97008c377d701a7a70f49879ced4650e5ffe5730e7d42b89a1440cf778ad7396",
+      "split_manifest_sha": "401b073ee952514982e40f69f116dca08ff0aee02c4d0a81b7454b4b71112e61",
+      "kernel_log_sha": "6b99a4b51b4183b4fd9f7197885815744f3790b27ef913704138017092d90d89",
+      "downloaded_output_dir": "artifacts/kaggle_train_v2"
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [
+      {
+        "stage": "train",
+        "kernel_id": "kentookumura/exp034-frame-distance-bias-train",
+        "kernel_version": 1,
+        "status": "failed",
+        "reason": "pair-diagnostic-inclusive conservative runtime projection exceeded 12-hour gate before training",
+        "benchmark": {
+          "records": [
+            {
+              "variant": "model_b_spatial_distance_bias",
+              "fold": 0,
+              "window_count": 64,
+              "elapsed_seconds": 16.38337566700011,
+              "work_windows_projected": 61743,
+              "conservative_projected_seconds": 23708.40852674034,
+              "peak_gpu_memory_bytes": 483793920,
+              "train_metrics": {
+                "legacy_mask_loss": 0.00021983960910909595,
+                "batch_count": 32.0,
+                "window_count": 64.0
+              }
+            },
+            {
+              "variant": "model_b_spatial_distance_bias",
+              "fold": 1,
+              "window_count": 64,
+              "elapsed_seconds": 17.053016206999928,
+              "work_windows_projected": 67357,
+              "conservative_projected_seconds": 26921.25029659908,
+              "peak_gpu_memory_bytes": 514729472,
+              "train_metrics": {
+                "legacy_mask_loss": 0.00014348957449783484,
+                "batch_count": 32.0,
+                "window_count": 64.0
+              }
+            }
+          ],
+          "conservative_projected_seconds_total": 50629.658823339414,
+          "runtime_gate_seconds": 43200.0,
+          "projection_multiplier": 1.5
+        },
+        "full_training_started": false
+      }
+    ]
+  },
+  "notes": "Kaggle train version 2 completed 2 folds x 3 epochs and saved two verified checkpoints. Tracker training showed no material improvement, and the user closed the experiment without running the full graph replay or official metric.",
+  "train_stage": {
+    "status": "train_stage_completed",
+    "official_metric_computed": false,
+    "submission_created": false,
+    "execution": {
+      "full_training_started": true,
+      "trained_model_count": 2,
+      "pair_diagnostics_enabled": false,
+      "graph_evaluation_stage": "separate_inference_notebook",
+      "elapsed_seconds": 3439.3933289550005,
+      "conservative_projected_seconds": 21493.307194734007,
+      "runtime_gate_seconds": 43200.0
+    },
+    "folds": [
+      {
+        "fold": 0,
+        "train_embryo": "44b6",
+        "evaluation_embryo": "6bba",
+        "best_epoch": 0,
+        "best_internal_selection_score": 0.985950574622095,
+        "distance_scale_um": 8.125,
+        "checkpoint_sha": "83dd2421921c80137dbe806f48584cad8d883269c494c868b7c5620ee864c845",
+        "state_sha": "58a6496013028c75150cbde817809c9bc8f26bf170906ee1ae6acf6bccc73b53"
+      },
+      {
+        "fold": 1,
+        "train_embryo": "6bba",
+        "evaluation_embryo": "44b6",
+        "best_epoch": 2,
+        "best_internal_selection_score": 0.9782032195598147,
+        "distance_scale_um": 8.285906791687012,
+        "checkpoint_sha": "0a39707a63b30afcacf59b6e5b3b2cb4c2c6125df2a80271237717438c3f54c1",
+        "state_sha": "d1b819dbff050d57064f68f93251e2f752d0804d600311afc264432b08c9037f"
+      }
+    ]
+  },
+  "inference_stage": {
+    "status": "not_run_experiment_closed",
+    "kernel_id": "kentookumura/exp034-frame-distance-bias-inference",
+    "package_validation": "passed",
+    "resource": "NvidiaTeslaT4",
+    "internet_enabled": false,
+    "submission_created": false,
+    "expected_tracker_forward_count": 98505,
+    "reference_prediction_seconds": 23217.361345529556,
+    "reference_experiment": "exp016_frozen_image_encoder inference version 3",
+    "gpu_quota_used_hours": 28.44,
+    "gpu_quota_account_remaining_hours": 16.56,
+    "repository_weekly_gpu_limit_hours": 30.0,
+    "repository_budget_remaining_hours": 1.56,
+    "quota_refresh_at": "2026-09-26T00:00:00",
+    "reason": "Tracker training did not show enough improvement to justify exceeding the repository weekly 30 GPU-hour limit.",
+    "official_metric_computed": false
+  }
+}
