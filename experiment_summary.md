@@ -40,5 +40,6 @@
 | exp030_frame_self_attention_diagnostics | frozen_feature_primary_tracker_diagnostic | exp016_frozen_image_encoder | 完了 | - | - | - | 2026-09-20 |
 | exp032_three_frame_ten_epoch_training | frozen_feature_local_three_frame_tracker | exp027_multi_frame_tracker | デバッグ完了 | - | - | - | 2026-09-20 |
 | exp033_frame_self_attention_diagnostics | frozen_feature_primary_tracker_diagnostic | exp025_frame_self_attention | 完了 | - | - | - | 2026-09-21 |
+| exp035_velocity_features | frozen_feature_velocity_tracker | exp016_frozen_image_encoder | 実行中 | - | - | - | 2026-09-22 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->

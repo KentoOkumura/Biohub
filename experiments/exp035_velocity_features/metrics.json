@@ -1,0 +1,1391 @@
+{
+  "experiment": "exp035_velocity_features",
+  "status": "running",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "fixed_candidate_velocity_pair_diagnostics",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp035-velocity-features-train",
+      "kernel_version": 3,
+      "url": "https://www.kaggle.com/code/kentookumura/exp035-velocity-features-train",
+      "kernel_source_ids": [
+        "kentookumura/exp015-oracle-stage-limits-inference",
+        "kentookumura/exp016-frozen-image-encoder-train",
+        "pilkwang/biohub-tracking-support-pack-50ep-v1"
+      ],
+      "resource": "Tesla T4",
+      "notebook_runtime_seconds": 8629.123749495,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": "998ed732767a4306c0f05f00a25bc6850318cef1b614cb261edd4106a80d9c7b",
+      "cache_file_sha": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+      "feature_schema_sha": "44743a9019941a9953db2d8dc13cfec2383ad7b8ba6978b3557673f6d70df10d",
+      "feature_content_sha": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "row_count": 18707,
+      "group_count": 199,
+      "feature_count": 79,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "20ea0e29df1de080764704e5a3f24433fa22c807e0a681c2d40cbdec33325842",
+      "model_count": 2,
+      "model_shas": {
+        "0": "edd71da51ee67b460e0d70daaa852ead7a1a19b23bf9c4f98d973ee5a370dee0",
+        "1": "e085decfd921b5672f5c0a68c378ac323496951e69a409d9e13092d0716195ec"
+      },
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null,
+      "gt_window_filter_audit_sha": "97008c377d701a7a70f49879ced4650e5ffe5730e7d42b89a1440cf778ad7396",
+      "history_manifest_sha": "3119186560b6a989b4b00bcb00b963a2c417012f2f9a20b7baad84efc92d8670",
+      "history_model_count": 4,
+      "history_model_shas": {
+        "0/0": "880ac6de8bd55df23cbee527aba60ad1ad7a0bc7d87be6313bbf082adfcf56c7",
+        "0/1": "36ab9d0f7ef27a451716a4a6dc12ee72de7234de9f52af9fd93638450199bdf3",
+        "1/0": "654a2c5eb7265be6c2233289d6d130d162cd42387684cecda31b606f12658536",
+        "1/1": "5f9673e54f5badefb6adbf48a85263ab645352309832b3a70885d866b4cb33e8"
+      }
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": []
+  },
+  "notes": "Velocity pair diagnostic completed against saved exp016 fold models. The pair gate failed; full graph inference was not started.",
+  "train_stage": {
+    "experiment": "exp035_velocity_features",
+    "status": "pair_diagnostic_completed",
+    "official_metric_computed": false,
+    "submission_created": false,
+    "conditional_validation": "公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるため、 trackerの外側胚分割を独立CVとは呼ばない",
+    "elapsed_seconds": 8006.298242068001,
+    "notebook_elapsed_seconds": 8629.123749495,
+    "benchmark": {
+      "sampling": "64_size_quantiles_across_all_eligible_windows",
+      "window_count_per_stage": 64,
+      "training_elapsed_seconds": 5.9894496279999885,
+      "diagnostic_forward_elapsed_seconds": 1.50174528499997,
+      "history_forward_elapsed_seconds": 0.9250041550000105,
+      "train_metrics": {
+        "legacy_mask_loss": 0.00022291753676739745,
+        "batch_count": 32.0,
+        "window_count": 64.0
+      },
+      "diagnostic_metrics": {
+        "legacy_mask_loss": 0.00015597479614992693,
+        "edge_accuracy": 0.9998245405509427,
+        "positive_edge_recall": 0.9665071770334929,
+        "false_positive_active_pair_rate": 9.644788126698475e-05,
+        "correct_parent_top1_accuracy": 0.9760765550239234,
+        "division_parent_recall": 0.0,
+        "candidate_node_recall": 0.9633740288568258,
+        "window_count": 64,
+        "active_pair_count": 176679,
+        "active_negative_pair_count": 176261,
+        "false_positive_active_pair_count": 17,
+        "true_positive_edge_count": 404,
+        "positive_edge_count": 418,
+        "correct_parent_top1_count": 408,
+        "correct_parent_top1_denominator": 418,
+        "recovered_division_parent_count": 0,
+        "division_parent_count": 0,
+        "history_present_source_count": 0,
+        "history_source_count": 15771,
+        "prediction_content_sha256": "54d3d7349553bcc3122710a00b779e7cd271893d0b3104d259ed2883047dd87e",
+        "edge_probability_threshold": 0.5,
+        "teacher": {
+          "candidate_nodes": 31545,
+          "matched_candidate_nodes": 868,
+          "gt_nodes": 901,
+          "positive_edges": 418,
+          "active_pairs": 176679,
+          "active_pairs_with_unknown_endpoint": 172649,
+          "division_parents": 0,
+          "source_match_distance_count": 436,
+          "target_match_distance_count": 432,
+          "source_match_distance_sum_um": 793.6843363046646,
+          "target_match_distance_sum_um": 796.7854098677635,
+          "candidate_node_precision_against_sparse_gt": 0.027516246631795846,
+          "candidate_node_recall": 0.9633740288568258,
+          "unknown_endpoint_fraction_of_active_pairs": 0.9771902716225471,
+          "mean_match_distance_um": 1.832338417249341
+        },
+        "history_coverage": 0.0,
+        "selection_score": 0.9632049957804865
+      },
+      "history_audit": {
+        "window_count": 64,
+        "selected_edge_count": 15710,
+        "predicted_division_source_count": 110,
+        "division_reset_target_count": 222,
+        "history_present_source_count": 15211,
+        "history_source_count": 16274,
+        "sample_count": 1,
+        "history_frame_count": 64,
+        "history_content_sha256": "94c576c078f5547e59643dbd8a3c6d5268869fa6f3ea1271248ab07d26f0653d",
+        "prediction_content_sha256": "7a142312b14cf3b6fb954e3a0cef010ee64c78d2db7dcd7e7dcc36ffbbf6a625"
+      },
+      "projection_components": {
+        "training": {
+          "window_count": 101664,
+          "seconds_per_window": 0.09358515043749982,
+          "projected_seconds": 9514.240734077981
+        },
+        "diagnostic_forward": {
+          "window_count": 47992,
+          "seconds_per_window": 0.02346477007812453,
+          "projected_seconds": 1126.1212455893524
+        },
+        "history_forward": {
+          "window_count": 39402,
+          "seconds_per_window": 0.014453189921875165,
+          "projected_seconds": 569.4845893017252
+        }
+      },
+      "projection_scope": "four history models, two velocity models, cross-fit and outer history generation, exp016 and velocity outer diagnostics",
+      "unreserved_projected_seconds_total": 11209.846568969058,
+      "conservative_projected_seconds_total": 16814.76985345359,
+      "runtime_gate_seconds": 43200.0,
+      "projection_multiplier": 1.5,
+      "peak_gpu_memory_bytes": 271617536
+    },
+    "gt_window_filter": {
+      "policy": "skip_window_if_any_frame_has_zero_gt_nodes",
+      "public_source_function": "get_window_data",
+      "input_window_count": 19701,
+      "eligible_window_count": 18707,
+      "skipped_window_count": 994,
+      "skipped_by_sample": {
+        "44b6_0113de3b": 49,
+        "44b6_0b24845f": 60,
+        "44b6_0c582fdc": 29,
+        "44b6_0db75fae": 11,
+        "44b6_1574802b": 5,
+        "44b6_24264f12": 13,
+        "44b6_2f31fc2f": 32,
+        "44b6_33b596bf": 50,
+        "44b6_53f95252": 49,
+        "44b6_587a1e22": 5,
+        "44b6_87bba6c4": 21,
+        "44b6_90724892": 43,
+        "44b6_949adeb1": 24,
+        "44b6_a21120c2": 15,
+        "44b6_abf82518": 42,
+        "44b6_c15fded2": 46,
+        "44b6_c8e2a523": 19,
+        "44b6_cf2536e8": 24,
+        "44b6_cf8fed6b": 6,
+        "44b6_d754aa59": 34,
+        "44b6_db3c847b": 14,
+        "44b6_deabac95": 18,
+        "44b6_e29f0176": 49,
+        "44b6_e31261b4": 18,
+        "44b6_f28707c6": 38,
+        "6bba_062c8d37": 2,
+        "6bba_0c7fa718": 7,
+        "6bba_0e7c0d07": 17,
+        "6bba_1f58c2f6": 2,
+        "6bba_312f0dc3": 19,
+        "6bba_32db13fc": 2,
+        "6bba_337b1b3a": 19,
+        "6bba_3abfe10a": 18,
+        "6bba_3db54e20": 7,
+        "6bba_3fda6b25": 1,
+        "6bba_4f99ce20": 2,
+        "6bba_55c70843": 19,
+        "6bba_6321a359": 2,
+        "6bba_6479435d": 7,
+        "6bba_6db0e9b4": 12,
+        "6bba_767a1e17": 54,
+        "6bba_78a7bd97": 6,
+        "6bba_7f87b3d8": 2,
+        "6bba_96833384": 3,
+        "6bba_acd782a8": 12,
+        "6bba_b1ae37b9": 12,
+        "6bba_b693381b": 2,
+        "6bba_bb9f20c3": 4,
+        "6bba_c328f2fd": 4,
+        "6bba_c73a1d11": 5,
+        "6bba_cdcfe533": 18,
+        "6bba_cff5865f": 3,
+        "6bba_d5eae175": 2,
+        "6bba_df673a83": 1,
+        "6bba_ebdf3b34": 2,
+        "6bba_ef7b4f7e": 2,
+        "6bba_f17befbc": 2,
+        "6bba_f1fde7e0": 2,
+        "6bba_f8ffd5e7": 8
+      },
+      "audit_sha256": "97008c377d701a7a70f49879ced4650e5ffe5730e7d42b89a1440cf778ad7396"
+    },
+    "teacher_audit": {
+      "candidate_nodes": 9032950,
+      "matched_candidate_nodes": 255587,
+      "gt_nodes": 264294,
+      "positive_edges": 122342,
+      "active_pairs": 56073068,
+      "active_pairs_with_unknown_endpoint": 54789174,
+      "division_parents": 130,
+      "source_match_distance_count": 127764,
+      "target_match_distance_count": 127823,
+      "source_match_distance_sum_um": 224482.42331051826,
+      "target_match_distance_sum_um": 224612.24985438585,
+      "candidate_node_precision_against_sparse_gt": 0.028294964546465993,
+      "candidate_node_recall": 0.9670556274451936,
+      "unknown_endpoint_fraction_of_active_pairs": 0.9771031968502241,
+      "mean_match_distance_um": 1.7571107809274498,
+      "matching": "greedy_distance_order_one_to_one",
+      "max_matching_distance_um": 5.0,
+      "loss_mask": "pair_touches_source_or_target_with_positive_annotated_edge",
+      "outer_evaluation_coverage": "each of 199 samples exactly once across two folds"
+    },
+    "folds": [
+      {
+        "fold": 0,
+        "train_embryo": "44b6",
+        "evaluation_embryo": "6bba",
+        "sample_counts": {
+          "gradient_update": 64,
+          "internal_validation": 7,
+          "outer_evaluation": 128
+        },
+        "window_counts": {
+          "gradient_update": 5622,
+          "internal_validation": 693,
+          "outer_evaluation": 12392
+        },
+        "history_crossfit": [
+          {
+            "outer_fold": 0,
+            "inner_fold": 0,
+            "target_sample_count": 36,
+            "gradient_sample_count": 32,
+            "validation_sample_count": 3,
+            "target_sample_excluded": true,
+            "target_samples_sha256": "076b88c32cb8661cc4ec5d1669913551fe11c24546fd75fd5bb8dabb1e234a4e",
+            "model_path": "history_models/outer_0/inner_0/history_tracker.pth",
+            "model_file_sha256": "880ac6de8bd55df23cbee527aba60ad1ad7a0bc7d87be6313bbf082adfcf56c7",
+            "model_state_sha256": "e7601546dd6c5a34b83f386fc6de3a46888d0c5c4b4b323a003dd76a4d9cc227",
+            "fit": {
+              "best_epoch": 2,
+              "best_internal_selection_score": 0.9643613646142094,
+              "epochs": [
+                {
+                  "epoch": 0,
+                  "elapsed_seconds": 197.3882135419999,
+                  "train": {
+                    "legacy_mask_loss": 0.00016432184450809037,
+                    "batch_count": 1415.0,
+                    "window_count": 2829.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.00020110942749738882,
+                    "edge_accuracy": 0.9997740361228364,
+                    "positive_edge_recall": 0.9245714285714286,
+                    "division_parent_recall": 0.5,
+                    "candidate_node_recall": 0.964573268921095,
+                    "window_count": 273,
+                    "active_pair_count": 637270,
+                    "positive_edge_count": 875,
+                    "division_parent_count": 2,
+                    "teacher": {
+                      "candidate_nodes": 167518,
+                      "matched_candidate_nodes": 1797,
+                      "gt_nodes": 1863,
+                      "positive_edges": 875,
+                      "active_pairs": 637270,
+                      "active_pairs_with_unknown_endpoint": 633210,
+                      "division_parents": 2,
+                      "source_match_distance_count": 894,
+                      "target_match_distance_count": 903,
+                      "source_match_distance_sum_um": 1554.2980507612228,
+                      "target_match_distance_sum_um": 1567.6047185659409,
+                      "candidate_node_precision_against_sparse_gt": 0.010727205434639859,
+                      "candidate_node_recall": 0.964573268921095,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9936290740188617,
+                      "mean_match_distance_um": 1.7372859039104973
+                    },
+                    "selection_score": 0.9643553102054412
+                  },
+                  "selected": true
+                },
+                {
+                  "epoch": 1,
+                  "elapsed_seconds": 204.18267760100002,
+                  "train": {
+                    "legacy_mask_loss": 0.00014710262471493094,
+                    "batch_count": 1415.0,
+                    "window_count": 2829.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.00021040849237264687,
+                    "edge_accuracy": 0.9997803128972022,
+                    "positive_edge_recall": 0.9234285714285714,
+                    "division_parent_recall": 1.0,
+                    "candidate_node_recall": 0.964573268921095,
+                    "window_count": 273,
+                    "active_pair_count": 637270,
+                    "positive_edge_count": 875,
+                    "division_parent_count": 2,
+                    "teacher": {
+                      "candidate_nodes": 167518,
+                      "matched_candidate_nodes": 1797,
+                      "gt_nodes": 1863,
+                      "positive_edges": 875,
+                      "active_pairs": 637270,
+                      "active_pairs_with_unknown_endpoint": 633210,
+                      "division_parents": 2,
+                      "source_match_distance_count": 894,
+                      "target_match_distance_count": 903,
+                      "source_match_distance_sum_um": 1554.2980507612228,
+                      "target_match_distance_sum_um": 1567.6047185659409,
+                      "candidate_node_precision_against_sparse_gt": 0.010727205434639859,
+                      "candidate_node_recall": 0.964573268921095,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9936290740188617,
+                      "mean_match_distance_um": 1.7372859039104973
+                    },
+                    "selection_score": 0.9643613646142094
+                  },
+                  "selected": true
+                },
+                {
+                  "epoch": 2,
+                  "elapsed_seconds": 202.79892603300004,
+                  "train": {
+                    "legacy_mask_loss": 0.0001311699382695794,
+                    "batch_count": 1415.0,
+                    "window_count": 2829.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.00020488493826359278,
+                    "edge_accuracy": 0.9997803128972022,
+                    "positive_edge_recall": 0.9325714285714286,
+                    "division_parent_recall": 0.5,
+                    "candidate_node_recall": 0.964573268921095,
+                    "window_count": 273,
+                    "active_pair_count": 637270,
+                    "positive_edge_count": 875,
+                    "division_parent_count": 2,
+                    "teacher": {
+                      "candidate_nodes": 167518,
+                      "matched_candidate_nodes": 1797,
+                      "gt_nodes": 1863,
+                      "positive_edges": 875,
+                      "active_pairs": 637270,
+                      "active_pairs_with_unknown_endpoint": 633210,
+                      "division_parents": 2,
+                      "source_match_distance_count": 894,
+                      "target_match_distance_count": 903,
+                      "source_match_distance_sum_um": 1554.2980507612228,
+                      "target_match_distance_sum_um": 1567.6047185659409,
+                      "candidate_node_precision_against_sparse_gt": 0.010727205434639859,
+                      "candidate_node_recall": 0.964573268921095,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9936290740188617,
+                      "mean_match_distance_um": 1.7372859039104973
+                    },
+                    "selection_score": 0.9643613646142094
+                  },
+                  "selected": true
+                }
+              ]
+            },
+            "history_audit": {
+              "window_count": 3564,
+              "selected_edge_count": 1039882,
+              "predicted_division_source_count": 32055,
+              "division_reset_target_count": 64791,
+              "history_present_source_count": 966220,
+              "history_source_count": 1176324,
+              "sample_count": 36,
+              "history_frame_count": 3564,
+              "history_content_sha256": "67668c43c95ae82e63c2b28bab2cbdd5c2963ec8413e969f9990854d2f0a0ed2",
+              "prediction_content_sha256": "2cd138c699aed85088e432115acb7a906d6743b1aeb486cf03edc005b6117679"
+            }
+          },
+          {
+            "outer_fold": 0,
+            "inner_fold": 1,
+            "target_sample_count": 35,
+            "gradient_sample_count": 33,
+            "validation_sample_count": 3,
+            "target_sample_excluded": true,
+            "target_samples_sha256": "7cd6f1ce645b12625a28056e5f526ff3c3b65a0492953aa0c90262e11192e7f3",
+            "model_path": "history_models/outer_0/inner_1/history_tracker.pth",
+            "model_file_sha256": "36ab9d0f7ef27a451716a4a6dc12ee72de7234de9f52af9fd93638450199bdf3",
+            "model_state_sha256": "a307d7e6ed73ef013f80c5dac886301a08d5aaa0071934104454129834646133",
+            "fit": {
+              "best_epoch": 0,
+              "best_internal_selection_score": 0.9492803765357979,
+              "epochs": [
+                {
+                  "epoch": 0,
+                  "elapsed_seconds": 198.37454043699995,
+                  "train": {
+                    "legacy_mask_loss": 0.0001952153646481635,
+                    "batch_count": 1485.0,
+                    "window_count": 2970.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.00010151695135690929,
+                    "edge_accuracy": 0.9998337693690652,
+                    "positive_edge_recall": 0.9331941544885177,
+                    "division_parent_recall": 0.0,
+                    "candidate_node_recall": 0.949438202247191,
+                    "window_count": 243,
+                    "active_pair_count": 391023,
+                    "positive_edge_count": 479,
+                    "division_parent_count": 1,
+                    "teacher": {
+                      "candidate_nodes": 169151,
+                      "matched_candidate_nodes": 1014,
+                      "gt_nodes": 1068,
+                      "positive_edges": 479,
+                      "active_pairs": 391023,
+                      "active_pairs_with_unknown_endpoint": 389640,
+                      "division_parents": 1,
+                      "source_match_distance_count": 506,
+                      "target_match_distance_count": 508,
+                      "source_match_distance_sum_um": 807.0051351189613,
+                      "target_match_distance_sum_um": 815.4692597985268,
+                      "candidate_node_precision_against_sparse_gt": 0.005994643838936808,
+                      "candidate_node_recall": 0.949438202247191,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9964631236525728,
+                      "mean_match_distance_um": 1.600073367768726
+                    },
+                    "selection_score": 0.9492803765357979
+                  },
+                  "selected": true
+                },
+                {
+                  "epoch": 1,
+                  "elapsed_seconds": 199.425260341,
+                  "train": {
+                    "legacy_mask_loss": 0.00015791039083180397,
+                    "batch_count": 1485.0,
+                    "window_count": 2970.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.00011515488089338981,
+                    "edge_accuracy": 0.9998184250031328,
+                    "positive_edge_recall": 0.9436325678496869,
+                    "division_parent_recall": 0.0,
+                    "candidate_node_recall": 0.949438202247191,
+                    "window_count": 243,
+                    "active_pair_count": 391023,
+                    "positive_edge_count": 479,
+                    "division_parent_count": 1,
+                    "teacher": {
+                      "candidate_nodes": 169151,
+                      "matched_candidate_nodes": 1014,
+                      "gt_nodes": 1068,
+                      "positive_edges": 479,
+                      "active_pairs": 391023,
+                      "active_pairs_with_unknown_endpoint": 389640,
+                      "division_parents": 1,
+                      "source_match_distance_count": 506,
+                      "target_match_distance_count": 508,
+                      "source_match_distance_sum_um": 807.0051351189613,
+                      "target_match_distance_sum_um": 815.4692597985268,
+                      "candidate_node_precision_against_sparse_gt": 0.005994643838936808,
+                      "candidate_node_recall": 0.949438202247191,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9964631236525728,
+                      "mean_match_distance_um": 1.600073367768726
+                    },
+                    "selection_score": 0.9492658080085924
+                  },
+                  "selected": false
+                },
+                {
+                  "epoch": 2,
+                  "elapsed_seconds": 198.93456948200014,
+                  "train": {
+                    "legacy_mask_loss": 0.00014389469635822278,
+                    "batch_count": 1485.0,
+                    "window_count": 2970.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.00011791028711771917,
+                    "edge_accuracy": 0.9998209823974549,
+                    "positive_edge_recall": 0.9373695198329853,
+                    "division_parent_recall": 0.0,
+                    "candidate_node_recall": 0.949438202247191,
+                    "window_count": 243,
+                    "active_pair_count": 391023,
+                    "positive_edge_count": 479,
+                    "division_parent_count": 1,
+                    "teacher": {
+                      "candidate_nodes": 169151,
+                      "matched_candidate_nodes": 1014,
+                      "gt_nodes": 1068,
+                      "positive_edges": 479,
+                      "active_pairs": 391023,
+                      "active_pairs_with_unknown_endpoint": 389640,
+                      "division_parents": 1,
+                      "source_match_distance_count": 506,
+                      "target_match_distance_count": 508,
+                      "source_match_distance_sum_um": 807.0051351189613,
+                      "target_match_distance_sum_um": 815.4692597985268,
+                      "candidate_node_precision_against_sparse_gt": 0.005994643838936808,
+                      "candidate_node_recall": 0.949438202247191,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9964631236525728,
+                      "mean_match_distance_um": 1.600073367768726
+                    },
+                    "selection_score": 0.9492682360964599
+                  },
+                  "selected": false
+                }
+              ]
+            },
+            "history_audit": {
+              "window_count": 3465,
+              "selected_edge_count": 982980,
+              "predicted_division_source_count": 31755,
+              "division_reset_target_count": 64255,
+              "history_present_source_count": 909847,
+              "history_source_count": 1126505,
+              "sample_count": 35,
+              "history_frame_count": 3465,
+              "history_content_sha256": "9a5456e6d6b3b987d53d19b12a0bcf756ac6248e4fe4972a5f2a33da64974441",
+              "prediction_content_sha256": "dab385c8e989e1cd3b829e975bc06e00687e774c775cb257f1aa82992cc2b329"
+            }
+          }
+        ],
+        "outer_evaluation_history": {
+          "window_count": 12672,
+          "selected_edge_count": 2188992,
+          "predicted_division_source_count": 63812,
+          "division_reset_target_count": 129250,
+          "history_present_source_count": 2040863,
+          "history_source_count": 2483058,
+          "sample_count": 128,
+          "history_frame_count": 12672,
+          "history_content_sha256": "c2e7871fa9e95b9247c848addfccfa7efa5ce3e7dcada78943b90051222ff214",
+          "prediction_content_sha256": "568a73d229d8b442b5d83f1e10fc149c7e4fdcf5d9c58d240b67bbad74f7e6a6"
+        },
+        "exp016_saved_control": {
+          "legacy_mask_loss": 0.00021840077011331236,
+          "edge_accuracy": 0.9998224846202923,
+          "positive_edge_recall": 0.9694079870010542,
+          "false_positive_active_pair_rate": 0.00010308212719946311,
+          "correct_parent_top1_accuracy": 0.979234571005774,
+          "division_parent_recall": 0.4444444444444444,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "active_negative_pair_count": 42247867,
+          "false_positive_active_pair_count": 4355,
+          "true_positive_edge_count": 100230,
+          "positive_edge_count": 103393,
+          "correct_parent_top1_count": 101246,
+          "correct_parent_top1_denominator": 103393,
+          "recovered_division_parent_count": 48,
+          "division_parent_count": 108,
+          "history_present_source_count": 1979383,
+          "history_source_count": 2399871,
+          "prediction_content_sha256": "3f8cb05cfc6477fb4cb273d0b89ca6c5fe3f6792fc5be229e836e025e1b8d1c5",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "history_coverage": 0.8247872489812994,
+          "selection_score": 0.9655280054637666
+        },
+        "velocity_fit": {
+          "best_epoch": 2,
+          "best_internal_selection_score": 0.9859528998812521,
+          "epochs": [
+            {
+              "epoch": 0,
+              "elapsed_seconds": 468.053321331,
+              "train": {
+                "legacy_mask_loss": 0.00017929180506067382,
+                "batch_count": 2811.0,
+                "window_count": 5622.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.0001460374842744658,
+                "edge_accuracy": 0.999864999896834,
+                "positive_edge_recall": 0.9572763684913218,
+                "division_parent_recall": 0.0,
+                "candidate_node_recall": 0.9860813704496788,
+                "window_count": 693,
+                "active_pair_count": 1696295,
+                "positive_edge_count": 2247,
+                "division_parent_count": 3,
+                "teacher": {
+                  "candidate_nodes": 447690,
+                  "matched_candidate_nodes": 4605,
+                  "gt_nodes": 4670,
+                  "positive_edges": 2247,
+                  "active_pairs": 1696295,
+                  "active_pairs_with_unknown_endpoint": 1685876,
+                  "division_parents": 3,
+                  "source_match_distance_count": 2300,
+                  "target_match_distance_count": 2305,
+                  "source_match_distance_sum_um": 3700.933766424656,
+                  "target_match_distance_sum_um": 3711.900531888008,
+                  "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                  "candidate_node_recall": 0.9860813704496788,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                  "mean_match_distance_um": 1.6097360039766915
+                },
+                "selection_score": 0.985948249362938
+              },
+              "selected": true
+            },
+            {
+              "epoch": 1,
+              "elapsed_seconds": 472.9323780589998,
+              "train": {
+                "legacy_mask_loss": 0.00016109198055917648,
+                "batch_count": 2811.0,
+                "window_count": 5622.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.0001379430623371365,
+                "edge_accuracy": 0.9998691265375421,
+                "positive_edge_recall": 0.9586114819759679,
+                "division_parent_recall": 0.3333333333333333,
+                "candidate_node_recall": 0.9860813704496788,
+                "window_count": 693,
+                "active_pair_count": 1696295,
+                "positive_edge_count": 2247,
+                "division_parent_count": 3,
+                "teacher": {
+                  "candidate_nodes": 447690,
+                  "matched_candidate_nodes": 4605,
+                  "gt_nodes": 4670,
+                  "positive_edges": 2247,
+                  "active_pairs": 1696295,
+                  "active_pairs_with_unknown_endpoint": 1685876,
+                  "division_parents": 3,
+                  "source_match_distance_count": 2300,
+                  "target_match_distance_count": 2305,
+                  "source_match_distance_sum_um": 3700.933766424656,
+                  "target_match_distance_sum_um": 3711.900531888008,
+                  "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                  "candidate_node_recall": 0.9860813704496788,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                  "mean_match_distance_um": 1.6097360039766915
+                },
+                "selection_score": 0.9859523185664628
+              },
+              "selected": true
+            },
+            {
+              "epoch": 2,
+              "elapsed_seconds": 469.99465397600034,
+              "train": {
+                "legacy_mask_loss": 0.00014629989697232187,
+                "batch_count": 2811.0,
+                "window_count": 5622.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.00014683035391315988,
+                "edge_accuracy": 0.9998697160576433,
+                "positive_edge_recall": 0.9612817089452603,
+                "division_parent_recall": 0.3333333333333333,
+                "candidate_node_recall": 0.9860813704496788,
+                "window_count": 693,
+                "active_pair_count": 1696295,
+                "positive_edge_count": 2247,
+                "division_parent_count": 3,
+                "teacher": {
+                  "candidate_nodes": 447690,
+                  "matched_candidate_nodes": 4605,
+                  "gt_nodes": 4670,
+                  "positive_edges": 2247,
+                  "active_pairs": 1696295,
+                  "active_pairs_with_unknown_endpoint": 1685876,
+                  "division_parents": 3,
+                  "source_match_distance_count": 2300,
+                  "target_match_distance_count": 2305,
+                  "source_match_distance_sum_um": 3700.933766424656,
+                  "target_match_distance_sum_um": 3711.900531888008,
+                  "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                  "candidate_node_recall": 0.9860813704496788,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                  "mean_match_distance_um": 1.6097360039766915
+                },
+                "selection_score": 0.9859528998812521
+              },
+              "selected": true
+            }
+          ]
+        },
+        "velocity_outer_evaluation": {
+          "legacy_mask_loss": 0.00022650949495094436,
+          "edge_accuracy": 0.9998212331817282,
+          "positive_edge_recall": 0.9688373487566857,
+          "false_positive_active_pair_rate": 0.00010294010819528475,
+          "correct_parent_top1_accuracy": 0.9786639327614055,
+          "division_parent_recall": 0.37962962962962965,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "active_negative_pair_count": 42247867,
+          "false_positive_active_pair_count": 4349,
+          "true_positive_edge_count": 100171,
+          "positive_edge_count": 103393,
+          "correct_parent_top1_count": 101187,
+          "correct_parent_top1_denominator": 103393,
+          "recovered_division_parent_count": 41,
+          "division_parent_count": 108,
+          "history_present_source_count": 1979383,
+          "history_source_count": 2399871,
+          "prediction_content_sha256": "5bbaabe14efdb22953477c0b1dae67d4ce55b0701636682a0cdbed9e37bd14e6",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "history_coverage": 0.8247872489812994,
+          "selection_score": 0.965526796950256
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": 8.108724837631998e-06,
+          "edge_accuracy": -1.251438564109364e-06,
+          "positive_edge_recall": -0.0005706382443685376,
+          "false_positive_active_pair_rate": -1.420190041783576e-07,
+          "correct_parent_top1_accuracy": -0.0005706382443685376,
+          "division_parent_recall": -0.06481481481481477,
+          "selection_score": -1.2085135105976974e-06
+        },
+        "false_positive_active_pair_relative_increase": -0.0013777267508610792,
+        "graph_progression_gate": {
+          "positive_edge_recall_improved": false,
+          "false_positive_active_pair_increase_within_limit": true,
+          "division_recovered_count_non_decrease": false,
+          "passed": false
+        },
+        "model_file": "models/fold_0/velocity_tracker_best.pth",
+        "model_file_sha256": "edd71da51ee67b460e0d70daaa852ead7a1a19b23bf9c4f98d973ee5a370dee0",
+        "model_state_sha256": "4721aba2bc4e71c449fe780c27c1229dffc4f54fc5443d9d3ccbc4f4d5581c15"
+      },
+      {
+        "fold": 1,
+        "train_embryo": "6bba",
+        "evaluation_embryo": "44b6",
+        "sample_counts": {
+          "gradient_update": 116,
+          "internal_validation": 12,
+          "outer_evaluation": 71
+        },
+        "window_counts": {
+          "gradient_update": 11236,
+          "internal_validation": 1156,
+          "outer_evaluation": 6315
+        },
+        "history_crossfit": [
+          {
+            "outer_fold": 1,
+            "inner_fold": 0,
+            "target_sample_count": 64,
+            "gradient_sample_count": 58,
+            "validation_sample_count": 6,
+            "target_sample_excluded": true,
+            "target_samples_sha256": "0cc6e920b6a367972513cd279eacfc4fc2d2147fd862d7990ccf3cecffe4ffd7",
+            "model_path": "history_models/outer_1/inner_0/history_tracker.pth",
+            "model_file_sha256": "654a2c5eb7265be6c2233289d6d130d162cd42387684cecda31b606f12658536",
+            "model_state_sha256": "1d0153dde9041a27daeca52e2e9797e6662353614cf303e782758d2df22c5580",
+            "fit": {
+              "best_epoch": 0,
+              "best_internal_selection_score": 0.9221240266601325,
+              "epochs": [
+                {
+                  "epoch": 0,
+                  "elapsed_seconds": 316.98020299899963,
+                  "train": {
+                    "legacy_mask_loss": 0.0002147874662877643,
+                    "batch_count": 2818.0,
+                    "window_count": 5635.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.0001874929958581873,
+                    "edge_accuracy": 0.9997748032224343,
+                    "positive_edge_recall": 0.8601231869660242,
+                    "division_parent_recall": 0.0,
+                    "candidate_node_recall": 0.9223317327942043,
+                    "window_count": 585,
+                    "active_pair_count": 5470771,
+                    "positive_edge_count": 5033,
+                    "division_parent_count": 4,
+                    "teacher": {
+                      "candidate_nodes": 487603,
+                      "matched_candidate_nodes": 10949,
+                      "gt_nodes": 11871,
+                      "positive_edges": 5033,
+                      "active_pairs": 5470771,
+                      "active_pairs_with_unknown_endpoint": 5404934,
+                      "division_parents": 4,
+                      "source_match_distance_count": 5483,
+                      "target_match_distance_count": 5466,
+                      "source_match_distance_sum_um": 11305.993072390556,
+                      "target_match_distance_sum_um": 11288.783784270287,
+                      "candidate_node_precision_against_sparse_gt": 0.02245474289534724,
+                      "candidate_node_recall": 0.9223317327942043,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9879656816196474,
+                      "mean_match_distance_um": 2.063638401375545
+                    },
+                    "selection_score": 0.9221240266601325
+                  },
+                  "selected": true
+                },
+                {
+                  "epoch": 1,
+                  "elapsed_seconds": 312.51661742800025,
+                  "train": {
+                    "legacy_mask_loss": 0.00018983028176260992,
+                    "batch_count": 2818.0,
+                    "window_count": 5635.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.00018456780405647142,
+                    "edge_accuracy": 0.9997722441681438,
+                    "positive_edge_recall": 0.8573415457977349,
+                    "division_parent_recall": 0.5,
+                    "candidate_node_recall": 0.9223317327942043,
+                    "window_count": 585,
+                    "active_pair_count": 5470771,
+                    "positive_edge_count": 5033,
+                    "division_parent_count": 4,
+                    "teacher": {
+                      "candidate_nodes": 487603,
+                      "matched_candidate_nodes": 10949,
+                      "gt_nodes": 11871,
+                      "positive_edges": 5033,
+                      "active_pairs": 5470771,
+                      "active_pairs_with_unknown_endpoint": 5404934,
+                      "division_parents": 4,
+                      "source_match_distance_count": 5483,
+                      "target_match_distance_count": 5466,
+                      "source_match_distance_sum_um": 11305.993072390556,
+                      "target_match_distance_sum_um": 11288.783784270287,
+                      "candidate_node_precision_against_sparse_gt": 0.02245474289534724,
+                      "candidate_node_recall": 0.9223317327942043,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9879656816196474,
+                      "mean_match_distance_um": 2.063638401375545
+                    },
+                    "selection_score": 0.9221216663631544
+                  },
+                  "selected": false
+                },
+                {
+                  "epoch": 2,
+                  "elapsed_seconds": 309.98685698400004,
+                  "train": {
+                    "legacy_mask_loss": 0.0001758936154668423,
+                    "batch_count": 2818.0,
+                    "window_count": 5635.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.00021715513923632697,
+                    "edge_accuracy": 0.9997693195346689,
+                    "positive_edge_recall": 0.8609179415855355,
+                    "division_parent_recall": 0.0,
+                    "candidate_node_recall": 0.9223317327942043,
+                    "window_count": 585,
+                    "active_pair_count": 5470771,
+                    "positive_edge_count": 5033,
+                    "division_parent_count": 4,
+                    "teacher": {
+                      "candidate_nodes": 487603,
+                      "matched_candidate_nodes": 10949,
+                      "gt_nodes": 11871,
+                      "positive_edges": 5033,
+                      "active_pairs": 5470771,
+                      "active_pairs_with_unknown_endpoint": 5404934,
+                      "division_parents": 4,
+                      "source_match_distance_count": 5483,
+                      "target_match_distance_count": 5466,
+                      "source_match_distance_sum_um": 11305.993072390556,
+                      "target_match_distance_sum_um": 11288.783784270287,
+                      "candidate_node_precision_against_sparse_gt": 0.02245474289534724,
+                      "candidate_node_recall": 0.9223317327942043,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9879656816196474,
+                      "mean_match_distance_um": 2.063638401375545
+                    },
+                    "selection_score": 0.9221189688808937
+                  },
+                  "selected": false
+                }
+              ]
+            },
+            "history_audit": {
+              "window_count": 6336,
+              "selected_edge_count": 1062226,
+              "predicted_division_source_count": 27572,
+              "division_reset_target_count": 55945,
+              "history_present_source_count": 996465,
+              "history_source_count": 1211416,
+              "sample_count": 64,
+              "history_frame_count": 6336,
+              "history_content_sha256": "ccda1e846347c3f6e90c5a470fef94b1adb2a9a7cc27e8248446d5f112ac9f78",
+              "prediction_content_sha256": "d15636540556a8dae237d94f20676d1b823e7b58b58f71a341d5d31b63c91c2b"
+            }
+          },
+          {
+            "outer_fold": 1,
+            "inner_fold": 1,
+            "target_sample_count": 64,
+            "gradient_sample_count": 58,
+            "validation_sample_count": 6,
+            "target_sample_excluded": true,
+            "target_samples_sha256": "f612967da9f3c27bd8114da6cbd3507b816e99f905ef0969c9397f1185b4ad5a",
+            "model_path": "history_models/outer_1/inner_1/history_tracker.pth",
+            "model_file_sha256": "5f9673e54f5badefb6adbf48a85263ab645352309832b3a70885d866b4cb33e8",
+            "model_state_sha256": "b911c050217009e1eae1e92c6351dd1ce14c6c72ea9d333a73297a79c97559ac",
+            "fit": {
+              "best_epoch": 2,
+              "best_internal_selection_score": 0.9591289920825783,
+              "epochs": [
+                {
+                  "epoch": 0,
+                  "elapsed_seconds": 293.857551954,
+                  "train": {
+                    "legacy_mask_loss": 0.00019386615828836134,
+                    "batch_count": 2798.0,
+                    "window_count": 5596.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.00018320780933610436,
+                    "edge_accuracy": 0.9998601850606949,
+                    "positive_edge_recall": 0.9618276460381724,
+                    "division_parent_recall": 0.3333333333333333,
+                    "candidate_node_recall": 0.9592531192740599,
+                    "window_count": 576,
+                    "active_pair_count": 3168474,
+                    "positive_edge_count": 5187,
+                    "division_parent_count": 12,
+                    "teacher": {
+                      "candidate_nodes": 319807,
+                      "matched_candidate_nodes": 10994,
+                      "gt_nodes": 11461,
+                      "positive_edges": 5187,
+                      "active_pairs": 3168474,
+                      "active_pairs_with_unknown_endpoint": 3091078,
+                      "division_parents": 12,
+                      "source_match_distance_count": 5488,
+                      "target_match_distance_count": 5506,
+                      "source_match_distance_sum_um": 9354.90408951044,
+                      "target_match_distance_sum_um": 9391.51109713316,
+                      "candidate_node_precision_against_sparse_gt": 0.034376983618244754,
+                      "candidate_node_recall": 0.9592531192740599,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9755730992269465,
+                      "mean_match_distance_um": 1.7051496440461706
+                    },
+                    "selection_score": 0.9591190013574104
+                  },
+                  "selected": true
+                },
+                {
+                  "epoch": 1,
+                  "elapsed_seconds": 293.90996523600006,
+                  "train": {
+                    "legacy_mask_loss": 0.0001785943687252041,
+                    "batch_count": 2798.0,
+                    "window_count": 5596.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.0001902814553963862,
+                    "edge_accuracy": 0.9998611318887263,
+                    "positive_edge_recall": 0.9658762290341237,
+                    "division_parent_recall": 0.4166666666666667,
+                    "candidate_node_recall": 0.9592531192740599,
+                    "window_count": 576,
+                    "active_pair_count": 3168474,
+                    "positive_edge_count": 5187,
+                    "division_parent_count": 12,
+                    "teacher": {
+                      "candidate_nodes": 319807,
+                      "matched_candidate_nodes": 10994,
+                      "gt_nodes": 11461,
+                      "positive_edges": 5187,
+                      "active_pairs": 3168474,
+                      "active_pairs_with_unknown_endpoint": 3091078,
+                      "division_parents": 12,
+                      "source_match_distance_count": 5488,
+                      "target_match_distance_count": 5506,
+                      "source_match_distance_sum_um": 9354.90408951044,
+                      "target_match_distance_sum_um": 9391.51109713316,
+                      "candidate_node_precision_against_sparse_gt": 0.034376983618244754,
+                      "candidate_node_recall": 0.9592531192740599,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9755730992269465,
+                      "mean_match_distance_um": 1.7051496440461706
+                    },
+                    "selection_score": 0.9591199096051528
+                  },
+                  "selected": true
+                },
+                {
+                  "epoch": 2,
+                  "elapsed_seconds": 293.84099763299946,
+                  "train": {
+                    "legacy_mask_loss": 0.00015738456887902898,
+                    "batch_count": 2798.0,
+                    "window_count": 5596.0
+                  },
+                  "internal_validation": {
+                    "legacy_mask_loss": 0.0001891147493473969,
+                    "edge_accuracy": 0.9998706001690404,
+                    "positive_edge_recall": 0.9672257566994409,
+                    "division_parent_recall": 0.4166666666666667,
+                    "candidate_node_recall": 0.9592531192740599,
+                    "window_count": 576,
+                    "active_pair_count": 3168474,
+                    "positive_edge_count": 5187,
+                    "division_parent_count": 12,
+                    "teacher": {
+                      "candidate_nodes": 319807,
+                      "matched_candidate_nodes": 10994,
+                      "gt_nodes": 11461,
+                      "positive_edges": 5187,
+                      "active_pairs": 3168474,
+                      "active_pairs_with_unknown_endpoint": 3091078,
+                      "division_parents": 12,
+                      "source_match_distance_count": 5488,
+                      "target_match_distance_count": 5506,
+                      "source_match_distance_sum_um": 9354.90408951044,
+                      "target_match_distance_sum_um": 9391.51109713316,
+                      "candidate_node_precision_against_sparse_gt": 0.034376983618244754,
+                      "candidate_node_recall": 0.9592531192740599,
+                      "unknown_endpoint_fraction_of_active_pairs": 0.9755730992269465,
+                      "mean_match_distance_um": 1.7051496440461706
+                    },
+                    "selection_score": 0.9591289920825783
+                  },
+                  "selected": true
+                }
+              ]
+            },
+            "history_audit": {
+              "window_count": 6336,
+              "selected_edge_count": 1120299,
+              "predicted_division_source_count": 33842,
+              "division_reset_target_count": 68517,
+              "history_present_source_count": 1042735,
+              "history_source_count": 1271642,
+              "sample_count": 64,
+              "history_frame_count": 6336,
+              "history_content_sha256": "7d110b8884895e532bfeaa24c745ab72fe1cd5948fad749fa526bbfa1932f006",
+              "prediction_content_sha256": "64bdf9c4b7e5e15f10ff944a6027743401643844b426977a486df3145b2a3e1b"
+            }
+          }
+        ],
+        "outer_evaluation_history": {
+          "window_count": 7029,
+          "selected_edge_count": 2045209,
+          "predicted_division_source_count": 67279,
+          "division_reset_target_count": 136305,
+          "history_present_source_count": 1891083,
+          "history_source_count": 2302829,
+          "sample_count": 71,
+          "history_frame_count": 7029,
+          "history_content_sha256": "d44c13ef4bd82500389366f67260f434c86cbe20bcf9ad462ae9438b45fae104",
+          "prediction_content_sha256": "6b54b206696d3abe1aa404e9cbea33c135fa041fc28991c665a15a2c361f86a5"
+        },
+        "exp016_saved_control": {
+          "legacy_mask_loss": 0.00016589781317135103,
+          "edge_accuracy": 0.9998301244267519,
+          "positive_edge_recall": 0.9477544989181487,
+          "false_positive_active_pair_rate": 9.786278907197396e-05,
+          "correct_parent_top1_accuracy": 0.9684416064172252,
+          "division_parent_recall": 0.2727272727272727,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "active_negative_pair_count": 13702859,
+          "false_positive_active_pair_count": 1341,
+          "true_positive_edge_count": 17959,
+          "positive_edge_count": 18949,
+          "correct_parent_top1_count": 18351,
+          "correct_parent_top1_denominator": 18949,
+          "recovered_division_parent_count": 6,
+          "division_parent_count": 22,
+          "history_present_source_count": 1739434,
+          "history_source_count": 2118790,
+          "prediction_content_sha256": "c60c1b5e60642a86e4a52dd3adabe529e5bd50ff27c581a1ba520a94b8a7e00d",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "history_coverage": 0.8209563005300194,
+          "selection_score": 0.9744920322002016
+        },
+        "velocity_fit": {
+          "best_epoch": 0,
+          "best_internal_selection_score": 0.9782026453730581,
+          "epochs": [
+            {
+              "epoch": 0,
+              "elapsed_seconds": 763.1398819409997,
+              "train": {
+                "legacy_mask_loss": 0.00021755107412594336,
+                "batch_count": 5618.0,
+                "window_count": 11236.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.00010291253999733345,
+                "edge_accuracy": 0.9998814438147859,
+                "positive_edge_recall": 0.9767600045346333,
+                "division_parent_recall": 0.4444444444444444,
+                "candidate_node_recall": 0.978318631097885,
+                "window_count": 1156,
+                "active_pair_count": 3407667,
+                "positive_edge_count": 8821,
+                "division_parent_count": 9,
+                "teacher": {
+                  "candidate_nodes": 440587,
+                  "matched_candidate_nodes": 18410,
+                  "gt_nodes": 18818,
+                  "positive_edges": 8821,
+                  "active_pairs": 3407667,
+                  "active_pairs_with_unknown_endpoint": 3315274,
+                  "division_parents": 9,
+                  "source_match_distance_count": 9194,
+                  "target_match_distance_count": 9216,
+                  "source_match_distance_sum_um": 16270.457616090775,
+                  "target_match_distance_sum_um": 16295.073291301727,
+                  "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                  "candidate_node_recall": 0.978318631097885,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                  "mean_match_distance_um": 1.7689044490707497
+                },
+                "selection_score": 0.9782026453730581
+              },
+              "selected": true
+            },
+            {
+              "epoch": 1,
+              "elapsed_seconds": 771.4717037820001,
+              "train": {
+                "legacy_mask_loss": 0.00019748464863415878,
+                "batch_count": 5618.0,
+                "window_count": 11236.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.00010860909251985203,
+                "edge_accuracy": 0.99987440087309,
+                "positive_edge_recall": 0.9738124929146356,
+                "division_parent_recall": 0.3333333333333333,
+                "candidate_node_recall": 0.978318631097885,
+                "window_count": 1156,
+                "active_pair_count": 3407667,
+                "positive_edge_count": 8821,
+                "division_parent_count": 9,
+                "teacher": {
+                  "candidate_nodes": 440587,
+                  "matched_candidate_nodes": 18410,
+                  "gt_nodes": 18818,
+                  "positive_edges": 8821,
+                  "active_pairs": 3407667,
+                  "active_pairs_with_unknown_endpoint": 3315274,
+                  "division_parents": 9,
+                  "source_match_distance_count": 9194,
+                  "target_match_distance_count": 9216,
+                  "source_match_distance_sum_um": 16270.457616090775,
+                  "target_match_distance_sum_um": 16295.073291301727,
+                  "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                  "candidate_node_recall": 0.978318631097885,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                  "mean_match_distance_um": 1.7689044490707497
+                },
+                "selection_score": 0.9781957551319793
+              },
+              "selected": false
+            },
+            {
+              "epoch": 2,
+              "elapsed_seconds": 763.0319037950003,
+              "train": {
+                "legacy_mask_loss": 0.00018588845696059818,
+                "batch_count": 5618.0,
+                "window_count": 11236.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.00011147943450522589,
+                "edge_accuracy": 0.9998811503588819,
+                "positive_edge_recall": 0.9801609794807845,
+                "division_parent_recall": 0.6666666666666666,
+                "candidate_node_recall": 0.978318631097885,
+                "window_count": 1156,
+                "active_pair_count": 3407667,
+                "positive_edge_count": 8821,
+                "division_parent_count": 9,
+                "teacher": {
+                  "candidate_nodes": 440587,
+                  "matched_candidate_nodes": 18410,
+                  "gt_nodes": 18818,
+                  "positive_edges": 8821,
+                  "active_pairs": 3407667,
+                  "active_pairs_with_unknown_endpoint": 3315274,
+                  "division_parents": 9,
+                  "source_match_distance_count": 9194,
+                  "target_match_distance_count": 9216,
+                  "source_match_distance_sum_um": 16270.457616090775,
+                  "target_match_distance_sum_um": 16295.073291301727,
+                  "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                  "candidate_node_recall": 0.978318631097885,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                  "mean_match_distance_um": 1.7689044490707497
+                },
+                "selection_score": 0.9782023582796798
+              },
+              "selected": false
+            }
+          ]
+        },
+        "velocity_outer_evaluation": {
+          "legacy_mask_loss": 0.00015866615657604097,
+          "edge_accuracy": 0.9998295414132016,
+          "positive_edge_recall": 0.9427938149770436,
+          "false_positive_active_pair_rate": 9.158672653641113e-05,
+          "correct_parent_top1_accuracy": 0.9686526993508893,
+          "division_parent_recall": 0.13636363636363635,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "active_negative_pair_count": 13702859,
+          "false_positive_active_pair_count": 1255,
+          "true_positive_edge_count": 17865,
+          "positive_edge_count": 18949,
+          "correct_parent_top1_count": 18355,
+          "correct_parent_top1_denominator": 18949,
+          "recovered_division_parent_count": 3,
+          "division_parent_count": 22,
+          "history_present_source_count": 1739434,
+          "history_source_count": 2118790,
+          "prediction_content_sha256": "ee7a387097055c7b9d23d84695b320a56e1e1f313dde4bfdaeab8510c6ccd8fc",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "history_coverage": 0.8209563005300194,
+          "selection_score": 0.9744914639616123
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": -7.231656595310063e-06,
+          "edge_accuracy": -5.830135503259726e-07,
+          "positive_edge_recall": -0.0049606839411050485,
+          "false_positive_active_pair_rate": -6.276062535562834e-06,
+          "correct_parent_top1_accuracy": 0.0002110929336640588,
+          "division_parent_recall": -0.13636363636363635,
+          "selection_score": -5.682385892935571e-07
+        },
+        "false_positive_active_pair_relative_increase": -0.06413124533929904,
+        "graph_progression_gate": {
+          "positive_edge_recall_improved": false,
+          "false_positive_active_pair_increase_within_limit": true,
+          "division_recovered_count_non_decrease": false,
+          "passed": false
+        },
+        "model_file": "models/fold_1/velocity_tracker_best.pth",
+        "model_file_sha256": "e085decfd921b5672f5c0a68c378ac323496951e69a409d9e13092d0716195ec",
+        "model_state_sha256": "328b14549e7c2ac060b2b2ce8307b70066b9f44b54a91a6004880dbe614a19a5"
+      }
+    ],
+    "graph_progression_gate": {
+      "passed": false,
+      "threshold": 0.5,
+      "required_fold_count": 2,
+      "passed_fold_count": 0,
+      "folds": {
+        "0": {
+          "positive_edge_recall_improved": false,
+          "false_positive_active_pair_increase_within_limit": true,
+          "division_recovered_count_non_decrease": false,
+          "passed": false
+        },
+        "1": {
+          "positive_edge_recall_improved": false,
+          "false_positive_active_pair_increase_within_limit": true,
+          "division_recovered_count_non_decrease": false,
+          "passed": false
+        }
+      },
+      "next_action": "stop_before_full_graph_inference",
+      "official_metric_computed": false
+    },
+    "history_manifest_sha256": "3119186560b6a989b4b00bcb00b963a2c417012f2f9a20b7baad84efc92d8670",
+    "model_manifest_sha256": "20ea0e29df1de080764704e5a3f24433fa22c807e0a681c2d40cbdec33325842"
+  }
+}

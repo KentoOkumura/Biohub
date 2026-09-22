@@ -1,0 +1,400 @@
+experiment:
+  name: exp035_velocity_features
+  description: >-
+    exp015の固定候補と画像特徴を使い、対象動画を学習に使わない固定first-pass
+    trackerの予測履歴から移動ベクトルと次候補との差を作り、primary trackerへ
+    pair特徴として追加してexp016の保存済み基準と比較する
+  route: frozen_feature_velocity_tracker
+  notebooks:
+  - train
+  created_at: '2026-09-22'
+lineage:
+  parent: exp016_frozen_image_encoder
+  hypothesis_id: HYP-20260910-10
+  backlog_candidate: velocity_features
+  diff_summary: >-
+    画像特徴、候補、教師、loss、外側胚分割を固定し、分割外first-pass予測から
+    求める移動ベクトル、予測位置との差、履歴長、直前edge確率をpair logitへ追加する
+validation:
+  strategy: leave_one_embryo_out
+  seed: 42
+  n_folds: 2
+  group_key: embryo_id_from_sample_prefix
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_train_sample_count: 64
+    expected_internal_validation_sample_count: 7
+    expected_evaluation_sample_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_train_sample_count: 116
+    expected_internal_validation_sample_count: 12
+    expected_evaluation_sample_count: 71
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  checkpoint_selection_metric: edge_accuracy_times_candidate_node_recall
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  train_stage_metrics:
+  - legacy_mask_loss
+  - edge_accuracy
+  - positive_edge_recall
+  - division_parent_recall
+  - candidate_node_recall
+  conditional_validation: 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるため、 trackerの外側胚分割を独立CVとは呼ばない
+  history_crossfit:
+    strategy: two_fold_grouped_by_sample_within_outer_training_embryo
+    n_folds: 2
+    split_seed: 17
+    internal_selection_fraction: 0.1
+    target_sample_excluded_from_history_model_training: true
+    outer_evaluation_history_source: exp016_fold_model_trained_on_opposite_embryo
+  graph_progression_gate:
+    threshold: 0.5
+    require_positive_edge_recall_improvement_in_each_embryo: true
+    max_false_positive_active_pair_relative_increase: 0.05
+    require_division_recovered_count_non_decrease: true
+    baseline: exp016_saved_fold_models
+data:
+  source: exp015_train_window_cache_and_competition_geff
+  cache:
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    summary_file: window_cache_summary.json
+    summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+    identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+    directory: window_cache
+    schema_version: 1
+    expected_dataset_count: 199
+    expected_window_count: 19701
+    feature_channels: 32
+    primary_feature_contract: 8_view_d4_inverse_aligned_mean_at_detected_candidates
+    arrays:
+    - candidate_ids_src
+    - candidate_ids_tgt
+    - coords_src_grid
+    - coords_tgt_grid
+    - coords_src_physical
+    - coords_tgt_physical
+    - detection_scores_src
+    - detection_scores_tgt
+    - position_features_src
+    - position_features_tgt
+    - candidate_mask_src
+    - candidate_mask_tgt
+    - primary_features_src
+    - primary_features_tgt
+    - secondary_features_src
+    - secondary_features_tgt
+  annotation:
+    source: competition_train_geff
+    voxel_scale_zyx_um:
+    - 1.625
+    - 0.40625
+    - 0.40625
+  expected_frames_per_sample: 100
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+model:
+  name: VelocityAugmentedTracker
+  public_source:
+    dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+    train_script: repo/scripts/train_unet_transformer.py
+    train_script_sha256: c4f6317736bb3bb1ec8f3f6e9a6d935a463e3f0f1f685481b2d13218d35dc9ea
+    model_source: repo/src/biohub_tracking/models/simple_node_transformer.py
+    model_source_sha256: b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e
+    checkpoint: weights/unet_transformer/split_0/edge_predictor_best.pth
+    checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  frozen_components:
+  - primary_TemporalUNet3D
+  - primary_detection_head
+  - secondary_TemporalUNet3D
+  - secondary_SimpleNodeTransformer
+  - DeepCenter
+  - image_normalization_statistics
+  - detector_candidates
+  - decode_and_graph_repair
+  trainable_components:
+  - primary_SimpleNodeTransformer
+  - velocity_pair_branch
+  params:
+    image_feature_dim: 32
+    position_feature_dim: 32
+    feature_dim: 64
+    hidden_dim: 128
+    n_heads: 4
+    n_blocks: 4
+    dropout: 0.3
+    pair_chunk_size: 32
+    velocity_pair_feature_dim: 15
+    velocity_branch_hidden_dim: 32
+    velocity_branch_dropout: 0.0
+    model_coordinate_units: original_voxel_zyx
+    downsample_zyx:
+    - 1
+    - 4
+    - 4
+  teacher:
+    matching: greedy_distance_order_one_to_one
+    max_matching_distance_um: 5.0
+    target: annotated_adjacent_frame_geff_edges
+    unmatched_candidate_label: unknown_but_legacy_mask_can_include_as_negative
+  loss:
+    edge_activation: source_axis_softmax
+    function: focal_weighted_binary_cross_entropy
+    focal_gamma: 2.0
+    mask: pair_touches_source_or_target_with_positive_annotated_edge
+    division_weight: 1.0
+    detection_loss: disabled
+  training:
+    active_variants:
+    - velocity_features
+    initialization: public_primary_tracker_checkpoint
+    seed: 42
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.01
+    batch_size: 2
+    num_workers: 2
+    gradient_clip_norm: 1.0
+    augmentations: []
+    mixed_precision: false
+    benchmark_windows_per_fold: 64
+    runtime_projection_multiplier: 1.5
+    runtime_gate_hours: 12.0
+    weekly_gpu_budget_hours: 30.0
+  history:
+    source: fixed_first_pass_primary_tracker
+    association: source_axis_softmax_argmax_per_target
+    edge_probability_threshold: 0.5
+    update_mode: fixed_first_pass_not_velocity_model_recursive
+    velocity_points: 2
+    velocity_units: micrometers_per_frame_index
+    division_policy: reset_daughters_when_predicted_parent_out_degree_exceeds_one
+    reverse_policy: build_separate_backward_history
+    missing_policy: zero_features_with_history_mask_zero
+    vector_scale_um_per_frame: 5.0
+    vector_clip_abs: 4.0
+    history_length_cap: 8
+    pair_features:
+    - velocity_zyx
+    - candidate_displacement_zyx
+    - predicted_position_residual_zyx
+    - speed
+    - residual_norm
+    - direction_cosine
+    - history_present
+    - history_length
+    - previous_edge_probability
+    inner_generator_epochs: 3
+    inner_generator_model_count: 4
+  control:
+    source: exp016_frozen_image_encoder_saved_fold_models_and_metrics
+    retrain: false
+    evaluate_same_outer_windows: true
+    kernel_source: kentookumura/exp016-frozen-image-encoder-train
+    manifest_file: model_manifest.json
+    manifest_sha256: 6f9548739ae6f58d3c8beb7ccb78464ddc10243841b1fc7e071ed876f757ea56
+    experiment: exp016_frozen_image_encoder
+    models:
+    - fold: 0
+      evaluation_embryo: 6bba
+      path: models/fold_0/primary_tracker_best.pth
+      file_sha256: c775ddabc2df623b08c39e548bebc887a73e790cc89bd9a9e1cb2c3506eff9d2
+      canonical_state_sha256: b080c8dc374454f0f97403ec1e27388ef9a5a76c4c658b0ccaeb247ab136ab6c
+    - fold: 1
+      evaluation_embryo: 44b6
+      path: models/fold_1/primary_tracker_best.pth
+      file_sha256: ef8b60dc1a34e336942f9abaefdd47606a457e0f569363434619992980d0c5e9
+      canonical_state_sha256: 41b03b82d30e9b22d73df6924a70d56ca2b292bb3c41b2678acb5d33990fb3ea
+  output:
+    model_count: 2
+    history_model_count: 4
+    model_dir: models
+    model_manifest: model_manifest.json
+    training_summary: training_summary.json
+  inference:
+    implemented: false
+    blocked_by: validation.graph_progression_gate
+    mode: stopped_after_pair_diagnostic_gate_failure
+    graph_progression_gate_passed: false
+    passed_fold_count: 0
+    required_fold_count: 2
+    official_metric_computed: false
+    fold_model_by_evaluation_embryo:
+      6bba: 0
+      44b6: 1
+    control_graph_source: exp015_saved_final_graphs
+    control_candidate_graph_source: exp015_saved_pre_ilp_candidate_graphs
+    cache_source: exp015_saved_window_cache
+    post_retention_candidates_reused_from_exp015: true
+    main_image_encoder_forward_count: 0
+    official_metric_max_matching_distance_um: 7.0
+    require_exact_candidate_coordinates: true
+    require_exact_public_control_candidate_graphs: true
+    official_evaluator_preflight: saved_public_control_graph_end_to_end
+    superseded_raw_image_prediction_seconds: 23217.361345529556
+    runtime_gate_hours: 12.0
+    runtime_gate_scope: notebook_setup_cache_replay_and_graph_repair
+    replay:
+      worker_count: 2
+      expected_sample_count: 199
+      expected_window_count: 19701
+      tracker_forward_count_per_window: 5
+      expected_tracker_forward_count: 98505
+      downsample_zyx:
+      - 1
+      - 4
+      - 4
+      edge_threshold: 0.48
+      bidirectional_weight: 0.15
+      secondary_edge_weight: 0.15
+      secondary_link_mode: low_margin_consensus
+      secondary_low_margin_max: 0.35
+      secondary_mix_temperature: 1.0
+      use_ilp: true
+      ilp_edge_weight: -1.0
+      ilp_appearance_weight: 0.0
+      ilp_disappearance_weight: 2.0
+      ilp_division_weight: 1.2
+    active_variants: []
+    retrain_models: 0
+    submission_created: false
+    base_pipeline_source:
+      experiment: exp015_oracle_stage_limits
+      bootstrap_path: exp015_inference_base.py
+      sha256: d9a7f46dda21a01d03ffa0072e4e4396dd2542ec4d4996b934bec5b116f49e04
+    public_evaluator_source:
+      dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+      path: repo/scripts/evaluate.py
+      sha256: 614813cc51c3581c6ccda4bb20725a19da8ecac4a27620654bfca58319cffa3c
+      entrypoint: evaluate_run
+      metrics_module: biohub_tracking.metrics
+    required_before_official_metric_claim: true
+runtime:
+  execution: cached_feature_tracker_train_and_pair_diagnostic
+  use_amp: false
+  num_workers: 2
+  batch_size: 2
+  benchmark:
+    canonical_environment: kaggle
+    canonical_source: train_pipeline.py
+    canonical_notebook: exp035_velocity_features_train.ipynb
+    canonical_stage: nested_history_training_and_pair_diagnostic
+    expected_sample_count: 199
+    includes_graph_repair: false
+    includes_official_graph_evaluation: false
+    window_count_per_stage: 64
+    conservative_projected_seconds: 16814.76985345359
+    runtime_gate_seconds: 43200.0
+    peak_gpu_memory_bytes: 271617536
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+    include_experiment_sources: true
+    dataset_sources:
+    - pilkwang/biohub-tracking-support-pack-50ep-v1
+    train:
+      kernel_id: kentookumura/exp035-velocity-features-train
+      kernel_version: 3
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+      - kentookumura/exp016-frozen-image-encoder-train
+    inference:
+      role: canonical_benchmark
+      source: exp035_velocity_features_inference.py
+      notebook: exp035_velocity_features_inference.ipynb
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+      - kentookumura/exp016-frozen-image-encoder-train
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      bootstrap_dependency_files:
+      - source: experiments/exp015_oracle_stage_limits/exp015_oracle_stage_limits_inference.py
+        destination: exp015_inference_base.py
+      - source: experiments/exp015_oracle_stage_limits/window_cache.py
+        destination: window_cache.py
+    official_eval:
+      role: official_graph_evaluation_from_verified_colab_ilp
+      source: exp035_velocity_features_official_eval.py
+      notebook: exp035_velocity_features_official_eval.ipynb
+      enable_gpu: false
+      enable_internet: false
+      machine_shape: null
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp016-repaired-graphs-v5
+      bootstrap_dependency_files:
+      - source: experiments/exp015_oracle_stage_limits/exp015_oracle_stage_limits_inference.py
+        destination: exp015_inference_base.py
+      - source: experiments/exp015_oracle_stage_limits/window_cache.py
+        destination: window_cache.py
+  colab:
+    notebook: exp035_velocity_features_colab_inference.ipynb
+    stage: cached_tracker_and_ilp_replay
+    gpu_count: 1
+    observed_gpu: Tesla T4
+    observed_python: 3.13.15
+    input_modes:
+    - kaggle_api_token_colab_secret
+    - manual_google_drive
+    run_mode: benchmark_then_full
+    benchmark_sample_count: 2
+    full_sample_count: 199
+    persistent_batch_size: 5
+    resume: true
+    runtime_gate_hours: 12.0
+    main_image_encoder_forward_count: 0
+    official_graph_evaluation_in_this_stage: false
+    bundle_path: artifacts/colab_bundle/exp016_colab_bundle.zip
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_fold_offset_and_seeded_dataloader_generator
+  stochastic_components:
+  - dataloader_shuffle
+  - transformer_dropout
+  - cuda_kernels
+  parallel_rng_policy: DataLoader order uses a fold-specific torch.Generator and workers
+    receive deterministic seeds; cache content itself is fixed and contains no augmentation
+  feature_sha_policy: exp015_sorted_window_cache_identity_and_per_window_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるためdeterministic anchorまたは独立CVとは扱わない。
+  - 同じfoldを再実行したmodel SHAが一致しなくても、seed、入力cache、実行環境と数値差を記録する。
+notes:
+- trainはactive variant 1、velocity model 2、履歴生成model 4、合計新規tracker 6、booster 0。
+- exp016 control、画像encoder、検出head、secondary trackerは再学習しない。
+- 同構造でvelocityを中立値にするcontrolは、ユーザー指定により初回比較から外す。
+- 全graph inferenceは隣接pair診断gateを通過した場合だけ同じ実験へ追加する。
+- pair診断gateは0/2胚で未達となり、全graph inferenceと公式評価は実行していない。
+- inferenceはexp015の検出後cacheを直接読み、main画像encoderと検出headのforwardを0回にする。
+- 履歴生成modelは対象sampleを学習に使わないinner 2-fold cross-fittingで4個作る。
+- 公開sourceのtracker学習と同じくmixed precisionは使わない。
+- mask変更はpartial_edge_maskの別実験へ分ける。
+- Kaggle submissionは行わない。
