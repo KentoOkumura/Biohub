@@ -1,6 +1,10 @@
 from pathlib import Path
 
-from scripts.check_strategy_docs import validate_strategy_docs
+from scripts.check_strategy_docs import (
+    MAX_HYPOTHESIS_ROW_LENGTH,
+    MAX_LINE_LENGTH,
+    validate_strategy_docs,
+)
 
 
 def write_valid_strategy_docs(root: Path) -> None:
@@ -100,6 +104,29 @@ def test_strategy_docs_accept_matching_index_and_detail(tmp_path: Path) -> None:
     write_valid_strategy_docs(tmp_path)
 
     assert validate_strategy_docs(tmp_path) == []
+
+
+def test_strategy_docs_allow_longer_hypothesis_rows_only(tmp_path: Path) -> None:
+    write_valid_strategy_docs(tmp_path)
+    direction = tmp_path / "backlog/KAGGLE_DIRECTION.md"
+    original = direction.read_text()
+    row = next(line for line in original.splitlines() if line.startswith("| `HYP-"))
+    extended = row.replace(
+        "remaining", "x" * (MAX_HYPOTHESIS_ROW_LENGTH - len(row) + len("remaining"))
+    )
+    assert len(extended) == MAX_HYPOTHESIS_ROW_LENGTH
+    direction.write_text(original.replace(row, extended))
+    assert validate_strategy_docs(tmp_path) == []
+
+    direction.write_text(
+        original.replace(row, extended.replace(" | hypothesis |", " | xhypothesis |"))
+    )
+    errors = validate_strategy_docs(tmp_path)
+    assert any(f"limit is {MAX_HYPOTHESIS_ROW_LENGTH}" in error for error in errors)
+
+    direction.write_text(original + "\n" + "x" * (MAX_LINE_LENGTH + 1) + "\n")
+    errors = validate_strategy_docs(tmp_path)
+    assert any(f"limit is {MAX_LINE_LENGTH}" in error for error in errors)
 
 
 def test_strategy_docs_accept_empty_backlog(tmp_path: Path) -> None:

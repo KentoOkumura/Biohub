@@ -18,6 +18,9 @@ BACKLOG_DIR = Path("backlog")
 MAX_DIRECTION_BYTES = 50_000
 MAX_DIRECTION_LINES = 220
 MAX_LINE_LENGTH = 800
+# Hypothesis rows repeat full candidate and experiment names in link targets.
+# Keep prose/backlog rows short while allowing the required lineage link list.
+MAX_HYPOTHESIS_ROW_LENGTH = 1_000
 ALLOWED_STATES = {"検討メモ・設計不可", "設計可能・実験化未承認"}
 ALLOWED_PRIORITIES = {"P0", "P1", "P2", "P3", "P4"}
 DESIGN_READY_STATE = "設計可能・実験化未承認"
@@ -222,11 +225,17 @@ def validate_strategy_docs(root: Path = ROOT) -> list[str]:
         errors.append(f"{DIRECTION_PATH} is {encoded_size} bytes; limit is {MAX_DIRECTION_BYTES}")
     if len(lines) > MAX_DIRECTION_LINES:
         errors.append(f"{DIRECTION_PATH} has {len(lines)} lines; limit is {MAX_DIRECTION_LINES}")
+    hypothesis_line_numbers = {number for number, _ in hypothesis_rows(text)}
     for line_number, line in enumerate(lines, start=1):
-        if len(line) > MAX_LINE_LENGTH:
+        line_limit = (
+            MAX_HYPOTHESIS_ROW_LENGTH
+            if line_number in hypothesis_line_numbers
+            else MAX_LINE_LENGTH
+        )
+        if len(line) > line_limit:
             errors.append(
                 f"{DIRECTION_PATH}:{line_number} has {len(line)} characters; "
-                f"limit is {MAX_LINE_LENGTH}"
+                f"limit is {line_limit}"
             )
 
     if "### 検証中の仮説" not in text:
