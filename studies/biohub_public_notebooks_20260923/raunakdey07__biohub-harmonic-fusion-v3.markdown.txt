@@ -1,0 +1,35 @@
+
+# CELL 0
+# Biohub Cell Tracking: Harmonic Fusion V3 & Geometry-Validated Divisions
+
+This notebook implements a state-of-the-art 3D lineage reconstruction pipeline for the **Biohub Cell Tracking During Development** competition, achieving a **0.939** on the public leaderboard. 
+
+## Credits & Attribution
+A massive round of applause and flowers to **Igor Zharov**, whose exceptional insights and approaches served as the primary inspiration for this iteration of the pipeline. Building upon strong community foundations, this "record edition" integrates Igor's conceptual inspiration with aggressive post-processing optimizations, holdout-selected hyperparameter sweeps, and bidirectional temporal associations.
+
+## Pipeline Architecture & Notebook Contents
+
+This notebook represents a highly tuned, robust inference pipeline utilizing dual temporal models, bidirectional association matching, and strict biological geometry validation.
+
+### 1. Dual Temporal Models & Edge-Feature TTA
+- **Ensemble Blending:** Utilizes two independent temporal UNet models (Primary and Secondary Seed 314159). The secondary detection weight has been aggressively boosted to `0.80` to heavily leverage the blended consensus.
+- **Dual Edge-Feature TTA:** Introduces a massive upgrade to the inference engine. Both the primary and secondary models now utilize an exhaustive 8-way spatial Test-Time Augmentation (D4 flips, rotations, and transposes) strictly on the extracted edge features, drastically stabilizing connection probabilities.
+
+### 2. Bidirectional Harmonic Association Fusion
+- The Node-Transformer predicts edges in both **forward** (t → t+1) and **reverse** (t+1 → t) time directions.
+- A weighted harmonic mean fuses the probabilities (weighted 0.15 toward the reverse direction). Because the harmonic mean heavily penalizes large discrepancies, spurious one-directional confident links are eradicated before they ever reach the ILP solver.
+
+### 3. "Wide" Geometry-Validated Divisions
+- The safe-division recovery constraints have been completely overhauled to cast a wider but stricter net.
+- **Expanded Search Radius:** Parent max distance expanded to `9.0 µm` and sister max distance expanded to `14.0 µm`.
+- **Strict Geometric Validation:** To counteract the wider search radius, divisions are gated by strict new biological checks:
+  - **Sister Symmetry Tau (`0.6`):** Prevents highly asymmetric daughter cell trajectories.
+  - **Divergence (`2.25 µm`):** Requires daughter cells to physically diverge from one another in subsequent frames to validate a true division.
+  - **Mutual Nearest Neighbors:** Enforces reciprocal spatial proximity between candidate daughter cells.
+
+### 4. Adaptive Density Gap Closing & Gap2 Recovery
+- **2-Frame Gap Recovery:** `GAP2_RECOVERY` is activated, allowing the pipeline to successfully stitch trajectories across longer occlusions.
+- **KDTree Adaptive Density:** Gap closing dynamically scales its connection threshold based on local cell crowding, utilizing a spatial `cKDTree` to measure the median spacing of the 3 nearest neighbors, preventing aggressive gap-closes in dense clusters.
+
+### 5. DeepCenter Veto Gate
+- An independent `_DCDeepCenterUNet3D` spatial heatmap acts as an absolute gatekeeper. It evaluates the spatial coordinates of synthetic gap-closure nodes and safe-division candidates, vetoing any proposed tracks that land in low-probability background regions.

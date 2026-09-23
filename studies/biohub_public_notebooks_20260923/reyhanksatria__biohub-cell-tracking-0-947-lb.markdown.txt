@@ -1,0 +1,221 @@
+
+# CELL 0
+# Biohub Cell Tracking: 0.947 LB
+
+This update continues the verified progression from **0.933 → 0.934 → 0.939 → 0.941 → 0.946 → 0.947** Public LB. The core tracking architecture remains unchanged throughout — same UNet3D + node-transformer framework, dual-seed ensemble, ILP-based global linking, harmonic bidirectional association, repair pipeline, and held-out post-process selection. The **0.934 → 0.939** step widened safe division recovery while making bidirectional association more conservative. The **0.939 → 0.941** step redistributed the repair budget by widening the safe-division parent search while tightening its learned confirmation and gap closing. The **0.941 → 0.946** step extended the existing eight-view spatial TTA from detection outputs into the primary UNet features used for association. This **0.946 → 0.947** step keeps that primary feature ensemble intact and extends spatial ensembling into two remaining model-dependent paths: the secondary model's association features and the DeepCenter repair gate, together with a small retuning of the DeepCenter safe-division threshold from 0.25 to 0.20.
+
+| Component | 0.934 | 0.939 | 0.941 | 0.946 | 0.947 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Safe division parent max distance | 7.0 µm | 7.0 µm | 9.0 µm | 9.0 µm | 9.0 µm |
+| Safe division sister max distance | 12.0 µm | 14.0 µm | 14.0 µm | 14.0 µm | 14.0 µm |
+| Sister symmetry gate | off | 0.6 | 0.6 | 0.6 | 0.6 |
+| DeepCenter safe-division veto | off | on | on | on | on |
+| DeepCenter safe-division threshold | 0.12 | 0.12 | 0.25 | 0.25 | 0.20 |
+| DeepCenter spatial TTA | off | off | off | off | on |
+| Gap-close base radius | 5.8 µm | 5.8 µm | 5.0 µm | 5.0 µm | 5.0 µm |
+| Bidirectional association weight | 0.30 | 0.15 | 0.15 | 0.15 | 0.15 |
+| Bidirectional winner-agreement guard | on | removed | removed | removed | removed |
+| DeepCenter expected epoch | 500 | 2 | 2 | 2 | 2 |
+| Detection spatial TTA views | 8 | 8 | 8 | 8 | 8 |
+| Primary edge-feature spatial TTA | off | off | off | on | on |
+| Secondary edge-feature spatial TTA | off | off | off | off | on |
+| Secondary edge-feature TTA weight | - | - | - | - | 0.75 |
+| Held-out post-process selection | off | off | off | on | on |
+
+**Recap: wider division search with a symmetry and DeepCenter guard (0.934 → 0.939).** The sister-distance limit widened from 12 µm to 14 µm to recover genuine divisions where the two daughters had drifted slightly farther apart. Since a wider radius alone also admits more spurious pairings, two safeguards compensate: a symmetry gate rejecting daughter candidates sitting at very uneven distances from the parent,
+
+$$
+\frac{|d_1 - d_2|}{(d_1 + d_2)/2} \le 0.6
+$$
+
+and the DeepCenter veto, so every candidate the wider geometric search proposes still needs independent confirmation before being accepted.
+
+**Recap: a more conservative bidirectional fusion (0.934 → 0.939).** Association is normally scored only forward in time — for a cell at frame $t$, which detection at $t+1$ it most likely became. This pipeline also scores it in reverse — given a detection at $t+1$, which detection at $t$ it most likely came from. Let $p_f$ be the forward probability and $p_r$ the reverse probability for a candidate pair. The reverse weight dropped from 0.30 to 0.15, so $p_r$ acts as a lighter supporting vote rather than pulling $p_f$ as strongly, and the previous requirement that forward and reverse agree on the exact same winner was removed. Their mutual support is instead represented through the harmonic probability:
+
+$$
+p_{\text{harmonic}} = \frac{2 \, p_f \, p_r}{p_f + p_r}
+$$
+
+This preserves the idea that a strong temporal link should receive support from both temporal directions without imposing a hard winner-agreement requirement.
+
+**Recap: redistributing the repair budget (0.939 → 0.941).** The association setup that reached 0.939 is left untouched; three repair-stage parameters are retuned instead. The safe-division **parent** radius increases from 7 µm to 9 µm. This is a different axis from the earlier 12 → 14 µm change — that one widened the allowed distance *between the two daughters*; this one widens the distance *from the parent to the missing daughter candidate*, recovering parent-child links the previous radius was cutting off. That wider parent search creates more room for false division proposals, so the DeepCenter confirmation threshold is raised from 0.12 to 0.25. Candidates admitted by the larger radius still have to clear a stricter learned confirmation before being recovered as divisions. At the same time, gap closing is tightened, with its base radius reduced from 5.8 µm to 5.0 µm. Together these changes move more repair capacity toward plausible divisions while tightening independent confirmation and gap recovery elsewhere.
+
+**Recap: extending the primary spatial ensemble into association features (0.941 → 0.946).** The 0.941 pipeline already evaluates detection using the full eight spatial transformations of the D4 symmetry group. The 0.946 change does not increase the number of transformations. Instead, it extends the same transform-invert-average principle from detection logits into the primary UNet feature tensor consumed by the edge predictor. The eight spatial views are:
+
+| No. | D4 Spatial View | Operation |
+| --- | --- | --- |
+| 1 | Identity | Original orientation |
+| 2 | Horizontal flip | Reflection across one spatial axis |
+| 3 | Vertical flip | Reflection across the other spatial axis |
+| 4 | Horizontal + vertical flip | Reflection across both axes, equivalent to a 180° rotation |
+| 5 | Rotation 90° | 90° spatial rotation |
+| 6 | Rotation 270° | 270° spatial rotation |
+| 7 | Transpose | Reflection across one diagonal |
+| 8 | Anti-transpose | Reflection across the opposite diagonal |
+
+For an input $x$, let $T_i$ denote the $i$-th D4 transformation. Detection logits are aligned back into the original coordinate system and averaged:
+
+$$
+\bar{L}(x) = \frac{1}{8}\sum_{i=1}^{8} T_i^{-1}\left(L(T_i(x))\right)
+$$
+
+This detection-logit TTA already existed before 0.946. What changes in 0.946 is the representation used for temporal association. Previously, even after eight-view detection TTA, the edge predictor still received the UNet feature map from the original orientation only:
+
+$$
+F_{\text{association}}(x) = F(x)
+$$
+
+The 0.946 pipeline retains the UNet feature tensor from every transformed view, maps each one back to the original coordinate system, and averages them:
+
+$$
+\bar{F}_{p}(x) = \frac{1}{8}\sum_{i=1}^{8} T_i^{-1}\left(F_{p}(T_i(x))\right)
+$$
+
+where the subscript $p$ denotes the primary model. The primary edge predictor therefore receives:
+
+$$
+F_{p,\,\text{association}}(x) = \bar{F}_{p}(x)
+$$
+
+rather than the original-view feature representation alone. The improvement from 0.941 to 0.946 therefore comes from propagating the existing D4 ensemble farther into inference rather than adding more geometric transformations.
+
+**What's new in 0.947: completing spatial ensembling across the secondary association path.** The dual-seed pipeline already uses a secondary temporal model as a supporting signal. Before 0.947, the secondary model participates in detection ensembling and association fusion, but its feature representation used by the secondary edge predictor remains based on the original orientation. This means that after 0.946 the two association branches are asymmetric:
+
+$$
+F_{p,\,\text{association}}(x) = \bar{F}_{p}(x)
+$$
+
+for the primary model, while the secondary branch still uses:
+
+$$
+F_{s,\,\text{association}}(x) = F_s(x)
+$$
+
+where $F_s(x)$ is the secondary model's original-view feature tensor. The 0.947 configuration extends D4 feature aggregation into this secondary branch as well. The secondary model now retains and inverse-aligns its UNet feature tensor from the same eight spatial views:
+
+$$
+\bar{F}_{s}(x) = \frac{1}{8}\sum_{i=1}^{8} T_i^{-1}\left(F_s(T_i(x))\right)
+$$
+
+Unlike the primary branch, however, the final secondary feature representation is not replaced entirely by the eight-view mean. The 0.947 configuration uses a **0.75 TTA blend weight**, preserving part of the original-view representation while giving most of the weight to the spatially ensembled representation:
+
+$$
+F_{s,\,0.947}(x)
+=
+(1-\lambda_s)F_s(x)
++
+\lambda_s\bar{F}_s(x),
+\;
+\lambda_s = 0.75
+$$
+
+or equivalently,
+
+$$
+F_{s,\,0.947}(x)
+=
+0.25F_s(x)
++
+0.75\bar{F}_s(x)
+$$
+
+The secondary edge predictor then consumes this blended representation. The distinction is important: 0.947 does **not** increase the secondary edge weight itself and does **not** replace the existing low-margin consensus mechanism. It changes the spatial representation from which the secondary model produces its supporting edge evidence. The association paths therefore progress from:
+
+$$
+\text{0.946:}
+\,
+\begin{cases}
+\text{Primary edge predictor} \leftarrow \bar{F}_p(x)
+\\
+\text{Secondary edge predictor} \leftarrow F_s(x)
+\end{cases}
+$$
+
+to:
+
+$$
+\text{0.947:}
+\,
+\begin{cases}
+\text{Primary edge predictor} \leftarrow \bar{F}_p(x)
+\\
+\text{Secondary edge predictor} \leftarrow 0.25F_s(x) + 0.75\bar{F}_s(x)
+\end{cases}
+$$
+
+so both temporal models now benefit from spatially ensembled feature information before their association evidence is combined.
+
+**What's new in 0.947: extending D4 TTA into the DeepCenter repair gate.** DeepCenter is not the primary detector or edge predictor. It is used as an independent learned spatial confirmation signal for selected repair decisions, including safe-division recovery. In 0.946, this gate still evaluates each frame from a single spatial orientation even though the primary detection and association paths already use D4 TTA. The 0.947 configuration applies the same eight-view D4 principle to the DeepCenter logits. For a frame $x$, let $D(T_i(x))$ denote the DeepCenter logit volume produced from spatial view $T_i$. Each output is inverse-aligned before averaging:
+
+$$
+\bar{D}(x)
+=
+\frac{1}{8}
+\sum_{i=1}^{8}
+T_i^{-1}\left(D(T_i(x))\right)
+$$
+
+The final DeepCenter heatmap is then obtained from the averaged logits:
+
+$$
+H_{\text{DC}}(x)
+=
+\sigma\left(\bar{D}(x)\right)
+$$
+
+rather than applying the sigmoid to a single-view logit map. This matters because the DeepCenter score is used as a gate for repair candidates. A candidate should therefore be less dependent on the arbitrary spatial orientation of the input frame before being accepted or rejected. The DeepCenter update completes a broader consistency pattern in the inference pipeline:
+
+| Spatially Ensembled Representation | 0.946 | 0.947 |
+| --- | --- | --- |
+| Detection logits | on | on |
+| Primary edge features | on | on |
+| Secondary detection logits | on | on |
+| Secondary edge features | off | on |
+| DeepCenter repair logits | off | on |
+
+The 0.947 update therefore does not introduce a new tracking architecture. It extends an already successful invariance mechanism into two branches that were still operating from single-view representations.
+
+**What's new in 0.947: safe-division confirmation threshold 0.25 → 0.20.** Alongside DeepCenter TTA, the safe-division confirmation threshold is adjusted from 0.25 to 0.20. The geometric division constraints themselves remain unchanged: the parent search radius stays at 9 µm, the sister-distance limit stays at 14 µm, the sister-symmetry gate stays at 0.6, and the existing frame and global division caps remain intact. The threshold therefore changes only the learned DeepCenter confirmation stage:
+
+$$
+\text{accept safe-division candidate if}
+\,
+s_{\text{DC}} \ge \tau_{\text{DC}}
+$$
+
+with:
+
+$$
+\tau_{\text{DC}}:
+0.25
+\rightarrow
+0.20
+$$
+
+in the 0.947 configuration. Because the DeepCenter score itself is now produced from an eight-view averaged logit representation, this threshold change should be interpreted together with the DeepCenter TTA update rather than as an isolated global relaxation. The geometric search space is not widened further; instead, the learned confirmation gate operates on a more spatially averaged score and uses the 0.20 acceptance threshold present in the verified 0.947 configuration. The direct functional difference can be summarized as:
+
+| Component | 0.946 Public LB | 0.947 Public LB |
+| --- | --- | --- |
+| Detection D4 TTA | 8 views | 8 views |
+| Primary edge-feature D4 TTA | on | on |
+| Primary edge-feature aggregation | full 8-view mean | full 8-view mean |
+| Secondary detection D4 TTA | on | on |
+| Secondary edge-feature D4 TTA | off | on |
+| Secondary edge-feature TTA blend | original view only | 0.25 original + 0.75 D4 mean |
+| DeepCenter D4 TTA | off | on |
+| DeepCenter safe-division threshold | 0.25 | 0.20 |
+| Safe division parent radius | 9.0 µm | 9.0 µm |
+| Safe division sister radius | 14.0 µm | 14.0 µm |
+| Sister symmetry gate | 0.6 | 0.6 |
+| Gap-close radius | 5.0 µm | 5.0 µm |
+| Bidirectional association weight | 0.15 | 0.15 |
+| Bidirectional fusion | harmonic probability | harmonic probability |
+| Dual-seed association framework | unchanged | unchanged |
+| ILP global linking | unchanged | unchanged |
+| Held-out post-process selection | on | on |
+
+The important point is that **0.946 → 0.947 is not another global rewrite of linking or repair**. The primary feature-TTA path that produced 0.946 is preserved. The 0.947 configuration instead removes two remaining single-view inconsistencies: the secondary model's association features and the DeepCenter repair logits. The safe-division threshold is also adjusted from 0.25 to 0.20 as part of the verified 0.947 configuration, while the underlying division geometry and the rest of the 0.946 repair settings remain unchanged.
+
+**Summary.** The progression remains cumulative. **0.934 → 0.939** widened safe-division recovery with additional geometric and DeepCenter safeguards while making bidirectional association more conservative. **0.939 → 0.941** redistributed the repair budget by widening the parent-side division search, strengthening its DeepCenter confirmation, and tightening gap closing. **0.941 → 0.946** extended the existing eight-view D4 ensemble from detection logits into the primary UNet features consumed by the edge predictor. **0.946 → 0.947** retains that primary feature ensemble and extends the same spatial-consistency principle into the secondary edge-feature path and the DeepCenter repair gate, while changing the DeepCenter safe-division threshold from 0.25 to 0.20. The resulting verified progression is **0.933 → 0.934 → 0.939 → 0.941 → 0.946 → 0.947**. Relative to the previous 0.946 configuration, the current pipeline adds **+0.001 Public LB**; relative to the original 0.934 solution documented in this progression, the cumulative improvement is **+0.013 Public LB**.
+
+**If you have ideas on how to push this toward 0.950, feel free to reach out — I'm also looking for a teammate for this competition. Also, if you find this useful, an upvote would be appreciated!**

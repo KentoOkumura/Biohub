@@ -1,0 +1,128 @@
+[
+  {
+    "id": 135218473,
+    "title": "biohub x138",
+    "currentRunId": 351539814,
+    "mostRecentRunId": 351539814,
+    "url": "/code/anvithpothula/biohub-x138",
+    "bestPublicScore": 0.953,
+    "updatedTime": "2026-09-21T09:47:58.620Z",
+    "hasLinkedSubmission": true,
+    "ref": "anvithpothula/biohub-x138",
+    "checked_at_utc": "2026-09-23T11:30:21.586588+00:00",
+    "version": {
+      "id": 212933175,
+      "versionNumber": 1,
+      "linesTotal": 4913,
+      "linesInserted": 4913,
+      "versionType": "BATCH"
+    },
+    "run": {
+      "id": 351539814,
+      "kernelId": 135218473,
+      "status": "COMPLETE",
+      "dateCreated": "2026-09-21T09:47:56.683Z",
+      "dateEvaluated": "2026-09-21T09:47:58.620Z"
+    },
+    "execution_evidence": [
+      {
+        "runTimeSeconds": 1228.4461723,
+        "succeeded": true
+      }
+    ]
+  },
+  {
+    "id": 134098803,
+    "title": "Biohub Geometric Fusion",
+    "currentRunId": 351532492,
+    "mostRecentRunId": 351532492,
+    "url": "/code/amanatar/biohub-geometric-fusion",
+    "bestPublicScore": 0.948,
+    "updatedTime": "2026-09-21T09:18:35.700Z",
+    "hasLinkedSubmission": true,
+    "ref": "amanatar/biohub-geometric-fusion",
+    "checked_at_utc": "2026-09-23T11:30:22.064333+00:00",
+    "version": {
+      "id": 212926956,
+      "versionNumber": 3,
+      "linesTotal": 4457,
+      "linesInserted": 267,
+      "linesDeleted": 40,
+      "versionName": "Version 3",
+      "versionType": "BATCH"
+    },
+    "run": {
+      "id": 351532492,
+      "kernelId": 134098803,
+      "status": "COMPLETE",
+      "dateCreated": "2026-09-21T09:18:34.137Z",
+      "dateEvaluated": "2026-09-21T09:18:35.700Z"
+    },
+    "execution_evidence": [
+      {
+        "runTimeSeconds": 14216.8573879,
+        "succeeded": true
+      }
+    ]
+  },
+  {
+    "id": 125651046,
+    "title": "Biohub  0.947 LB PROXY_SCORE=0.9490",
+    "currentRunId": 351319021,
+    "mostRecentRunId": 351900841,
+    "url": "/code/evgendvorkin/biohub-0-947-lb-proxy-score-0-9490",
+    "bestPublicScore": 0.947,
+    "updatedTime": "2026-09-22T15:39:25.976666700Z",
+    "hasLinkedSubmission": true,
+    "ref": "evgendvorkin/biohub-0-947-lb-proxy-score-0-9490",
+    "checked_at_utc": "2026-09-23T11:30:22.526968+00:00"
+  },
+  {
+    "id": 128498813,
+    "title": "Biohub: Harmonic Fusion V3",
+    "currentRunId": 350342924,
+    "mostRecentRunId": 350342924,
+    "url": "/code/raunakdey07/biohub-harmonic-fusion-v3",
+    "bestPublicScore": 0.947,
+    "updatedTime": "2026-09-16T14:59:59.346666700Z",
+    "hasLinkedSubmission": true,
+    "ref": "raunakdey07/biohub-harmonic-fusion-v3",
+    "checked_at_utc": "2026-09-23T11:30:22.771126+00:00"
+  },
+  {
+    "id": 131620291,
+    "title": "Biohub Harmonic Fusion",
+    "currentRunId": 348830051,
+    "mostRecentRunId": 348830051,
+    "url": "/code/flexonafft/biohub-harmonic-fusion",
+    "bestPublicScore": 0.947,
+    "updatedTime": "2026-09-10T16:39:37.593333300Z",
+    "hasLinkedSubmission": true,
+    "ref": "flexonafft/biohub-harmonic-fusion",
+    "checked_at_utc": "2026-09-23T11:30:23.006496+00:00"
+  },
+  {
+    "id": 133199516,
+    "title": "Biohub Cell Tracking: 0.947 LB",
+    "currentRunId": 349406312,
+    "mostRecentRunId": 349406312,
+    "url": "/code/reyhanksatria/biohub-cell-tracking-0-947-lb",
+    "bestPublicScore": 0.947,
+    "updatedTime": "2026-09-13T03:52:47.293333300Z",
+    "hasLinkedSubmission": true,
+    "ref": "reyhanksatria/biohub-cell-tracking-0-947-lb",
+    "checked_at_utc": "2026-09-23T11:30:23.240749+00:00"
+  },
+  {
+    "id": 133330467,
+    "title": "Biohub Lineage Forge — Precision Tracking",
+    "currentRunId": 351878693,
+    "mostRecentRunId": 351878693,
+    "url": "/code/flexonafft/biohub-lineage-forge-precision-tracking",
+    "bestPublicScore": 0.947,
+    "updatedTime": "2026-09-22T14:03:58.943333300Z",
+    "hasLinkedSubmission": true,
+    "ref": "flexonafft/biohub-lineage-forge-precision-tracking",
+    "checked_at_utc": "2026-09-23T11:30:23.477236+00:00"
+  }
+]
