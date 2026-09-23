@@ -43,5 +43,6 @@
 | exp034_frame_self_attention_distance_bias | frozen_feature_frame_self_attention_distance_bias_tracker | exp025_frame_self_attention | 完了 | - | - | - | 2026-09-22 |
 | exp035_velocity_features | frozen_feature_velocity_tracker | exp016_frozen_image_encoder | 実行中 | - | - | - | 2026-09-22 |
 | exp036_detection_score_pair_features | detection_score_pair_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-23 |
+| exp039_dog_features | frozen_detector_dog_node_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-23 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->

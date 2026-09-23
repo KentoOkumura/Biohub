@@ -1,0 +1,279 @@
+experiment:
+  name: exp039_dog_features
+  description: 元解像度の2組のDoG応答を固定候補の点特徴へ追加し、同構造ゼロ対照と比較する
+  route: frozen_detector_dog_node_tracker
+  notebooks:
+  - features
+  - train
+  created_at: '2026-09-23'
+lineage:
+  parent: exp016_frozen_image_encoder
+  hypothesis_id: HYP-20260920-03
+  backlog_candidate: dog_features
+  diff_summary: 元画像のDoG 2応答を固定候補でサンプルし、primary trackerの入力を64から66次元へ拡張する
+validation:
+  strategy: leave_one_embryo_out
+  seed: 42
+  n_folds: 2
+  group_key: embryo_id_from_sample_prefix
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_train_sample_count: 64
+    expected_internal_validation_sample_count: 7
+    expected_evaluation_sample_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_train_sample_count: 116
+    expected_internal_validation_sample_count: 12
+    expected_evaluation_sample_count: 71
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  checkpoint_selection_metric: edge_accuracy_times_candidate_node_recall
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  train_stage_metrics:
+  - legacy_mask_loss
+  - edge_accuracy
+  - positive_edge_recall
+  - division_parent_recall
+  - candidate_node_recall
+  conditional_validation: 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるため、 trackerの外側胚分割を独立CVとは呼ばない
+  progression_gate:
+    variants:
+    - zero_dog_control
+    - dog_node_features
+    strictly_improve:
+    - positive_edge_recall
+    no_decrease:
+    - edge_accuracy
+    - division_parent_recall
+    no_increase:
+    - known_wrong_edge_count
+    - known_wrong_sibling_pair_count
+    required_outer_windows:
+      6bba: 12392
+      44b6: 6315
+    required_positive_edges:
+      6bba: 103393
+      44b6: 18949
+    required_division_parents:
+      6bba: 108
+      44b6: 22
+data:
+  source: exp015_train_window_cache_and_competition_geff
+  cache:
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    summary_file: window_cache_summary.json
+    summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+    identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+    directory: window_cache
+    schema_version: 1
+    expected_dataset_count: 199
+    expected_window_count: 19701
+    feature_channels: 32
+    primary_feature_contract: 8_view_d4_inverse_aligned_mean_at_detected_candidates
+    arrays:
+    - candidate_ids_src
+    - candidate_ids_tgt
+    - coords_src_grid
+    - coords_tgt_grid
+    - coords_src_physical
+    - coords_tgt_physical
+    - detection_scores_src
+    - detection_scores_tgt
+    - position_features_src
+    - position_features_tgt
+    - candidate_mask_src
+    - candidate_mask_tgt
+    - primary_features_src
+    - primary_features_tgt
+    - secondary_features_src
+    - secondary_features_tgt
+  annotation:
+    source: competition_train_geff
+    voxel_scale_zyx_um:
+    - 1.625
+    - 0.40625
+    - 0.40625
+  expected_frames_per_sample: 100
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+  dog_features:
+    source: competition_raw_zarr
+    feature_output: dog_window_features
+    image_shape_order: zyx
+    spatial_spacing_um:
+    - 1.625
+    - 0.40625
+    - 0.40625
+    gaussian_pairs_um:
+    - - 1.5
+      - 4.0
+    - - 2.2
+      - 5.5
+    frame_percentiles:
+    - 1.0
+    - 99.7
+    degenerate_range_width: 1.0
+    clip_below_zero: true
+    clip_above_one: false
+    gaussian_mode: reflect
+    gaussian_truncate: 4.0
+    sample_interpolation_order: 1
+    coordinate_tolerance_voxel: 0.0001
+    normalizer_scope: gradient_update_candidates_only
+    normalizer_standard_deviation_floor: 1.0e-06
+    feature_dimension: 2
+    compute_benchmark_frames_per_embryo: 10
+    parallel_frame_workers: 2
+    compute_projection_multiplier: 1.5
+    compute_gate_hours: 12.0
+model:
+  name: SimpleNodeTransformer
+  public_source:
+    dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+    train_script: repo/scripts/train_unet_transformer.py
+    train_script_sha256: c4f6317736bb3bb1ec8f3f6e9a6d935a463e3f0f1f685481b2d13218d35dc9ea
+    model_source: repo/src/biohub_tracking/models/simple_node_transformer.py
+    model_source_sha256: b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e
+    checkpoint: weights/unet_transformer/split_0/edge_predictor_best.pth
+    checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  frozen_components:
+  - primary_TemporalUNet3D
+  - primary_detection_head
+  - secondary_TemporalUNet3D
+  - secondary_SimpleNodeTransformer
+  - DeepCenter
+  - image_normalization_statistics
+  - detector_candidates
+  - decode_and_graph_repair
+  trainable_components:
+  - primary_SimpleNodeTransformer
+  params:
+    image_feature_dim: 32
+    position_feature_dim: 32
+    feature_dim: 66
+    hidden_dim: 128
+    n_heads: 4
+    n_blocks: 4
+    dropout: 0.3
+    pair_chunk_size: 32
+    model_coordinate_units: original_voxel_zyx
+    downsample_zyx:
+    - 1
+    - 4
+    - 4
+    dog_feature_dim: 2
+  teacher:
+    matching: greedy_distance_order_one_to_one
+    max_matching_distance_um: 5.0
+    target: annotated_adjacent_frame_geff_edges
+    unmatched_candidate_label: unknown_but_legacy_mask_can_include_as_negative
+  loss:
+    edge_activation: source_axis_softmax
+    function: focal_weighted_binary_cross_entropy
+    focal_gamma: 2.0
+    mask: pair_touches_source_or_target_with_positive_annotated_edge
+    division_weight: 1.0
+    detection_loss: disabled
+  training:
+    active_variants:
+    - zero_dog_control
+    - dog_node_features
+    initialization: public_primary_tracker_checkpoint
+    seed: 42
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.01
+    batch_size: 2
+    num_workers: 2
+    gradient_clip_norm: 1.0
+    augmentations: []
+    mixed_precision: false
+    benchmark_windows_per_fold: 64
+    runtime_projection_multiplier: 1.5
+    runtime_gate_hours: 12.0
+    runtime_projection_calibration:
+      parent_observed_notebook_seconds: 4620.864359417
+      parent_conservative_projected_seconds: 32359.33610285421
+      reserve_multiplier: 2.0
+  control:
+    source: exp039_dog_features_same_structure_zero_input
+    retrain: true
+    reason: 64-input exp016 cannot isolate information from 66-input architecture
+    evaluate_same_outer_windows: true
+  output:
+    model_count: 4
+    model_dir: models
+    model_manifest: model_manifest.json
+    training_summary: training_summary.json
+    normalizer_manifest: dog_normalizers.json
+    feature_manifest: dog_feature_manifest.json
+  inference:
+    implemented: false
+    progression_gate_required: true
+    fixed_decode_source: exp016_frozen_image_encoder
+    submission_created: false
+  feature_ablation:
+    active_variants:
+    - zero_dog_control
+    - dog_node_features
+    zero_dog_control:
+      use_dog_values: false
+    dog_node_features:
+      use_dog_values: true
+runtime:
+  execution: raw_dog_feature_generation_then_cached_tracker_train
+  use_amp: false
+  num_workers: 2
+  batch_size: 2
+  kaggle:
+    enable_internet: false
+    time_limit_hours: 12
+    dataset_sources:
+    - pilkwang/biohub-tracking-support-pack-50ep-v1
+    features:
+      enable_gpu: false
+      enable_internet: false
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+    train:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+      - kentookumura/exp039-dog-features-features
+      feature_kernel_source: kentookumura/exp039-dog-features-features
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_fold_offset_and_seeded_dataloader_generator
+  stochastic_components:
+  - dataloader_shuffle
+  - transformer_dropout
+  - cuda_kernels
+  parallel_rng_policy: DataLoader order uses a fold-specific torch.Generator and workers receive deterministic
+    seeds; cache content itself is fixed and contains no augmentation
+  feature_sha_policy: exp015_cache_identity_plus_dog_feature_manifest_and_per_window_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるためdeterministic anchorまたは独立CVとは扱わない。
+  - 同じfoldを再実行したmodel SHAが一致しなくても、seed、入力cache、実行環境と数値差を記録する。
+notes:
+- 2 variant × 2 outer folds = 4 primary trackers, booster 0. The 66-input control is retrained to isolate the
+  two DoG channels.
+- Raw-image DoG feature generation runs in a CPU Kaggle Notebook before GPU tracker training.
+- Full graph inference is conditional on the fixed adjacent-pair gate; no submission is authorized.

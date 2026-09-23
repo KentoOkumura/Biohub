@@ -67,7 +67,7 @@
 | `HYP-20260915-01` | 固定画像特徴から学ぶtrackerへ、正しい親子対応を近づけ確定した誤親から離す対照損失を加えると、接続分類損失だけの場合より近傍の取り違えと両胚の公式graph誤りを減らせる。 | [`contrastive_parent_child`](contrastive_parent_child.md) | - | 共有tracker特徴への寄与、疎い教師と分裂の整合、固定候補内の順位から公式指標への移行。履歴・欠落への頑健性・候補回収は関連仮説で別比較する。 |
 | `HYP-20260920-01` | 公開画像特徴を固定して既存のprimary trackerを追加学習する際、学習を3エポックより長くすると、同じ教師・損失・復号でも両胚の公式graph精度を改善できる。 | - | [`exp024_tracker_six_epochs`](../experiments/exp024_tracker_six_epochs/) | 6エポックで後半の重みが内部検証から選ばれるか、両胚の公式scoreへ改善が残るか。異なる学習率や長さでも成立するかは別検証。 |
 | `HYP-20260920-02` | 固定した公開画像特徴から隣接時刻の接続を学ぶ際、各時刻のcell間を先にSelf-Attentionで文脈化してから既存のCross-Attentionを行うと、現行のCross-Attentionのみより親候補の取り違えが減り、両胚の公式graph指標が改善する。 | — | [`exp025_frame_self_attention`](../experiments/exp025_frame_self_attention/)<br>[`exp030_frame_self_attention_diagnostics`](../experiments/exp030_frame_self_attention_diagnostics/)<br>[`exp033_frame_self_attention_diagnostics`](../experiments/exp033_frame_self_attention_diagnostics/)<br>[`exp034_frame_self_attention_distance_bias`](../experiments/exp034_frame_self_attention_distance_bias/) | exp033では一貫したpair改善はなかった。exp034は物理距離の学習可能な負の二乗biasを1設定×2fold×3epochで完走したが、内部検証の改善が極小だったため全graph推論へ進まず完了した。公式graph改善は未検証。 |
-| `HYP-20260920-03` | 固定候補の検出得点・DoG・HOGを個別入力すると、同構造対照より両胚の公式指標が改善する。 | [`dog_features`](dog_features.md)<br>[`hog_features`](hog_features.md) | [`exp036_detection_score_pair_features`](../experiments/exp036_detection_score_pair_features/) | 寄与・冗長性・入力・費用。 |
+| `HYP-20260920-03` | 固定候補の検出得点・DoG・HOGを個別入力すると、同構造対照より両胚の公式指標が改善する。 | [`hog_features`](hog_features.md) | [`exp036_detection_score_pair_features`](../experiments/exp036_detection_score_pair_features/)<br>[`exp039_dog_features`](../experiments/exp039_dog_features/) | DoGはexp039の隣接ペア進行条件未達で不採用。HOGの入力方式と効果、特徴間の相補性が未検証。 |
 
 ### 未着手バックログ
 
@@ -89,7 +89,6 @@
 
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
-| P2 | `HYP-20260920-03` | [`dog_features`](dog_features.md) | 固定点のDoG応答 | 元画像・画素間隔・exp015/016。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-10` | [`past_candidate_attention`](past_candidate_attention.md) | 接続候補ごとに全過去候補の3点座標特徴を集約 | exp015固定候補・exp016保存済み対照。13→32→32のMLPとattention、履歴を使わない選択肢。予測履歴生成は不要。全候補の時間・メモリを確認。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-10` | [`position_history_tracker`](position_history_tracker.md) | 予測対応した位置列を入力して接続を学習 | exp015/016の分割外履歴。履歴生成・集約・信頼度・分裂後処理を確定する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-10` | [`trackastra_association`](trackastra_association.md) | Trackastraの窓内対応学習 | exp015/016。教師・構造を確定。 | `検討メモ・設計不可` |
