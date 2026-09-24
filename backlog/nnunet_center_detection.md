@@ -6,7 +6,7 @@
 - 対応する上位仮説: `HYP-20260911-01`
 - 関連する上位仮説: `HYP-20260910-01`（疎注釈の扱い）。損失だけを変える既存候補とは比較範囲を分ける。
 - 作成日: 2026-09-11
-- 最終更新日: 2026-09-12
+- 最終更新日: 2026-09-24
 - 依頼原文: 「NN-UNetを使用する案はどうですか？」「バックログに反映してください。作業ブランチはmainでいいです。」
 - 期待する成果: nnU-Netのデータに応じた設定と中心マップの学習により、現行検出器が落とす細胞を回収し、公式の接続・分裂指標を改善できるか検証する。
 - 親実験 / 比較対象: [exp005のrequirements](../experiments/exp005_embryo_holdout_batch8/requirements.md)と[config](../experiments/exp005_embryo_holdout_batch8/config.yaml)。構成の起点は[exp002](../experiments/exp002_unet3d_expandable_segments/requirements.md)だが、両胚を学習した同実験の重みは胚別比較の対照に使わない。
@@ -79,7 +79,7 @@
 
 - 禁止する代替実装、proxy、同一OOF上の救済探索: 単なるU-Netの置換をnnU-Net全体と呼ぶ、時間入力を黙って単時点へ縮小する、未知領域へ強い背景損失をかける、評価胚で閾値を選ぶ、正解中心を推論へ渡すこと。
 - 壁打ちで採らなかった案と理由: 領域予測は教師と出力が変わるため[別候補](nnunet_instance_segmentation.md)に分けた。BYU解法の半径・TopK損失・学習量は転用を確定していない。Biohubの疎注釈、密な細胞数、時系列、計算制約の適合確認が先に必要。
-- 既存候補との差: [sparse_det_mask](sparse_det_mask.md)は未知領域の扱い、[subvoxel_offset](subvoxel_offset.md)は検出後の座標補正、[direct_center_set](direct_center_set.md)は可変個数の中心集合の直接出力を検証する。本候補はnnU-Netによる中心マップの学習である。
+- 既存候補との差: [sparse_det_mask](sparse_det_mask.md)は未知領域の扱い、[subvoxel_offset](x138_coordinate_effect_audit.md#旧座標補正候補からの引き継ぎ)は検出後の座標補正、[direct_center_set](direct_center_set.md)は可変個数の中心集合の直接出力を検証する。本候補はnnU-Netによる中心マップの学習である。
 
 ## リスク
 

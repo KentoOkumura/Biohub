@@ -1,0 +1,231 @@
+experiment:
+  name: exp040_trackastra_association
+  description: 固定検出点と画像特徴から6時点のTrackastra対応モデルを学習する
+  route: frozen_feature_trackastra_association
+  notebooks:
+  - train
+  created_at: '2026-09-23'
+lineage:
+  parent: exp016_frozen_image_encoder
+  hypothesis_id: HYP-20260910-10
+  backlog_candidate: trackastra_association
+  diff_summary: 6時点のencoder-decoder・1/2時点先の部分教師・parental softmax・重複窓の確率平均
+validation:
+  strategy: leave_one_embryo_out
+  seed: 42
+  n_folds: 2
+  group_key: embryo_id_from_sample_prefix
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_train_sample_count: 64
+    expected_internal_validation_sample_count: 7
+    expected_evaluation_sample_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_train_sample_count: 116
+    expected_internal_validation_sample_count: 12
+    expected_evaluation_sample_count: 71
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  checkpoint_selection_metric: sparse_masked_loss
+  primary_metric: per_embryo_known_edge_recall_at_internal_calibrated_threshold
+  conditional_validation: 公開画像encoderと初期trackerの学習来歴にtrain動画が含まれ得るため独立CVとは呼ばない
+data:
+  source: exp015_train_window_cache_and_competition_geff
+  cache:
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    summary_file: window_cache_summary.json
+    summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+    identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+    directory: window_cache
+    schema_version: 1
+    expected_dataset_count: 199
+    expected_window_count: 19701
+    feature_channels: 32
+    primary_feature_contract: 8_view_d4_inverse_aligned_mean_at_detected_candidates
+    primary_checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  annotation:
+    source: competition_train_geff
+    voxel_scale_zyx_um:
+    - 1.625
+    - 0.40625
+    - 0.40625
+  expected_frames_per_sample: 100
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+model:
+  name: TrackingTransformer
+  official_source:
+    repository: https://github.com/weigertlab/trackastra
+    revision: aa57a95160002e0fc70b915ab74178b39c99fd6a
+    license: BSD-3-Clause
+  frozen_components:
+  - primary_TemporalUNet3D
+  - primary_detection_head
+  - secondary_TemporalUNet3D
+  - secondary_SimpleNodeTransformer
+  - DeepCenter
+  - image_normalization_statistics
+  - detector_candidates
+  - decode_and_graph_repair
+  trainable_components:
+  - primary_TrackingTransformer
+  params:
+    coord_dim: 3
+    feat_dim: 32
+    d_model: 128
+    nhead: 4
+    num_encoder_layers: 4
+    num_decoder_layers: 4
+    dropout: 0.1
+    pos_embed_per_dim: 32
+    feat_embed_per_dim: 1
+    window: 6
+    spatial_pos_cutoff_um: 256.0
+    attn_positional_bias: rope
+    attn_positional_bias_n_spatial: 16
+    attn_dist_mode: v0
+    causal_norm: quiet_softmax
+  teacher:
+    matching: greedy_distance_order_one_to_one
+    max_matching_distance_um: 5.0
+    positive_hops:
+    - 1
+    - 2
+    negative_policy: matched_wrong_parent_with_known_detected_true_ancestor
+    unmatched_label: unknown
+    no_match_supervision: false
+  loss:
+    normalized_bce_weight: 1.0
+    auxiliary_sigmoid_bce_weight: 0.01
+    continuation_positive_weight: 2.0
+    division_positive_weight: 11.0
+    known_negative_weight: 1.0
+    window_reduction: sum_weighted_loss_over_valid_element_count
+    batch_reduction: equal_window_mean
+    numerical_dtype: float32
+  training:
+    active_variants:
+    - trackastra_association
+    initialization: random_official_module
+    seed: 42
+    epochs: 10
+    optimizer: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.01
+    scheduler: none
+    microbatch_size: 1
+    gradient_accumulation_windows: 2
+    gradient_clip_norm: 1.0
+    augmentations: []
+    mixed_precision: false
+    fitting_check_max_updates: 100
+    benchmark_windows_per_fold: 64
+    benchmark_dense_windows: 32
+    benchmark_sha_windows: 32
+    runtime_projection_multiplier: 1.5
+    runtime_gate_hours: 12.0
+    profiling_only: false
+    windows_per_epoch: 4096
+    expected_training_schedule_sha256_by_fold:
+      0: 7d538e5c50d9e3d4176f070ff987867bdaa707ec84b76c2dab0562bb7d1db4a6
+      1: aec89874a805c6c0564cbf7f6a6765468031c3a428fabe54b364a3ebfce8ec10
+    runtime_budget_asset: assets/runtime_budget_cap4096.json
+    runtime_budget_asset_sha256: 201f4d6543552eb86535a38f9c344899a7d325728c9d8dd30a5ba751ac7f2226
+  control:
+    source: exp016_frozen_image_encoder
+    retrain: false
+    comparison_mode: primary_only_same_adjacent_pairs
+    probability_threshold: 0.5
+    kernel_source: kentookumura/exp016-frozen-image-encoder-train
+    manifest_sha256: 6f9548739ae6f58d3c8beb7ccb78464ddc10243841b1fc7e071ed876f757ea56
+    model_sha256_by_fold:
+      0: c775ddabc2df623b08c39e548bebc887a73e790cc89bd9a9e1cb2c3506eff9d2
+      1: ef8b60dc1a34e336942f9abaefdd47606a457e0f569363434619992980d0c5e9
+    model_params:
+      feat_dim: 64
+      hidden_dim: 128
+      n_heads: 4
+      n_blocks: 4
+      dropout: 0.3
+      pair_chunk_size: 32
+    public_dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+  inference:
+    implemented: false
+    mode: fold_specific_sliding_window_probability_mean
+    window_stride: 1
+    include_future_context: true
+    reverse_probability_weight: 0.0
+    secondary_edge_weight: 0.0
+    threshold_selection: smallest_internal_threshold_with_teacher_negative_count_at_most_control
+    threshold_comparison: strict_greater_than
+    fixed_threshold_diagnostics:
+    - 0.5
+    - 0.48
+    graph_gate: both_embryos_pair_diagnostics_pass
+    graph_repair_source: exp016_frozen_image_encoder
+    ilp_edge_weight: -1.0
+    ilp_appearance_weight: 0.0
+    ilp_disappearance_weight: 2.0
+    ilp_division_weight: 1.2
+    submission_created: false
+runtime:
+  execution: colab_cli_cached_feature_trackastra_train_and_pair_diagnostic
+  use_amp: false
+  num_workers: 0
+  batch_size: 1
+  colab:
+    route: cli_without_drive
+    run_id: trackastra_logbce_v2
+    gpu: T4
+    persistence: local_sha_verified_epoch_receipts_and_final_archive
+    cache_source: kentookumura/exp015-oracle-stage-limits-inference
+    geff_export_source: kentookumura/exp032-train-geff-export
+    control_source: local_verified_exp016_train_v3
+    result_dir: artifacts/colab_runs/trackastra_logbce_v2
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+    train:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+      - kentookumura/exp016-frozen-image-encoder-train
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      source: exp040_trackastra_association_train.py
+      notebook: exp040_trackastra_association_train.ipynb
+      bootstrap_files:
+      - vendor/LICENSE
+      - assets/runtime_budget_cap4096.json
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_fold_offset_and_epoch_seeded_window_order
+  stochastic_components:
+  - seeded_sample_and_window_shuffle
+  - transformer_dropout
+  - cuda_kernels
+  parallel_rng_policy: no_parallel_random_augmentation_and_fold_specific_generator
+  feature_sha_policy: exp015_sorted_window_cache_identity_and_per_window_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+notes:
+- 1構成、2fold、2 model、booster 0。対照trackerは再学習しない。
+- 学習・共通pair診断後の全graph推論は進行条件に従う。
+- Kaggle submissionは行わない。

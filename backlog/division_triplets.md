@@ -6,15 +6,15 @@
 - 対応する上位仮説: `HYP-20260910-03`
 - 関連する上位仮説: `HYP-20260910-07`。合成教師の利用に関連するが、主仮説は母・2娘を事象として採点するHYP-20260910-03を維持する。
 - 作成日: 2026-09-10
-- 最終更新日: 2026-09-20
+- 最終更新日: 2026-09-24
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: 同じ娘順序不変の分裂組モデルで、合成事前学習の有無を比較し、実画像の公式分裂・接続指標への転移を検証する。
 - 親実験 / 比較対象: [exp016要件](../experiments/exp016_frozen_image_encoder/requirements.md)・[設定](../experiments/exp016_frozen_image_encoder/config.yaml)・[結果](../experiments/exp016_frozen_image_encoder/result.md)を固定下流trackerの比較基準とし、exp013の公開trackerを外部参照に残す。合成教師の接続根拠はexp022・exp023。評価の独立性は[現在の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。
-- 優先度: P2
-- 優先度の理由: P2を維持する。exp021の実教師では同じ正例母で正誤組を比較できる母が最大2/100件だが、exp023の固定検出候補では合成32時系列で正例1,035件中445母に同母の誤組があった。教師は作れるが実画像への転移は未検証。先行する候補契約と学習・校正方式を決めてから比較する。
+- 優先度: P3
+- 優先度の理由: exp023で合成教師は得られたが実画像への改善移行は未検証。exp026の候補契約と教師・校正の設計が残り、x138の出力段階を直接変える案の後に扱う。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手索引](KAGGLE_DIRECTION.md#検証中の仮説)
 - 元の調査項目: [14仮説・64候補の調査](../docs/surveys/biohub-accuracy-hypotheses_20260910.md)のI03、検証候補10（同節の1項目目）。
-- 先行条件 / 依存: exp015の窓別cache、exp016の固定tracker基準、exp020・exp021の実教師、[exp023の診断出力](../experiments/exp023_synthetic_detector_teacher_audit/result.md)、[division_candidate_budget](division_candidate_budget.md)の初段で固定する候補契約。exp023は既存実験として扱い重複作成しない。局所ILPは必須先行条件にせず、学習比較中は共通の復号を固定する。
+- 先行条件 / 依存: exp015の窓別cache、exp016の固定tracker基準、exp020・exp021の実教師、[exp023の診断出力](../experiments/exp023_synthetic_detector_teacher_audit/result.md)、[division_candidate_budget](../experiments/exp026_division_candidate_budget/requirements.md)の初段で固定する候補契約。exp023は既存実験として扱い重複作成しない。局所ILPは必須先行条件にせず、学習比較中は共通の復号を固定する。
 
 
 ## 2026-09-20の構成案と合成教師の接続結果
@@ -25,7 +25,7 @@
 - exp023はユーザー判断で完了済み。検出後の正例は時系列あたり18～62件（中央値31件）で、合成データを使う学習の効果と実画像への転移は未実証。教師量をGT中心の件数から見積もらない。数値・SHAは[exp023 metrics](../experiments/exp023_synthetic_detector_teacher_audit/metrics.json)を正とする。
 - 次のアクションは、合成事前学習に使う時系列の分割と正誤組のsampling、GT対応が曖昧な組の除外、合成の分類・同母順位損失、実画像で確認できた組だけを使う教師mask、両条件で共通の分裂判定と通常接続への費用校正を確定すること。主比較案は同じ候補・娘順序不変モデル・実教師・復号で「合成事前学習なし／あり」。出次数1を非分裂教師にせず、2本の独立辺対組採点は副比較として分ける。
 - 実画像ではexp020/021の既知分裂100/151件の候補回収と確認済み誤組3,935件の選別を条件付きで診断し、全graphの公式combined scoreと分裂成分を両胚別に比較する。正例母内の正誤比較は最大2/100件なので主な学習効果の根拠にせず、未知組や通常継続の確定負例0件を負例に変換しない。
-- 候補制限は[division_candidate_budget](division_candidate_budget.md)、運動予測は[exp025_kalman_hungarian_links](../experiments/exp025_kalman_hungarian_links/result.md)、競合接続の再選択は[division_local_ilp](division_local_ilp.md)で比較する。候補生成・分裂モデル・復号を同時に変えない。
+- 候補制限は[division_candidate_budget](../experiments/exp026_division_candidate_budget/requirements.md)、運動予測は[exp025_kalman_hungarian_links](../experiments/exp025_kalman_hungarian_links/requirements.md)、競合接続の再選択は[division_local_ilp](division_local_ilp.md)で比較する。候補生成・分裂モデル・復号を同時に変えない。
 - 以下の2026-09-19以前の節は当時の診断・判断履歴。現在の比較と未決事項は本節と下記の現行設計節を優先する。
 
 ## 2026-09-19の候補・教師診断
@@ -77,6 +77,13 @@
 - 調査根拠: [確認済みの事実と検証範囲](../docs/surveys/biohub-backlog-readiness_20260910.md#確認済みの事実)と[本候補の対応表](../docs/surveys/biohub-backlog-readiness_20260910.md#division_triplets)。
 - 扱い: 数値の未実測はユーザー判断待ちと区別する。比較案・予算の合意前なので状態は検討メモのままとする。
 
+## 2026-09-24の再評価
+
+- 現在の判断: exp023で合成教師は得られたが実画像への改善移行は未検証。exp026の候補契約と教師・校正の設計が残り、x138の出力段階を直接変える案の後に扱う。
+- 根拠: [今回の全候補再評価](../docs/surveys/biohub-backlog-reorganization_20260924.md)。個別の数値・実行状態は同レポートが参照する実験のmetricsとresultを正とする。
+- 再開・着手条件: 公開合成データと実画像の固定候補・特徴・教師対応を揃え、同じ組モデル・実教師・復号で合成事前学習の有無を比較できること。exp043へ移す場合の再抽出を旧cacheで代用しない。
+- 適用範囲: 優先度の変更であり、実験の採否や上位仮説の支持・棄却ではない。学習対象・予算は[現在の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。以下の古い日付の優先順は当時の履歴として読む。
+
 ## 観測事実と根拠
 
 - 実測済みの事実: 本候補の改善値は未取得。[exp015](../experiments/exp015_oracle_stage_limits/)では既知151分裂中、母と2娘が現行candidate graphに揃ったのは61件、final graphに残ったのは15件だった。candidate triplet recallは40.397%、final division recallは9.934%である。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
@@ -94,7 +101,7 @@
 - 仮説が正しい場合に期待する観測: 合成内の順位だけでなく実画像の正しい娘組を選べ、通常接続の損失を上回る公式score改善が残る。
 - 仮説を棄却する観測: 合成内だけの改善、分裂FPの増加、片方の胚でのcombined score悪化。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: [候補制限](division_candidate_budget.md)、[通常接続との局所同時選択](division_local_ilp.md)、分裂時刻・前後画像。事前学習の効果と独立辺から組への表現変更は別判定。
+- 上位仮説の判断に残る検証: [候補制限](../experiments/exp026_division_candidate_budget/requirements.md)、[通常接続との局所同時選択](division_local_ilp.md)、分裂時刻・前後画像。事前学習の効果と独立辺から組への表現変更は別判定。
 
 ## 入力・予測対象・出力・推論方法
 
@@ -118,7 +125,7 @@
 - 検証方法: exp023の検出後教師を起点に、学習用合成時系列の選択・分割を契約化する。同じ組モデルの合成事前学習なし／ありを、同じ実教師・候補・復号で比較。合成の時系列holdout、実画像の学習側内部校正を経て、199動画の公式graph評価を両胚で行う。exp020/021の広い候補診断を未実施へ戻さない。
 - variant / config / fold / booster数: 主比較2条件、外側2方向、booster 0。独立2辺対組採点の副比較も同じ候補・教師・復号を用い、別の差分として報告する。
 - control再学習: 画像側・既存通常trackerはなし。主比較では同じ新しい組モデルを2条件で学習。保存済みexp016はこの2条件の学習済み対照を代用しない。
-- 想定runtime / resource: Kaggleのみ、GPU週30時間・提出推論12時間以内。実画像cacheを再利用し、新しい合成時系列の特徴抽出、組モデル学習、校正・評価を費用に含める。exp023の小規模forward時間を全体の保証にしない。
+- 想定runtime / resource: Kaggleのみ、GPU週45時間・提出推論12時間以内。実画像cacheを再利用し、新しい合成時系列の特徴抽出、組モデル学習、校正・評価を費用に含める。exp023の小規模forward時間を全体の保証にしない。
 - 候補の回収と実選別: division_candidate_budgetの初段から候補契約を受け取り両条件で固定する。学習後の同じ得点を候補制限の後段比較へ渡せるが、候補生成とモデル学習を同時変更しない。
 
 ## 成功条件と停止条件
@@ -161,6 +168,8 @@
 - 方式を固定して学習側内部で決める重み・閾値・上限値、生成物SHA・精度・費用は測定事項とする。
 
 ## 判断履歴
+
+- 2026-09-24: バックログ整理依頼に基づきP2→P3。exp023で合成教師は得られたが実画像への改善移行は未検証。exp026の候補契約と教師・校正の設計が残り、x138の出力段階を直接変える案の後に扱う。
 
 - 2026-09-20: ユーザーがexp023の完了を判断し、次のアクションをバックログへ反映するよう依頼した。先頭32時系列の検出後教師1,035正例・同母誤組を持つ445母へ根拠を更新した。実データの評価は既知分裂100/151の候補回収、確定誤組3,935件への選択、全graphの公式指標を分け、正例と同母で比較できる実例は最大2/100件、通常継続の確定負例は0件と明記する。P2と`検討メモ・設計不可`を維持し、教師mask・損失・共通復号・合成分割の設計を次の作業とする。実験化や学習開始の承認ではない。
 

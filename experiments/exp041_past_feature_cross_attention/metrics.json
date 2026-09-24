@@ -1,0 +1,1985 @@
+{
+  "experiment": "exp041_past_feature_cross_attention",
+  "status": "debug_completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "fixed_candidate_past_feature_cross_attention_pair_diagnostics",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp041-past-feature-cross-attention-train",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp041-past-feature-cross-attention-train",
+      "kernel_source_ids": [
+        "kentookumura/exp015-oracle-stage-limits-inference",
+        "kentookumura/exp016-frozen-image-encoder-train",
+        "pilkwang/biohub-tracking-support-pack-50ep-v1"
+      ],
+      "resource": "Tesla T4",
+      "notebook_runtime_seconds": 16245.962458183001,
+      "internet_enabled": false,
+      "kernel_status": "COMPLETE",
+      "log_sha256": "939da53cc016d9516c125d6f9a6d4daca0cc87a76b5ae2e85719b5cde601c577"
+    },
+    "artifacts": {
+      "input_file_sha": "998ed732767a4306c0f05f00a25bc6850318cef1b614cb261edd4106a80d9c7b",
+      "cache_file_sha": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+      "feature_schema_sha": "ff6dd52f3c8cc9640b59e8ef07a35a5a0c40cfcd920586c82ce96374976cc7fa",
+      "feature_content_sha": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "row_count": 18707,
+      "group_count": 199,
+      "feature_count": 64,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "b0e51a8bec5899aa9c65a7f52e5ba988c13de944de1244acde2360f6c75e0880",
+      "model_count": 2,
+      "model_shas": {
+        "0": "6942ca1a3418cdbfbb6abfedfee7d722c528f8b06cd82707a02b6a12a1e5a27d",
+        "1": "017aff148bf0f9b0881cc7dd5448f3faa93e3d3de1d6eb8d8997042d0a00c127"
+      },
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null,
+      "gt_window_filter_audit_sha": "97008c377d701a7a70f49879ced4650e5ffe5730e7d42b89a1440cf778ad7396",
+      "training_summary_sha": "e46e7d05d9ad98fd98ba3e227beaf4be982d3218ebb504b14415b9b2ffb5b387"
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [
+      {
+        "kernel_version": 1,
+        "status": "failed",
+        "failure_class": "code_cache_hash_subset",
+        "elapsed_seconds_to_error": 1613.924,
+        "first_error": "history cache content mismatch: 44b6_95029e92/000087_000088.npz",
+        "log_sha256": "4c546fd3d3120599cfefc9d80c8afc1689ff137b5fd47cb156ccea1c7f824d2e",
+        "gt_window_filter_audit_sha256": "97008c377d701a7a70f49879ced4650e5ffe5730e7d42b89a1440cf778ad7396",
+        "split_manifest_sha256": "401b073ee952514982e40f69f116dca08ff0aee02c4d0a81b7454b4b71112e61"
+      }
+    ]
+  },
+  "notes": "Past-feature cross-attention pair diagnostic completed against saved exp016 fold models. The pair gate failed; full graph inference was not started.",
+  "train_stage": {
+    "experiment": "exp041_past_feature_cross_attention",
+    "status": "debug_completed",
+    "official_metric_computed": false,
+    "submission_created": false,
+    "conditional_validation": "公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるため、trackerの外側胚分割を独立CVとは呼ばない",
+    "elapsed_seconds": 15498.759698772998,
+    "notebook_elapsed_seconds": 16245.962458183001,
+    "benchmark": {
+      "window_count": 129,
+      "largest_window_count": 1,
+      "sampled_window_count_by_fold": {
+        "0": 64,
+        "1": 64
+      },
+      "largest_window_paths": [
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_57b7cc1e/000067_000068.npz"
+      ],
+      "candidate_product_by_window": {
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_95029e92/000088_000089.npz": 12056,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_d754aa59/000054_000055.npz": 19402,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_341df25f/000083_000084.npz": 41328,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_341df25f/000045_000046.npz": 49504,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_996155de/000041_000042.npz": 59792,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_81c256f0/000085_000086.npz": 73593,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_81c256f0/000061_000062.npz": 86031,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_996155de/000081_000082.npz": 88500,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_996155de/000089_000090.npz": 100814,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_1574802b/000079_000080.npz": 142604,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_d78e09d9/000074_000075.npz": 193346,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_3bb3690f/000080_000081.npz": 214389,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_3bb3690f/000073_000074.npz": 211968,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_1574802b/000053_000054.npz": 257280,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_f28707c6/000066_000067.npz": 272808,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_267148e4/000086_000087.npz": 287091,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_e35b117d/000015_000016.npz": 318254,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_a21120c2/000066_000067.npz": 338316,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_8cc6506c/000043_000044.npz": 350400,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_cf2536e8/000046_000047.npz": 378840,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_24264f12/000012_000013.npz": 382285,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_267148e4/000077_000078.npz": 398320,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_d29c9ab2/000005_000006.npz": 409640,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_33b596bf/000052_000053.npz": 451269,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_8f5ab931/000073_000074.npz": 500025,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_c8e2a523/000018_000019.npz": 506606,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_0113de3b/000060_000061.npz": 508620,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_d29c9ab2/000021_000022.npz": 542095,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_66f9292d/000084_000085.npz": 538020,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_66f9292d/000057_000058.npz": 647280,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_abf82518/000044_000045.npz": 619360,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_66f9292d/000073_000074.npz": 644644,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_551a5dba/000093_000094.npz": 665940,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_97725144/000021_000022.npz": 620928,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_abf82518/000025_000026.npz": 718565,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_706092f0/000019_000020.npz": 730100,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_551a5dba/000060_000061.npz": 752215,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_949adeb1/000027_000028.npz": 817544,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_706092f0/000043_000044.npz": 824733,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_71a4179f/000073_000074.npz": 830844,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_53f95252/000000_000001.npz": 0,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_706092f0/000002_000003.npz": 577024,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_706092f0/000064_000065.npz": 942021,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_97725144/000091_000092.npz": 1053976,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_2a2eff9f/000052_000053.npz": 1010224,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_87bba6c4/000044_000045.npz": 988497,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_ddf577ad/000037_000038.npz": 1121150,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_2a2eff9f/000041_000042.npz": 1108955,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_7e557709/000014_000015.npz": 1160700,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_b2c44266/000088_000089.npz": 1204485,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_2a2eff9f/000058_000059.npz": 1153032,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_9bfa6a0a/000055_000056.npz": 1281360,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_2a2eff9f/000029_000030.npz": 1273698,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_2a2eff9f/000091_000092.npz": 1309827,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_7e557709/000053_000054.npz": 1424850,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_d5e7d891/000032_000033.npz": 1447000,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_8f9ecab4/000065_000066.npz": 1515057,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_2a2eff9f/000001_000002.npz": 595335,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_d5e7d891/000057_000058.npz": 1701700,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_949adeb1/000082_000083.npz": 2034863,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_a2bb48bb/000063_000064.npz": 2580666,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_a2bb48bb/000036_000037.npz": 2957920,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_18ced818/000071_000072.npz": 3979425,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/44b6_18ced818/000022_000023.npz": 5797637,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_268e1230/000008_000009.npz": 2574,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_718b21f9/000062_000063.npz": 8906,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_d5eae175/000041_000042.npz": 11008,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_718b21f9/000048_000049.npz": 12194,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_ed9377fd/000073_000074.npz": 14382,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_76db78c1/000073_000074.npz": 15876,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_6321a359/000057_000058.npz": 17473,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_6ca87370/000019_000020.npz": 14248,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_07477033/000031_000032.npz": 17655,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_789f8168/000080_000081.npz": 18203,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_e16ffc58/000056_000057.npz": 18315,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_d6ecebbb/000002_000003.npz": 13110,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_6321a359/000086_000087.npz": 22040,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_268e1230/000065_000066.npz": 20111,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_d0fc38b5/000065_000066.npz": 20812,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_5a4d9360/000018_000019.npz": 23188,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_61ecbe65/000098_000099.npz": 22428,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_f20478e9/000069_000070.npz": 22912,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_43fea39d/000070_000071.npz": 28165,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_d0fc38b5/000053_000054.npz": 28462,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_825bd1c6/000033_000034.npz": 30192,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_7b5d3b2c/000023_000024.npz": 27522,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_ae82a791/000030_000031.npz": 28968,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_80d12824/000074_000075.npz": 32120,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_3c5691b6/000061_000062.npz": 32850,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_d0fc38b5/000018_000019.npz": 35955,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_7d3058ae/000055_000056.npz": 38308,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_6ca87370/000095_000096.npz": 41796,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_705ec2c9/000088_000089.npz": 44589,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_d0fc38b5/000041_000042.npz": 42484,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_eebc57a5/000081_000082.npz": 48960,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_eebc57a5/000015_000016.npz": 48316,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_eebc57a5/000069_000070.npz": 62685,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_3fda6b25/000077_000078.npz": 60990,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_3a1849c2/000095_000096.npz": 59508,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_20852818/000031_000032.npz": 93375,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_1ebfb80d/000031_000032.npz": 112941,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_2312ac41/000039_000040.npz": 132362,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_7af54fde/000022_000023.npz": 157872,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_7af54fde/000028_000029.npz": 156279,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_a5e926bb/000008_000009.npz": 215280,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_fc83837d/000086_000087.npz": 242704,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_d1acb6ff/000045_000046.npz": 274445,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_9a41d029/000048_000049.npz": 279196,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_1d0d8384/000039_000040.npz": 342417,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_df673a83/000009_000010.npz": 369360,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_9a41d029/000072_000073.npz": 365268,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_fc5f39dc/000082_000083.npz": 417104,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_207c6aaf/000034_000035.npz": 461142,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_cdcfe533/000091_000092.npz": 516852,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_c73a1d11/000071_000072.npz": 585816,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_09961292/000095_000096.npz": 567680,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_337b1b3a/000026_000027.npz": 669630,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_d82a4fc6/000008_000009.npz": 726264,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_c328f2fd/000019_000020.npz": 812141,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_f8ffd5e7/000067_000068.npz": 915275,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_b1ae37b9/000017_000018.npz": 1100294,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_32db13fc/000060_000061.npz": 1371645,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_cff5865f/000063_000064.npz": 1673760,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_ebdf3b34/000087_000088.npz": 2050421,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_edf14583/000041_000042.npz": 2669931,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_786893ac/000042_000043.npz": 3328873,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_767a1e17/000098_000099.npz": 3917922,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_57b7cc1e/000039_000040.npz": 6217086,
+        "/kaggle/input/notebooks/kentookumura/exp015-oracle-stage-limits-inference/window_cache/6bba_57b7cc1e/000067_000068.npz": 6369518
+      },
+      "max_candidate_product": 6369518,
+      "train_elapsed_seconds": 22.87507995200008,
+      "evaluation_elapsed_seconds": 16.947191387999965,
+      "train_seconds_per_window": 0.17732620117829517,
+      "evaluation_seconds_per_window": 0.1313735766511625,
+      "projected_seconds_before_multiplier": 19527.246521728288,
+      "projection_multiplier": 1.5,
+      "conservative_projected_seconds": 29290.869782592432,
+      "runtime_gate_seconds": 36000.0,
+      "peak_gpu_memory_bytes": 312432128,
+      "train_metrics": {
+        "legacy_mask_loss": 0.00024153223887864894,
+        "batch_count": 65.0,
+        "window_count": 129.0
+      },
+      "evaluation_metrics": {
+        "legacy_mask_loss": 0.00013933809473799355,
+        "edge_accuracy": 0.9998435478673473,
+        "positive_edge_recall": 0.9574742268041238,
+        "false_positive_active_pair_rate": 7.953774533885419e-05,
+        "correct_parent_top1_accuracy": 0.9768041237113402,
+        "division_parent_recall": 0.0,
+        "candidate_node_recall": 0.9693325315694528,
+        "window_count": 129,
+        "active_pair_count": 428246,
+        "active_negative_pair_count": 427470,
+        "false_positive_active_pair_count": 34,
+        "true_positive_edge_count": 743,
+        "positive_edge_count": 776,
+        "correct_parent_top1_count": 758,
+        "correct_parent_top1_denominator": 776,
+        "recovered_division_parent_count": 0,
+        "division_parent_count": 0,
+        "prediction_content_sha256": "b5a8c7202d525644c9c3c6bd95dc8d5fdb15a1f1a815c9eb10773c22fc577787",
+        "past_input_manifest_sha256": "d27872769ccd9e0cbf58494a712e51336b3184be259bf5756fba0d46b94c6e4b",
+        "edge_probability_threshold": 0.5,
+        "teacher": {
+          "candidate_nodes": 71103,
+          "matched_candidate_nodes": 1612,
+          "gt_nodes": 1663,
+          "positive_edges": 776,
+          "active_pairs": 428246,
+          "active_pairs_with_unknown_endpoint": 419831,
+          "division_parents": 0,
+          "source_match_distance_count": 806,
+          "target_match_distance_count": 806,
+          "source_match_distance_sum_um": 1397.245224058628,
+          "target_match_distance_sum_um": 1435.8276326060295,
+          "candidate_node_precision_against_sparse_gt": 0.022671335949256712,
+          "candidate_node_recall": 0.9693325315694528,
+          "unknown_endpoint_fraction_of_active_pairs": 0.9803500791601089,
+          "mean_match_distance_um": 1.7574893651765866
+        },
+        "strata": {
+          "past_frame_count": {
+            "3": {
+              "window_count": 125,
+              "positive_edge_count": 767,
+              "true_positive_edge_count": 735,
+              "active_negative_pair_count": 423553,
+              "false_positive_active_pair_count": 34,
+              "division_parent_count": 0,
+              "recovered_division_parent_count": 0,
+              "positive_edge_recall": 0.9582790091264668,
+              "false_positive_active_pair_rate": 8.027330700054067e-05,
+              "division_parent_recall": 0.0
+            },
+            "0": {
+              "window_count": 1,
+              "positive_edge_count": 2,
+              "true_positive_edge_count": 2,
+              "active_negative_pair_count": 1532,
+              "false_positive_active_pair_count": 0,
+              "division_parent_count": 0,
+              "recovered_division_parent_count": 0,
+              "positive_edge_recall": 1.0,
+              "false_positive_active_pair_rate": 0.0,
+              "division_parent_recall": 0.0
+            },
+            "2": {
+              "window_count": 2,
+              "positive_edge_count": 6,
+              "true_positive_edge_count": 5,
+              "active_negative_pair_count": 1322,
+              "false_positive_active_pair_count": 0,
+              "division_parent_count": 0,
+              "recovered_division_parent_count": 0,
+              "positive_edge_recall": 0.8333333333333334,
+              "false_positive_active_pair_rate": 0.0,
+              "division_parent_recall": 0.0
+            },
+            "1": {
+              "window_count": 1,
+              "positive_edge_count": 1,
+              "true_positive_edge_count": 1,
+              "active_negative_pair_count": 1063,
+              "false_positive_active_pair_count": 0,
+              "division_parent_count": 0,
+              "recovered_division_parent_count": 0,
+              "positive_edge_recall": 1.0,
+              "false_positive_active_pair_rate": 0.0,
+              "division_parent_recall": 0.0
+            }
+          },
+          "target_density": {
+            "0-3": {
+              "target_count": 6661,
+              "positive_edge_count": 342,
+              "true_positive_edge_count": 336,
+              "active_negative_pair_count": 67399,
+              "false_positive_active_pair_count": 7,
+              "positive_edge_recall": 0.9824561403508771,
+              "false_positive_active_pair_rate": 0.00010385910770189468
+            },
+            "4-7": {
+              "target_count": 12410,
+              "positive_edge_count": 217,
+              "true_positive_edge_count": 211,
+              "active_negative_pair_count": 137463,
+              "false_positive_active_pair_count": 10,
+              "positive_edge_recall": 0.9723502304147466,
+              "false_positive_active_pair_rate": 7.274684824279988e-05
+            },
+            "8+": {
+              "target_count": 16573,
+              "positive_edge_count": 217,
+              "true_positive_edge_count": 196,
+              "active_negative_pair_count": 222608,
+              "false_positive_active_pair_count": 17,
+              "positive_edge_recall": 0.9032258064516129,
+              "false_positive_active_pair_rate": 7.636742614820671e-05
+            }
+          },
+          "source_density": {
+            "0-3": {
+              "source_count": 6691,
+              "division_parent_count": 0,
+              "recovered_division_parent_count": 0,
+              "division_parent_recall": 0.0
+            },
+            "4-7": {
+              "source_count": 12369,
+              "division_parent_count": 0,
+              "recovered_division_parent_count": 0,
+              "division_parent_recall": 0.0
+            },
+            "8+": {
+              "source_count": 16399,
+              "division_parent_count": 0,
+              "recovered_division_parent_count": 0,
+              "division_parent_recall": 0.0
+            }
+          }
+        },
+        "selection_score": 0.969180877427639,
+        "no_past_attention_mass_fraction": 0.014568368904292583,
+        "past_context_source_count": 35080,
+        "source_count": 35459,
+        "past_context_coverage": 0.9893115993118813
+      }
+    },
+    "gt_window_filter": {
+      "policy": "skip_window_if_any_frame_has_zero_gt_nodes",
+      "public_source_function": "get_window_data",
+      "input_window_count": 19701,
+      "eligible_window_count": 18707,
+      "skipped_window_count": 994,
+      "skipped_by_sample": {
+        "44b6_0113de3b": 49,
+        "44b6_0b24845f": 60,
+        "44b6_0c582fdc": 29,
+        "44b6_0db75fae": 11,
+        "44b6_1574802b": 5,
+        "44b6_24264f12": 13,
+        "44b6_2f31fc2f": 32,
+        "44b6_33b596bf": 50,
+        "44b6_53f95252": 49,
+        "44b6_587a1e22": 5,
+        "44b6_87bba6c4": 21,
+        "44b6_90724892": 43,
+        "44b6_949adeb1": 24,
+        "44b6_a21120c2": 15,
+        "44b6_abf82518": 42,
+        "44b6_c15fded2": 46,
+        "44b6_c8e2a523": 19,
+        "44b6_cf2536e8": 24,
+        "44b6_cf8fed6b": 6,
+        "44b6_d754aa59": 34,
+        "44b6_db3c847b": 14,
+        "44b6_deabac95": 18,
+        "44b6_e29f0176": 49,
+        "44b6_e31261b4": 18,
+        "44b6_f28707c6": 38,
+        "6bba_062c8d37": 2,
+        "6bba_0c7fa718": 7,
+        "6bba_0e7c0d07": 17,
+        "6bba_1f58c2f6": 2,
+        "6bba_312f0dc3": 19,
+        "6bba_32db13fc": 2,
+        "6bba_337b1b3a": 19,
+        "6bba_3abfe10a": 18,
+        "6bba_3db54e20": 7,
+        "6bba_3fda6b25": 1,
+        "6bba_4f99ce20": 2,
+        "6bba_55c70843": 19,
+        "6bba_6321a359": 2,
+        "6bba_6479435d": 7,
+        "6bba_6db0e9b4": 12,
+        "6bba_767a1e17": 54,
+        "6bba_78a7bd97": 6,
+        "6bba_7f87b3d8": 2,
+        "6bba_96833384": 3,
+        "6bba_acd782a8": 12,
+        "6bba_b1ae37b9": 12,
+        "6bba_b693381b": 2,
+        "6bba_bb9f20c3": 4,
+        "6bba_c328f2fd": 4,
+        "6bba_c73a1d11": 5,
+        "6bba_cdcfe533": 18,
+        "6bba_cff5865f": 3,
+        "6bba_d5eae175": 2,
+        "6bba_df673a83": 1,
+        "6bba_ebdf3b34": 2,
+        "6bba_ef7b4f7e": 2,
+        "6bba_f17befbc": 2,
+        "6bba_f1fde7e0": 2,
+        "6bba_f8ffd5e7": 8
+      },
+      "audit_sha256": "97008c377d701a7a70f49879ced4650e5ffe5730e7d42b89a1440cf778ad7396"
+    },
+    "teacher_audit": {
+      "candidate_nodes": 9032950,
+      "matched_candidate_nodes": 255587,
+      "gt_nodes": 264294,
+      "positive_edges": 122342,
+      "active_pairs": 56073068,
+      "active_pairs_with_unknown_endpoint": 54789174,
+      "division_parents": 130,
+      "source_match_distance_count": 127764,
+      "target_match_distance_count": 127823,
+      "source_match_distance_sum_um": 224482.42331051826,
+      "target_match_distance_sum_um": 224612.24985438585,
+      "candidate_node_precision_against_sparse_gt": 0.028294964546465993,
+      "candidate_node_recall": 0.9670556274451936,
+      "unknown_endpoint_fraction_of_active_pairs": 0.9771031968502241,
+      "mean_match_distance_um": 1.7571107809274498,
+      "matching": "greedy_distance_order_one_to_one",
+      "max_matching_distance_um": 5.0,
+      "loss_mask": "pair_touches_source_or_target_with_positive_annotated_edge",
+      "outer_evaluation_coverage": "each of 199 samples exactly once across two folds"
+    },
+    "folds": [
+      {
+        "fold": 0,
+        "train_embryo": "44b6",
+        "evaluation_embryo": "6bba",
+        "sample_counts": {
+          "gradient_update": 64,
+          "internal_validation": 7,
+          "outer_evaluation": 128
+        },
+        "window_counts": {
+          "gradient_update": 5622,
+          "internal_validation": 693,
+          "outer_evaluation": 12392
+        },
+        "exp016_saved_control": {
+          "legacy_mask_loss": 0.00021840077011331236,
+          "edge_accuracy": 0.9998224846202923,
+          "positive_edge_recall": 0.9694079870010542,
+          "false_positive_active_pair_rate": 0.00010308212719946311,
+          "correct_parent_top1_accuracy": 0.979234571005774,
+          "division_parent_recall": 0.4444444444444444,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "active_negative_pair_count": 42247867,
+          "false_positive_active_pair_count": 4355,
+          "true_positive_edge_count": 100230,
+          "positive_edge_count": 103393,
+          "correct_parent_top1_count": 101246,
+          "correct_parent_top1_denominator": 103393,
+          "recovered_division_parent_count": 48,
+          "division_parent_count": 108,
+          "prediction_content_sha256": "3f8cb05cfc6477fb4cb273d0b89ca6c5fe3f6792fc5be229e836e025e1b8d1c5",
+          "past_input_manifest_sha256": "5246422e8d66cca2fbd206460548d79da16aa73b355cabad2eeb059ebf42116c",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "strata": {
+            "past_frame_count": {
+              "0": {
+                "window_count": 113,
+                "positive_edge_count": 761,
+                "true_positive_edge_count": 739,
+                "active_negative_pair_count": 378284,
+                "false_positive_active_pair_count": 33,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 1,
+                "positive_edge_recall": 0.9710906701708278,
+                "false_positive_active_pair_rate": 8.723604487633629e-05,
+                "division_parent_recall": 1.0
+              },
+              "1": {
+                "window_count": 114,
+                "positive_edge_count": 812,
+                "true_positive_edge_count": 794,
+                "active_negative_pair_count": 396149,
+                "false_positive_active_pair_count": 22,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9778325123152709,
+                "false_positive_active_pair_rate": 5.553465993855847e-05,
+                "division_parent_recall": 0.0
+              },
+              "2": {
+                "window_count": 116,
+                "positive_edge_count": 869,
+                "true_positive_edge_count": 835,
+                "active_negative_pair_count": 426225,
+                "false_positive_active_pair_count": 31,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 1,
+                "positive_edge_recall": 0.9608745684695051,
+                "false_positive_active_pair_rate": 7.273153850665728e-05,
+                "division_parent_recall": 1.0
+              },
+              "3": {
+                "window_count": 12049,
+                "positive_edge_count": 100951,
+                "true_positive_edge_count": 97862,
+                "active_negative_pair_count": 41047209,
+                "false_positive_active_pair_count": 4269,
+                "division_parent_count": 105,
+                "recovered_division_parent_count": 46,
+                "positive_edge_recall": 0.9694009965230657,
+                "false_positive_active_pair_rate": 0.00010400219902892789,
+                "division_parent_recall": 0.4380952380952381
+              }
+            },
+            "target_density": {
+              "0-3": {
+                "target_count": 635029,
+                "positive_edge_count": 63864,
+                "true_positive_edge_count": 63185,
+                "active_negative_pair_count": 11031246,
+                "false_positive_active_pair_count": 1281,
+                "positive_edge_recall": 0.9893680320681448,
+                "false_positive_active_pair_rate": 0.00011612468799988687
+              },
+              "4-7": {
+                "target_count": 796143,
+                "positive_edge_count": 20508,
+                "true_positive_edge_count": 19734,
+                "active_negative_pair_count": 12429985,
+                "false_positive_active_pair_count": 1183,
+                "positive_edge_recall": 0.9622586307782329,
+                "false_positive_active_pair_rate": 9.517308347516107e-05
+              },
+              "8+": {
+                "target_count": 964396,
+                "positive_edge_count": 19021,
+                "true_positive_edge_count": 17311,
+                "active_negative_pair_count": 18786636,
+                "false_positive_active_pair_count": 1891,
+                "positive_edge_recall": 0.9100993638609958,
+                "false_positive_active_pair_rate": 0.00010065665827559548
+              }
+            },
+            "source_density": {
+              "4-7": {
+                "source_count": 798958,
+                "division_parent_count": 33,
+                "recovered_division_parent_count": 14,
+                "division_parent_recall": 0.42424242424242425
+              },
+              "0-3": {
+                "source_count": 634749,
+                "division_parent_count": 45,
+                "recovered_division_parent_count": 28,
+                "division_parent_recall": 0.6222222222222222
+              },
+              "8+": {
+                "source_count": 966164,
+                "division_parent_count": 30,
+                "recovered_division_parent_count": 6,
+                "division_parent_recall": 0.2
+              }
+            }
+          },
+          "selection_score": 0.9655280054637666,
+          "no_past_attention_mass_fraction": null,
+          "past_context_source_count": 2376997,
+          "source_count": 2399871,
+          "past_context_coverage": 0.9904686543568384
+        },
+        "attention_fit": {
+          "best_epoch": 2,
+          "best_internal_selection_score": 0.9859552251404091,
+          "epochs": [
+            {
+              "epoch": 0,
+              "elapsed_seconds": 1240.885313364,
+              "train": {
+                "legacy_mask_loss": 0.00018071307760210914,
+                "batch_count": 2811.0,
+                "window_count": 5622.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.00014876839207679296,
+                "edge_accuracy": 0.9998691265375421,
+                "positive_edge_recall": 0.960836671117045,
+                "division_parent_recall": 0.3333333333333333,
+                "candidate_node_recall": 0.9860813704496788,
+                "window_count": 693,
+                "active_pair_count": 1696295,
+                "positive_edge_count": 2247,
+                "division_parent_count": 3,
+                "teacher": {
+                  "candidate_nodes": 447690,
+                  "matched_candidate_nodes": 4605,
+                  "gt_nodes": 4670,
+                  "positive_edges": 2247,
+                  "active_pairs": 1696295,
+                  "active_pairs_with_unknown_endpoint": 1685876,
+                  "division_parents": 3,
+                  "source_match_distance_count": 2300,
+                  "target_match_distance_count": 2305,
+                  "source_match_distance_sum_um": 3700.933766424656,
+                  "target_match_distance_sum_um": 3711.900531888008,
+                  "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                  "candidate_node_recall": 0.9860813704496788,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                  "mean_match_distance_um": 1.6097360039766915
+                },
+                "selection_score": 0.9859523185664628
+              },
+              "selected": true
+            },
+            {
+              "epoch": 1,
+              "elapsed_seconds": 1146.9366461709997,
+              "train": {
+                "legacy_mask_loss": 0.00016209964915386932,
+                "batch_count": 2811.0,
+                "window_count": 5622.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.00014012228713889844,
+                "edge_accuracy": 0.999864999896834,
+                "positive_edge_recall": 0.9581664441477525,
+                "division_parent_recall": 0.3333333333333333,
+                "candidate_node_recall": 0.9860813704496788,
+                "window_count": 693,
+                "active_pair_count": 1696295,
+                "positive_edge_count": 2247,
+                "division_parent_count": 3,
+                "teacher": {
+                  "candidate_nodes": 447690,
+                  "matched_candidate_nodes": 4605,
+                  "gt_nodes": 4670,
+                  "positive_edges": 2247,
+                  "active_pairs": 1696295,
+                  "active_pairs_with_unknown_endpoint": 1685876,
+                  "division_parents": 3,
+                  "source_match_distance_count": 2300,
+                  "target_match_distance_count": 2305,
+                  "source_match_distance_sum_um": 3700.933766424656,
+                  "target_match_distance_sum_um": 3711.900531888008,
+                  "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                  "candidate_node_recall": 0.9860813704496788,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                  "mean_match_distance_um": 1.6097360039766915
+                },
+                "selection_score": 0.985948249362938
+              },
+              "selected": false
+            },
+            {
+              "epoch": 2,
+              "elapsed_seconds": 1128.3512518710004,
+              "train": {
+                "legacy_mask_loss": 0.00014604437030384533,
+                "batch_count": 2811.0,
+                "window_count": 5622.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.0001496502899598417,
+                "edge_accuracy": 0.9998720741380479,
+                "positive_edge_recall": 0.9635068980863374,
+                "division_parent_recall": 0.3333333333333333,
+                "candidate_node_recall": 0.9860813704496788,
+                "window_count": 693,
+                "active_pair_count": 1696295,
+                "positive_edge_count": 2247,
+                "division_parent_count": 3,
+                "teacher": {
+                  "candidate_nodes": 447690,
+                  "matched_candidate_nodes": 4605,
+                  "gt_nodes": 4670,
+                  "positive_edges": 2247,
+                  "active_pairs": 1696295,
+                  "active_pairs_with_unknown_endpoint": 1685876,
+                  "division_parents": 3,
+                  "source_match_distance_count": 2300,
+                  "target_match_distance_count": 2305,
+                  "source_match_distance_sum_um": 3700.933766424656,
+                  "target_match_distance_sum_um": 3711.900531888008,
+                  "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                  "candidate_node_recall": 0.9860813704496788,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                  "mean_match_distance_um": 1.6097360039766915
+                },
+                "selection_score": 0.9859552251404091
+              },
+              "selected": true
+            }
+          ]
+        },
+        "attention_outer_evaluation": {
+          "legacy_mask_loss": 0.00023948558451751173,
+          "edge_accuracy": 0.9998201470275029,
+          "positive_edge_recall": 0.9694563461743058,
+          "false_positive_active_pair_rate": 0.00010554378993855477,
+          "correct_parent_top1_accuracy": 0.9785768862495526,
+          "division_parent_recall": 0.42592592592592593,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "active_negative_pair_count": 42247867,
+          "false_positive_active_pair_count": 4459,
+          "true_positive_edge_count": 100235,
+          "positive_edge_count": 103393,
+          "correct_parent_top1_count": 101178,
+          "correct_parent_top1_denominator": 103393,
+          "recovered_division_parent_count": 46,
+          "division_parent_count": 108,
+          "prediction_content_sha256": "ae4057a126b1c54403fae09d6f678a67a4ad513881c7f574202f5b2d307084e9",
+          "past_input_manifest_sha256": "5246422e8d66cca2fbd206460548d79da16aa73b355cabad2eeb059ebf42116c",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "strata": {
+            "past_frame_count": {
+              "0": {
+                "window_count": 113,
+                "positive_edge_count": 761,
+                "true_positive_edge_count": 739,
+                "active_negative_pair_count": 378284,
+                "false_positive_active_pair_count": 36,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 1,
+                "positive_edge_recall": 0.9710906701708278,
+                "false_positive_active_pair_rate": 9.516659441054869e-05,
+                "division_parent_recall": 1.0
+              },
+              "1": {
+                "window_count": 114,
+                "positive_edge_count": 812,
+                "true_positive_edge_count": 793,
+                "active_negative_pair_count": 396149,
+                "false_positive_active_pair_count": 22,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9766009852216748,
+                "false_positive_active_pair_rate": 5.553465993855847e-05,
+                "division_parent_recall": 0.0
+              },
+              "2": {
+                "window_count": 116,
+                "positive_edge_count": 869,
+                "true_positive_edge_count": 837,
+                "active_negative_pair_count": 426225,
+                "false_positive_active_pair_count": 31,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 1,
+                "positive_edge_recall": 0.9631760644418872,
+                "false_positive_active_pair_rate": 7.273153850665728e-05,
+                "division_parent_recall": 1.0
+              },
+              "3": {
+                "window_count": 12049,
+                "positive_edge_count": 100951,
+                "true_positive_edge_count": 97866,
+                "active_negative_pair_count": 41047209,
+                "false_positive_active_pair_count": 4370,
+                "division_parent_count": 105,
+                "recovered_division_parent_count": 44,
+                "positive_edge_recall": 0.9694406197065903,
+                "false_positive_active_pair_rate": 0.00010646278045359917,
+                "division_parent_recall": 0.41904761904761906
+              }
+            },
+            "target_density": {
+              "0-3": {
+                "target_count": 635029,
+                "positive_edge_count": 63864,
+                "true_positive_edge_count": 63164,
+                "active_negative_pair_count": 11031246,
+                "false_positive_active_pair_count": 1269,
+                "positive_edge_recall": 0.9890392083176751,
+                "false_positive_active_pair_rate": 0.00011503686890855303
+              },
+              "4-7": {
+                "target_count": 796143,
+                "positive_edge_count": 20508,
+                "true_positive_edge_count": 19738,
+                "active_negative_pair_count": 12429985,
+                "false_positive_active_pair_count": 1187,
+                "positive_edge_recall": 0.9624536766140043,
+                "false_positive_active_pair_rate": 9.549488595521234e-05
+              },
+              "8+": {
+                "target_count": 964396,
+                "positive_edge_count": 19021,
+                "true_positive_edge_count": 17333,
+                "active_negative_pair_count": 18786636,
+                "false_positive_active_pair_count": 2003,
+                "positive_edge_recall": 0.9112559802323748,
+                "false_positive_active_pair_rate": 0.00010661834295400198
+              }
+            },
+            "source_density": {
+              "4-7": {
+                "source_count": 798958,
+                "division_parent_count": 33,
+                "recovered_division_parent_count": 11,
+                "division_parent_recall": 0.3333333333333333
+              },
+              "0-3": {
+                "source_count": 634749,
+                "division_parent_count": 45,
+                "recovered_division_parent_count": 28,
+                "division_parent_recall": 0.6222222222222222
+              },
+              "8+": {
+                "source_count": 966164,
+                "division_parent_count": 30,
+                "recovered_division_parent_count": 7,
+                "division_parent_recall": 0.23333333333333334
+              }
+            }
+          },
+          "selection_score": 0.9655257480517376,
+          "no_past_attention_mass_fraction": 0.0143462298437953,
+          "past_context_source_count": 2376997,
+          "source_count": 2399871,
+          "past_context_coverage": 0.9904686543568384
+        },
+        "no_past_outer_evaluation": {
+          "legacy_mask_loss": 0.00023203058556048092,
+          "edge_accuracy": 0.9998209262250993,
+          "positive_edge_recall": 0.9692629094812996,
+          "false_positive_active_pair_rate": 0.00010428928873497921,
+          "correct_parent_top1_accuracy": 0.9786929482653565,
+          "division_parent_recall": 0.4166666666666667,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "active_negative_pair_count": 42247867,
+          "false_positive_active_pair_count": 4406,
+          "true_positive_edge_count": 100215,
+          "positive_edge_count": 103393,
+          "correct_parent_top1_count": 101190,
+          "correct_parent_top1_denominator": 103393,
+          "recovered_division_parent_count": 45,
+          "division_parent_count": 108,
+          "prediction_content_sha256": "f4bbf3ba1cbdc96318c0e9a668fb362f633bcceaf5f5b8899adbf6b9165f8eb2",
+          "past_input_manifest_sha256": "5246422e8d66cca2fbd206460548d79da16aa73b355cabad2eeb059ebf42116c",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "strata": {
+            "past_frame_count": {
+              "0": {
+                "window_count": 113,
+                "positive_edge_count": 761,
+                "true_positive_edge_count": 739,
+                "active_negative_pair_count": 378284,
+                "false_positive_active_pair_count": 36,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 1,
+                "positive_edge_recall": 0.9710906701708278,
+                "false_positive_active_pair_rate": 9.516659441054869e-05,
+                "division_parent_recall": 1.0
+              },
+              "1": {
+                "window_count": 114,
+                "positive_edge_count": 812,
+                "true_positive_edge_count": 793,
+                "active_negative_pair_count": 396149,
+                "false_positive_active_pair_count": 21,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9766009852216748,
+                "false_positive_active_pair_rate": 5.3010357214078544e-05,
+                "division_parent_recall": 0.0
+              },
+              "2": {
+                "window_count": 116,
+                "positive_edge_count": 869,
+                "true_positive_edge_count": 838,
+                "active_negative_pair_count": 426225,
+                "false_positive_active_pair_count": 32,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 1,
+                "positive_edge_recall": 0.9643268124280783,
+                "false_positive_active_pair_rate": 7.507771716816235e-05,
+                "division_parent_recall": 1.0
+              },
+              "3": {
+                "window_count": 12049,
+                "positive_edge_count": 100951,
+                "true_positive_edge_count": 97845,
+                "active_negative_pair_count": 41047209,
+                "false_positive_active_pair_count": 4317,
+                "division_parent_count": 105,
+                "recovered_division_parent_count": 43,
+                "positive_edge_recall": 0.9692325979930858,
+                "false_positive_active_pair_rate": 0.00010517158426045484,
+                "division_parent_recall": 0.4095238095238095
+              }
+            },
+            "target_density": {
+              "0-3": {
+                "target_count": 635029,
+                "positive_edge_count": 63864,
+                "true_positive_edge_count": 63163,
+                "active_negative_pair_count": 11031246,
+                "false_positive_active_pair_count": 1267,
+                "positive_edge_recall": 0.9890235500438431,
+                "false_positive_active_pair_rate": 0.00011485556572666407
+              },
+              "4-7": {
+                "target_count": 796143,
+                "positive_edge_count": 20508,
+                "true_positive_edge_count": 19733,
+                "active_negative_pair_count": 12429985,
+                "false_positive_active_pair_count": 1168,
+                "positive_edge_recall": 0.96220986931929,
+                "false_positive_active_pair_rate": 9.396632417496884e-05
+              },
+              "8+": {
+                "target_count": 964396,
+                "positive_edge_count": 19021,
+                "true_positive_edge_count": 17319,
+                "active_negative_pair_count": 18786636,
+                "false_positive_active_pair_count": 1971,
+                "positive_edge_recall": 0.9105199516324063,
+                "false_positive_active_pair_rate": 0.00010491500447445727
+              }
+            },
+            "source_density": {
+              "4-7": {
+                "source_count": 798958,
+                "division_parent_count": 33,
+                "recovered_division_parent_count": 10,
+                "division_parent_recall": 0.30303030303030304
+              },
+              "0-3": {
+                "source_count": 634749,
+                "division_parent_count": 45,
+                "recovered_division_parent_count": 28,
+                "division_parent_recall": 0.6222222222222222
+              },
+              "8+": {
+                "source_count": 966164,
+                "division_parent_count": 30,
+                "recovered_division_parent_count": 7,
+                "division_parent_recall": 0.23333333333333334
+              }
+            }
+          },
+          "selection_score": 0.9655265005224138,
+          "no_past_attention_mass_fraction": 1.0,
+          "past_context_source_count": 0,
+          "source_count": 2399871,
+          "past_context_coverage": 0.0
+        },
+        "reverse_time_outer_evaluation": {
+          "legacy_mask_loss": 0.00023948753789816612,
+          "edge_accuracy": 0.9998201470275029,
+          "positive_edge_recall": 0.9694466743396555,
+          "false_positive_active_pair_rate": 0.00010552012010452505,
+          "correct_parent_top1_accuracy": 0.978586558084203,
+          "division_parent_recall": 0.42592592592592593,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "active_negative_pair_count": 42247867,
+          "false_positive_active_pair_count": 4458,
+          "true_positive_edge_count": 100234,
+          "positive_edge_count": 103393,
+          "correct_parent_top1_count": 101179,
+          "correct_parent_top1_denominator": 103393,
+          "recovered_division_parent_count": 46,
+          "division_parent_count": 108,
+          "prediction_content_sha256": "91565d54c819520c02272b88abc4a7648de58b36cc4f08f8e0fcffbd3219bfd3",
+          "past_input_manifest_sha256": "5246422e8d66cca2fbd206460548d79da16aa73b355cabad2eeb059ebf42116c",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "strata": {
+            "past_frame_count": {
+              "0": {
+                "window_count": 113,
+                "positive_edge_count": 761,
+                "true_positive_edge_count": 739,
+                "active_negative_pair_count": 378284,
+                "false_positive_active_pair_count": 36,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 1,
+                "positive_edge_recall": 0.9710906701708278,
+                "false_positive_active_pair_rate": 9.516659441054869e-05,
+                "division_parent_recall": 1.0
+              },
+              "1": {
+                "window_count": 114,
+                "positive_edge_count": 812,
+                "true_positive_edge_count": 793,
+                "active_negative_pair_count": 396149,
+                "false_positive_active_pair_count": 22,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9766009852216748,
+                "false_positive_active_pair_rate": 5.553465993855847e-05,
+                "division_parent_recall": 0.0
+              },
+              "2": {
+                "window_count": 116,
+                "positive_edge_count": 869,
+                "true_positive_edge_count": 837,
+                "active_negative_pair_count": 426225,
+                "false_positive_active_pair_count": 31,
+                "division_parent_count": 1,
+                "recovered_division_parent_count": 1,
+                "positive_edge_recall": 0.9631760644418872,
+                "false_positive_active_pair_rate": 7.273153850665728e-05,
+                "division_parent_recall": 1.0
+              },
+              "3": {
+                "window_count": 12049,
+                "positive_edge_count": 100951,
+                "true_positive_edge_count": 97865,
+                "active_negative_pair_count": 41047209,
+                "false_positive_active_pair_count": 4369,
+                "division_parent_count": 105,
+                "recovered_division_parent_count": 44,
+                "positive_edge_recall": 0.9694307139107091,
+                "false_positive_active_pair_rate": 0.0001064384182612757,
+                "division_parent_recall": 0.41904761904761906
+              }
+            },
+            "target_density": {
+              "0-3": {
+                "target_count": 635029,
+                "positive_edge_count": 63864,
+                "true_positive_edge_count": 63164,
+                "active_negative_pair_count": 11031246,
+                "false_positive_active_pair_count": 1269,
+                "positive_edge_recall": 0.9890392083176751,
+                "false_positive_active_pair_rate": 0.00011503686890855303
+              },
+              "4-7": {
+                "target_count": 796143,
+                "positive_edge_count": 20508,
+                "true_positive_edge_count": 19737,
+                "active_negative_pair_count": 12429985,
+                "false_positive_active_pair_count": 1186,
+                "positive_edge_recall": 0.9624049151550614,
+                "false_positive_active_pair_rate": 9.541443533519952e-05
+              },
+              "8+": {
+                "target_count": 964396,
+                "positive_edge_count": 19021,
+                "true_positive_edge_count": 17333,
+                "active_negative_pair_count": 18786636,
+                "false_positive_active_pair_count": 2003,
+                "positive_edge_recall": 0.9112559802323748,
+                "false_positive_active_pair_rate": 0.00010661834295400198
+              }
+            },
+            "source_density": {
+              "4-7": {
+                "source_count": 798958,
+                "division_parent_count": 33,
+                "recovered_division_parent_count": 11,
+                "division_parent_recall": 0.3333333333333333
+              },
+              "0-3": {
+                "source_count": 634749,
+                "division_parent_count": 45,
+                "recovered_division_parent_count": 28,
+                "division_parent_recall": 0.6222222222222222
+              },
+              "8+": {
+                "source_count": 966164,
+                "division_parent_count": 30,
+                "recovered_division_parent_count": 7,
+                "division_parent_recall": 0.23333333333333334
+              }
+            }
+          },
+          "selection_score": 0.9655257480517376,
+          "no_past_attention_mass_fraction": 0.014350137673318386,
+          "past_context_source_count": 2376997,
+          "source_count": 2399871,
+          "past_context_coverage": 0.9904686543568384
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": 2.108481440419937e-05,
+          "edge_accuracy": -2.3375927894475623e-06,
+          "positive_edge_recall": 4.835917325152206e-05,
+          "false_positive_active_pair_rate": 2.4616627390916626e-06,
+          "correct_parent_top1_accuracy": -0.0006576847562214105,
+          "division_parent_recall": -0.01851851851851849,
+          "selection_score": -2.2574120289720057e-06
+        },
+        "false_positive_active_pair_relative_increase": 0.023880597014925373,
+        "graph_progression_gate": {
+          "positive_edge_recall_improved": true,
+          "false_positive_active_pair_increase_within_limit": true,
+          "division_recovered_count_non_decrease": false,
+          "passed": false
+        },
+        "model_file": "models/fold_0/past_feature_attention_tracker_best.pth",
+        "model_file_sha256": "6942ca1a3418cdbfbb6abfedfee7d722c528f8b06cd82707a02b6a12a1e5a27d",
+        "model_state_sha256": "7d914ea0c936fd97bdfd5e213cbfd388f6cfa0e7223fc2f49c631f0044a17732"
+      },
+      {
+        "fold": 1,
+        "train_embryo": "6bba",
+        "evaluation_embryo": "44b6",
+        "sample_counts": {
+          "gradient_update": 116,
+          "internal_validation": 12,
+          "outer_evaluation": 71
+        },
+        "window_counts": {
+          "gradient_update": 11236,
+          "internal_validation": 1156,
+          "outer_evaluation": 6315
+        },
+        "exp016_saved_control": {
+          "legacy_mask_loss": 0.00016589781317135103,
+          "edge_accuracy": 0.9998301244267519,
+          "positive_edge_recall": 0.9477544989181487,
+          "false_positive_active_pair_rate": 9.786278907197396e-05,
+          "correct_parent_top1_accuracy": 0.9684416064172252,
+          "division_parent_recall": 0.2727272727272727,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "active_negative_pair_count": 13702859,
+          "false_positive_active_pair_count": 1341,
+          "true_positive_edge_count": 17959,
+          "positive_edge_count": 18949,
+          "correct_parent_top1_count": 18351,
+          "correct_parent_top1_denominator": 18949,
+          "recovered_division_parent_count": 6,
+          "division_parent_count": 22,
+          "prediction_content_sha256": "c60c1b5e60642a86e4a52dd3adabe529e5bd50ff27c581a1ba520a94b8a7e00d",
+          "past_input_manifest_sha256": "b1b9a8cdf73f1f1f97f5755781a6402a85afd4c5f2002e2f95107fccecf78fc5",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "strata": {
+            "past_frame_count": {
+              "0": {
+                "window_count": 57,
+                "positive_edge_count": 175,
+                "true_positive_edge_count": 171,
+                "active_negative_pair_count": 121681,
+                "false_positive_active_pair_count": 5,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9771428571428571,
+                "false_positive_active_pair_rate": 4.1091049547587546e-05,
+                "division_parent_recall": 0.0
+              },
+              "1": {
+                "window_count": 56,
+                "positive_edge_count": 176,
+                "true_positive_edge_count": 172,
+                "active_negative_pair_count": 122672,
+                "false_positive_active_pair_count": 8,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9772727272727273,
+                "false_positive_active_pair_rate": 6.521455588887439e-05,
+                "division_parent_recall": 0.0
+              },
+              "3": {
+                "window_count": 6147,
+                "positive_edge_count": 18430,
+                "true_positive_edge_count": 17455,
+                "active_negative_pair_count": 13340004,
+                "false_positive_active_pair_count": 1319,
+                "division_parent_count": 22,
+                "recovered_division_parent_count": 6,
+                "positive_edge_recall": 0.9470971242539338,
+                "false_positive_active_pair_rate": 9.88755325710547e-05,
+                "division_parent_recall": 0.2727272727272727
+              },
+              "2": {
+                "window_count": 55,
+                "positive_edge_count": 168,
+                "true_positive_edge_count": 161,
+                "active_negative_pair_count": 118502,
+                "false_positive_active_pair_count": 9,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9583333333333334,
+                "false_positive_active_pair_rate": 7.594808526438373e-05,
+                "division_parent_recall": 0.0
+              }
+            },
+            "target_density": {
+              "0-3": {
+                "target_count": 322420,
+                "positive_edge_count": 2119,
+                "true_positive_edge_count": 2087,
+                "active_negative_pair_count": 1303801,
+                "false_positive_active_pair_count": 61,
+                "positive_edge_recall": 0.9848985370457763,
+                "false_positive_active_pair_rate": 4.678628103521933e-05
+              },
+              "8+": {
+                "target_count": 978783,
+                "positive_edge_count": 10013,
+                "true_positive_edge_count": 9303,
+                "active_negative_pair_count": 7445061,
+                "false_positive_active_pair_count": 853,
+                "positive_edge_recall": 0.9290921801657844,
+                "false_positive_active_pair_rate": 0.00011457260054685919
+              },
+              "4-7": {
+                "target_count": 817518,
+                "positive_edge_count": 6817,
+                "true_positive_edge_count": 6569,
+                "active_negative_pair_count": 4953997,
+                "false_positive_active_pair_count": 427,
+                "positive_edge_recall": 0.9636203608625495,
+                "false_positive_active_pair_rate": 8.619302756945553e-05
+              }
+            },
+            "source_density": {
+              "0-3": {
+                "source_count": 321483,
+                "division_parent_count": 2,
+                "recovered_division_parent_count": 2,
+                "division_parent_recall": 1.0
+              },
+              "4-7": {
+                "source_count": 818022,
+                "division_parent_count": 7,
+                "recovered_division_parent_count": 1,
+                "division_parent_recall": 0.14285714285714285
+              },
+              "8+": {
+                "source_count": 979285,
+                "division_parent_count": 13,
+                "recovered_division_parent_count": 3,
+                "division_parent_recall": 0.23076923076923078
+              }
+            }
+          },
+          "selection_score": 0.9744920322002016,
+          "no_past_attention_mass_fraction": null,
+          "past_context_source_count": 2100638,
+          "source_count": 2118790,
+          "past_context_coverage": 0.9914328461055603
+        },
+        "attention_fit": {
+          "best_epoch": 0,
+          "best_internal_selection_score": 0.9782032195598147,
+          "epochs": [
+            {
+              "epoch": 0,
+              "elapsed_seconds": 1664.8859911090003,
+              "train": {
+                "legacy_mask_loss": 0.00021944707786364842,
+                "batch_count": 5618.0,
+                "window_count": 11236.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.00010401268592203095,
+                "edge_accuracy": 0.9998820307265939,
+                "positive_edge_recall": 0.9775535653554018,
+                "division_parent_recall": 0.4444444444444444,
+                "candidate_node_recall": 0.978318631097885,
+                "window_count": 1156,
+                "active_pair_count": 3407667,
+                "positive_edge_count": 8821,
+                "division_parent_count": 9,
+                "teacher": {
+                  "candidate_nodes": 440587,
+                  "matched_candidate_nodes": 18410,
+                  "gt_nodes": 18818,
+                  "positive_edges": 8821,
+                  "active_pairs": 3407667,
+                  "active_pairs_with_unknown_endpoint": 3315274,
+                  "division_parents": 9,
+                  "source_match_distance_count": 9194,
+                  "target_match_distance_count": 9216,
+                  "source_match_distance_sum_um": 16270.457616090775,
+                  "target_match_distance_sum_um": 16295.073291301727,
+                  "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                  "candidate_node_recall": 0.978318631097885,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                  "mean_match_distance_um": 1.7689044490707497
+                },
+                "selection_score": 0.9782032195598147
+              },
+              "selected": true
+            },
+            {
+              "epoch": 1,
+              "elapsed_seconds": 1611.5468339379986,
+              "train": {
+                "legacy_mask_loss": 0.0001995260809204004,
+                "batch_count": 5618.0,
+                "window_count": 11236.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.00011222735438824196,
+                "edge_accuracy": 0.999873813961282,
+                "positive_edge_recall": 0.9736991270830971,
+                "division_parent_recall": 0.4444444444444444,
+                "candidate_node_recall": 0.978318631097885,
+                "window_count": 1156,
+                "active_pair_count": 3407667,
+                "positive_edge_count": 8821,
+                "division_parent_count": 9,
+                "teacher": {
+                  "candidate_nodes": 440587,
+                  "matched_candidate_nodes": 18410,
+                  "gt_nodes": 18818,
+                  "positive_edges": 8821,
+                  "active_pairs": 3407667,
+                  "active_pairs_with_unknown_endpoint": 3315274,
+                  "division_parents": 9,
+                  "source_match_distance_count": 9194,
+                  "target_match_distance_count": 9216,
+                  "source_match_distance_sum_um": 16270.457616090775,
+                  "target_match_distance_sum_um": 16295.073291301727,
+                  "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                  "candidate_node_recall": 0.978318631097885,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                  "mean_match_distance_um": 1.7689044490707497
+                },
+                "selection_score": 0.9781951809452227
+              },
+              "selected": false
+            },
+            {
+              "epoch": 2,
+              "elapsed_seconds": 1605.0197517609995,
+              "train": {
+                "legacy_mask_loss": 0.00018636893895707704,
+                "batch_count": 5618.0,
+                "window_count": 11236.0
+              },
+              "internal_validation": {
+                "legacy_mask_loss": 0.0001146646421859545,
+                "edge_accuracy": 0.999879976535266,
+                "positive_edge_recall": 0.9801609794807845,
+                "division_parent_recall": 0.6666666666666666,
+                "candidate_node_recall": 0.978318631097885,
+                "window_count": 1156,
+                "active_pair_count": 3407667,
+                "positive_edge_count": 8821,
+                "division_parent_count": 9,
+                "teacher": {
+                  "candidate_nodes": 440587,
+                  "matched_candidate_nodes": 18410,
+                  "gt_nodes": 18818,
+                  "positive_edges": 8821,
+                  "active_pairs": 3407667,
+                  "active_pairs_with_unknown_endpoint": 3315274,
+                  "division_parents": 9,
+                  "source_match_distance_count": 9194,
+                  "target_match_distance_count": 9216,
+                  "source_match_distance_sum_um": 16270.457616090775,
+                  "target_match_distance_sum_um": 16295.073291301727,
+                  "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                  "candidate_node_recall": 0.978318631097885,
+                  "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                  "mean_match_distance_um": 1.7689044490707497
+                },
+                "selection_score": 0.9782012099061668
+              },
+              "selected": false
+            }
+          ]
+        },
+        "attention_outer_evaluation": {
+          "legacy_mask_loss": 0.00015956478521808476,
+          "edge_accuracy": 0.9998296142898954,
+          "positive_edge_recall": 0.9426882685102116,
+          "false_positive_active_pair_rate": 9.136779412237987e-05,
+          "correct_parent_top1_accuracy": 0.9689165655179692,
+          "division_parent_recall": 0.13636363636363635,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "active_negative_pair_count": 13702859,
+          "false_positive_active_pair_count": 1252,
+          "true_positive_edge_count": 17863,
+          "positive_edge_count": 18949,
+          "correct_parent_top1_count": 18360,
+          "correct_parent_top1_denominator": 18949,
+          "recovered_division_parent_count": 3,
+          "division_parent_count": 22,
+          "prediction_content_sha256": "b39db20f12f13f2b418cb7041cdec432ae7e6205967640d7bbaf360d9350cf00",
+          "past_input_manifest_sha256": "b1b9a8cdf73f1f1f97f5755781a6402a85afd4c5f2002e2f95107fccecf78fc5",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "strata": {
+            "past_frame_count": {
+              "0": {
+                "window_count": 57,
+                "positive_edge_count": 175,
+                "true_positive_edge_count": 170,
+                "active_negative_pair_count": 121681,
+                "false_positive_active_pair_count": 4,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9714285714285714,
+                "false_positive_active_pair_rate": 3.2872839638070036e-05,
+                "division_parent_recall": 0.0
+              },
+              "1": {
+                "window_count": 56,
+                "positive_edge_count": 176,
+                "true_positive_edge_count": 172,
+                "active_negative_pair_count": 122672,
+                "false_positive_active_pair_count": 6,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9772727272727273,
+                "false_positive_active_pair_rate": 4.89109169166558e-05,
+                "division_parent_recall": 0.0
+              },
+              "3": {
+                "window_count": 6147,
+                "positive_edge_count": 18430,
+                "true_positive_edge_count": 17360,
+                "active_negative_pair_count": 13340004,
+                "false_positive_active_pair_count": 1233,
+                "division_parent_count": 22,
+                "recovered_division_parent_count": 3,
+                "positive_edge_recall": 0.9419424850786761,
+                "false_positive_active_pair_rate": 9.242875789242642e-05,
+                "division_parent_recall": 0.13636363636363635
+              },
+              "2": {
+                "window_count": 55,
+                "positive_edge_count": 168,
+                "true_positive_edge_count": 161,
+                "active_negative_pair_count": 118502,
+                "false_positive_active_pair_count": 9,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9583333333333334,
+                "false_positive_active_pair_rate": 7.594808526438373e-05,
+                "division_parent_recall": 0.0
+              }
+            },
+            "target_density": {
+              "0-3": {
+                "target_count": 322420,
+                "positive_edge_count": 2119,
+                "true_positive_edge_count": 2084,
+                "active_negative_pair_count": 1303801,
+                "false_positive_active_pair_count": 63,
+                "positive_edge_recall": 0.9834827748938179,
+                "false_positive_active_pair_rate": 4.832025746260357e-05
+              },
+              "8+": {
+                "target_count": 978783,
+                "positive_edge_count": 10013,
+                "true_positive_edge_count": 9232,
+                "active_negative_pair_count": 7445061,
+                "false_positive_active_pair_count": 792,
+                "positive_edge_recall": 0.9220013981823629,
+                "false_positive_active_pair_rate": 0.00010637924927680244
+              },
+              "4-7": {
+                "target_count": 817518,
+                "positive_edge_count": 6817,
+                "true_positive_edge_count": 6547,
+                "active_negative_pair_count": 4953997,
+                "false_positive_active_pair_count": 397,
+                "positive_edge_recall": 0.9603931348100337,
+                "false_positive_active_pair_rate": 8.013731134677716e-05
+              }
+            },
+            "source_density": {
+              "0-3": {
+                "source_count": 321483,
+                "division_parent_count": 2,
+                "recovered_division_parent_count": 2,
+                "division_parent_recall": 1.0
+              },
+              "4-7": {
+                "source_count": 818022,
+                "division_parent_count": 7,
+                "recovered_division_parent_count": 1,
+                "division_parent_recall": 0.14285714285714285
+              },
+              "8+": {
+                "source_count": 979285,
+                "division_parent_count": 13,
+                "recovered_division_parent_count": 0,
+                "division_parent_recall": 0.0
+              }
+            }
+          },
+          "selection_score": 0.974491534991436,
+          "no_past_attention_mass_fraction": 0.016116317361593246,
+          "past_context_source_count": 2100638,
+          "source_count": 2118790,
+          "past_context_coverage": 0.9914328461055603
+        },
+        "no_past_outer_evaluation": {
+          "legacy_mask_loss": 0.00015767843753309893,
+          "edge_accuracy": 0.9998309989470775,
+          "positive_edge_recall": 0.9435326402448678,
+          "false_positive_active_pair_rate": 9.11488617083486e-05,
+          "correct_parent_top1_accuracy": 0.9692332049184653,
+          "division_parent_recall": 0.13636363636363635,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "active_negative_pair_count": 13702859,
+          "false_positive_active_pair_count": 1249,
+          "true_positive_edge_count": 17879,
+          "positive_edge_count": 18949,
+          "correct_parent_top1_count": 18366,
+          "correct_parent_top1_denominator": 18949,
+          "recovered_division_parent_count": 3,
+          "division_parent_count": 22,
+          "prediction_content_sha256": "18918ca3998c4824bbd94a67535ea22609f18abc7a3fc541830144af2168be77",
+          "past_input_manifest_sha256": "b1b9a8cdf73f1f1f97f5755781a6402a85afd4c5f2002e2f95107fccecf78fc5",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "strata": {
+            "past_frame_count": {
+              "0": {
+                "window_count": 57,
+                "positive_edge_count": 175,
+                "true_positive_edge_count": 170,
+                "active_negative_pair_count": 121681,
+                "false_positive_active_pair_count": 4,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9714285714285714,
+                "false_positive_active_pair_rate": 3.2872839638070036e-05,
+                "division_parent_recall": 0.0
+              },
+              "1": {
+                "window_count": 56,
+                "positive_edge_count": 176,
+                "true_positive_edge_count": 172,
+                "active_negative_pair_count": 122672,
+                "false_positive_active_pair_count": 7,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9772727272727273,
+                "false_positive_active_pair_rate": 5.70627364027651e-05,
+                "division_parent_recall": 0.0
+              },
+              "3": {
+                "window_count": 6147,
+                "positive_edge_count": 18430,
+                "true_positive_edge_count": 17376,
+                "active_negative_pair_count": 13340004,
+                "false_positive_active_pair_count": 1229,
+                "division_parent_count": 22,
+                "recovered_division_parent_count": 3,
+                "positive_edge_recall": 0.942810634834509,
+                "false_positive_active_pair_rate": 9.212890790737394e-05,
+                "division_parent_recall": 0.13636363636363635
+              },
+              "2": {
+                "window_count": 55,
+                "positive_edge_count": 168,
+                "true_positive_edge_count": 161,
+                "active_negative_pair_count": 118502,
+                "false_positive_active_pair_count": 9,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9583333333333334,
+                "false_positive_active_pair_rate": 7.594808526438373e-05,
+                "division_parent_recall": 0.0
+              }
+            },
+            "target_density": {
+              "0-3": {
+                "target_count": 322420,
+                "positive_edge_count": 2119,
+                "true_positive_edge_count": 2084,
+                "active_negative_pair_count": 1303801,
+                "false_positive_active_pair_count": 61,
+                "positive_edge_recall": 0.9834827748938179,
+                "false_positive_active_pair_rate": 4.678628103521933e-05
+              },
+              "8+": {
+                "target_count": 978783,
+                "positive_edge_count": 10013,
+                "true_positive_edge_count": 9249,
+                "active_negative_pair_count": 7445061,
+                "false_positive_active_pair_count": 794,
+                "positive_edge_recall": 0.9236991910516329,
+                "false_positive_active_pair_rate": 0.00010664788374467314
+              },
+              "4-7": {
+                "target_count": 817518,
+                "positive_edge_count": 6817,
+                "true_positive_edge_count": 6546,
+                "active_negative_pair_count": 4953997,
+                "false_positive_active_pair_count": 394,
+                "positive_edge_recall": 0.9602464427167375,
+                "false_positive_active_pair_rate": 7.953173972450932e-05
+              }
+            },
+            "source_density": {
+              "0-3": {
+                "source_count": 321483,
+                "division_parent_count": 2,
+                "recovered_division_parent_count": 2,
+                "division_parent_recall": 1.0
+              },
+              "4-7": {
+                "source_count": 818022,
+                "division_parent_count": 7,
+                "recovered_division_parent_count": 1,
+                "division_parent_recall": 0.14285714285714285
+              },
+              "8+": {
+                "source_count": 979285,
+                "division_parent_count": 13,
+                "recovered_division_parent_count": 0,
+                "division_parent_recall": 0.0
+              }
+            }
+          },
+          "selection_score": 0.9744928845580858,
+          "no_past_attention_mass_fraction": 1.0,
+          "past_context_source_count": 0,
+          "source_count": 2118790,
+          "past_context_coverage": 0.0
+        },
+        "reverse_time_outer_evaluation": {
+          "legacy_mask_loss": 0.00015955961477159621,
+          "edge_accuracy": 0.9998295414132016,
+          "positive_edge_recall": 0.9426354952767956,
+          "false_positive_active_pair_rate": 9.136779412237987e-05,
+          "correct_parent_top1_accuracy": 0.9688637922845533,
+          "division_parent_recall": 0.13636363636363635,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "active_negative_pair_count": 13702859,
+          "false_positive_active_pair_count": 1252,
+          "true_positive_edge_count": 17862,
+          "positive_edge_count": 18949,
+          "correct_parent_top1_count": 18359,
+          "correct_parent_top1_denominator": 18949,
+          "recovered_division_parent_count": 3,
+          "division_parent_count": 22,
+          "prediction_content_sha256": "4ef0daaad64fc42cda49c7c9b2f795e166df19b672f9334c365d1665764b901b",
+          "past_input_manifest_sha256": "b1b9a8cdf73f1f1f97f5755781a6402a85afd4c5f2002e2f95107fccecf78fc5",
+          "edge_probability_threshold": 0.5,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "strata": {
+            "past_frame_count": {
+              "0": {
+                "window_count": 57,
+                "positive_edge_count": 175,
+                "true_positive_edge_count": 170,
+                "active_negative_pair_count": 121681,
+                "false_positive_active_pair_count": 4,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9714285714285714,
+                "false_positive_active_pair_rate": 3.2872839638070036e-05,
+                "division_parent_recall": 0.0
+              },
+              "1": {
+                "window_count": 56,
+                "positive_edge_count": 176,
+                "true_positive_edge_count": 172,
+                "active_negative_pair_count": 122672,
+                "false_positive_active_pair_count": 6,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9772727272727273,
+                "false_positive_active_pair_rate": 4.89109169166558e-05,
+                "division_parent_recall": 0.0
+              },
+              "3": {
+                "window_count": 6147,
+                "positive_edge_count": 18430,
+                "true_positive_edge_count": 17359,
+                "active_negative_pair_count": 13340004,
+                "false_positive_active_pair_count": 1233,
+                "division_parent_count": 22,
+                "recovered_division_parent_count": 3,
+                "positive_edge_recall": 0.9418882257189365,
+                "false_positive_active_pair_rate": 9.242875789242642e-05,
+                "division_parent_recall": 0.13636363636363635
+              },
+              "2": {
+                "window_count": 55,
+                "positive_edge_count": 168,
+                "true_positive_edge_count": 161,
+                "active_negative_pair_count": 118502,
+                "false_positive_active_pair_count": 9,
+                "division_parent_count": 0,
+                "recovered_division_parent_count": 0,
+                "positive_edge_recall": 0.9583333333333334,
+                "false_positive_active_pair_rate": 7.594808526438373e-05,
+                "division_parent_recall": 0.0
+              }
+            },
+            "target_density": {
+              "0-3": {
+                "target_count": 322420,
+                "positive_edge_count": 2119,
+                "true_positive_edge_count": 2084,
+                "active_negative_pair_count": 1303801,
+                "false_positive_active_pair_count": 63,
+                "positive_edge_recall": 0.9834827748938179,
+                "false_positive_active_pair_rate": 4.832025746260357e-05
+              },
+              "8+": {
+                "target_count": 978783,
+                "positive_edge_count": 10013,
+                "true_positive_edge_count": 9231,
+                "active_negative_pair_count": 7445061,
+                "false_positive_active_pair_count": 791,
+                "positive_edge_recall": 0.9219015280135824,
+                "false_positive_active_pair_rate": 0.00010624493204286707
+              },
+              "4-7": {
+                "target_count": 817518,
+                "positive_edge_count": 6817,
+                "true_positive_edge_count": 6547,
+                "active_negative_pair_count": 4953997,
+                "false_positive_active_pair_count": 398,
+                "positive_edge_recall": 0.9603931348100337,
+                "false_positive_active_pair_rate": 8.033916855419978e-05
+              }
+            },
+            "source_density": {
+              "0-3": {
+                "source_count": 321483,
+                "division_parent_count": 2,
+                "recovered_division_parent_count": 2,
+                "division_parent_recall": 1.0
+              },
+              "4-7": {
+                "source_count": 818022,
+                "division_parent_count": 7,
+                "recovered_division_parent_count": 1,
+                "division_parent_recall": 0.14285714285714285
+              },
+              "8+": {
+                "source_count": 979285,
+                "division_parent_count": 13,
+                "recovered_division_parent_count": 0,
+                "division_parent_recall": 0.0
+              }
+            }
+          },
+          "selection_score": 0.9744914639616123,
+          "no_past_attention_mass_fraction": 0.016119664534926414,
+          "past_context_source_count": 2100638,
+          "source_count": 2118790,
+          "past_context_coverage": 0.9914328461055603
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": -6.33302795326627e-06,
+          "edge_accuracy": -5.10136856535226e-07,
+          "positive_edge_recall": -0.005066230407937078,
+          "false_positive_active_pair_rate": -6.49499494959409e-06,
+          "correct_parent_top1_accuracy": 0.00047495910074402126,
+          "division_parent_recall": -0.13636363636363635,
+          "selection_score": -4.972087656041069e-07
+        },
+        "false_positive_active_pair_relative_increase": -0.06636838180462341,
+        "graph_progression_gate": {
+          "positive_edge_recall_improved": false,
+          "false_positive_active_pair_increase_within_limit": true,
+          "division_recovered_count_non_decrease": false,
+          "passed": false
+        },
+        "model_file": "models/fold_1/past_feature_attention_tracker_best.pth",
+        "model_file_sha256": "017aff148bf0f9b0881cc7dd5448f3faa93e3d3de1d6eb8d8997042d0a00c127",
+        "model_state_sha256": "35c9cfbef3140de80b86fee68db625f007b23867869fdd3eec66a3cd368bd6da"
+      }
+    ],
+    "graph_progression_gate": {
+      "passed": false,
+      "threshold": 0.5,
+      "required_fold_count": 2,
+      "passed_fold_count": 0,
+      "folds": {
+        "0": {
+          "positive_edge_recall_improved": true,
+          "false_positive_active_pair_increase_within_limit": true,
+          "division_recovered_count_non_decrease": false,
+          "passed": false
+        },
+        "1": {
+          "positive_edge_recall_improved": false,
+          "false_positive_active_pair_increase_within_limit": true,
+          "division_recovered_count_non_decrease": false,
+          "passed": false
+        }
+      },
+      "next_action": "stop_before_full_graph_inference",
+      "official_metric_computed": false
+    },
+    "model_manifest_sha256": "b0e51a8bec5899aa9c65a7f52e5ba988c13de944de1244acde2360f6c75e0880"
+  }
+}

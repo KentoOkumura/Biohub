@@ -1,0 +1,71 @@
+{
+  "experiment": "exp042_public_x138_replay",
+  "status": "scaffold_completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": null,
+      "kernel_version": null,
+      "url": null,
+      "kernel_source_ids": [],
+      "resource": null,
+      "notebook_runtime_seconds": null,
+      "internet_enabled": null
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": null,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": null,
+      "model_shas": {},
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [],
+    "v1284_checkpoint": {
+      "dataset_ref": "anvithpothula/biohub-v1284-head-s075",
+      "dataset_id": 12103746,
+      "version_id": 19822532,
+      "sha256": null,
+      "acquired": false,
+      "access_check": "Kaggle datasets metadata/download returned 403"
+    }
+  },
+  "notes": "Reference and replay notebook implemented; x138 V1284 dataset version identified but inaccessible (403), checkpoint SHA unknown. No Kaggle run or submission."
+}

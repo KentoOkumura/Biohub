@@ -1,0 +1,645 @@
+{
+  "schema_version": "2",
+  "task_summary": "exp041の未改善を特定機構の因果と誤認せず、固定検出器・画像encoder下で次に検証する追跡の表現・情報・教師・復号を比較する。候補提案まで。",
+  "evidence_cutoff": "2026-09-23。ローカル記録と同日に確認した一次資料。exp040は費用再設計済み・本学習0epochの時点。",
+  "allowed_sources": [
+    "ユーザーの会話と週45GPU時間の指示",
+    "AGENTS.mdと現在の学習方針",
+    "公式metric/data文書",
+    "ローカル実験・生成物・backlog・保存済み公開Notebook調査",
+    "Trackastra/ASCENT/CELLECT/Attracktの一次論文・公式実装"
+  ],
+  "assumptions": [
+    "これはsource-hidden発想試験ではない。独立passではtask cardと限定証拠のみを渡した。",
+    "confidence Aは障害または必要な診断の直接証拠、Bは間接根拠、Cは成立条件未実測。どれも精度改善の確率や採用判断ではない。",
+    "公開画像モデルのtrain学習来歴を含む条件付き2胚比較であり、独立CVではない。未注釈を誤接続negativeにしない。",
+    "Kaggleのみ・無課金・週45GPU時間・各Notebook12時間。時間見込みとGPU割当消費を区別。現時点の残quotaは未確認。",
+    "全候補は提案段階。backlog状態、実験status、設計承認を変更しない。"
+  ],
+  "evidence_register": {
+    "E041": "experiments/exp041_past_feature_cross_attention/{metrics.json,result.md} と docs/surveys/biohub-exp041-past-feature-analysis_20260923.md",
+    "E040": "experiments/exp040_trackastra_association/{metrics.json,result.md,SESSION_NOTES.md}",
+    "E038": "experiments/exp038_past_candidate_knn_attention/{metrics.json,result.md}",
+    "E037": "experiments/exp037_past_candidate_attention/{metrics.json,result.md}",
+    "E035": "experiments/exp035_velocity_features/{metrics.json,result.md}",
+    "E032": "experiments/exp032_three_frame_ten_epoch_training/result.md",
+    "E029": "experiments/exp029_mother_daughter_set_selection/result.md#分裂が選ばれない段階の追加診断",
+    "E028": "experiments/exp028_direct_graph_prediction/result.md",
+    "E023": "experiments/exp023_synthetic_detector_teacher_audit/result.md",
+    "E019": "experiments/exp019_partial_edge_mask/result.md",
+    "E015": "experiments/exp015_oracle_stage_limits/{metrics.json,result.md}",
+    "E039": "experiments/exp039_dog_features/result.md",
+    "EX138": "docs/surveys/biohub-public-0953-differences_20260923.md",
+    "PTRACKASTRA": "https://arxiv.org/abs/2405.15700 と https://github.com/weigertlab/trackastra",
+    "PASCENT": "https://github.com/lu-lab/ascent",
+    "PCELLECT": "https://www.nature.com/articles/s41592-025-02886-x"
+  },
+  "closure_ledger": [
+    {
+      "evidence_id": "E041",
+      "closed_instantiation": "(全過去3時点の固定特徴,点ごとの早期集約,追加feature,既存経路と共同更新,部分教師2胚/3epoch,128次元4head)は両胚進行条件未達。",
+      "not_closed": "過去を直接対応教師・局所参照・別の選択根拠へ使う案。past_candidate_attentionの優位も未証明。",
+      "reason": "attention参照先・残差・学習介入が未測定。mask ablationは再学習対照ではなく、未改善原因は確定しない。"
+    },
+    {
+      "evidence_id": "E035",
+      "closed_instantiation": "(自身のOOF予測履歴,速度特徴,feature,既存trackerへの追加,同じ2胚比較,当該学習設定)は両胚改善なし。",
+      "not_closed": "他細胞参照、独立画像移動場、履歴誤りの分布を学ぶ事前学習。",
+      "reason": "既にOOFを使っており単にOOF化で解決とは言えない。独立な運動情報の選別力は未測定。"
+    },
+    {
+      "evidence_id": "E037",
+      "closed_instantiation": "(過去候補,各現在pairとの全3点組,feature,全列挙attention,精度未評価,実測外挿198.17h)は費用不成立。",
+      "not_closed": "教師付きの過去対応や効率化した候補設計の精度。",
+      "reason": "本学習未完であり精度失敗ではない。"
+    },
+    {
+      "evidence_id": "E038",
+      "closed_instantiation": "近傍8候補化は既知対応下の候補保持を示すが、その時点の費用条件を満たさず精度未検証。",
+      "not_closed": "GTなしの正しい選別と合法graph全体の保持。",
+      "reason": "99.9%台の条件付き包含率は接続の識別力を示さない。"
+    },
+    {
+      "evidence_id": "E029",
+      "closed_instantiation": "(母娘候補,独立集合head,graph target,現部分周辺化loss,疎注釈2胚,現学習・checkpoint)で候補内128/128と学習内117件の分裂回収0。",
+      "not_closed": "共有edge得点、loss寄与、局所比較、直接graph予測全般。",
+      "reason": "正解2娘が自己部分集合に負ける段階は特定。表現・教師寄与・checkpointの原因は未分離。"
+    },
+    {
+      "evidence_id": "E032",
+      "closed_instantiation": "exp027系3時点モデルを10epochへ延長した設定は共通窓でexp016に両胚未達。",
+      "not_closed": "時間情報の直接教師化・表現変更。",
+      "reason": "単なる長時間学習を次の主案とする証拠は弱いが、他設計の学習量まで否定しない。"
+    },
+    {
+      "evidence_id": "E019",
+      "closed_instantiation": "部分教師maskだけの変更は当該公式graphでexp016を超えなかった。",
+      "not_closed": "未知labelの適切な扱いを含む別の表現・損失。",
+      "reason": "mask修正が必ず精度を上げるとも、未知negative化が正しいとも言えない。"
+    }
+  ],
+  "idea_cards": [
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I01",
+      "title": "通常接続と分裂で得点を共有し、正しい2娘と自己部分集合を比較する",
+      "mechanism_family": "representation",
+      "origin_pass": "task_first",
+      "roles": [
+        "target",
+        "structured score"
+      ],
+      "information_sources": [
+        "固定画像特徴・物理座標",
+        "既知母娘edgeと確認可能な矛盾"
+      ],
+      "hypothesis": "通常接続で学んだ知識を2娘の得点にも使い、既知2娘を1娘へ崩す損失を直接与えると、希少な分裂を学習できる。",
+      "evidence_ids": [
+        "E029",
+        "E015",
+        "E041"
+      ],
+      "changed_mechanism": "独立した空/1娘/2娘headを、共有edge得点と順序に依存しない娘pair相互作用へ変える。分裂損失は別集計し、局所graphの順位を学ぶ。",
+      "input_target_decode": "2-frame固定候補→既知edgeを含む許容集合と既知矛盾を教師に局所比較→空/1娘/2娘集合の得点→各娘の親最大1・各母の娘最大2の制約で選択。",
+      "deployment_error_simulated": "既知分裂から片娘を落とす、両娘を落とす、確認できる誤親に置換する競合を作る。未知娘を負例にしない。",
+      "nearest_prior_attempt": "exp029とbacklog/shared_edge_graph_learning.md。新規発見ではなく既存案の優先再評価。",
+      "exact_difference": "exp029の独立集合headに対する共有得点と明示的な自己部分集合比較。損失配分だけの対照を置き、その効果と分離する。",
+      "counterevidence": "exp029の修理に過ぎずexp016を超える保証はない。2娘へ一律に寄せるだけの退化、希少教師への暗記、候補不足は残る。",
+      "cheap_test": "学習側の固定小集合で、現行loss、分裂別平均のみ、共有得点追加、局所比較追加を段階比較する。自己部分集合との得点差・勾配・実選択・確認可能な誤接続を測る。",
+      "full_test": "小例成立後に内部選択を固定して両胚を評価し、接続・既知負例・2娘回収をexp016と同条件比較する。通過後のみ全graphと公式評価、最後にhidden形式の推論smoke。",
+      "kill_criterion": "小例で正解2娘が選べない、確認可能な誤分裂が増える、損失配分のみで差が消える場合は提案した追加表現の検証を止める。外側片胚だけの改善で採用しない。",
+      "reopen_criterion": "教師の寄与、部分教師の扱い、表現または最適化の具体的な障害を解消する証拠が得られた場合。",
+      "coverage_test": "2本のedgeの個別包含率、正しい2娘組の包含率、制約下で同時成立する割合を分ける。",
+      "selectability_test": "候補内正解2娘が自己部分集合と誤娘組に勝ち、GTなしで実際に選ばれるかを別に測る。",
+      "compute_estimate": "小例は固定cacheと局所採点のみ。実時間未測定。まず短いKaggle実測で上限を置く。全競合graph損失は1窓2回の制約推論を要し得るため初段には入れない。",
+      "novelty_level": "representation_change",
+      "confidence": "A"
+    },
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I02",
+      "title": "他の細胞から同じ動画の移動基準と不確実性を求める",
+      "mechanism_family": "information",
+      "origin_pass": "cross_pollination",
+      "roles": [
+        "reference",
+        "observation",
+        "gate"
+      ],
+      "information_sources": [
+        "注目pairを除く他細胞の暫定対応",
+        "同じ動画の物理座標と対応信頼度"
+      ],
+      "hypothesis": "組織に共通する移動を先に推定し、各接続の残差で比較すると、個別細胞の誤った履歴を使うより接続の識別が安定する場合がある。",
+      "evidence_ids": [
+        "E035",
+        "E041",
+        "EX138"
+      ],
+      "changed_mechanism": "過去を対象点の追加特徴から、動画内の局所移動を測る参照へ移す。支持不足時は元のexp016へ戻す。",
+      "input_target_decode": "他細胞の双方向暫定対応→頑健な局所移動・分散推定→候補pairの残差と信頼度→小さな追加採点で既存候補・復号を使用。",
+      "deployment_error_simulated": "支持の欠落、集団で同じ方向への誤対応、境界、極端な密度を診断する。共分散が小さくても誤る状況を含む。",
+      "nearest_prior_attempt": "exp035の自己履歴速度、backlog/motion_reference.md・neighbor_dynamics.md、公開x138の近傍移動。",
+      "exact_difference": "自身の1本の予測履歴を入力せず、注目source/targetと競合を除外した別細胞から参照を作る。公開x138の複合変更を効果の証明にしない。",
+      "counterevidence": "参照支持も同じtrackerの集団誤りを持つ。頑健中央値は多数の系統誤差を除けず、局所運動が細胞固有運動を消す可能性がある。",
+      "cheap_test": "教師を支持用と評価用に分け、正しい支持移動でも正解と競合の順位差が広がるか診断する。次に実予測支持へ交換し、同一maskで無補正・全体中央値・局所中央値・支持位置shuffleを比較。",
+      "full_test": "参照推定をGTなしに固定し、inner validationでgateを決め、両外側胚で既存誤りの回収と新規破壊を評価。通過後に固定復号の公式評価と推論smoke。",
+      "kill_criterion": "正しい支持でも識別差が増えない、実支持では利益が消える、低分散で大誤差になる、局所性の効果がshuffleと同等ならその主張を止める。",
+      "reopen_criterion": "独立な画像位置合わせ等で参照の誤りを減らせる根拠、または利益と利用範囲が再現する観測が得られた場合。",
+      "coverage_test": "参照を安定推定できる領域・時間・密度と、支持不足でfallbackする割合を測る。",
+      "selectability_test": "参照が存在することとは別に、正解と最も紛らわしい候補を実観測支持で区別できるか測る。",
+      "compute_estimate": "近傍処理とframeごとの参照推定。全pair×全過去点は作らない。時間未測定で最大密度窓の実測が必要。",
+      "novelty_level": "role_change",
+      "confidence": "B"
+    },
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I03",
+      "title": "曖昧な接続は複数の合法な短いgraphとして残し、後続観測で選ぶ",
+      "mechanism_family": "fusion_uncertainty",
+      "origin_pass": "task_first",
+      "roles": [
+        "candidate",
+        "uncertainty",
+        "decoder"
+      ],
+      "information_sources": [
+        "既存候補edgeと分裂組",
+        "直接の非隣接対応または将来の画像・座標"
+      ],
+      "hypothesis": "2-frameで早く1本に決めると消える正しい組合せを残し、独立した後続観測で選べれば誤接続を減らせる。",
+      "evidence_ids": [
+        "E015",
+        "E029",
+        "E038",
+        "E040"
+      ],
+      "changed_mechanism": "個別edgeを増やすだけでなく、同時成立可能な局所graphを保持する。1位選択・重み付き融合・条件付き再選択は別比較。",
+      "input_target_decode": "小さい競合成分→複数の容量制約を満たすgraph→前後の直接対応による順位得点→境界を一致させて最終graphを選ぶ。",
+      "deployment_error_simulated": "競合親の入れ替え、片娘のみの早期確定、短い候補欠損を含む。同時成立しない正解edgeをoracleで寄せ集めない。",
+      "nearest_prior_attempt": "backlog/tracklet_join.md・whole_graph_choice.md、exp029の全候補診断。",
+      "exact_difference": "完成graph全体のモデル選択ではなく、1動画内の小さい曖昧部分だけを複数保持する。exp029の同一score再選択だけでは足りず別の選択情報を要求する。",
+      "counterevidence": "正しい候補を残しても選ぶ情報がなければ改善しない。exp029は全候補でも0件。高密度では競合成分が巨大化する。",
+      "cheap_test": "小成分の1位graphと上位複数graphのGT上限差を測る。差がある例で、後続観測だけによる選択が実際に正解を回収し誤りを増やさないか検証。",
+      "full_test": "GTなしの候補生成・選択を固定し、両胚の短系列診断後に全graph評価。最大成分で時間上限とfallbackを検証する。",
+      "kill_criterion": "合法graphの上限差がない、上限差があってもGTなしに選べない、分裂を壊す、時間上限で大半がfallbackする場合。",
+      "reopen_criterion": "別情報で誤りを選別できる証拠か、正解を含む合法候補の改善が得られた場合。",
+      "coverage_test": "edge・娘pair・合法局所graphそれぞれで正解が保持される割合を別測定する。",
+      "selectability_test": "GT上限と、hard選択・soft融合・条件付き利用で実際に回収する割合、新しく壊す割合を分離する。",
+      "compute_estimate": "新encoderは不要だが複数回の局所制約推論が必要。列挙数と成分サイズを制限し、超過時は元の復号。最悪時間は未測定。",
+      "novelty_level": "representation_change",
+      "confidence": "B"
+    },
+    {
+      "preserved_invariants": [
+        "target側のidentity・既知系譜・分裂・時間順序は保つ。conditionerだけ意図的に壊す。",
+        "履歴座標から位置特徴・速度・近傍・信頼度を再計算する。外側胚由来の誤差統計を学習へ混ぜない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I04",
+      "title": "実際の履歴誤りを再現して事前学習し、実予測履歴で微調整する",
+      "mechanism_family": "data_generation",
+      "origin_pass": "evidence_inversion",
+      "roles": [
+        "conditioner",
+        "augmenter",
+        "gate"
+      ],
+      "information_sources": [
+        "外側train内のOOF履歴",
+        "既知の連続edge",
+        "履歴誤りの時間・空間相関"
+      ],
+      "hypothesis": "誤履歴を含む学習分布を実推論に合わせ、履歴の利用・棄却を学べば、正しい履歴の利点を残しつつ誤接続の連鎖を減らせる。",
+      "evidence_ids": [
+        "E035",
+        "E041"
+      ],
+      "changed_mechanism": "履歴を正しいstateの代用にせず、誤りを持つ観測として生成し、trustを学ぶ。実OOF入力による微調整までを一つの案にする。",
+      "input_target_decode": "既知系列とinner OOF誤差→誤った履歴でcurrent pairを復元する事前学習→実OOFで微調整→履歴信頼度とpair score→既存復号。",
+      "deployment_error_simulated": "振幅・bias・時間自己相関・近傍相関・欠損長・swap継続長・分裂誤りを測り、block再標本化する。独立Gaussianだけにはしない。",
+      "nearest_prior_attempt": "exp035。既にOOF履歴を利用しており、その有無だけは新規差分ではない。",
+      "exact_difference": "実測した継続する誤りを条件入力へ再現し、corrupted pretrainからreal OOF finetuneまで行う。clean GT履歴による学習改善だけを効果に数えない。",
+      "counterevidence": "外側trainは1胚しかなく、内部OOFの誤りが新胚より易しい可能性がある。疎注釈では誤差分布が偏り、合成特徴を見抜くだけになり得る。",
+      "cheap_test": "測定可能な履歴・分裂数を監査し、historyなし/clean/real OOF/empirical corruptionを同じ小型モデルで比較。real OOFで利益が残るかを見る。",
+      "full_test": "外側胚を誤差推定・学習・選択へ入れず2fold比較。短系列の誤り連鎖、既知負例、分裂を確認し、通過後のみ全graphと推論smoke。",
+      "kill_criterion": "実OOFで履歴なしを超えない、単なる元予測のコピー、誤差継続長等が実分布と大きく違う、測定件数が不足する場合。",
+      "reopen_criterion": "新しい独立履歴予測または誤差をより忠実に観測できる教師が得られた場合。",
+      "coverage_test": "誤差を実測できる系列・密度・欠損・分裂の支持範囲を測り、測定不能領域へ外挿しない。",
+      "selectability_test": "履歴が正しい時だけ改善し、誤っている時に棄却できるかを実OOF例で確認する。",
+      "compute_estimate": "inner OOF作成が支配し得る。exp035保存物は分割・来歴を照合して再利用可否を決める。小型事前学習だけの時間で総費用を見積もらない。",
+      "novelty_level": "role_change",
+      "confidence": "C"
+    },
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I05",
+      "title": "追加情報が既存の誤りを識別できるか、小さい比較で先に判定する",
+      "mechanism_family": "validation",
+      "origin_pass": "cross_pollination",
+      "roles": [
+        "validation",
+        "selection"
+      ],
+      "information_sources": [
+        "既知対応と保存済みexp016得点",
+        "距離を揃えた競合",
+        "教師あり履歴と実予測履歴"
+      ],
+      "hypothesis": "情報の不足、観測の誤り、学習の不成立を分ければ、全学習を繰り返す前に見込みのない機構を止められる。",
+      "evidence_ids": [
+        "E041",
+        "E029",
+        "E015",
+        "E038"
+      ],
+      "changed_mechanism": "結果の再集計だけでなく、情報源を制御した小型学習と選別試験を次実験の入口にする。",
+      "input_target_decode": "距離・密度を揃えた既知候補→距離のみ/正規化画像特徴/学習特徴/正しい支持/予測支持の比較→追加識別力→通過する一案だけ本学習。",
+      "deployment_error_simulated": "外側胚の変化、密集・境界・履歴欠損、正例が候補外の場合。教師支持は診断専用でhiddenモデルに渡さない。",
+      "nearest_prior_attempt": "exp041 full/no_past/reverse_time、exp038 KNN候補監査、exp029分裂診断。",
+      "exact_difference": "学習済みモデルの入力mask比較を学習因果の証明にせず、同じ初期値・更新量の対照と正解支持/実支持を分ける。",
+      "counterevidence": "注釈された容易な部分だけの成功は実用性を示さない。小型probe失敗で大モデルの表現力を完全否定はできない。",
+      "cheap_test": "まず学習側で教師資格と特徴対応を監査。両胚を別々に報告する固定比較を定義し、exp016が誤る例の改善と新規破壊を測る。外側結果で多数の設定を探索しない。",
+      "full_test": "通過した具体案の同条件2fold、全graph公式評価、hidden形式推論smokeへつなぐ。診断単独を公式精度改善としない。",
+      "kill_criterion": "既存正解だけを改善する、GT支持だけで実支持に移らない、外側を見て条件を調整しないと成立しない場合。",
+      "reopen_criterion": "入力の情報量や教師・観測の誤りを変える具体的根拠が得られた場合。",
+      "coverage_test": "教師資格を満たす例、正解候補がある例、密度・時刻・胚別の支持範囲を明記する。",
+      "selectability_test": "正解存在率から独立に、GTなし入力で既存の誤りを訂正できるか測る。",
+      "compute_estimate": "保存cache・得点が使える部分はCPUで集計、小型学習はKaggle。必要なpair得点が未保存なら取得費用を別計上する。実時間未測定。",
+      "novelty_level": "role_change",
+      "confidence": "A"
+    },
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I06",
+      "title": "過去を推論入力ではなく、時間を離して照合できる特徴の教師にする",
+      "mechanism_family": "representation",
+      "origin_pass": "task_first",
+      "roles": [
+        "target",
+        "matching representation"
+      ],
+      "information_sources": [
+        "固定32次元画像特徴",
+        "1/2/4frameの既知連続edge",
+        "同時点で別細胞と確定した負例"
+      ],
+      "hypothesis": "固定特徴に残る持続的な識別成分を、複数時間差の距離学習で取り出せれば、推論時に誤った過去を選ばず現在pairを改善できる。",
+      "evidence_ids": [
+        "E041",
+        "E035",
+        "PASCENT",
+        "PCELLECT"
+      ],
+      "changed_mechanism": "小さな射影を同時点内で個別に適用し、既知系列上の時間差を越える特徴の順位を学ぶ。新annotationではなく既存edgeから導く制約。",
+      "input_target_decode": "固定画像特徴→既知連続edgeの照合損失→射影特徴→exp016を初段固定した候補採点への追加。推論では正解履歴を要求しない。",
+      "deployment_error_simulated": "gap増加・密度・特徴drift、系列の重複。観測分岐を含まない区間でも隠れた分裂がないとは保証できない。",
+      "nearest_prior_attempt": "backlog/contrastive_feature_audit.md・contrastive_parent_child.md。",
+      "exact_difference": "隣接pairの補助lossだけでなく非隣接の照合を教師とする。同じ射影・損失・pair数で隣接のみとの対照を置く。",
+      "counterevidence": "32次元にない情報は作れない。部分注釈ではidentityと子孫関係を混同し得る。正規化だけ、追加学習量だけで差を説明できる可能性がある。",
+      "cheap_test": "正規化を揃えた元特徴、距離のみ、小型射影を距離帯別に比較。同一系列の寄与を制限し、exp016誤りで追加の順位改善があるか確認。",
+      "full_test": "教師資格・gap対照を固定した2fold。既知2娘の片方を下げないことを確認し、単体通過後に全graph・hidden smoke。",
+      "kill_criterion": "非隣接照合だけ良く現在pairの誤りを直せない、正規化対照と同等、片娘を下げる、教師資格を確定できる例が不足する場合。",
+      "reopen_criterion": "より確かな系列教師か、固定特徴の追加識別情報を示す観測が得られた場合。",
+      "coverage_test": "gap別・系列別の有効教師件数、観測分岐・対応曖昧例の除外率を記録する。",
+      "selectability_test": "同じ距離の正解と誤候補を分け、既存trackerの失敗を実際に訂正するか調べる。",
+      "compute_estimate": "小型射影は軽いと考えられるが時間未測定。元の2-frame窓依存を保った特徴の対応整理が必要。",
+      "novelty_level": "role_change",
+      "confidence": "B"
+    },
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I07",
+      "title": "複数時点の対応そのものを直接学習する既存exp040を検証する",
+      "mechanism_family": "representation",
+      "origin_pass": "task_first",
+      "roles": [
+        "target",
+        "pairwise relation"
+      ],
+      "information_sources": [
+        "6時点の固定特徴・座標",
+        "1/2時点先の既知系譜対応"
+      ],
+      "hypothesis": "過去の特徴を現在pair lossだけで間接学習するより、窓内対応を直接教師にすれば時間方向の対応を学びやすい。",
+      "evidence_ids": [
+        "E040",
+        "E041",
+        "PTRACKASTRA"
+      ],
+      "changed_mechanism": "特徴の追加集約から、多時点の直接対応予測へ変更。新規実験を重複作成せずexp040の契約を使う。",
+      "input_target_decode": "6時点固定特徴→部分教師による1/2時点先対応学習→pairwise association→exp040で定めた確率adapter・primary単体復号。",
+      "deployment_error_simulated": "密度、対応なし、候補欠落、既知分裂、時間端の短窓。正解履歴を入力しない。",
+      "nearest_prior_attempt": "exp040_trackastra_association。そのまま既存未検証案。",
+      "exact_difference": "exp041との違いは過去対応を目的関数へ置くこと。exp040自体への追加変更は提案しない。",
+      "counterevidence": "部分教師は少なく、計算とモデル変更が大きい。Trackastra原法の画像・mask入力や教師と同一ではない。",
+      "cheap_test": "既存の教師監査・小窓loss低下・密度別時間実測を再利用する。9.77時間の費用予測を精度証拠に数えない。",
+      "full_test": "既存契約の本学習→共通隣接pairの両胚診断→条件通過後全graphとhidden smoke。新attentionとの同時導入なし。",
+      "kill_criterion": "再preflightで12時間を超える、単体進行条件を満たさない場合。0epoch段階を精度失敗としない。",
+      "reopen_criterion": "処理別実測に基づく費用改善または教師・損失の障害を示す証拠が得られた場合。",
+      "coverage_test": "1/2時点先の正例、分裂、既知負例の両fold件数と距離制限外の正例を測る。",
+      "selectability_test": "本学習後の正解順位・既知負例・2娘回収で判断。候補coverageや小窓loss低下だけで判定しない。",
+      "compute_estimate": "保存済みv2予測は2fold・10epochs、1.5倍余裕と固定1時間込みNotebook9.77時間。未完走、当日preflightを追加。GPU quota消費とは区別する。",
+      "novelty_level": "representation_change",
+      "confidence": "B"
+    },
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I08",
+      "title": "画像の位置合わせから独立した移動場を求める",
+      "mechanism_family": "information",
+      "origin_pass": "task_first",
+      "roles": [
+        "observation",
+        "reference"
+      ],
+      "information_sources": [
+        "同じ動画の隣接3D画像"
+      ],
+      "hypothesis": "trackerの対応誤りが参照を汚す場合、点候補に依存せず画像から推定する移動が独立の根拠になる。",
+      "evidence_ids": [
+        "E035",
+        "E041"
+      ],
+      "changed_mechanism": "参照場構築から現在の点予測・候補集合を外す。最初は学習なしの粗い画像位置合わせ。",
+      "input_target_decode": "縮小した隣接画像→局所位置合わせ残差→物理移動場と信頼度→現行候補pairの残差採点。検出器更新なし。",
+      "deployment_error_simulated": "輝度変化、飽和、境界、同じ見た目の反復、複数方向の運動、分裂。",
+      "nearest_prior_attempt": "motion_reference、I02の点対応参照。exp035の自身の予測履歴とは別入力。",
+      "exact_difference": "移動場推定にtracker予測も現在候補も使用しない。下流でのみ既存候補へ接続する。",
+      "counterevidence": "画像の見かけの整合性が細胞identityの正しさを保証しない。分裂を単一移動場へ押し込むと失敗する。",
+      "cheap_test": "少数画像で無補正・点参照・画像参照を同じ候補上で比較し、同じ正解回収で競合候補数が減るか測る。",
+      "full_test": "GTなしの画像参照を固定し2fold単体、全graph、最大サイズhidden smokeへ進む。分裂は移動場と別に扱う。",
+      "kill_criterion": "画像残差は下がるが正解候補の識別が改善しない、片胚しか効かない、I/O込みで費用上限超過。",
+      "reopen_criterion": "画像解像度・独立な空間特徴・観測校正によって同じ候補で識別力を示せる場合。",
+      "coverage_test": "位置合わせの支持範囲と利用不能境界・飽和・分裂領域を測る。",
+      "selectability_test": "参照が生成できることではなく、最も紛らわしい候補に対する正解順位を測る。",
+      "compute_estimate": "画像I/Oと3D位置合わせが追加される。点cacheだけでは完結しない。少数frameの実測なしに全動画へ外挿しない。",
+      "novelty_level": "role_change",
+      "confidence": "C"
+    },
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I09",
+      "title": "候補分類の前に移動先の確率分布を予測する",
+      "mechanism_family": "representation",
+      "origin_pass": "cross_pollination",
+      "roles": [
+        "target",
+        "prior",
+        "uncertainty"
+      ],
+      "information_sources": [
+        "固定画像特徴と局所座標",
+        "既知edgeの物理変位"
+      ],
+      "hypothesis": "候補数に依存しない移動分布を学び、曖昧な場合の広がりを保持すると、一律の距離priorより候補を識別できる。",
+      "evidence_ids": [
+        "E035",
+        "E038"
+      ],
+      "changed_mechanism": "母ごとに一度、方向・広がり・複数modeを予測し、各娘位置で評価する。全pair×過去点積を作らない。",
+      "input_target_decode": "母と局所観測→既知物理変位の尤度→多峰移動分布→娘候補位置で密度を求め画像類似性と採点、既存復号。",
+      "deployment_error_simulated": "高速移動、候補数変化、密集、分裂。2娘を平均した単一点へしない。",
+      "nearest_prior_attempt": "exp034の距離biasとexp035速度特徴。",
+      "exact_difference": "固定距離biasや速度を入力するだけでなく、物理変位自体を教師・確率出力へ変える。",
+      "counterevidence": "広い分布で尤度を改善しても候補は選べない。注釈位置の選択偏りと分裂の非単峰性が強い。",
+      "cheap_test": "等方距離分布と小型学習分布を、同じ真の娘回収率で囲む競合数・候補順位で比較。",
+      "full_test": "分布の内部校正を固定し2fold、既知分裂を含む単体条件通過後に全graph・推論smoke。",
+      "kill_criterion": "尤度だけ改善、等回収率で競合が減らない、分裂片娘を落とす場合。",
+      "reopen_criterion": "局所画像や独立移動参照が分布の識別力を増やす証拠が得られた場合。",
+      "coverage_test": "予測領域が正解娘1/2個を含む割合を密度・速度別に測る。",
+      "selectability_test": "同じcoverageを達成する領域内の誤候補数と最終候補順位を比較。",
+      "compute_estimate": "母単位の小型出力は低費用の見込みだが未測定。分裂modeと候補照合費用を含めて測る。",
+      "novelty_level": "representation_change",
+      "confidence": "C"
+    },
+    {
+      "preserved_invariants": [
+        "生成例内のidentity、lineage、分裂の1対2、物理単位、時間向きを保持する。細胞数一定は仮定しない。",
+        "観測欠落や座標誤差は意図的に付ける。位置特徴・近傍・境界情報を再計算し、任意画像変形後の元特徴流用はしない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I10",
+      "title": "系譜を保持した合成対応問題で学び、実固定特徴へ適応する",
+      "mechanism_family": "data_generation",
+      "origin_pass": "task_first",
+      "roles": [
+        "augmenter",
+        "target"
+      ],
+      "information_sources": [
+        "train側GEFFの移動・系譜",
+        "独立に生成した座標",
+        "後段でtrain側固定特徴"
+      ],
+      "hypothesis": "疎注釈だけでは学びにくい競合・欠損・分裂の選択を、完全教師の合成問題で学んだ後に実観測へ適応できる。",
+      "evidence_ids": [
+        "E023",
+        "E029"
+      ],
+      "changed_mechanism": "初段の幾何・系譜生成は現在のpoint predictorと候補集合なしで成立させる。実固定特徴への適応は別段階。",
+      "input_target_decode": "既知または生成した系譜→相関移動・欠損・別軌跡競合を付けた完全教師→対応/娘pair得点の事前学習→実部分教師で微調整→固定復号。",
+      "deployment_error_simulated": "独立jitterではなく局所共通移動と残差、継続欠損、近傍交換を使う。実観測の誤差と合成差を監査。",
+      "nearest_prior_attempt": "exp023の合成検出後教師監査とbacklog/division_triplets.md。",
+      "exact_difference": "exp023は教師成立の監査まで。本案は対応問題での事前学習からreal finetuneへの転移が対象。単純な合成件数増加を成功としない。",
+      "counterevidence": "合成分布が容易すぎる、特徴と移動の相関が壊れる、教師を知った生成器だけの手掛かりを学ぶ。",
+      "cheap_test": "合成対実の分布差と既存candidate契約を確認。同じ学習費用でreal-only対pretrain→realを比較し、実誤りで追加利益を測る。",
+      "full_test": "外側胚を生成統計から除いて2fold、既知負例・分裂を確認後全graphとhidden smoke。",
+      "kill_criterion": "実OOFで改善しない、合成と実が簡単に分離できる、分裂が悪化、特徴再抽出が予算を超える場合。",
+      "reopen_criterion": "実誤りに合った生成過程か、exp023既存資産を同じ候補契約で使える証拠が得られた場合。",
+      "coverage_test": "実移動・密度・分裂形態を合成が覆う範囲と候補下の2娘包含率を測る。",
+      "selectability_test": "合成の正答率ではなく実held胚で正しい娘組を選べるか測る。",
+      "compute_estimate": "座標段階は画像推論なし。実画像生成や固定特徴再抽出を使う場合は別途大きな費用となる。未測定。",
+      "novelty_level": "role_change",
+      "confidence": "C"
+    },
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I11",
+      "title": "母と娘2個の局所画像量を比較して分裂の根拠を増やす",
+      "mechanism_family": "information",
+      "origin_pass": "cross_pollination",
+      "roles": [
+        "observation",
+        "prior"
+      ],
+      "information_sources": [
+        "母・娘候補の局所原画像",
+        "背景補正輝度・広がり",
+        "同動画のgain変化"
+      ],
+      "hypothesis": "母1個と娘2個の局所画像量に、近いだけの誤娘組と異なる関係があれば、分裂を直接識別する補助になる。",
+      "evidence_ids": [
+        "E029",
+        "E039"
+      ],
+      "changed_mechanism": "単点の画像scalarを追加するのではなく母と2娘の関係を観測する。蛍光量保存は検証対象であり前提にしない。",
+      "input_target_decode": "局所画像量→同動画gain校正と関係の分布監査→2娘相互作用の追加採点→共有edge得点と制約復号。",
+      "deployment_error_simulated": "飽和・深度差・隣細胞混入・境界切れ・bleaching。支持外では追加得点を使わない。",
+      "nearest_prior_attempt": "exp039のDoG scalar追加、division_triplets。",
+      "exact_difference": "個々の検出品質のfeatureではなく、母から娘集合への画像量変化を直接比較。",
+      "counterevidence": "蛍光量は保存しない可能性が高く、密集による光の混入が分裂らしさに見える危険がある。",
+      "cheap_test": "既知分裂と密度・距離を揃えた比較例で、gain校正後も胚を越えて位置情報以上の選別力があるか調べる。",
+      "full_test": "成立した記述子だけを同条件の共有集合採点へ追加し2fold、公式graph、hidden smoke。",
+      "kill_criterion": "胚ごとに関係の符号が反転、密度条件で効果消失、位置以上の識別力なしなら学習に進めない。",
+      "reopen_criterion": "画像量の測定範囲・背景推定・gain補正の改善が独立な識別力を示す場合。",
+      "coverage_test": "測定可能な分裂・深度・境界・輝度の範囲を記録する。",
+      "selectability_test": "正しい2娘を含む候補の中で誤組と区別できるかを測る。",
+      "compute_estimate": "追加画像readと局所集計が必要。少数分裂でCPU/GPUのI/O込み時間を測る。未測定。",
+      "novelty_level": "role_change",
+      "confidence": "C"
+    },
+    {
+      "preserved_invariants": [
+        "物理座標のµm単位、時間の向き、母1個から娘2個への関係を保持する。未注釈は未知のままとする。",
+        "固定特徴は元の2-frame画像窓と抽出位置を保持する。観測を変える際は位置特徴・近傍を再計算し、画像変形に対する特徴不変性を仮定しない。"
+      ],
+      "hidden_inference_contract": "入力はhidden動画の画像と固定モデルの予測のみ。GEFF・正解履歴・真の分裂数を要求しない。可変動画長・点数・境界・履歴欠損で処理でき、画像encoderを学習しない。",
+      "is_parameter_only": false,
+      "id": "I12",
+      "title": "改善した接続得点が最終graphまで残るかを処理ごとに検証する",
+      "mechanism_family": "validation",
+      "origin_pass": "evidence_inversion",
+      "roles": [
+        "validation",
+        "decoder audit"
+      ],
+      "information_sources": [
+        "保存済みtracker得点",
+        "候補・制約復号・再接続・修復の各graph"
+      ],
+      "hypothesis": "良くなった得点が確率変換や再接続で消える箇所があれば、追加学習よりその接続契約を直す方が効果を最終出力へ届けられる。",
+      "evidence_ids": [
+        "E015",
+        "E040",
+        "EX138"
+      ],
+      "changed_mechanism": "単体予測と最終graphの間を一括評価せず、得点が親順位・edge採否へ届く過程を追跡する。",
+      "input_target_decode": "同じ点・候補に保存score→各処理の前後graphを比較→改善が残る割合と破壊段階→必要なadapter/復号変更だけを別実験化。",
+      "deployment_error_simulated": "source softmaxの候補数依存、対応なし確率消失、双方向融合、修復によるedge上書き。",
+      "nearest_prior_attempt": "exp015の段階別上限、exp040確率adapter、公開x138の後処理調査。",
+      "exact_difference": "candidateとfinalの集計差だけでなく、同じ改善edgeがどの処理で変わるか対応付ける。exp040で既に解決済み契約を再実装しない。",
+      "counterevidence": "学習score自体が悪い場合は復号監査で改善しない。個別edge差が公式score差と同じではない。",
+      "cheap_test": "少数の固定動画で各処理前後の既知接続・分裂を対応付け、学習scoreの有無以外を固定した比較。",
+      "full_test": "具体的な不整合が確認された場合のみadapter変更を内部固定し、全graph公式評価とhidden smoke。",
+      "kill_criterion": "改善が既に保存されている、差がscore品質だけで説明される、正解情報で例を選ばないと成立しない場合。",
+      "reopen_criterion": "新しいtracker出力契約か、得点の意味を壊す具体的な処理が確認された場合。",
+      "coverage_test": "各処理まで残った正解edge・2娘組・元候補外の件数を分ける。",
+      "selectability_test": "候補に残すことと、得点変更が実際の正解採択に結び付くことを分ける。",
+      "compute_estimate": "画像・scoreが保存済みならCPU再復号中心。未保存の場合の回収/再推論費用は別計上。全動画のgraph反復を初段にしない。",
+      "novelty_level": "role_change",
+      "confidence": "B"
+    }
+  ],
+  "portfolio": [
+    {
+      "idea_id": "I01",
+      "slot": "safe",
+      "why": "次の新規学習として推奨。既知の採点障害を小例で直接反証できる。safeは改善保証ではなく、低費用で棄却可能という意味。"
+    },
+    {
+      "idea_id": "I02",
+      "slot": "orthogonal",
+      "why": "同動画の他細胞を観測基準へ使う。独立性は保証せず正解支持と実支持で先に検証。"
+    },
+    {
+      "idea_id": "I03",
+      "slot": "exploration",
+      "why": "早期の単一対応化で失う可能性を検証。候補上限と実選別を分け、別根拠がない限り大規模化しない。"
+    },
+    {
+      "idea_id": "I04",
+      "slot": "exploration",
+      "why": "履歴入力を再開するなら実際の誤りを含む学習へ変更。単純noiseの代案ではなく実OOF適応まで含む。先行診断を条件とする。"
+    },
+    {
+      "idea_id": "I05",
+      "slot": "compute_enabler",
+      "why": "追加情報の有無と学習不成立を切り分け、45GPU時間を一案の本学習へ配分する入口。診断単独を精度改善としない。"
+    }
+  ],
+  "rejected": [
+    {
+      "idea": "past_candidate_attentionならexp041の原因を解消できると判断して全学習する",
+      "failed_gate": "原因と優位性未証明。誤edgeも別細胞の過去で説明でき、費用障害も残る。",
+      "reopen_condition": "GTなしで正しい過去対応を選べ、誤edgeとの差を増やす小型試験と費用実測が成立する。"
+    },
+    {
+      "idea": "head数・履歴長・epochだけを増やして再実験する",
+      "failed_gate": "何の情報・教師が不足したかを切り分けず、exp032の未改善もある。",
+      "reopen_condition": "学習曲線や参照先の実測が容量・最適化不足を具体的に支持する。"
+    },
+    {
+      "idea": "観測分岐のない系列をすべて非分裂identity教師とする",
+      "failed_gate": "疎注釈では未観測の娘があり得る。",
+      "reopen_condition": "教師の完全性を確認するか、identityと系譜類似性を区別した目的へ変える。"
+    },
+    {
+      "idea": "GT履歴を訓練入力にして本番は予測履歴へ交換するだけ",
+      "failed_gate": "中間入力分布不一致。",
+      "reopen_condition": "inner OOF誤差を再現した学習と実OOF微調整で成立する。"
+    },
+    {
+      "idea": "候補に99.9%正解が残るので精度も上がると判断する",
+      "failed_gate": "個別coverage・娘pair・合法graph・GTなし選別の混同。",
+      "reopen_condition": "選別と最終graphに改善が残ることを示す。"
+    },
+    {
+      "idea": "全cell数固定・蛍光総量保存・分裂時間反転を強制する",
+      "failed_gate": "分裂・出入り・撮影変化に反し、保存則未確認。",
+      "reopen_condition": "限定範囲で実測支持された関係のみを条件付き観測として使う。"
+    },
+    {
+      "idea": "公開x138の0.953を近傍運動単独の成功とする",
+      "failed_gate": "座標補正・特徴抽出・再接続・点補完等を同時変更。因果不明。",
+      "reopen_condition": "固定版再現後、同条件で処理ごとの寄与を分離する。"
+    }
+  ]
+}

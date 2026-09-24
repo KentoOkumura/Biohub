@@ -1,0 +1,1953 @@
+{
+  "experiment": "exp031_frame_self_attention_spatial",
+  "status": "running",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "fixed_candidate_public_teacher_edge_metrics",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp031-frame-self-attention-spatial-train",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp031-frame-self-attention-spatial-train",
+      "kernel_source_ids": [
+        "kentookumura/exp015-oracle-stage-limits-inference",
+        "pilkwang/biohub-tracking-support-pack-50ep-v1"
+      ],
+      "resource": "Tesla T4",
+      "notebook_runtime_seconds": 11662.803485573,
+      "internet_enabled": false,
+      "training_summary_sha256": "3939917ba7eca44831ac6ec662169cebc666ec71bec09cd028ef9b44a57a47f1",
+      "quota_checked_at_utc": "2026-09-20T15:18:39.700668+00:00",
+      "quota_gpu_used_hours": 22.07,
+      "quota_gpu_remaining_hours": 22.93,
+      "project_weekly_gpu_budget_remaining_hours": 7.93
+    },
+    "artifacts": {
+      "input_file_sha": "998ed732767a4306c0f05f00a25bc6850318cef1b614cb261edd4106a80d9c7b",
+      "cache_file_sha": "040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c",
+      "feature_schema_sha": "6dd75ab9f00ff0e086293908ddfbf41235b154d15b6247beff259041afc9e042",
+      "feature_content_sha": "440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee",
+      "row_count": 18707,
+      "group_count": 199,
+      "feature_count": 64,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "f9906ac3d747a2905c0a89923c5a6ac54d97e9a045068083c9a0a8bbc4d0f905",
+      "model_count": 6,
+      "model_shas": {
+        "legacy:fold_0": "a0b5df93a976eca4d3db2b158bdc79bec542958658ffcdadb1521b63123159ce",
+        "legacy:fold_1": "691aa888d90a8c207e7e8f01fe47fd20729ea2758c59301fe865590c78f1d077",
+        "self_only:fold_0": "a008605685f376df59d73d10b5ffd3861fe8f0ae3d9d6a534a66a72d23373733",
+        "self_only:fold_1": "8f1b684d502d5ef6a874a6a6037893ef770d127426acc33c731a1b685248516a",
+        "self_cross:fold_0": "dea845058b245212468ab63c20a3030dcf77d4401d7fd93386d5eb94d4d7ef60",
+        "self_cross:fold_1": "c22a4a6489bac983d95ca92f38e3138945e74ae7400c1bfee14e8306a98a5cb6"
+      },
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null,
+      "gt_window_filter_audit_sha": "97008c377d701a7a70f49879ced4650e5ffe5730e7d42b89a1440cf778ad7396"
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": []
+  },
+  "notes": "Six-model train stage completed and SHA-verified. Pair-level automatic graph progression condition failed; official graph score not measured. Awaiting user decision on full graph inference.",
+  "train_stage": {
+    "experiment": "exp031_frame_self_attention_spatial",
+    "status": "train_stage_completed",
+    "official_metric_computed": false,
+    "submission_created": false,
+    "conditional_validation": "公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるため、 trackerの外側胚分割を独立CVとは呼ばない",
+    "elapsed_seconds": 11009.480014134999,
+    "notebook_elapsed_seconds": 11662.803485573,
+    "benchmark": {
+      "records": [
+        {
+          "variant": "legacy",
+          "fold": 0,
+          "window_count": 64,
+          "max_attention_load_window": [
+            984,
+            1009
+          ],
+          "median_attention_load_window": [
+            317,
+            334
+          ],
+          "elapsed_seconds": 5.086360855000066,
+          "work_windows_projected": 43729,
+          "conservative_projected_seconds": 5213.003292850732,
+          "train_peak_gpu_memory_bytes": 255652352,
+          "inference_elapsed_seconds": 0.9964618420000306,
+          "inference_peak_gpu_memory_bytes": 181975040,
+          "train_metrics": {
+            "legacy_mask_loss": 0.0001871884799840018,
+            "batch_count": 32.0,
+            "window_count": 64.0
+          },
+          "inference_metrics": {
+            "legacy_mask_loss": 0.00012062995341306781,
+            "edge_accuracy": 0.9998769302518395,
+            "positive_edge_recall": 0.9601769911504425,
+            "division_parent_recall": 0.0,
+            "candidate_node_recall": 0.9728601252609603,
+            "window_count": 64,
+            "active_pair_count": 154384,
+            "positive_edge_count": 226,
+            "division_parent_count": 0,
+            "teacher": {
+              "candidate_nodes": 43530,
+              "matched_candidate_nodes": 466,
+              "gt_nodes": 479,
+              "positive_edges": 226,
+              "active_pairs": 154384,
+              "active_pairs_with_unknown_endpoint": 152974,
+              "division_parents": 0,
+              "source_match_distance_count": 234,
+              "target_match_distance_count": 232,
+              "source_match_distance_sum_um": 363.4765903353691,
+              "target_match_distance_sum_um": 380.27043187618256,
+              "candidate_node_precision_against_sparse_gt": 0.010705260739719733,
+              "candidate_node_recall": 0.9728601252609603,
+              "unknown_endpoint_fraction_of_active_pairs": 0.9908669292154627,
+              "mean_match_distance_um": 1.5960236528144887
+            },
+            "selection_score": 0.9727403956103491
+          }
+        },
+        {
+          "variant": "legacy",
+          "fold": 1,
+          "window_count": 64,
+          "max_attention_load_window": [
+            1056,
+            1038
+          ],
+          "median_attention_load_window": [
+            98,
+            96
+          ],
+          "elapsed_seconds": 3.7673627210000404,
+          "work_windows_projected": 49806,
+          "conservative_projected_seconds": 4397.748461299875,
+          "train_peak_gpu_memory_bytes": 265075200,
+          "inference_elapsed_seconds": 0.8373770299999705,
+          "inference_peak_gpu_memory_bytes": 187429888,
+          "train_metrics": {
+            "legacy_mask_loss": 0.00028410635340492263,
+            "batch_count": 32.0,
+            "window_count": 64.0
+          },
+          "inference_metrics": {
+            "legacy_mask_loss": 0.00018648360299922118,
+            "edge_accuracy": 0.9998591314815526,
+            "positive_edge_recall": 0.9739292364990689,
+            "division_parent_recall": 0.0,
+            "candidate_node_recall": 0.958904109589041,
+            "window_count": 64,
+            "active_pair_count": 234261,
+            "positive_edge_count": 537,
+            "division_parent_count": 0,
+            "teacher": {
+              "candidate_nodes": 25525,
+              "matched_candidate_nodes": 1120,
+              "gt_nodes": 1168,
+              "positive_edges": 537,
+              "active_pairs": 234261,
+              "active_pairs_with_unknown_endpoint": 227808,
+              "division_parents": 0,
+              "source_match_distance_count": 564,
+              "target_match_distance_count": 556,
+              "source_match_distance_sum_um": 995.2926080226898,
+              "target_match_distance_sum_um": 973.0295464992523,
+              "candidate_node_precision_against_sparse_gt": 0.04387855044074437,
+              "candidate_node_recall": 0.958904109589041,
+              "unknown_endpoint_fraction_of_active_pairs": 0.9724538015290637,
+              "mean_match_distance_um": 1.7574304951088768
+            },
+            "selection_score": 0.9587690301877901
+          }
+        },
+        {
+          "variant": "self_only",
+          "fold": 0,
+          "window_count": 64,
+          "max_attention_load_window": [
+            984,
+            1009
+          ],
+          "median_attention_load_window": [
+            317,
+            334
+          ],
+          "elapsed_seconds": 2.9845799150000403,
+          "work_windows_projected": 43729,
+          "conservative_projected_seconds": 3058.891291477424,
+          "train_peak_gpu_memory_bytes": 254852608,
+          "inference_elapsed_seconds": 0.8594817010000497,
+          "inference_peak_gpu_memory_bytes": 179855360,
+          "train_metrics": {
+            "legacy_mask_loss": 0.0015940299972498906,
+            "batch_count": 32.0,
+            "window_count": 64.0
+          },
+          "inference_metrics": {
+            "legacy_mask_loss": 0.000381420696313417,
+            "edge_accuracy": 0.9997473831485127,
+            "positive_edge_recall": 0.9203539823008849,
+            "division_parent_recall": 0.0,
+            "candidate_node_recall": 0.9728601252609603,
+            "window_count": 64,
+            "active_pair_count": 154384,
+            "positive_edge_count": 226,
+            "division_parent_count": 0,
+            "teacher": {
+              "candidate_nodes": 43530,
+              "matched_candidate_nodes": 466,
+              "gt_nodes": 479,
+              "positive_edges": 226,
+              "active_pairs": 154384,
+              "active_pairs_with_unknown_endpoint": 152974,
+              "division_parents": 0,
+              "source_match_distance_count": 234,
+              "target_match_distance_count": 232,
+              "source_match_distance_sum_um": 363.4765903353691,
+              "target_match_distance_sum_um": 380.27043187618256,
+              "candidate_node_precision_against_sparse_gt": 0.010705260739719733,
+              "candidate_node_recall": 0.9728601252609603,
+              "unknown_endpoint_fraction_of_active_pairs": 0.9908669292154627,
+              "mean_match_distance_um": 1.5960236528144887
+            },
+            "selection_score": 0.9726143643991794
+          }
+        },
+        {
+          "variant": "self_only",
+          "fold": 1,
+          "window_count": 64,
+          "max_attention_load_window": [
+            1056,
+            1038
+          ],
+          "median_attention_load_window": [
+            98,
+            96
+          ],
+          "elapsed_seconds": 2.451411116000031,
+          "work_windows_projected": 49806,
+          "conservative_projected_seconds": 2861.601141644474,
+          "train_peak_gpu_memory_bytes": 262889984,
+          "inference_elapsed_seconds": 0.7024677859999429,
+          "inference_peak_gpu_memory_bytes": 186880000,
+          "train_metrics": {
+            "legacy_mask_loss": 0.00164828655852034,
+            "batch_count": 32.0,
+            "window_count": 64.0
+          },
+          "inference_metrics": {
+            "legacy_mask_loss": 0.0006603448663390354,
+            "edge_accuracy": 0.9996414255894067,
+            "positive_edge_recall": 0.925512104283054,
+            "division_parent_recall": 0.0,
+            "candidate_node_recall": 0.958904109589041,
+            "window_count": 64,
+            "active_pair_count": 234261,
+            "positive_edge_count": 537,
+            "division_parent_count": 0,
+            "teacher": {
+              "candidate_nodes": 25525,
+              "matched_candidate_nodes": 1120,
+              "gt_nodes": 1168,
+              "positive_edges": 537,
+              "active_pairs": 234261,
+              "active_pairs_with_unknown_endpoint": 227808,
+              "division_parents": 0,
+              "source_match_distance_count": 564,
+              "target_match_distance_count": 556,
+              "source_match_distance_sum_um": 995.2926080226898,
+              "target_match_distance_sum_um": 973.0295464992523,
+              "candidate_node_precision_against_sparse_gt": 0.04387855044074437,
+              "candidate_node_recall": 0.958904109589041,
+              "unknown_endpoint_fraction_of_active_pairs": 0.9724538015290637,
+              "mean_match_distance_um": 1.7574304951088768
+            },
+            "selection_score": 0.9585602711131297
+          }
+        },
+        {
+          "variant": "self_cross",
+          "fold": 0,
+          "window_count": 64,
+          "max_attention_load_window": [
+            984,
+            1009
+          ],
+          "median_attention_load_window": [
+            317,
+            334
+          ],
+          "elapsed_seconds": 4.426276379000001,
+          "work_windows_projected": 43729,
+          "conservative_projected_seconds": 4536.483744780258,
+          "train_peak_gpu_memory_bytes": 267062784,
+          "inference_elapsed_seconds": 1.1757319719999941,
+          "inference_peak_gpu_memory_bytes": 186214400,
+          "train_metrics": {
+            "legacy_mask_loss": 0.0013395189735092572,
+            "batch_count": 32.0,
+            "window_count": 64.0
+          },
+          "inference_metrics": {
+            "legacy_mask_loss": 0.00042989328343655524,
+            "edge_accuracy": 0.9997473831485127,
+            "positive_edge_recall": 0.9469026548672567,
+            "division_parent_recall": 0.0,
+            "candidate_node_recall": 0.9728601252609603,
+            "window_count": 64,
+            "active_pair_count": 154384,
+            "positive_edge_count": 226,
+            "division_parent_count": 0,
+            "teacher": {
+              "candidate_nodes": 43530,
+              "matched_candidate_nodes": 466,
+              "gt_nodes": 479,
+              "positive_edges": 226,
+              "active_pairs": 154384,
+              "active_pairs_with_unknown_endpoint": 152974,
+              "division_parents": 0,
+              "source_match_distance_count": 234,
+              "target_match_distance_count": 232,
+              "source_match_distance_sum_um": 363.4765903353691,
+              "target_match_distance_sum_um": 380.27043187618256,
+              "candidate_node_precision_against_sparse_gt": 0.010705260739719733,
+              "candidate_node_recall": 0.9728601252609603,
+              "unknown_endpoint_fraction_of_active_pairs": 0.9908669292154627,
+              "mean_match_distance_um": 1.5960236528144887
+            },
+            "selection_score": 0.9726143643991794
+          }
+        },
+        {
+          "variant": "self_cross",
+          "fold": 1,
+          "window_count": 64,
+          "max_attention_load_window": [
+            1056,
+            1038
+          ],
+          "median_attention_load_window": [
+            98,
+            96
+          ],
+          "elapsed_seconds": 4.049440673000049,
+          "work_windows_projected": 49806,
+          "conservative_projected_seconds": 4727.025988111885,
+          "train_peak_gpu_memory_bytes": 281273344,
+          "inference_elapsed_seconds": 1.0043597840000302,
+          "inference_peak_gpu_memory_bytes": 193239040,
+          "train_metrics": {
+            "legacy_mask_loss": 0.0015943062526275753,
+            "batch_count": 32.0,
+            "window_count": 64.0
+          },
+          "inference_metrics": {
+            "legacy_mask_loss": 0.000451517408084863,
+            "edge_accuracy": 0.9997353379350382,
+            "positive_edge_recall": 0.9534450651769087,
+            "division_parent_recall": 0.0,
+            "candidate_node_recall": 0.958904109589041,
+            "window_count": 64,
+            "active_pair_count": 234261,
+            "positive_edge_count": 537,
+            "division_parent_count": 0,
+            "teacher": {
+              "candidate_nodes": 25525,
+              "matched_candidate_nodes": 1120,
+              "gt_nodes": 1168,
+              "positive_edges": 537,
+              "active_pairs": 234261,
+              "active_pairs_with_unknown_endpoint": 227808,
+              "division_parents": 0,
+              "source_match_distance_count": 564,
+              "target_match_distance_count": 556,
+              "source_match_distance_sum_um": 995.2926080226898,
+              "target_match_distance_sum_um": 973.0295464992523,
+              "candidate_node_precision_against_sparse_gt": 0.04387855044074437,
+              "candidate_node_recall": 0.958904109589041,
+              "unknown_endpoint_fraction_of_active_pairs": 0.9724538015290637,
+              "mean_match_distance_um": 1.7574304951088768
+            },
+            "selection_score": 0.9586503240472969
+          }
+        }
+      ],
+      "conservative_projected_seconds_total": 24794.75392016465,
+      "runtime_gate_seconds": 43200.0,
+      "projection_multiplier": 1.5
+    },
+    "model_preflight": {
+      "legacy": {
+        "all_parameter_count": 580353,
+        "forward_parameter_count": 580353,
+        "strict_state_restore": true,
+        "padding_and_permutation": true
+      },
+      "self_only": {
+        "all_parameter_count": 845313,
+        "forward_parameter_count": 315393,
+        "strict_state_restore": true,
+        "padding_and_permutation": true
+      },
+      "self_cross": {
+        "all_parameter_count": 845313,
+        "forward_parameter_count": 845313,
+        "strict_state_restore": true,
+        "padding_and_permutation": true
+      }
+    },
+    "gt_window_filter": {
+      "policy": "skip_window_if_any_frame_has_zero_gt_nodes",
+      "public_source_function": "get_window_data",
+      "input_window_count": 19701,
+      "eligible_window_count": 18707,
+      "skipped_window_count": 994,
+      "skipped_by_sample": {
+        "44b6_0113de3b": 49,
+        "44b6_0b24845f": 60,
+        "44b6_0c582fdc": 29,
+        "44b6_0db75fae": 11,
+        "44b6_1574802b": 5,
+        "44b6_24264f12": 13,
+        "44b6_2f31fc2f": 32,
+        "44b6_33b596bf": 50,
+        "44b6_53f95252": 49,
+        "44b6_587a1e22": 5,
+        "44b6_87bba6c4": 21,
+        "44b6_90724892": 43,
+        "44b6_949adeb1": 24,
+        "44b6_a21120c2": 15,
+        "44b6_abf82518": 42,
+        "44b6_c15fded2": 46,
+        "44b6_c8e2a523": 19,
+        "44b6_cf2536e8": 24,
+        "44b6_cf8fed6b": 6,
+        "44b6_d754aa59": 34,
+        "44b6_db3c847b": 14,
+        "44b6_deabac95": 18,
+        "44b6_e29f0176": 49,
+        "44b6_e31261b4": 18,
+        "44b6_f28707c6": 38,
+        "6bba_062c8d37": 2,
+        "6bba_0c7fa718": 7,
+        "6bba_0e7c0d07": 17,
+        "6bba_1f58c2f6": 2,
+        "6bba_312f0dc3": 19,
+        "6bba_32db13fc": 2,
+        "6bba_337b1b3a": 19,
+        "6bba_3abfe10a": 18,
+        "6bba_3db54e20": 7,
+        "6bba_3fda6b25": 1,
+        "6bba_4f99ce20": 2,
+        "6bba_55c70843": 19,
+        "6bba_6321a359": 2,
+        "6bba_6479435d": 7,
+        "6bba_6db0e9b4": 12,
+        "6bba_767a1e17": 54,
+        "6bba_78a7bd97": 6,
+        "6bba_7f87b3d8": 2,
+        "6bba_96833384": 3,
+        "6bba_acd782a8": 12,
+        "6bba_b1ae37b9": 12,
+        "6bba_b693381b": 2,
+        "6bba_bb9f20c3": 4,
+        "6bba_c328f2fd": 4,
+        "6bba_c73a1d11": 5,
+        "6bba_cdcfe533": 18,
+        "6bba_cff5865f": 3,
+        "6bba_d5eae175": 2,
+        "6bba_df673a83": 1,
+        "6bba_ebdf3b34": 2,
+        "6bba_ef7b4f7e": 2,
+        "6bba_f17befbc": 2,
+        "6bba_f1fde7e0": 2,
+        "6bba_f8ffd5e7": 8
+      },
+      "audit_sha256": "97008c377d701a7a70f49879ced4650e5ffe5730e7d42b89a1440cf778ad7396"
+    },
+    "teacher_audit": {
+      "candidate_nodes": 9032950,
+      "matched_candidate_nodes": 255587,
+      "gt_nodes": 264294,
+      "positive_edges": 122342,
+      "active_pairs": 56073068,
+      "active_pairs_with_unknown_endpoint": 54789174,
+      "division_parents": 130,
+      "source_match_distance_count": 127764,
+      "target_match_distance_count": 127823,
+      "source_match_distance_sum_um": 224482.42331051826,
+      "target_match_distance_sum_um": 224612.24985438585,
+      "candidate_node_precision_against_sparse_gt": 0.028294964546465993,
+      "candidate_node_recall": 0.9670556274451936,
+      "unknown_endpoint_fraction_of_active_pairs": 0.9771031968502241,
+      "mean_match_distance_um": 1.7571107809274498,
+      "matching": "greedy_distance_order_one_to_one",
+      "max_matching_distance_um": 5.0,
+      "loss_mask": "pair_touches_source_or_target_with_positive_annotated_edge",
+      "outer_evaluation_coverage": "each of 199 samples exactly once across two folds"
+    },
+    "folds": [
+      {
+        "variant": "legacy",
+        "fold": 0,
+        "train_embryo": "44b6",
+        "evaluation_embryo": "6bba",
+        "sample_counts": {
+          "gradient_update": 64,
+          "internal_validation": 7,
+          "outer_evaluation": 128
+        },
+        "window_counts": {
+          "gradient_update": 5622,
+          "internal_validation": 693,
+          "outer_evaluation": 12392
+        },
+        "initial_outer_evaluation": {
+          "legacy_mask_loss": 0.00017333972385907145,
+          "edge_accuracy": 0.9998267584010487,
+          "positive_edge_recall": 0.967618697590746,
+          "division_parent_recall": 0.42592592592592593,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "positive_edge_count": 103393,
+          "division_parent_count": 108,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "selection_score": 0.9655321326514154
+        },
+        "epochs": [
+          {
+            "epoch": 0,
+            "elapsed_seconds": 400.46447659399996,
+            "train": {
+              "legacy_mask_loss": 0.00017945191094750353,
+              "batch_count": 2811.0,
+              "window_count": 5622.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00014604020241834094,
+              "edge_accuracy": 0.9998667684571375,
+              "positive_edge_recall": 0.9586114819759679,
+              "division_parent_recall": 0.0,
+              "candidate_node_recall": 0.9860813704496788,
+              "window_count": 693,
+              "active_pair_count": 1696295,
+              "positive_edge_count": 2247,
+              "division_parent_count": 3,
+              "teacher": {
+                "candidate_nodes": 447690,
+                "matched_candidate_nodes": 4605,
+                "gt_nodes": 4670,
+                "positive_edges": 2247,
+                "active_pairs": 1696295,
+                "active_pairs_with_unknown_endpoint": 1685876,
+                "division_parents": 3,
+                "source_match_distance_count": 2300,
+                "target_match_distance_count": 2305,
+                "source_match_distance_sum_um": 3700.933766424656,
+                "target_match_distance_sum_um": 3711.900531888008,
+                "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                "candidate_node_recall": 0.9860813704496788,
+                "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                "mean_match_distance_um": 1.6097360039766915
+              },
+              "selection_score": 0.9859499933073058
+            },
+            "selected": true
+          },
+          {
+            "epoch": 1,
+            "elapsed_seconds": 398.00563525300004,
+            "train": {
+              "legacy_mask_loss": 0.0001617722800343139,
+              "batch_count": 2811.0,
+              "window_count": 5622.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.0001540980403711671,
+              "edge_accuracy": 0.9998714846179467,
+              "positive_edge_recall": 0.9590565198041834,
+              "division_parent_recall": 0.3333333333333333,
+              "candidate_node_recall": 0.9860813704496788,
+              "window_count": 693,
+              "active_pair_count": 1696295,
+              "positive_edge_count": 2247,
+              "division_parent_count": 3,
+              "teacher": {
+                "candidate_nodes": 447690,
+                "matched_candidate_nodes": 4605,
+                "gt_nodes": 4670,
+                "positive_edges": 2247,
+                "active_pairs": 1696295,
+                "active_pairs_with_unknown_endpoint": 1685876,
+                "division_parents": 3,
+                "source_match_distance_count": 2300,
+                "target_match_distance_count": 2305,
+                "source_match_distance_sum_um": 3700.933766424656,
+                "target_match_distance_sum_um": 3711.900531888008,
+                "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                "candidate_node_recall": 0.9860813704496788,
+                "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                "mean_match_distance_um": 1.6097360039766915
+              },
+              "selection_score": 0.9859546438256198
+            },
+            "selected": true
+          },
+          {
+            "epoch": 2,
+            "elapsed_seconds": 394.458530226,
+            "train": {
+              "legacy_mask_loss": 0.0001511541538827416,
+              "batch_count": 2811.0,
+              "window_count": 5622.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00014848991824992856,
+              "edge_accuracy": 0.9998591046958224,
+              "positive_edge_recall": 0.94971072541166,
+              "division_parent_recall": 0.0,
+              "candidate_node_recall": 0.9860813704496788,
+              "window_count": 693,
+              "active_pair_count": 1696295,
+              "positive_edge_count": 2247,
+              "division_parent_count": 3,
+              "teacher": {
+                "candidate_nodes": 447690,
+                "matched_candidate_nodes": 4605,
+                "gt_nodes": 4670,
+                "positive_edges": 2247,
+                "active_pairs": 1696295,
+                "active_pairs_with_unknown_endpoint": 1685876,
+                "division_parents": 3,
+                "source_match_distance_count": 2300,
+                "target_match_distance_count": 2305,
+                "source_match_distance_sum_um": 3700.933766424656,
+                "target_match_distance_sum_um": 3711.900531888008,
+                "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                "candidate_node_recall": 0.9860813704496788,
+                "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                "mean_match_distance_um": 1.6097360039766915
+              },
+              "selection_score": 0.9859424362150454
+            },
+            "selected": false
+          }
+        ],
+        "best_epoch": 1,
+        "best_internal_selection_score": 0.9859546438256198,
+        "trained_outer_evaluation": {
+          "legacy_mask_loss": 0.00021840077011331236,
+          "edge_accuracy": 0.9998224846202923,
+          "positive_edge_recall": 0.9694079870010542,
+          "division_parent_recall": 0.4444444444444444,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "positive_edge_count": 103393,
+          "division_parent_count": 108,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "selection_score": 0.9655280054637666
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": 4.506104625424091e-05,
+          "edge_accuracy": -4.273780756403056e-06,
+          "positive_edge_recall": 0.0017892894103082035,
+          "division_parent_recall": 0.01851851851851849,
+          "selection_score": -4.127187648750308e-06
+        },
+        "model_params": {
+          "feat_dim": 64,
+          "hidden_dim": 128,
+          "n_heads": 4,
+          "n_blocks": 4,
+          "mlp_ratio": 2.0,
+          "dropout": 0.3,
+          "pair_chunk_size": 32,
+          "n_self_blocks": 2,
+          "use_temporal_self_attention": false,
+          "use_cross_attention": true
+        },
+        "model_file": "models/legacy/fold_0/primary_tracker_best.pth",
+        "model_file_sha256": "a0b5df93a976eca4d3db2b158bdc79bec542958658ffcdadb1521b63123159ce",
+        "model_state_sha256": "b080c8dc374454f0f97403ec1e27388ef9a5a76c4c658b0ccaeb247ab136ab6c"
+      },
+      {
+        "variant": "legacy",
+        "fold": 1,
+        "train_embryo": "6bba",
+        "evaluation_embryo": "44b6",
+        "sample_counts": {
+          "gradient_update": 116,
+          "internal_validation": 12,
+          "outer_evaluation": 71
+        },
+        "window_counts": {
+          "gradient_update": 11236,
+          "internal_validation": 1156,
+          "outer_evaluation": 6315
+        },
+        "initial_outer_evaluation": {
+          "legacy_mask_loss": 0.00016457877208084383,
+          "edge_accuracy": 0.999836683329194,
+          "positive_edge_recall": 0.9544566995619822,
+          "division_parent_recall": 0.36363636363636365,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "positive_edge_count": 18949,
+          "division_parent_count": 22,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "selection_score": 0.9744984248843324
+        },
+        "epochs": [
+          {
+            "epoch": 0,
+            "elapsed_seconds": 664.981436901,
+            "train": {
+              "legacy_mask_loss": 0.0002183322763433969,
+              "batch_count": 5618.0,
+              "window_count": 11236.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00010303283600005544,
+              "edge_accuracy": 0.9998802699911699,
+              "positive_edge_recall": 0.9767600045346333,
+              "division_parent_recall": 0.4444444444444444,
+              "candidate_node_recall": 0.978318631097885,
+              "window_count": 1156,
+              "active_pair_count": 3407667,
+              "positive_edge_count": 8821,
+              "division_parent_count": 9,
+              "teacher": {
+                "candidate_nodes": 440587,
+                "matched_candidate_nodes": 18410,
+                "gt_nodes": 18818,
+                "positive_edges": 8821,
+                "active_pairs": 3407667,
+                "active_pairs_with_unknown_endpoint": 3315274,
+                "division_parents": 9,
+                "source_match_distance_count": 9194,
+                "target_match_distance_count": 9216,
+                "source_match_distance_sum_um": 16270.457616090775,
+                "target_match_distance_sum_um": 16295.073291301727,
+                "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                "candidate_node_recall": 0.978318631097885,
+                "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                "mean_match_distance_um": 1.7689044490707497
+              },
+              "selection_score": 0.978201496999545
+            },
+            "selected": true
+          },
+          {
+            "epoch": 1,
+            "elapsed_seconds": 663.5868471089998,
+            "train": {
+              "legacy_mask_loss": 0.00019597409995628987,
+              "batch_count": 5618.0,
+              "window_count": 11236.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00010439774110306302,
+              "edge_accuracy": 0.9998846718297298,
+              "positive_edge_recall": 0.9803877111438613,
+              "division_parent_recall": 0.6666666666666666,
+              "candidate_node_recall": 0.978318631097885,
+              "window_count": 1156,
+              "active_pair_count": 3407667,
+              "positive_edge_count": 8821,
+              "division_parent_count": 9,
+              "teacher": {
+                "candidate_nodes": 440587,
+                "matched_candidate_nodes": 18410,
+                "gt_nodes": 18818,
+                "positive_edges": 8821,
+                "active_pairs": 3407667,
+                "active_pairs_with_unknown_endpoint": 3315274,
+                "division_parents": 9,
+                "source_match_distance_count": 9194,
+                "target_match_distance_count": 9216,
+                "source_match_distance_sum_um": 16270.457616090775,
+                "target_match_distance_sum_um": 16295.073291301727,
+                "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                "candidate_node_recall": 0.978318631097885,
+                "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                "mean_match_distance_um": 1.7689044490707497
+              },
+              "selection_score": 0.9782058034002192
+            },
+            "selected": true
+          },
+          {
+            "epoch": 2,
+            "elapsed_seconds": 653.6910644740001,
+            "train": {
+              "legacy_mask_loss": 0.00018742027922819237,
+              "batch_count": 5618.0,
+              "window_count": 11236.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00011471318038977995,
+              "edge_accuracy": 0.99987586815261,
+              "positive_edge_recall": 0.9776669311869403,
+              "division_parent_recall": 0.2222222222222222,
+              "candidate_node_recall": 0.978318631097885,
+              "window_count": 1156,
+              "active_pair_count": 3407667,
+              "positive_edge_count": 8821,
+              "division_parent_count": 9,
+              "teacher": {
+                "candidate_nodes": 440587,
+                "matched_candidate_nodes": 18410,
+                "gt_nodes": 18818,
+                "positive_edges": 8821,
+                "active_pairs": 3407667,
+                "active_pairs_with_unknown_endpoint": 3315274,
+                "division_parents": 9,
+                "source_match_distance_count": 9194,
+                "target_match_distance_count": 9216,
+                "source_match_distance_sum_um": 16270.457616090775,
+                "target_match_distance_sum_um": 16295.073291301727,
+                "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                "candidate_node_recall": 0.978318631097885,
+                "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                "mean_match_distance_um": 1.7689044490707497
+              },
+              "selection_score": 0.9781971905988707
+            },
+            "selected": false
+          }
+        ],
+        "best_epoch": 1,
+        "best_internal_selection_score": 0.9782058034002192,
+        "trained_outer_evaluation": {
+          "legacy_mask_loss": 0.00016589781317135103,
+          "edge_accuracy": 0.9998301244267519,
+          "positive_edge_recall": 0.9477544989181487,
+          "division_parent_recall": 0.2727272727272727,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "positive_edge_count": 18949,
+          "division_parent_count": 22,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "selection_score": 0.9744920322002016
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": 1.3190410905071959e-06,
+          "edge_accuracy": -6.55890244205537e-06,
+          "positive_edge_recall": -0.0067022006438335335,
+          "division_parent_recall": -0.09090909090909094,
+          "selection_score": -6.392684130718251e-06
+        },
+        "model_params": {
+          "feat_dim": 64,
+          "hidden_dim": 128,
+          "n_heads": 4,
+          "n_blocks": 4,
+          "mlp_ratio": 2.0,
+          "dropout": 0.3,
+          "pair_chunk_size": 32,
+          "n_self_blocks": 2,
+          "use_temporal_self_attention": false,
+          "use_cross_attention": true
+        },
+        "model_file": "models/legacy/fold_1/primary_tracker_best.pth",
+        "model_file_sha256": "691aa888d90a8c207e7e8f01fe47fd20729ea2758c59301fe865590c78f1d077",
+        "model_state_sha256": "41b03b82d30e9b22d73df6924a70d56ca2b292bb3c41b2678acb5d33990fb3ea"
+      },
+      {
+        "variant": "self_only",
+        "fold": 0,
+        "train_embryo": "44b6",
+        "evaluation_embryo": "6bba",
+        "sample_counts": {
+          "gradient_update": 64,
+          "internal_validation": 7,
+          "outer_evaluation": 128
+        },
+        "window_counts": {
+          "gradient_update": 5622,
+          "internal_validation": 693,
+          "outer_evaluation": 12392
+        },
+        "initial_outer_evaluation": {
+          "legacy_mask_loss": 0.0006299943074762977,
+          "edge_accuracy": 0.9992992180161818,
+          "positive_edge_recall": 0.7312003713984506,
+          "division_parent_recall": 0.10185185185185185,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "positive_edge_count": 103393,
+          "division_parent_count": 108,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "selection_score": 0.9650226872014107
+        },
+        "epochs": [
+          {
+            "epoch": 0,
+            "elapsed_seconds": 335.3112306190005,
+            "train": {
+              "legacy_mask_loss": 0.0005560941202646639,
+              "batch_count": 2811.0,
+              "window_count": 5622.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00030586452450434527,
+              "edge_accuracy": 0.9998013317259086,
+              "positive_edge_recall": 0.9439252336448598,
+              "division_parent_recall": 0.0,
+              "candidate_node_recall": 0.9860813704496788,
+              "window_count": 693,
+              "active_pair_count": 1696295,
+              "positive_edge_count": 2247,
+              "division_parent_count": 3,
+              "teacher": {
+                "candidate_nodes": 447690,
+                "matched_candidate_nodes": 4605,
+                "gt_nodes": 4670,
+                "positive_edges": 2247,
+                "active_pairs": 1696295,
+                "active_pairs_with_unknown_endpoint": 1685876,
+                "division_parents": 3,
+                "source_match_distance_count": 2300,
+                "target_match_distance_count": 2305,
+                "source_match_distance_sum_um": 3700.933766424656,
+                "target_match_distance_sum_um": 3711.900531888008,
+                "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                "candidate_node_recall": 0.9860813704496788,
+                "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                "mean_match_distance_um": 1.6097360039766915
+              },
+              "selection_score": 0.9858854673656978
+            },
+            "selected": true
+          },
+          {
+            "epoch": 1,
+            "elapsed_seconds": 336.02816706999965,
+            "train": {
+              "legacy_mask_loss": 0.00037417567576282274,
+              "batch_count": 2811.0,
+              "window_count": 5622.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00027195163386990165,
+              "edge_accuracy": 0.9998131221279317,
+              "positive_edge_recall": 0.9412550066755674,
+              "division_parent_recall": 0.0,
+              "candidate_node_recall": 0.9860813704496788,
+              "window_count": 693,
+              "active_pair_count": 1696295,
+              "positive_edge_count": 2247,
+              "division_parent_count": 3,
+              "teacher": {
+                "candidate_nodes": 447690,
+                "matched_candidate_nodes": 4605,
+                "gt_nodes": 4670,
+                "positive_edges": 2247,
+                "active_pairs": 1696295,
+                "active_pairs_with_unknown_endpoint": 1685876,
+                "division_parents": 3,
+                "source_match_distance_count": 2300,
+                "target_match_distance_count": 2305,
+                "source_match_distance_sum_um": 3700.933766424656,
+                "target_match_distance_sum_um": 3711.900531888008,
+                "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                "candidate_node_recall": 0.9860813704496788,
+                "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                "mean_match_distance_um": 1.6097360039766915
+              },
+              "selection_score": 0.985897093661483
+            },
+            "selected": true
+          },
+          {
+            "epoch": 2,
+            "elapsed_seconds": 335.01511262199983,
+            "train": {
+              "legacy_mask_loss": 0.00032478188673010347,
+              "batch_count": 2811.0,
+              "window_count": 5622.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.0002629230006140654,
+              "edge_accuracy": 0.9998190173289434,
+              "positive_edge_recall": 0.9376947040498442,
+              "division_parent_recall": 0.0,
+              "candidate_node_recall": 0.9860813704496788,
+              "window_count": 693,
+              "active_pair_count": 1696295,
+              "positive_edge_count": 2247,
+              "division_parent_count": 3,
+              "teacher": {
+                "candidate_nodes": 447690,
+                "matched_candidate_nodes": 4605,
+                "gt_nodes": 4670,
+                "positive_edges": 2247,
+                "active_pairs": 1696295,
+                "active_pairs_with_unknown_endpoint": 1685876,
+                "division_parents": 3,
+                "source_match_distance_count": 2300,
+                "target_match_distance_count": 2305,
+                "source_match_distance_sum_um": 3700.933766424656,
+                "target_match_distance_sum_um": 3711.900531888008,
+                "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                "candidate_node_recall": 0.9860813704496788,
+                "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                "mean_match_distance_um": 1.6097360039766915
+              },
+              "selection_score": 0.9859029068093756
+            },
+            "selected": true
+          }
+        ],
+        "best_epoch": 2,
+        "best_internal_selection_score": 0.9859029068093756,
+        "trained_outer_evaluation": {
+          "legacy_mask_loss": 0.0005947073168839077,
+          "edge_accuracy": 0.9997080842458996,
+          "positive_edge_recall": 0.9500836613697252,
+          "division_parent_recall": 0.3611111111111111,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "positive_edge_count": 103393,
+          "division_parent_count": 108,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "selection_score": 0.9654175290871989
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": -3.528699059239006e-05,
+          "edge_accuracy": 0.00040886622971780806,
+          "positive_edge_recall": 0.2188832899712746,
+          "division_parent_recall": 0.25925925925925924,
+          "selection_score": 0.0003948418857881997
+        },
+        "model_params": {
+          "feat_dim": 64,
+          "hidden_dim": 128,
+          "n_heads": 4,
+          "n_blocks": 4,
+          "mlp_ratio": 2.0,
+          "dropout": 0.3,
+          "pair_chunk_size": 32,
+          "n_self_blocks": 2,
+          "use_temporal_self_attention": true,
+          "use_cross_attention": false
+        },
+        "model_file": "models/self_only/fold_0/primary_tracker_best.pth",
+        "model_file_sha256": "a008605685f376df59d73d10b5ffd3861fe8f0ae3d9d6a534a66a72d23373733",
+        "model_state_sha256": "fc3f72dee7d98917c89045d96d953507d2d221fe2a88c08dc0da481dabc2bacd"
+      },
+      {
+        "variant": "self_only",
+        "fold": 1,
+        "train_embryo": "6bba",
+        "evaluation_embryo": "44b6",
+        "sample_counts": {
+          "gradient_update": 116,
+          "internal_validation": 12,
+          "outer_evaluation": 71
+        },
+        "window_counts": {
+          "gradient_update": 11236,
+          "internal_validation": 1156,
+          "outer_evaluation": 6315
+        },
+        "initial_outer_evaluation": {
+          "legacy_mask_loss": 0.0004848063338617305,
+          "edge_accuracy": 0.9993255990755737,
+          "positive_edge_recall": 0.5334318433690433,
+          "division_parent_recall": 0.13636363636363635,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "positive_edge_count": 18949,
+          "division_parent_count": 22,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "selection_score": 0.9740002927309113
+        },
+        "epochs": [
+          {
+            "epoch": 0,
+            "elapsed_seconds": 508.68760992899934,
+            "train": {
+              "legacy_mask_loss": 0.0005770454358508888,
+              "batch_count": 5618.0,
+              "window_count": 11236.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00025632197702700195,
+              "edge_accuracy": 0.999810720941923,
+              "positive_edge_recall": 0.9695045913161773,
+              "division_parent_recall": 0.3333333333333333,
+              "candidate_node_recall": 0.978318631097885,
+              "window_count": 1156,
+              "active_pair_count": 3407667,
+              "positive_edge_count": 8821,
+              "division_parent_count": 9,
+              "teacher": {
+                "candidate_nodes": 440587,
+                "matched_candidate_nodes": 18410,
+                "gt_nodes": 18818,
+                "positive_edges": 8821,
+                "active_pairs": 3407667,
+                "active_pairs_with_unknown_endpoint": 3315274,
+                "division_parents": 9,
+                "source_match_distance_count": 9194,
+                "target_match_distance_count": 9216,
+                "source_match_distance_sum_um": 16270.457616090775,
+                "target_match_distance_sum_um": 16295.073291301727,
+                "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                "candidate_node_recall": 0.978318631097885,
+                "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                "mean_match_distance_um": 1.7689044490707497
+              },
+              "selection_score": 0.9781334558688916
+            },
+            "selected": true
+          },
+          {
+            "epoch": 1,
+            "elapsed_seconds": 511.80961614700027,
+            "train": {
+              "legacy_mask_loss": 0.000415345140342033,
+              "batch_count": 5618.0,
+              "window_count": 11236.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.0002452711067527681,
+              "edge_accuracy": 0.999814535868675,
+              "positive_edge_recall": 0.9702981521369459,
+              "division_parent_recall": 0.2222222222222222,
+              "candidate_node_recall": 0.978318631097885,
+              "window_count": 1156,
+              "active_pair_count": 3407667,
+              "positive_edge_count": 8821,
+              "division_parent_count": 9,
+              "teacher": {
+                "candidate_nodes": 440587,
+                "matched_candidate_nodes": 18410,
+                "gt_nodes": 18818,
+                "positive_edges": 8821,
+                "active_pairs": 3407667,
+                "active_pairs_with_unknown_endpoint": 3315274,
+                "division_parents": 9,
+                "source_match_distance_count": 9194,
+                "target_match_distance_count": 9216,
+                "source_match_distance_sum_um": 16270.457616090775,
+                "target_match_distance_sum_um": 16295.073291301727,
+                "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                "candidate_node_recall": 0.978318631097885,
+                "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                "mean_match_distance_um": 1.7689044490707497
+              },
+              "selection_score": 0.9781371880828094
+            },
+            "selected": true
+          },
+          {
+            "epoch": 2,
+            "elapsed_seconds": 515.5315399970004,
+            "train": {
+              "legacy_mask_loss": 0.0003776676634673068,
+              "batch_count": 5618.0,
+              "window_count": 11236.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.0002279417248173838,
+              "edge_accuracy": 0.9998242199135068,
+              "positive_edge_recall": 0.9685976646638703,
+              "division_parent_recall": 0.3333333333333333,
+              "candidate_node_recall": 0.978318631097885,
+              "window_count": 1156,
+              "active_pair_count": 3407667,
+              "positive_edge_count": 8821,
+              "division_parent_count": 9,
+              "teacher": {
+                "candidate_nodes": 440587,
+                "matched_candidate_nodes": 18410,
+                "gt_nodes": 18818,
+                "positive_edges": 8821,
+                "active_pairs": 3407667,
+                "active_pairs_with_unknown_endpoint": 3315274,
+                "division_parents": 9,
+                "source_match_distance_count": 9194,
+                "target_match_distance_count": 9216,
+                "source_match_distance_sum_um": 16270.457616090775,
+                "target_match_distance_sum_um": 16295.073291301727,
+                "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                "candidate_node_recall": 0.978318631097885,
+                "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                "mean_match_distance_um": 1.7689044490707497
+              },
+              "selection_score": 0.9781466621642927
+            },
+            "selected": true
+          }
+        ],
+        "best_epoch": 2,
+        "best_internal_selection_score": 0.9781466621642927,
+        "trained_outer_evaluation": {
+          "legacy_mask_loss": 0.0002978135749268048,
+          "edge_accuracy": 0.9997515633508354,
+          "positive_edge_recall": 0.9084384400232203,
+          "division_parent_recall": 0.18181818181818182,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "positive_edge_count": 18949,
+          "division_parent_count": 22,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "selection_score": 0.9744154620502818
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": -0.00018699275893492567,
+          "edge_accuracy": 0.0004259642752616477,
+          "positive_edge_recall": 0.375006596654177,
+          "division_parent_recall": 0.04545454545454547,
+          "selection_score": 0.00041516931937057855
+        },
+        "model_params": {
+          "feat_dim": 64,
+          "hidden_dim": 128,
+          "n_heads": 4,
+          "n_blocks": 4,
+          "mlp_ratio": 2.0,
+          "dropout": 0.3,
+          "pair_chunk_size": 32,
+          "n_self_blocks": 2,
+          "use_temporal_self_attention": true,
+          "use_cross_attention": false
+        },
+        "model_file": "models/self_only/fold_1/primary_tracker_best.pth",
+        "model_file_sha256": "8f1b684d502d5ef6a874a6a6037893ef770d127426acc33c731a1b685248516a",
+        "model_state_sha256": "edb3daf4d13912891adab49d9b8a291f26fc1241f00504e360c0b1ab2d9bb9ed"
+      },
+      {
+        "variant": "self_cross",
+        "fold": 0,
+        "train_embryo": "44b6",
+        "evaluation_embryo": "6bba",
+        "sample_counts": {
+          "gradient_update": 64,
+          "internal_validation": 7,
+          "outer_evaluation": 128
+        },
+        "window_counts": {
+          "gradient_update": 5622,
+          "internal_validation": 693,
+          "outer_evaluation": 12392
+        },
+        "initial_outer_evaluation": {
+          "legacy_mask_loss": 0.00040492400107883773,
+          "edge_accuracy": 0.9994678552656993,
+          "positive_edge_recall": 0.8008859400539688,
+          "division_parent_recall": 0.14814814814814814,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "positive_edge_count": 103393,
+          "division_parent_count": 108,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "selection_score": 0.9651855400974778
+        },
+        "epochs": [
+          {
+            "epoch": 0,
+            "elapsed_seconds": 467.8897966630002,
+            "train": {
+              "legacy_mask_loss": 0.0004837867438811528,
+              "batch_count": 2811.0,
+              "window_count": 5622.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00021454563448528057,
+              "edge_accuracy": 0.9998449562133945,
+              "positive_edge_recall": 0.9550511793502447,
+              "division_parent_recall": 0.3333333333333333,
+              "candidate_node_recall": 0.9860813704496788,
+              "window_count": 693,
+              "active_pair_count": 1696295,
+              "positive_edge_count": 2247,
+              "division_parent_count": 3,
+              "teacher": {
+                "candidate_nodes": 447690,
+                "matched_candidate_nodes": 4605,
+                "gt_nodes": 4670,
+                "positive_edges": 2247,
+                "active_pairs": 1696295,
+                "active_pairs_with_unknown_endpoint": 1685876,
+                "division_parents": 3,
+                "source_match_distance_count": 2300,
+                "target_match_distance_count": 2305,
+                "source_match_distance_sum_um": 3700.933766424656,
+                "target_match_distance_sum_um": 3711.900531888008,
+                "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                "candidate_node_recall": 0.9860813704496788,
+                "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                "mean_match_distance_um": 1.6097360039766915
+              },
+              "selection_score": 0.9859284846601032
+            },
+            "selected": true
+          },
+          {
+            "epoch": 1,
+            "elapsed_seconds": 464.2379424139999,
+            "train": {
+              "legacy_mask_loss": 0.00027601935251420973,
+              "batch_count": 2811.0,
+              "window_count": 5622.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.0001688018114313356,
+              "edge_accuracy": 0.9998620522963282,
+              "positive_edge_recall": 0.9554962171784601,
+              "division_parent_recall": 0.3333333333333333,
+              "candidate_node_recall": 0.9860813704496788,
+              "window_count": 693,
+              "active_pair_count": 1696295,
+              "positive_edge_count": 2247,
+              "division_parent_count": 3,
+              "teacher": {
+                "candidate_nodes": 447690,
+                "matched_candidate_nodes": 4605,
+                "gt_nodes": 4670,
+                "positive_edges": 2247,
+                "active_pairs": 1696295,
+                "active_pairs_with_unknown_endpoint": 1685876,
+                "division_parents": 3,
+                "source_match_distance_count": 2300,
+                "target_match_distance_count": 2305,
+                "source_match_distance_sum_um": 3700.933766424656,
+                "target_match_distance_sum_um": 3711.900531888008,
+                "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                "candidate_node_recall": 0.9860813704496788,
+                "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                "mean_match_distance_um": 1.6097360039766915
+              },
+              "selection_score": 0.9859453427889917
+            },
+            "selected": true
+          },
+          {
+            "epoch": 2,
+            "elapsed_seconds": 459.32451073300035,
+            "train": {
+              "legacy_mask_loss": 0.00022793393313094113,
+              "batch_count": 2811.0,
+              "window_count": 5622.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00015369521818399902,
+              "edge_accuracy": 0.9998591046958224,
+              "positive_edge_recall": 0.954161103693814,
+              "division_parent_recall": 0.0,
+              "candidate_node_recall": 0.9860813704496788,
+              "window_count": 693,
+              "active_pair_count": 1696295,
+              "positive_edge_count": 2247,
+              "division_parent_count": 3,
+              "teacher": {
+                "candidate_nodes": 447690,
+                "matched_candidate_nodes": 4605,
+                "gt_nodes": 4670,
+                "positive_edges": 2247,
+                "active_pairs": 1696295,
+                "active_pairs_with_unknown_endpoint": 1685876,
+                "division_parents": 3,
+                "source_match_distance_count": 2300,
+                "target_match_distance_count": 2305,
+                "source_match_distance_sum_um": 3700.933766424656,
+                "target_match_distance_sum_um": 3711.900531888008,
+                "candidate_node_precision_against_sparse_gt": 0.010286135495543792,
+                "candidate_node_recall": 0.9860813704496788,
+                "unknown_endpoint_fraction_of_active_pairs": 0.9938577900659967,
+                "mean_match_distance_um": 1.6097360039766915
+              },
+              "selection_score": 0.9859424362150454
+            },
+            "selected": false
+          }
+        ],
+        "best_epoch": 1,
+        "best_internal_selection_score": 0.9859453427889917,
+        "trained_outer_evaluation": {
+          "legacy_mask_loss": 0.0003454759329107239,
+          "edge_accuracy": 0.9997941973863351,
+          "positive_edge_recall": 0.9659648138655421,
+          "division_parent_recall": 0.49074074074074076,
+          "candidate_node_recall": 0.9656994319651153,
+          "window_count": 12392,
+          "active_pair_count": 42351260,
+          "positive_edge_count": 103393,
+          "division_parent_count": 108,
+          "teacher": {
+            "candidate_nodes": 4795439,
+            "matched_candidate_nodes": 216589,
+            "gt_nodes": 224282,
+            "positive_edges": 103393,
+            "active_pairs": 42351260,
+            "active_pairs_with_unknown_endpoint": 41165763,
+            "division_parents": 108,
+            "source_match_distance_count": 108254,
+            "target_match_distance_count": 108335,
+            "source_match_distance_sum_um": 193977.9303765297,
+            "target_match_distance_sum_um": 194103.75714343786,
+            "candidate_node_precision_against_sparse_gt": 0.0451656250866709,
+            "candidate_node_recall": 0.9656994319651153,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254,
+            "mean_match_distance_um": 1.7917885373678606
+          },
+          "selection_score": 0.9655006884980022
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": -5.944806816811382e-05,
+          "edge_accuracy": 0.00032634212063586965,
+          "positive_edge_recall": 0.16507887381157327,
+          "division_parent_recall": 0.3425925925925926,
+          "selection_score": 0.00031514840052437876
+        },
+        "model_params": {
+          "feat_dim": 64,
+          "hidden_dim": 128,
+          "n_heads": 4,
+          "n_blocks": 4,
+          "mlp_ratio": 2.0,
+          "dropout": 0.3,
+          "pair_chunk_size": 32,
+          "n_self_blocks": 2,
+          "use_temporal_self_attention": true,
+          "use_cross_attention": true
+        },
+        "model_file": "models/self_cross/fold_0/primary_tracker_best.pth",
+        "model_file_sha256": "dea845058b245212468ab63c20a3030dcf77d4401d7fd93386d5eb94d4d7ef60",
+        "model_state_sha256": "c094a6906b2c239857462b98ebb5334832d6ca1bd3b80f28ff1bcf67a0917651"
+      },
+      {
+        "variant": "self_cross",
+        "fold": 1,
+        "train_embryo": "6bba",
+        "evaluation_embryo": "44b6",
+        "sample_counts": {
+          "gradient_update": 116,
+          "internal_validation": 12,
+          "outer_evaluation": 71
+        },
+        "window_counts": {
+          "gradient_update": 11236,
+          "internal_validation": 1156,
+          "outer_evaluation": 6315
+        },
+        "initial_outer_evaluation": {
+          "legacy_mask_loss": 0.00043441242806705724,
+          "edge_accuracy": 0.9993282226365505,
+          "positive_edge_recall": 0.5320069660668109,
+          "division_parent_recall": 0.09090909090909091,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "positive_edge_count": 18949,
+          "division_parent_count": 22,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "selection_score": 0.9740028498045635
+        },
+        "epochs": [
+          {
+            "epoch": 0,
+            "elapsed_seconds": 808.6689770689991,
+            "train": {
+              "legacy_mask_loss": 0.0004168628335651603,
+              "batch_count": 5618.0,
+              "window_count": 11236.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00012028445280916052,
+              "edge_accuracy": 0.999877041976226,
+              "positive_edge_recall": 0.9792540528284776,
+              "division_parent_recall": 0.4444444444444444,
+              "candidate_node_recall": 0.978318631097885,
+              "window_count": 1156,
+              "active_pair_count": 3407667,
+              "positive_edge_count": 8821,
+              "division_parent_count": 9,
+              "teacher": {
+                "candidate_nodes": 440587,
+                "matched_candidate_nodes": 18410,
+                "gt_nodes": 18818,
+                "positive_edges": 8821,
+                "active_pairs": 3407667,
+                "active_pairs_with_unknown_endpoint": 3315274,
+                "division_parents": 9,
+                "source_match_distance_count": 9194,
+                "target_match_distance_count": 9216,
+                "source_match_distance_sum_um": 16270.457616090775,
+                "target_match_distance_sum_um": 16295.073291301727,
+                "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                "candidate_node_recall": 0.978318631097885,
+                "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                "mean_match_distance_um": 1.7689044490707497
+              },
+              "selection_score": 0.9781983389723838
+            },
+            "selected": true
+          },
+          {
+            "epoch": 1,
+            "elapsed_seconds": 800.2025983839994,
+            "train": {
+              "legacy_mask_loss": 0.00027408309674872454,
+              "batch_count": 5618.0,
+              "window_count": 11236.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00012123979957340328,
+              "edge_accuracy": 0.9998796830793619,
+              "positive_edge_recall": 0.9816347352907834,
+              "division_parent_recall": 0.3333333333333333,
+              "candidate_node_recall": 0.978318631097885,
+              "window_count": 1156,
+              "active_pair_count": 3407667,
+              "positive_edge_count": 8821,
+              "division_parent_count": 9,
+              "teacher": {
+                "candidate_nodes": 440587,
+                "matched_candidate_nodes": 18410,
+                "gt_nodes": 18818,
+                "positive_edges": 8821,
+                "active_pairs": 3407667,
+                "active_pairs_with_unknown_endpoint": 3315274,
+                "division_parents": 9,
+                "source_match_distance_count": 9194,
+                "target_match_distance_count": 9216,
+                "source_match_distance_sum_um": 16270.457616090775,
+                "target_match_distance_sum_um": 16295.073291301727,
+                "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                "candidate_node_recall": 0.978318631097885,
+                "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                "mean_match_distance_um": 1.7689044490707497
+              },
+              "selection_score": 0.9782009228127884
+            },
+            "selected": true
+          },
+          {
+            "epoch": 2,
+            "elapsed_seconds": 798.1954541680007,
+            "train": {
+              "legacy_mask_loss": 0.00023883006315738285,
+              "batch_count": 5618.0,
+              "window_count": 11236.0
+            },
+            "internal_validation": {
+              "legacy_mask_loss": 0.00012193929564051166,
+              "edge_accuracy": 0.999878509255746,
+              "positive_edge_recall": 0.9805010769753996,
+              "division_parent_recall": 0.3333333333333333,
+              "candidate_node_recall": 0.978318631097885,
+              "window_count": 1156,
+              "active_pair_count": 3407667,
+              "positive_edge_count": 8821,
+              "division_parent_count": 9,
+              "teacher": {
+                "candidate_nodes": 440587,
+                "matched_candidate_nodes": 18410,
+                "gt_nodes": 18818,
+                "positive_edges": 8821,
+                "active_pairs": 3407667,
+                "active_pairs_with_unknown_endpoint": 3315274,
+                "division_parents": 9,
+                "source_match_distance_count": 9194,
+                "target_match_distance_count": 9216,
+                "source_match_distance_sum_um": 16270.457616090775,
+                "target_match_distance_sum_um": 16295.073291301727,
+                "candidate_node_precision_against_sparse_gt": 0.04178516388363706,
+                "candidate_node_recall": 0.978318631097885,
+                "unknown_endpoint_fraction_of_active_pairs": 0.972886728662161,
+                "mean_match_distance_um": 1.7689044490707497
+              },
+              "selection_score": 0.9781997744392753
+            },
+            "selected": false
+          }
+        ],
+        "best_epoch": 1,
+        "best_internal_selection_score": 0.9782009228127884,
+        "trained_outer_evaluation": {
+          "legacy_mask_loss": 0.00020029230939896638,
+          "edge_accuracy": 0.9998248773047983,
+          "positive_edge_recall": 0.95382342076099,
+          "division_parent_recall": 0.2727272727272727,
+          "candidate_node_recall": 0.9746576027191842,
+          "window_count": 6315,
+          "active_pair_count": 13721808,
+          "positive_edge_count": 18949,
+          "division_parent_count": 22,
+          "teacher": {
+            "candidate_nodes": 4237511,
+            "matched_candidate_nodes": 38998,
+            "gt_nodes": 40012,
+            "positive_edges": 18949,
+            "active_pairs": 13721808,
+            "active_pairs_with_unknown_endpoint": 13623411,
+            "division_parents": 22,
+            "source_match_distance_count": 19510,
+            "target_match_distance_count": 19488,
+            "source_match_distance_sum_um": 30504.49293398857,
+            "target_match_distance_sum_um": 30508.49271094799,
+            "candidate_node_precision_against_sparse_gt": 0.009203043956700054,
+            "candidate_node_recall": 0.9746576027191842,
+            "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499,
+            "mean_match_distance_um": 1.5645157609348315
+          },
+          "selection_score": 0.9744869180528972
+        },
+        "outer_metric_delta": {
+          "legacy_mask_loss": -0.00023412011866809086,
+          "edge_accuracy": 0.0004966546682477757,
+          "positive_edge_recall": 0.42181645469417917,
+          "division_parent_recall": 0.1818181818181818,
+          "selection_score": 0.0004840682483336911
+        },
+        "model_params": {
+          "feat_dim": 64,
+          "hidden_dim": 128,
+          "n_heads": 4,
+          "n_blocks": 4,
+          "mlp_ratio": 2.0,
+          "dropout": 0.3,
+          "pair_chunk_size": 32,
+          "n_self_blocks": 2,
+          "use_temporal_self_attention": true,
+          "use_cross_attention": true
+        },
+        "model_file": "models/self_cross/fold_1/primary_tracker_best.pth",
+        "model_file_sha256": "c22a4a6489bac983d95ca92f38e3138945e74ae7400c1bfee14e8306a98a5cb6",
+        "model_state_sha256": "1c5976293ad78c64e9280772a17961c9247e663d75c8dd337a23fe005638f51d"
+      }
+    ],
+    "model_manifest_sha256": "f9906ac3d747a2905c0a89923c5a6ac54d97e9a045068083c9a0a8bbc4d0f905"
+  },
+  "pair_level": {
+    "comparison": "same_run_retrained_legacy",
+    "source": "training_summary.json folds[].trained_outer_evaluation",
+    "by_embryo": {
+      "6bba": {
+        "legacy": {
+          "outer_window_count": 12392,
+          "active_pair_count": 42351260,
+          "positive_edge_count": 103393,
+          "positive_edge_true_positive_count": 100230,
+          "positive_edge_false_negative_count": 3163,
+          "positive_edge_recall": 0.9694079870010542,
+          "predicted_teacher_negative_pair_count": 4355,
+          "edge_accuracy": 0.9998224846202923,
+          "division_parent_count": 108,
+          "recovered_division_parent_count": 48,
+          "division_parent_recall": 0.4444444444444444,
+          "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254
+        },
+        "self_only": {
+          "outer_window_count": 12392,
+          "active_pair_count": 42351260,
+          "positive_edge_count": 103393,
+          "positive_edge_true_positive_count": 98232,
+          "positive_edge_false_negative_count": 5161,
+          "positive_edge_recall": 0.9500836613697252,
+          "predicted_teacher_negative_pair_count": 7202,
+          "edge_accuracy": 0.9997080842458996,
+          "division_parent_count": 108,
+          "recovered_division_parent_count": 39,
+          "division_parent_recall": 0.3611111111111111,
+          "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254
+        },
+        "self_cross": {
+          "outer_window_count": 12392,
+          "active_pair_count": 42351260,
+          "positive_edge_count": 103393,
+          "positive_edge_true_positive_count": 99874,
+          "positive_edge_false_negative_count": 3519,
+          "positive_edge_recall": 0.9659648138655421,
+          "predicted_teacher_negative_pair_count": 5197,
+          "edge_accuracy": 0.9997941973863351,
+          "division_parent_count": 108,
+          "recovered_division_parent_count": 53,
+          "division_parent_recall": 0.49074074074074076,
+          "unknown_endpoint_fraction_of_active_pairs": 0.9720079874837254
+        }
+      },
+      "44b6": {
+        "legacy": {
+          "outer_window_count": 6315,
+          "active_pair_count": 13721808,
+          "positive_edge_count": 18949,
+          "positive_edge_true_positive_count": 17959,
+          "positive_edge_false_negative_count": 990,
+          "positive_edge_recall": 0.9477544989181487,
+          "predicted_teacher_negative_pair_count": 1341,
+          "edge_accuracy": 0.9998301244267519,
+          "division_parent_count": 22,
+          "recovered_division_parent_count": 6,
+          "division_parent_recall": 0.2727272727272727,
+          "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499
+        },
+        "self_only": {
+          "outer_window_count": 6315,
+          "active_pair_count": 13721808,
+          "positive_edge_count": 18949,
+          "positive_edge_true_positive_count": 17214,
+          "positive_edge_false_negative_count": 1735,
+          "positive_edge_recall": 0.9084384400232203,
+          "predicted_teacher_negative_pair_count": 1674,
+          "edge_accuracy": 0.9997515633508354,
+          "division_parent_count": 22,
+          "recovered_division_parent_count": 4,
+          "division_parent_recall": 0.18181818181818182,
+          "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499
+        },
+        "self_cross": {
+          "outer_window_count": 6315,
+          "active_pair_count": 13721808,
+          "positive_edge_count": 18949,
+          "positive_edge_true_positive_count": 18074,
+          "positive_edge_false_negative_count": 875,
+          "positive_edge_recall": 0.95382342076099,
+          "predicted_teacher_negative_pair_count": 1528,
+          "edge_accuracy": 0.9998248773047983,
+          "division_parent_count": 22,
+          "recovered_division_parent_count": 6,
+          "division_parent_recall": 0.2727272727272727,
+          "unknown_endpoint_fraction_of_active_pairs": 0.9928291519601499
+        }
+      }
+    },
+    "automatic_graph_progression": {
+      "criteria_by_variant_and_embryo": {
+        "self_only": {
+          "44b6": {
+            "positive_recall_at_least_legacy": false,
+            "teacher_negative_predictions_at_most_legacy": false,
+            "division_parent_recovery_at_least_legacy": false
+          },
+          "6bba": {
+            "positive_recall_at_least_legacy": false,
+            "teacher_negative_predictions_at_most_legacy": false,
+            "division_parent_recovery_at_least_legacy": false
+          }
+        },
+        "self_cross": {
+          "44b6": {
+            "positive_recall_at_least_legacy": true,
+            "teacher_negative_predictions_at_most_legacy": false,
+            "division_parent_recovery_at_least_legacy": true
+          },
+          "6bba": {
+            "positive_recall_at_least_legacy": false,
+            "teacher_negative_predictions_at_most_legacy": false,
+            "division_parent_recovery_at_least_legacy": true
+          }
+        }
+      },
+      "allowed": false,
+      "reason": "Both self_only and self_cross exceed same-run legacy predicted teacher-negative pair counts in both embryos."
+    },
+    "official_graph_score_computed": false
+  }
+}

@@ -52,7 +52,7 @@
 - 仮説が正しい場合に期待する観測: 本候補の変更だけで期待する誤りが減り、同じ候補数・学習量・時間など必要な対照を揃えた公式指標へ改善が残ること。改善の判定方針は調査レポートのD3で選ぶ。測定前に改善幅や誤差幅を推定せず、両方向の差と費用を記録する。
 - 仮説を棄却する観測: 注釈の開始/終了を生物学的出現/消失として学習する、solver上で正解構造がそもそも選べない、またはedge改善が分裂悪化を招く。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: 棄権の教師、既存softmaxとの差、費用校正と細胞数の誤差。別候補 [`explicit_no_match`](explicit_no_match.md)、[`graph_cost_scale`](graph_cost_scale.md)、[`image_count_prior`](image_count_prior.md) の検証が残る。
+- 上位仮説の判断に残る検証: 棄権の教師、既存softmaxとの差、費用校正と細胞数の誤差。別候補 [`explicit_no_match`](explicit_no_match.md)、[`image_count_prior`](image_count_prior.md) と、対応実験 [`exp018_graph_cost_scale`](../experiments/exp018_graph_cost_scale/) の検証が残る。
 
 ## 入力・予測対象・出力・推論方法
 

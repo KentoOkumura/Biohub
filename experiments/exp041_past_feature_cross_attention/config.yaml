@@ -1,0 +1,256 @@
+experiment:
+  name: exp041_past_feature_cross_attention
+  description: 固定候補の過去3時点全検出特徴を対象点ごとのcross-attentionで参照し、exp016と比較する
+  route: frozen_feature_past_feature_cross_attention
+  notebooks:
+  - train
+  created_at: '2026-09-23'
+lineage:
+  parent: exp016_frozen_image_encoder
+  hypothesis_id: HYP-20260910-10
+  backlog_candidate: past_feature_cross_attention
+  diff_summary: 対象2時点の特徴を、過去3時点全候補への共有1層cross-attentionで更新する
+validation:
+  strategy: leave_one_embryo_out
+  seed: 42
+  n_folds: 2
+  group_key: embryo_id_from_sample_prefix
+  outer_folds:
+  - fold: 0
+    train_embryo: 44b6
+    evaluation_embryo: 6bba
+    expected_train_sample_count: 64
+    expected_internal_validation_sample_count: 7
+    expected_evaluation_sample_count: 128
+  - fold: 1
+    train_embryo: 6bba
+    evaluation_embryo: 44b6
+    expected_train_sample_count: 116
+    expected_internal_validation_sample_count: 12
+    expected_evaluation_sample_count: 71
+  internal_split_seed: 0
+  internal_selection_fraction: 0.1
+  checkpoint_selection_metric: edge_accuracy_times_candidate_node_recall
+  primary_metric: official_adjusted_edge_jaccard_plus_0.1_division_jaccard
+  train_stage_metrics:
+  - legacy_mask_loss
+  - edge_accuracy
+  - positive_edge_recall
+  - division_parent_recall
+  - candidate_node_recall
+  conditional_validation: 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるため、trackerの外側胚分割を独立CVとは呼ばない
+  graph_progression_gate:
+    threshold: 0.5
+    require_positive_edge_recall_improvement_in_each_embryo: true
+    max_false_positive_active_pair_relative_increase: 0.05
+    require_division_recovered_count_non_decrease: true
+    baseline: exp016_saved_fold_models
+data:
+  source: exp015_train_window_cache_and_competition_geff
+  cache:
+    kernel_source: kentookumura/exp015-oracle-stage-limits-inference
+    summary_file: window_cache_summary.json
+    summary_sha256: 040d1f6437e27149e0e34ad4aac8bba3c8cf63dc266d33df497acd969972194c
+    identity_sha256: 440891c4550adf8540e3c47f9784e68b6ca1b64bbe56dbb93a25eb87c46bc1ee
+    directory: window_cache
+    schema_version: 1
+    expected_dataset_count: 199
+    expected_window_count: 19701
+    feature_channels: 32
+    primary_feature_contract: 8_view_d4_inverse_aligned_mean_at_detected_candidates
+    arrays:
+    - candidate_ids_src
+    - candidate_ids_tgt
+    - coords_src_grid
+    - coords_tgt_grid
+    - coords_src_physical
+    - coords_tgt_physical
+    - position_features_src
+    - position_features_tgt
+    - candidate_mask_src
+    - candidate_mask_tgt
+    - primary_features_src
+    - primary_features_tgt
+  annotation:
+    source: competition_train_geff
+    voxel_scale_zyx_um:
+    - 1.625
+    - 0.40625
+    - 0.40625
+  expected_frames_per_sample: 100
+  expected_embryo_counts:
+    44b6: 71
+    6bba: 128
+model:
+  name: PastFeatureCrossAttentionTracker
+  public_source:
+    dataset_ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+    train_script: repo/scripts/train_unet_transformer.py
+    train_script_sha256: c4f6317736bb3bb1ec8f3f6e9a6d935a463e3f0f1f685481b2d13218d35dc9ea
+    model_source: repo/src/biohub_tracking/models/simple_node_transformer.py
+    model_source_sha256: b97209edeb03840e80d903e3e2a8c81c520641c8ef343f6ca2904d0f80db064e
+    checkpoint: weights/unet_transformer/split_0/edge_predictor_best.pth
+    checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  frozen_components:
+  - primary_TemporalUNet3D
+  - primary_detection_head
+  - secondary_TemporalUNet3D
+  - secondary_SimpleNodeTransformer
+  - DeepCenter
+  - image_normalization_statistics
+  - detector_candidates
+  - decode_and_graph_repair
+  trainable_components:
+  - primary_SimpleNodeTransformer
+  - past_feature_cross_attention_branch
+  params:
+    image_feature_dim: 32
+    position_feature_dim: 32
+    feature_dim: 64
+    hidden_dim: 128
+    n_heads: 4
+    n_blocks: 4
+    dropout: 0.3
+    pair_chunk_size: 32
+    model_coordinate_units: original_voxel_zyx
+    downsample_zyx:
+    - 1
+    - 4
+    - 4
+  teacher:
+    matching: greedy_distance_order_one_to_one
+    max_matching_distance_um: 5.0
+    target: annotated_adjacent_frame_geff_edges
+    unmatched_candidate_label: unknown_but_legacy_mask_can_include_as_negative
+  loss:
+    edge_activation: source_axis_softmax
+    function: focal_weighted_binary_cross_entropy
+    focal_gamma: 2.0
+    mask: pair_touches_source_or_target_with_positive_annotated_edge
+    division_weight: 1.0
+    detection_loss: disabled
+  training:
+    active_variants:
+    - past_feature_cross_attention
+    initialization: public_primary_tracker_checkpoint
+    seed: 42
+    epochs: 3
+    optimizer: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.01
+    batch_size: 2
+    num_workers: 2
+    gradient_clip_norm: 1.0
+    augmentations: []
+    mixed_precision: false
+    benchmark_windows_per_fold: 64
+    benchmark_largest_windows: 1
+    runtime_projection_multiplier: 1.5
+    runtime_gate_hours: 10.0
+    weekly_gpu_budget_hours: 45.0
+  control:
+    source: exp016_frozen_image_encoder_saved_fold_models_and_metrics
+    retrain: false
+    evaluate_same_outer_windows: true
+    kernel_source: kentookumura/exp016-frozen-image-encoder-train
+    manifest_file: model_manifest.json
+    manifest_sha256: 6f9548739ae6f58d3c8beb7ccb78464ddc10243841b1fc7e071ed876f757ea56
+    experiment: exp016_frozen_image_encoder
+    models:
+    - fold: 0
+      evaluation_embryo: 6bba
+      path: models/fold_0/primary_tracker_best.pth
+      file_sha256: c775ddabc2df623b08c39e548bebc887a73e790cc89bd9a9e1cb2c3506eff9d2
+      canonical_state_sha256: b080c8dc374454f0f97403ec1e27388ef9a5a76c4c658b0ccaeb247ab136ab6c
+    - fold: 1
+      evaluation_embryo: 44b6
+      path: models/fold_1/primary_tracker_best.pth
+      file_sha256: ef8b60dc1a34e336942f9abaefdd47606a457e0f569363434619992980d0c5e9
+      canonical_state_sha256: 41b03b82d30e9b22d73df6924a70d56ca2b292bb3c41b2678acb5d33990fb3ea
+  output:
+    model_count: 2
+    model_dir: models
+    model_manifest: model_manifest.json
+    training_summary: training_summary.json
+  inference:
+    implemented: false
+    blocked_by: validation.graph_progression_gate
+    mode: pending_pair_diagnostic
+    official_metric_computed: false
+    active_variants: []
+    retrain_models: 0
+    submission_created: false
+  past_feature_attention:
+    history_frames: 3
+    candidate_scope: all_valid_candidates_in_three_previous_frames
+    source_window_side: src
+    hidden_dim: 128
+    heads: 4
+    head_dim: 32
+    layers: 1
+    position_time_input_dim: 5
+    position_time_mlp_hidden_dim: 32
+    position_scale_um: 5.0
+    time_unit: frame
+    query_chunk_size: 128
+    key_chunk_size: 256
+    gradient_checkpointing: true
+    no_past_option: true
+    no_past_score_initial_value: 0.0
+    output_bias: false
+    output_zero_initialized: true
+    expected_added_parameter_count: 65864
+    attention_dropout: 0.0
+    reverse_history_policy: same_chronological_past_as_forward
+runtime:
+  execution: cached_feature_past_cross_attention_train_and_pair_diagnostic
+  use_amp: false
+  num_workers: 2
+  batch_size: 2
+  kaggle:
+    enable_gpu: true
+    enable_internet: false
+    machine_shape: NvidiaTeslaT4
+    time_limit_hours: 12
+    include_experiment_sources: true
+    dataset_sources:
+    - pilkwang/biohub-tracking-support-pack-50ep-v1
+    train:
+      kernel_id: kentookumura/exp041-past-feature-cross-attention-train
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      kernel_sources:
+      - kentookumura/exp015-oracle-stage-limits-inference
+      - kentookumura/exp016-frozen-image-encoder-train
+      source: exp041_past_feature_cross_attention_train.py
+      notebook: exp041_past_feature_cross_attention_train.ipynb
+reproducibility:
+  deterministic_anchor: false
+  seed: 42
+  seed_policy: fixed_global_seed_plus_fold_offset_and_seeded_dataloader_generator
+  stochastic_components:
+  - dataloader_shuffle
+  - transformer_dropout
+  - cuda_kernels
+  parallel_rng_policy: DataLoader order uses a fold-specific torch.Generator and workers
+    receive deterministic seeds; cache content has no augmentation
+  feature_sha_policy: exp015_sorted_window_cache_identity_and_three_previous_window_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+  notes:
+  - 公開画像encoderと初期trackerの学習来歴にtrain 199動画が含まれるためdeterministic anchorまたは独立CVとは扱わない。
+  - GPUのbitwise一致は主張せず、入力・特徴・model・予測SHAと数値を記録する。
+notes:
+- trainはactive variant 1、外側2fold、各3 epoch、学習model 2、booster 0。
+- 保存済みexp016 fold modelを同じ外側窓で再評価し、controlを再学習しない。
+- 公開検出器・画像特徴抽出器・secondary tracker・候補と教師は固定する。
+- 全graphと公式指標への進行は単体診断条件とユーザー判断に従う。
+- Kaggle submissionは行わない。

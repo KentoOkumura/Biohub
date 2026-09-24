@@ -1,0 +1,63 @@
+{
+  "analysis_sha256": "de5789f2315afb7e9fcecf1c8b4303496f228913a0c1cbdfcf86b69107643b62",
+  "fixed_reserve_seconds": 3600.0,
+  "folds": {
+    "0": {
+      "candidate_seconds": 1187.1837848137661,
+      "control_seconds": 375.43569361186354,
+      "distinct_training_windows": 5517,
+      "population_windows": 5517,
+      "train_seconds": 8871.51335305043,
+      "training_schedule_stratum_windows_per_epoch": {
+        "adjacent:0": 12,
+        "adjacent:1": 17,
+        "adjacent:2": 7,
+        "adjacent:3": 1,
+        "division:0": 25,
+        "division:1": 22,
+        "division:2": 15,
+        "division:3": 19,
+        "two_step:0": 987,
+        "two_step:1": 984,
+        "two_step:2": 1001,
+        "two_step:3": 1006
+      },
+      "validation_seconds": 833.7625920224588,
+      "video_loading_seconds": 491.0914129276964
+    },
+    "1": {
+      "candidate_seconds": 1010.2408089460199,
+      "control_seconds": 230.82342644284944,
+      "distinct_training_windows": 10880,
+      "population_windows": 10880,
+      "train_seconds": 6249.982339296668,
+      "training_schedule_stratum_windows_per_epoch": {
+        "adjacent:1": 1,
+        "adjacent:2": 3,
+        "adjacent:3": 7,
+        "division:0": 29,
+        "division:1": 37,
+        "division:2": 62,
+        "division:3": 75,
+        "two_step:0": 991,
+        "two_step:1": 991,
+        "two_step:2": 957,
+        "two_step:3": 943
+      },
+      "validation_seconds": 1013.1497308680911,
+      "video_loading_seconds": 792.1391666514204
+    }
+  },
+  "method": "density-band upper mean plus 1.5 multiplier and one-hour fixed reserve",
+  "profile_kernel": "kentookumura/exp040-trackastra-association-train",
+  "profile_kernel_version": 2,
+  "profile_sha256": "bff29344da239046b49f22d096b0df49df6989393733354f5fdb1c52f63eaabd",
+  "projected_seconds": 35182.9834629469,
+  "runtime_gate_seconds": 43200,
+  "runtime_multiplier": 1.5,
+  "training_window_manifest_sha256_by_fold": {
+    "0": "5f97befe0a454c28bca39eede8f36710cce4e0198f4b2da78d72cf2e2cee7d65",
+    "1": "96d11bb5b71fddd263efe0250fd94adc54da372066049b3844897c6131c46389"
+  },
+  "windows_per_epoch_per_fold": 4096
+}

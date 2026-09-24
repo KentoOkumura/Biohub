@@ -1,0 +1,186 @@
+# Kaggle Experiment Review
+
+- experiment: exp043_x138_self_trained_head
+- root: /home/kento/work/kaggle/Biohub
+- generated_at: 2026-09-24T17:45:44
+- files: 10
+
+## SUBMISSIONS.md
+- scope: context
+- purpose/hypothesis: MISSING
+- base/changes: MISSING
+- validation: OK
+- results: OK
+- artifacts: OK
+- next action: MISSING
+- headings: 提出履歴
+- score lines:
+  - の`SESSION_NOTES.md`、CV/LBとNotebook実行時間の正は`metrics.json`です。CV/LBは`record-submission`が`metrics.json`から取得します。メモ欄に横断比較用の最終値を置く
+  - | 行数 | 列 | SHA256 | CV | Public LB | Private LB | submission ref | メモ |
+  - 039062114962347aca22f1268a64196893eaabb62c1046ae0c90acbad29f223 | - | 0.453 | - | 56153451 | submission_status=complete; s
+  - 2026-09-13 | exp013_public_notebook_replay | /tmp/kaggle-output/exp013_public_notebook_replay/run2/submission.csv | 241282 | i
+  - 35d3573f6b1a6227c546f17e9247a0c2858fa09b6c2422db3f | - | 0.944 | - | 56199738 | submission_status=complete; scoring_elapse
+  - kentookumura/exp013-public-notebook-replay-inference; kernel_version=2; prediction_elapsed_seconds=546.079577922821 |
+  - 3066559; file_basis=public_test_output |
+
+## backlog/KAGGLE_DIRECTION.md
+- scope: context
+- purpose/hypothesis: OK
+- base/changes: OK
+- validation: OK
+- results: OK
+- artifacts: OK
+- next action: OK
+- headings: Kaggle 方針 | 参照する前提 | 今後の学習方針 | 承認済みの進め方 | 現在の重点 | 現行の比較基準 | アイデアバックログ | 検証中の仮説
+- score lines:
+  - の利用条件・学習来歴は[`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)で選定し、2026-09-12にユーザーが採用した。過去の
+  - 件付きの比較と明記し、独立した交差検証（CV）とは呼ばない。トラッカーだけの分割では画像モデル由来の学習内評価は解消しない。既存の胚を分けた自前予測は補助診断として区別し、教師・設定の選択は学習側内部に限定する。
+  - 開始しなかった。2026-09-13に`public_notebook_replay`の実験化・実装・Kaggle submissionが順に承認され、`exp013_public_notebook_replay`へ移行した。submission re
+  - f `56199738`のPublic LBは`0.944`。既承認実験を新方針の比較対象として使う場合も、実際の学習来歴を示す。
+  - 1. [`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)は、同一Kaggle T4環境の2回実行で公開test全件の候補座標・
+  - sion ref `56199738`でPublic LB `0.944`を得た。ユーザー判断により、後続比較の基準として`usable`に確定した。
+  - 子列だけを損失に含めて再学習したが、公式scoreはexp016の0.912055から0.908982へ低下し、ユーザー判断で不採用となった。固定候補・固定復号での比較基準はexp016を維持する。
+  - 5. CV/LBの整合はまだ判定できない。自前routeではexp006の条件付きCV 0.5533789422、exp009のPublic LB 0.693、公開routeではexp013のPublic LB 0.
+
+## docs/surveys/README.md
+- scope: context
+- purpose/hypothesis: OK
+- base/changes: OK
+- validation: OK
+- results: OK
+- artifacts: OK
+- next action: OK
+- headings: 調査レポート | 保存ルール | レポートの状態 | 作成・完了手順 | レポート一覧 | 上位仮説別 | 実験番号別 | 種類別
+- score lines:
+  - 来0.946構成の差分](biohub-public-0953-differences_20260923.md) | `survey` | `HYP-20260910-12` | `exp013`, `exp016` | `public-noteboo
+  - ` | - | 公開x138のBest Public Scoreは0.953。既存3重みに加えて学習済み座標補正モデルを使い、トラッカー入力も変更する。近傍移動量による再接続・検出点の再追加・欠落補完も追加。Geometric Fusionは0.948
+  - 公開投稿の確認](biohub-gnn-public-evidence_20260915.md) | `survey` | - | `exp015`, `exp016` | `tracking`, `gnn`, `public-notebooks` |
+  - ell Tracking: 0.946 LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md) | `survey` | `HYP-20260910
+  - -12` | `exp011` | `public-notebooks`, `baseline`, `architecture` | `final` | - | 採用した公開0.946 Notebookについて、入力、2つのTemporalUNet3
+  - 検出器・トラッカー選定](biohub-public-detector-selection_20260912.md) | `survey` | `HYP-20260910-12` | `exp011` | `public-notebooks`, `ba
+  - 新公開ベースライン調査](biohub-public-baselines_20260910.md) | `survey` | - | `exp001`, `exp002` | `public-notebooks`, `baseline`, `valid
+  - lidation`, `data`, `public-notebooks` | `final` | - | 入力metadata、主催者baseline、vote順上位15公開Notebookを確認し、暫定5-foldを撤回してvalidatorとme
+
+## experiment_summary.md
+- scope: context
+- purpose/hypothesis: MISSING
+- base/changes: OK
+- validation: OK
+- results: OK
+- artifacts: OK
+- next action: MISSING
+- headings: 実験サマリー | 実験比較
+- score lines:
+  - 実験 | ルート | 親 | 状態 | CV | Public LB | Private LB | 更新日 |
+  - | exp011_public_detector_selection | public_detector_selection | N/A | 利用可 | - | - | - | 2026-09-12 |
+  - diagnostic | exp011_public_detector_selection | 完了 | - | - | - | 2026-09-12 |
+  - | exp013_public_notebook_replay | public_notebook_replay | exp011_public_detector_selection | 利用可 | - | 0.944 | - |
+  - xact_window_cache | public_notebook_replay | exp013_public_notebook_replay | 利用可 | - | - | - | 2026-09-13 |
+  - ry_tracker | exp011_public_detector_selection | 完了 | - | - | - | 2026-09-18 |
+  - | exp036_detection_score_pair_features | detection_score_pair_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-
+  - | exp042_public_x138_replay | public_x138_replay | exp013_public_notebook_replay | 雛形完了 | - | - | - | 2026-09-23 |
+
+## experiments/exp043_x138_self_trained_head/README.md
+- scope: target evidence
+- purpose/hypothesis: OK
+- base/changes: OK
+- validation: MISSING
+- results: OK
+- artifacts: OK
+- next action: OK
+- headings: exp043_x138_self_trained_head | 概要 | 正の記録 | 実行入口 | 表記
+
+## experiments/exp043_x138_self_trained_head/SESSION_NOTES.md
+- scope: target evidence
+- purpose/hypothesis: OK
+- base/changes: OK
+- validation: OK
+- results: OK
+- artifacts: OK
+- next action: OK
+- headings: exp043_x138_self_trained_head セッションノート | 目的 | 2026-09-24 実装と実行 | 初回実行時の予定（履歴） | 2026-09-24 学習Notebookの失敗対応 | 2026-09-24 コンペ提出と採点監視 | 2026-09-24 採用判断と比較指標の監査 | 2026-09-24 トラッカー学習評価との区別
+- score lines:
+  - 正前後の中心誤差を比べて、同じ推論構成のpublic testへ組み込む。
+  - ain --run-on-push"`でprivate Kaggle packageを生成した。metadataはGPU true、TPU false、T4、internet false、公開3 datasetとcompetition trainを入力と
+  - 09:00 JST。公開x138の4 public動画は作者実行約20分だが、こちらの20 train動画のcapture時間は未測定。2動画の予備確認で全体見込みを計算し、capture 3時間を超える見込みなら残りを開始しない。train 3時間
+  - 上限とpublic test推論約20分、setup・学習の余裕を含めて残り枠内で開始する判断。
+  - 20動画・両胚の評価、head SHA、public test推論を記録する。
+  - _self_trained_head`でprivate kernel version 1をpushし、実行を開始した。kernel idは`kentookumura/exp043-x138-self-trained-head-train`。
+  - 成物取得・照合前の速報として記録し、公式scoreとは扱わない。
+  - okが自前headをx138へ組み込んだpublic test 4動画の推論へ進んだ。competition submissionはしていない。
+
+## experiments/exp043_x138_self_trained_head/config.yaml
+- scope: target evidence
+- purpose/hypothesis: OK
+- base/changes: OK
+- validation: OK
+- results: OK
+- artifacts: OK
+- next action: MISSING
+- score lines:
+  - route: public_x138_self_trained_coordinate_head
+  - parent: exp042_public_x138_replay
+  - public_artifacts:
+  - conditional_on_public_image_model_training: true
+  - aluate_full_x138_on_public_test: true
+  - public_test_has_no_labels: true
+  - 追加checkpointは未取得。作者のscoreや重みの再現を主張しない。"
+
+## experiments/exp043_x138_self_trained_head/metrics.json
+- scope: target evidence
+- purpose/hypothesis: MISSING
+- base/changes: OK
+- validation: OK
+- results: OK
+- artifacts: OK
+- next action: MISSING
+- score lines:
+  - "cv": null,
+  - "public_lb": 0.95,
+  - "private_lb": null,
+  - ped, conditional on public image model)",
+  - "public_test_rows": 225875
+  - "fallback_rows": null,
+  - "cv_delta": null,
+  - ional on pretrained public image models",
+
+## experiments/exp043_x138_self_trained_head/requirements.md
+- scope: target evidence
+- purpose/hypothesis: OK
+- base/changes: OK
+- validation: OK
+- results: OK
+- artifacts: OK
+- next action: OK
+- headings: exp043_x138_self_trained_head 要件と実装方法 | 実験化の入口・引き継ぎ・承認 | 手法契約 | 実装方法 | 成功条件と停止条件 | 受け入れ基準 | 判断履歴 | 探索幅とpivot判定
+- score lines:
+  - は[exp042](../exp042_public_x138_replay/requirements.md)。対応する上位仮説は `HYP-20260910-02` の「中心位置を画像と接続情報で補正する」うち、固定画像特徴による中心位置補正だけ。
+  - ./../studies/biohub_public_notebooks_20260923/x138_v1284_coordinate_refinement.py)、主催者のtrain ZarrとGEFF。作者の重み本体・学習コード・正確な学習分割・l
+  - train集合で学習済みなので、独立したCVとは呼ばず固定公開モデル下の条件付き比較とする。
+  - - 最終headをprivate Kaggle Dataset `kentookumura/exp043-self-trained-coordinate-head`へ置き、別の推論Notebookが実ファイルのSHAを検査してからx
+  - 138のpublic test 4動画へ組み込む。公開構成の後処理まで実行し、`submission.csv`の形式・行数・SHAを記録する。これは提出ではなく、公開testは正解がないため公式scoreも計測しない。
+  - pointとmanifest、x138 public test推論の出力検査が揃うこと。精度向上と公式scoreは観測前に仮定しない。
+  - ] 最終headを組み込んだx138 public test推論が完走し、出力形式とSHAを記録する。
+  - - [ ] 公式scoreと採否・完了はユーザー判断または明示承認まで未確定とする。
+
+## experiments/exp043_x138_self_trained_head/result.md
+- scope: target evidence
+- purpose/hypothesis: OK
+- base/changes: MISSING
+- validation: OK
+- results: OK
+- artifacts: OK
+- next action: OK
+- headings: exp043_x138_self_trained_head 結果 | 仮説 | 記録の参照先 | 実行証拠 | 解釈 | 今後の実験との比較 | ユーザー判断 | 次
+- score lines:
+  - ts.model_shas`を正とする。private Kaggle Dataset `kentookumura/exp043-self-trained-coordinate-head`からSHAを検査して読み込んだ推論Notebook version
+  - 8119`は`COMPLETE`となり、Public LBは0.950、Private LBは未表示。提出履歴は[SUBMISSIONS.md](../../SUBMISSIONS.md)を参照する。
+  - 提出ref `56508119`のPublic LB 0.950は、過去の[exp013](../exp013_public_notebook_replay/result.md)の0.944より0.006高い。ただし推論構成全体が異なり、自前he
+  - ため中心距離の平均だけで優劣を決めない。Public LB 0.950は推論全体の比較指標であり、head単体の効果を示すものではない。
+  - 、接続・分裂の動画別指標、採点時の動画別scoreは未取得である。これらを使う将来の比較には、同じ入力条件で新たに保存・評価する必要がある。
+  - 採用と完了を明示した。条件付き中心誤差とPublic LB 0.950を確認した。Private LBとhead単独の寄与は未確認のまま残す。
+
+## Summary
+- Core evidence categories are present in target experiment records.
+- Context and supporting material do not satisfy target evidence checks.
+

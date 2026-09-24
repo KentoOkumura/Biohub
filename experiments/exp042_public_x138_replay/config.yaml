@@ -1,0 +1,117 @@
+experiment:
+  name: exp042_public_x138_replay
+  description: "公開biohub x138 V1を追加座標補正重みまで固定して2回再実行する"
+  route: public_x138_replay
+  created_at: "2026-09-23"
+  notebooks:
+    - inference
+
+lineage:
+  parent: exp013_public_notebook_replay
+  hypothesis_id: HYP-20260910-12
+  backlog_candidate: public_x138_replay
+  diff_summary: "旧公開構成をx138 V1全体へ変更し、追加座標補正重み・補正座標・graph・提出ファイルを照合する"
+
+validation:
+  method: public_test_full_replay
+  repeats: 2
+  require_byte_identical_submission: true
+  require_identical_candidate_coordinates: true
+  require_identical_graph_topology: true
+
+data:
+  test_source: competition_runtime
+  enumerate_test_datasets: sorted_dynamic
+  canonical_artifacts:
+    - ref: pilkwang/biohub-tracking-support-pack-50ep-v1
+      version: 10
+      manifest_sha256: bc20f1f04cfb682af3b27a836ce9a57f44a2fe27508dc59039200b2a23188103
+    - ref: pilkwang/biohub-temporal-unet3d-seed314159-v1
+      version: 2
+      manifest_sha256: 7f01c0b2f9491606a1b543339e072230e25317d9c70fb9a18aea59e002a995eb
+    - ref: pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      version: 5
+      manifest_sha256: 3bfe97304e9bbc3b3481a095392a1e83937315325bac8b987eb527d2951b96f3
+  v1284_head:
+    filename: biohub-v1284-head-s075/v1284_head.pt
+    dataset_ref: anvithpothula/biohub-v1284-head-s075
+    dataset_id: 12103746
+    version_id: 19822532
+    sha256: null
+
+model:
+  name: public_x138_v1_bundle
+  checkpoint_sha256:
+    primary: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+    secondary: 9bac2fa0dadc4a6fc1899e0caf187f4b553e0a7cd90ba1261a68b35ffe9e305f
+    deepcenter: 8040999a92f6b7bbd98fa8cf458141e045c0f9ad7c936bdb3b18e1f7edafe2a0
+  params:
+    change_prediction_parameters: false
+    v1284_mode: candidate
+
+source:
+  reference_kernel: anvithpothula/biohub-x138
+  reference_kernel_id_no: 135218473
+  reference_notebook_sha256: 6b655e39bbfd2d3d6c762badea69847d3f00f5b548f385cb01b07ee2600fde6d
+  preserved_at: assets/reference_notebook/biohub-x138.ipynb
+  support_source_manifest_sha256: 978b626d1fd1e7397435a437dfe68691defe1572fc3c20e61012d7c9b52ed029
+  allowed_changes:
+    - canonical_dataset_paths
+    - v1284_weight_guard
+    - replay_input_manifest
+    - replay_output_receipt
+    - diagnostic_coordinate_hashes
+    - notebook_cell_structure
+
+runtime:
+  execution: kaggle_public_test_full_inference_replay
+  kaggle_notebook_run: true
+  use_amp: true
+  num_workers: 2
+  batch_size: null
+  kaggle:
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+        - anvithpothula/biohub-v1284-head-s075
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: no_explicit_random_sampling
+  stochastic_components:
+    - cuda_kernels_not_forced_deterministic
+    - scip_solver_implementation
+    - two_process_gpu_sharding
+  parallel_rng_policy: no_explicit_rng_sorted_dataset_shards
+  feature_sha_policy: raw_float32_pre_and_post_refinement_coordinates
+  compare:
+    repeats: 2
+    require_same:
+      - source_manifest
+      - input_manifest
+      - wheel_manifest
+      - v1284_head_sha256
+      - pre_refinement_coordinates
+      - post_refinement_coordinates
+      - graph_topology
+      - deterministic_run_statistics
+      - submission
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: true
+    submission_sha: true
+
+notes:
+  - "追加checkpointのdataset ref・version IDは公開Notebook実行メタデータで確認。Kaggle APIが403を返すためfile SHA未取得。アクセスとSHAを確認するまでpushしない。"
+  - "公開testの2回一致だけではhidden test費用やPublic LBを証明しない。submissionは別途承認が必要。"

@@ -1,0 +1,302 @@
+{
+  "root": "/home/kento/work/kaggle/Biohub",
+  "files": [
+    {
+      "path": "backlog/KAGGLE_DIRECTION.md",
+      "bytes": 49823,
+      "headings": [
+        "Kaggle 方針",
+        "参照する前提",
+        "今後の学習方針",
+        "承認済みの進め方",
+        "現在の重点",
+        "現行の比較基準",
+        "アイデアバックログ",
+        "検証中の仮説",
+        "未着手バックログ"
+      ],
+      "score_lines": [
+        "CV）とは呼ばない。トラッカーだけの分割では画像モデル由来の学習内評価は解消しない。既存の胚を分けた自前予測は補助診断として区別し、教師・設定の選択は学習側内部に限",
+        "LB `0.944`を得た。ユーザー判断により、後続比較の基準として`usable`に確定した。",
+        "CV/LBの整合はまだ判定できない。自前routeではexp006の条件付きCV 0.5533789422、exp009のPublic LB 0.693、公開rou",
+        "LB 0.944だが、同じ評価分割を共有していない。exp004のCUDA OOM、exp002の11時間gate、exp010の再実行CV 0.498124895",
+        "Public LB `0.944`を確認した。現行の自前提出ベスト`0.693`より`0.251`高いが、CVはなく、公開重みの学習来歴とleaderboard feedb",
+        "public-baselines_20260910.md)、[候補の先行調査](../docs/surveys/biohub-backlog-readiness_20260",
+        "LB `0.944`を確認した。"
+      ]
+    },
+    {
+      "path": "experiment_summary.md",
+      "bytes": 6784,
+      "headings": [
+        "実験サマリー",
+        "実験比較"
+      ],
+      "score_lines": [
+        "CV | Public LB | Private LB | 更新日 |"
+      ]
+    },
+    {
+      "path": "SUBMISSIONS.md",
+      "bytes": 2955,
+      "headings": [
+        "提出履歴"
+      ],
+      "score_lines": [
+        "CV/LBとNotebook実行時間の正は`metrics.json`です。CV/LBは`record-submission`が`metrics.json`から取得",
+        "CV | Public LB | Private LB | submission ref | メモ |",
+        "public-notebook-replay-inference; kernel_version=2; prediction_elapsed_seconds=546.079"
+      ]
+    },
+    {
+      "path": "docs/surveys/README.md",
+      "bytes": 26240,
+      "headings": [
+        "調査レポート",
+        "保存ルール",
+        "レポートの状態",
+        "作成・完了手順",
+        "レポート一覧",
+        "上位仮説別",
+        "実験番号別",
+        "種類別",
+        "トピック別"
+      ],
+      "score_lines": [
+        "public-0953-differences_20260923.md) | `survey` | `HYP-20260910-12` | `exp013`, `exp01",
+        "public-notebooks`, `tracking`, `validation` | `final` | - | 公開x138のBest Public Scoreは0",
+        "public-evidence_20260915.md) | `survey` | - | `exp015`, `exp016` | `tracking`, `gnn`,",
+        "public-notebooks` | `final` | - | GNNは固定検出候補の接続学習に適合するが、コンペでの優位性は未実証。公開Discussion、GNN表",
+        "LB Notebook 解説](biohub-cell-tracking-0946-notebook-explanation_20260913.md) | `sur",
+        "public-notebooks`, `baseline`, `architecture` | `final` | - | 採用した公開0.946 Notebookについて",
+        "public-detector-selection_20260912.md) | `survey` | `HYP-20260910-12` | `exp011` | `pu",
+        "accuracy-hypotheses_20260910.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-02`, `HYP",
+        "public-baselines_20260910.md) | `survey` | - | `exp001`, `exp002` | `public-notebooks`",
+        "public-notebooks` | `final` | - | 入力metadata、主催者baseline、vote順上位15公開Notebookを確認し、暫定5-f",
+        "accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness",
+        "accuracy-hypotheses_20260910.md)<br>[Biohub 64候補の未決事項調査とユーザー判断](biohub-backlog-readiness"
+      ]
+    },
+    {
+      "path": "backlog/division_triplets.md",
+      "bytes": 31732,
+      "headings": [
+        "division_triplets",
+        "2026-09-20の構成案と合成教師の接続結果",
+        "2026-09-19の候補・教師診断",
+        "2026-09-19の教師根拠調査",
+        "2026-09-19の追加教師診断",
+        "2026-09-19の追加教師の公開資料調査",
+        "2026-09-12の方針反映",
+        "2026-09-10の未決事項調査",
+        "観測事実と根拠",
+        "この候補が直接検証する仮説と範囲",
+        "入力・予測対象・出力・推論方法",
+        "親実験からの差分"
+      ],
+      "score_lines": [
+        "accuracy-hypotheses_20260910.md)のI03、検証候補10（同節の1項目目）。",
+        "accuracy-hypotheses_20260910.md#e01): 公開0.94前後の推論構成、proxyの相違、FOCUSと局所化のdiscussion。スコアはペー",
+        "accuracy-hypotheses_20260910.md#e02): 133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotat",
+        "accuracy-hypotheses_20260910.md#e05): 9月10日参照の公式評価。局所分裂構造と一対一対応。",
+        "score。成分の接続・分裂指標、胚別結果、実行失敗と有効件数を併記する。",
+        "accuracy-hypotheses_20260910.md#採らない前提と再検討条件)も参照する。"
+      ]
+    },
+    {
+      "path": "backlog/shared_edge_graph_learning.md",
+      "bytes": 16011,
+      "headings": [
+        "shared_edge_graph_learning",
+        "観測事実と根拠",
+        "この候補が直接検証する仮説と範囲",
+        "入力・予測対象・出力・推論方法",
+        "親実験からの差分",
+        "最小の反証可能な検証",
+        "成功条件と停止条件",
+        "実行しないこと",
+        "リスク",
+        "調査・実行時に確認する事項",
+        "未決事項",
+        "判断履歴"
+      ],
+      "score_lines": []
+    },
+    {
+      "path": "backlog/sparse_motion_graph.md",
+      "bytes": 19298,
+      "headings": [
+        "sparse_motion_graph",
+        "2026-09-12の方針反映",
+        "2026-09-10の未決事項調査",
+        "観測事実と根拠",
+        "この候補が直接検証する仮説と範囲",
+        "入力・予測対象・出力・推論方法",
+        "親実験からの差分",
+        "最小の反証可能な検証",
+        "成功条件と停止条件",
+        "実行しないこと",
+        "リスク",
+        "調査・実行時に確認する事項"
+      ],
+      "score_lines": [
+        "LB 0.944を再現した固定公開検出器・既存トラッカーを主対照とする。後続の学習比較は同じ固定検出器下のトラッカー同士で行う。exp002の設定は構成の参考に限り",
+        "accuracy-hypotheses_20260910.md)のI12、検証候補53（同節の2項目目）。",
+        "accuracy-hypotheses_20260910.md#e03): compute_loss55行、compute_detection_loss528行、detect_",
+        "accuracy-hypotheses_20260910.md#e04): 診断用sample holdout、3epochs、batch16、T4x2、allocator変更",
+        "public testのcache等価性と読込費用は[exp014](../experiments/exp014_exact_window_cache/)で確認済み。[ex",
+        "score。成分の接続・分裂指標、胚別結果、実行失敗と有効件数を併記する。",
+        "accuracy-hypotheses_20260910.md#採らない前提と再検討条件)も参照する。"
+      ]
+    },
+    {
+      "path": "backlog/contrastive_feature_audit.md",
+      "bytes": 14024,
+      "headings": [
+        "contrastive_feature_audit",
+        "観測事実と根拠",
+        "この候補が直接検証する仮説と範囲",
+        "入力・予測対象・出力・推論方法",
+        "親実験からの差分",
+        "最小の反証可能な検証",
+        "成功条件と停止条件",
+        "実行しないこと",
+        "リスク",
+        "調査・実行時に確認する事項",
+        "未決事項",
+        "判断履歴"
+      ],
+      "score_lines": []
+    },
+    {
+      "path": "backlog/contrastive_parent_child.md",
+      "bytes": 14588,
+      "headings": [
+        "contrastive_parent_child",
+        "観測事実と根拠",
+        "この候補が直接検証する仮説と範囲",
+        "入力・予測対象・出力・推論方法",
+        "親実験からの差分",
+        "最小の反証可能な検証",
+        "成功条件と停止条件",
+        "実行しないこと",
+        "リスク",
+        "調査・実行時に確認する事項",
+        "未決事項",
+        "判断履歴"
+      ],
+      "score_lines": [
+        "score。親候補順位は先行診断とし、接続・分裂成分と両胚を併記する。"
+      ]
+    },
+    {
+      "path": "backlog/position_history_tracker.md",
+      "bytes": 19641,
+      "headings": [
+        "position_history_tracker",
+        "観測事実と根拠",
+        "exp027の結果から引き継ぐこと（2026-09-20）",
+        "観測事実と解釈の範囲",
+        "次の設計・診断へ反映する条件",
+        "この候補が直接検証する仮説と範囲",
+        "入力・予測対象・出力・推論方法",
+        "親実験からの差分",
+        "最小の反証可能な検証",
+        "成功条件と停止条件",
+        "実行しないこと",
+        "リスク"
+      ],
+      "score_lines": [
+        "score。adjusted edge Jaccard、division Jaccard、両胚別・履歴条件別の結果も示す。"
+      ]
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/SESSION_NOTES.md",
+      "bytes": 13936,
+      "headings": [
+        "exp043_x138_self_trained_head セッションノート",
+        "目的",
+        "2026-09-24 実装と実行",
+        "初回実行時の予定（履歴）",
+        "2026-09-24 学習Notebookの失敗対応",
+        "2026-09-24 コンペ提出と採点監視",
+        "2026-09-24 採用判断と比較指標の監査",
+        "2026-09-24 トラッカー学習評価との区別",
+        "2026-09-24 完了判断"
+      ],
+      "score_lines": [
+        "public test推論を記録する。",
+        "private head DatasetのKaggle側metadataを`kaggle kernels pull -m`で確認した。実行時head SHAはtrain ve",
+        "Public LB `0.950`、Private LB未表示と確認した。最終pollは2026-09-24 07:44:18 UTC（16:44:18 JST）、直前の0",
+        "Public LB、動画選択と分割規則、checkpoint・OOF内容・公開test CSVのSHA。点ごとのOOF予測値は保存されておらず、SHAだけがある。誤差分布、",
+        "Public LB 0.950は推論全体の値で、従来のトラッカー学習評価の代わりにはならない。"
+      ]
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/metrics.json",
+      "bytes": 14381,
+      "headings": [],
+      "score_lines": [
+        "cv\": null,",
+        "public image model)\",",
+        "public image models\",",
+        "Public LB 0.950; conditional center-distance evaluation uses 20 train videos and 10894"
+      ]
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/result.md",
+      "bytes": 6864,
+      "headings": [
+        "exp043_x138_self_trained_head 結果",
+        "仮説",
+        "記録の参照先",
+        "実行証拠",
+        "解釈",
+        "今後の実験との比較",
+        "ユーザー判断",
+        "次"
+      ],
+      "score_lines": [
+        "private Kaggle Dataset `kentookumura/exp043-self-trained-coordinate-head`からSHAを検査して読み込ん",
+        "Public LBは0.950、Private LBは未表示。提出履歴は[SUBMISSIONS.md](../../SUBMISSIONS.md)を参照する。",
+        "LB 0.950は、過去の[exp013](../exp013_public_notebook_replay/result.md)の0.944より0.006高い。た",
+        "Public LB 0.950は推論全体の比較指標であり、head単体の効果を示すものではない。",
+        "LB 0.950を確認した。Private LBとhead単独の寄与は未確認のまま残す。"
+      ]
+    },
+    {
+      "path": "experiments/exp042_public_x138_replay/SESSION_NOTES.md",
+      "bytes": 3489,
+      "headings": [
+        "exp042_public_x138_replay セッションノート",
+        "目的",
+        "2026-09-23 実装",
+        "次のアクション"
+      ],
+      "score_lines": []
+    },
+    {
+      "path": "experiments/exp042_public_x138_replay/metrics.json",
+      "bytes": 2058,
+      "headings": [],
+      "score_lines": [
+        "cv\": null,"
+      ]
+    },
+    {
+      "path": "experiments/exp042_public_x138_replay/result.md",
+      "bytes": 1452,
+      "headings": [
+        "exp042_public_x138_replay 結果",
+        "仮説",
+        "実行証拠",
+        "解釈",
+        "ユーザー判断",
+        "次"
+      ],
+      "score_lines": [
+        "Public LBを示さない。CVもない。"
+      ]
+    }
+  ]
+}

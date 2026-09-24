@@ -6,7 +6,7 @@
 - 対応する上位仮説: `HYP-20260910-02`
 - 関連する上位仮説: なし。依存は先行検証の条件であり、主仮説を複数にしない。
 - 作成日: 2026-09-10
-- 最終更新日: 2026-09-12
+- 最終更新日: 2026-09-24
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: 画像中心と注釈位置を分けるの成立条件と反証可能な一変更の比較を具体化する。
 - 親実験 / 比較対象: [exp002の設定](../experiments/exp002_unet3d_expandable_segments/config.yaml)と[requirements](../experiments/exp002_unet3d_expandable_segments/requirements.md)を構成の参照先とする。sample holdoutは診断用であり主評価へ流用しない。構成の参照版は確定。主評価には学習から除いた胚の新しい予測が必要であり、現在の両胚を使う重みを独立予測の代用にはしない。
@@ -51,7 +51,7 @@
 - 仮説が正しい場合に期待する観測: 本候補の変更だけで期待する誤りが減り、同じ候補数・学習量・時間など必要な対照を揃えた公式指標へ改善が残ること。改善の判定方針は調査レポートのD3で選ぶ。測定前に改善幅や誤差幅を推定せず、両方向の差と費用を記録する。
 - 仮説を棄却する観測: 位置誤差だけ減って対応が悪化する、別細胞間の平均が増える、または正解位置を与えてもedge改善余地がない。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: 位置誤差が接続を制限する度合い、分布の校正、近接細胞の混同。別候補 [`subvoxel_offset`](subvoxel_offset.md)、[`anisotropic_position`](anisotropic_position.md)、[`joint_position_edges`](joint_position_edges.md)、[`match_radius_point`](match_radius_point.md) の検証が残る。
+- 上位仮説の判断に残る検証: 位置誤差が接続を制限する度合い、分布の校正、近接細胞の混同。別候補 [`subvoxel_offset`](x138_coordinate_effect_audit.md#旧座標補正候補からの引き継ぎ)、[`anisotropic_position`](anisotropic_position.md)、[`joint_position_edges`](joint_position_edges.md)、[`match_radius_point`](match_radius_point.md) の検証が残る。
 
 ## 入力・予測対象・出力・推論方法
 

@@ -1,0 +1,6 @@
+extend = "../../pyproject.toml"
+extend-exclude = [
+    "assets",
+    # Exact public-notebook derivative; semantic fidelity is tested separately.
+    "exp042_public_x138_replay_inference.py",
+]

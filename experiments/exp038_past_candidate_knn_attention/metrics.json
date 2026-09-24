@@ -1,0 +1,128 @@
+{
+  "experiment": "exp038_past_candidate_knn_attention",
+  "status": "failed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp038-past-candidate-knn-attention-train",
+      "kernel_version": 2,
+      "url": null,
+      "kernel_source_ids": [],
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": 876.503134556,
+      "internet_enabled": false,
+      "kernel_url": "https://www.kaggle.com/code/kentookumura/exp038-past-candidate-knn-attention-train",
+      "allocated_gpu_count": 2,
+      "runtime_budget_limit_seconds": 23454,
+      "gpu_quota_remaining_hours_at_push": 13.03,
+      "weekly_gpu_limit_hours_for_this_run": 45,
+      "last_observed_stage": "Input cache and source integrity",
+      "last_observed_at": "2026-09-23T00:18:33Z",
+      "gpu_quota_used_hours_latest": 40.52,
+      "gpu_quota_remaining_hours_latest": 4.48,
+      "quota_checked_at": "2026-09-23T13:26:20Z"
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": null,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": null,
+      "model_shas": {},
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null,
+      "candidate_inventory_sha": "250ddfb067e5579bce5a958d8c2691744761c30905518fa269e22b5054ed0e6e",
+      "candidate_retention_sha": "a1cf2aad69441d1be49224b86b5d23079dbf9202d2c909c333bc8dcc7176d414",
+      "runtime_benchmark_sha": "547e9d7f3e2bbb3d8945d07452b40df0b9d1255e23c3567df24af36295dd9544",
+      "kaggle_v2_metrics_sha": "32d6a456347010c120bedd07dc253aa8506de4831d38f9fd85be284273c042e7"
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [
+      {
+        "kernel_version": 1,
+        "execution_status": "failed",
+        "stage": "Setup and configuration",
+        "error_type": "KeyError",
+        "error_message": "'past_candidate_knn_attention'",
+        "notebook_runtime_seconds": 22.532932430000017,
+        "metrics_file": "artifacts/kaggle_v1/metrics.json",
+        "metrics_sha256": "91358b53f7afbd44ba8478feacd5fb17d57f4ce69112724dbedd820e99f7ecef"
+      }
+    ],
+    "local_validation": {
+      "experiment_tests_passed": 23,
+      "strategy_tests_passed": 25,
+      "torch_tests_skipped": 0
+    },
+    "failure": {
+      "stage": "Stratified runtime and stress benchmark",
+      "type": "RuntimeError",
+      "message": "runtime or memory gate failed before full two-fold training",
+      "reason": "conservative runtime projection exceeds remaining weekly GPU budget divided by two allocated GPUs"
+    },
+    "candidate_retention": {
+      "passed": true,
+      "folds": {
+        "0": {
+          "matched_edges": 16554,
+          "retained_edges": 16552,
+          "conditional_retention": 0.9998791832789659,
+          "passed": true
+        },
+        "1": {
+          "matched_edges": 93681,
+          "retained_edges": 93628,
+          "conditional_retention": 0.999434250274869,
+          "passed": true
+        }
+      }
+    },
+    "benchmark": {
+      "passed": false,
+      "conservative_projected_seconds": 39350.164433058475,
+      "runtime_gate_seconds": 23454,
+      "projected_seconds_before_multiplier": 25649.134410629653,
+      "elapsed_preparation_seconds": 876.465070252,
+      "projection_multiplier": 1.5,
+      "allocated_gpu_count": 2,
+      "peak_gpu_memory_bytes": 408843776,
+      "memory_limit_bytes": 12508830105
+    }
+  },
+  "notes": "Kaggle v2 passed K=8 retention in both folds but the conservative 10.93h runtime projection exceeded the 6.515h budget gate; training and pair evaluation did not start.",
+  "updated_at": "2026-09-23T13:30:42.725410+00:00"
+}

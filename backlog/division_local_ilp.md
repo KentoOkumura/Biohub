@@ -13,7 +13,7 @@
 - 優先度: P3
 - 優先度の理由: 運動、候補、分裂学習の効果を先に切り分けた後の統合比較。未成立の分裂得点をあるものとして実装しない。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説](KAGGLE_DIRECTION.md#検証中の仮説)と[未着手バックログ](KAGGLE_DIRECTION.md#未着手バックログ)
-- 先行条件 / 依存: [exp025_kalman_hungarian_links](../experiments/exp025_kalman_hungarian_links/result.md)でカルマン費用が不採用となった結果、[division_candidate_budget](division_candidate_budget.md)の固定候補契約、[division_triplets](division_triplets.md)の学習済み分裂得点と学習側での尺度合わせ。
+- 先行条件 / 依存: [exp025_kalman_hungarian_links](../experiments/exp025_kalman_hungarian_links/result.md)でカルマン費用が不採用となった結果、[division_candidate_budget](../experiments/exp026_division_candidate_budget/requirements.md)の固定候補契約、[division_triplets](division_triplets.md)の学習済み分裂得点と学習側での尺度合わせ。
 
 ## 観測事実と根拠
 

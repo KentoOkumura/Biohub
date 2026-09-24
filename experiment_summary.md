@@ -34,16 +34,23 @@
 | exp024_tracker_six_epochs | frozen_feature_primary_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-20 |
 | exp025_frame_self_attention | frozen_feature_frame_self_attention_tracker | exp016_frozen_image_encoder | 実行中 | - | - | - | 2026-09-20 |
 | exp025_kalman_hungarian_links | kalman_hungarian_fixed_divisions | exp016_frozen_image_encoder | 破棄 | 0.8733317200940277 | - | - | 2026-09-20 |
+| exp026_division_candidate_budget | division_candidate_budget_diagnostic | exp020_division_triplet_candidates | 雛形完了 | - | - | - | 2026-09-20 |
 | exp027_multi_frame_tracker | frozen_feature_local_three_frame_tracker | exp016_frozen_image_encoder | 完了 | - | - | - | 2026-09-20 |
 | exp028_direct_graph_prediction | direct_parent_selection | exp016_frozen_image_encoder | デバッグ完了 | - | - | - | 2026-09-20 |
 | exp029_mother_daughter_set_selection | mother_daughter_set_selection | exp028_direct_graph_prediction | デバッグ完了 | - | - | - | 2026-09-20 |
 | exp030_frame_self_attention_diagnostics | frozen_feature_primary_tracker_diagnostic | exp016_frozen_image_encoder | 完了 | - | - | - | 2026-09-20 |
+| exp031_frame_self_attention_spatial | frozen_feature_spatial_self_attention | exp016_frozen_image_encoder | 実行中 | - | - | - | 2026-09-20 |
 | exp032_three_frame_ten_epoch_training | frozen_feature_local_three_frame_tracker | exp027_multi_frame_tracker | デバッグ完了 | - | - | - | 2026-09-20 |
 | exp033_frame_self_attention_diagnostics | frozen_feature_primary_tracker_diagnostic | exp025_frame_self_attention | 完了 | - | - | - | 2026-09-21 |
 | exp034_frame_self_attention_distance_bias | frozen_feature_frame_self_attention_distance_bias_tracker | exp025_frame_self_attention | 完了 | - | - | - | 2026-09-22 |
 | exp035_velocity_features | frozen_feature_velocity_tracker | exp016_frozen_image_encoder | 実行中 | - | - | - | 2026-09-22 |
-| exp036_detection_score_pair_features | detection_score_pair_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-23 |
+| exp036_detection_score_pair_features | detection_score_pair_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-22 |
+| exp037_past_candidate_attention | frozen_feature_past_candidate_attention | exp016_frozen_image_encoder | 失敗 | - | - | - | 2026-09-22 |
+| exp038_past_candidate_knn_attention | frozen_feature_past_candidate_knn_attention | exp037_past_candidate_attention | 失敗 | - | - | - | 2026-09-23 |
 | exp039_dog_features | frozen_detector_dog_node_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-23 |
+| exp040_trackastra_association | frozen_feature_trackastra_association | exp016_frozen_image_encoder | デバッグ完了 | - | - | - | 2026-09-23 |
+| exp041_past_feature_cross_attention | frozen_feature_past_feature_cross_attention | exp016_frozen_image_encoder | デバッグ完了 | - | - | - | 2026-09-23 |
+| exp042_public_x138_replay | public_x138_replay | exp013_public_notebook_replay | 雛形完了 | - | - | - | 2026-09-23 |
 | exp043_x138_self_trained_head | public_x138_self_trained_coordinate_head | exp042_public_x138_replay | 完了 | - | 0.95 | - | 2026-09-24 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->

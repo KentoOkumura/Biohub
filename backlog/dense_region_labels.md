@@ -50,7 +50,7 @@
 - 仮説が正しい場合に期待する観測: 本候補の変更だけで期待する誤りが減り、同じ候補数・学習量・時間など必要な対照を揃えた公式指標へ改善が残ること。改善の判定方針は調査レポートのD3で選ぶ。測定前に改善幅や誤差幅を推定せず、両方向の差と費用を記録する。
 - 仮説を棄却する観測: 既知中心のrecallだけ上がり過剰nodeと誤edgeが増えて公式scoreが下がる、または確認済み負例がなく全前景への退化を排除できない。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: 負例の保証、過検出への退化、胚ごとの効果。別候補 [`sparse_det_mask`](sparse_det_mask.md)、[`partial_edge_mask`](partial_edge_mask.md)、[`sample_loss_balance`](sample_loss_balance.md) の検証が残る。
+- 上位仮説の判断に残る検証: 負例の保証、過検出への退化、胚ごとの効果。別候補 [`sparse_det_mask`](sparse_det_mask.md)、[`partial_edge_mask`](../experiments/exp019_partial_edge_mask/)、[`sample_loss_balance`](sample_loss_balance.md) の検証が残る。
 
 ## 入力・予測対象・出力・推論方法
 
