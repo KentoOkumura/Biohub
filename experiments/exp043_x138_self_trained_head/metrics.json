@@ -427,8 +427,14 @@
       "official_score": null,
       "competition_submission_created": true,
       "original_x138_frame_retention_guard_status": "clean_graph_audit_pass_candidate_unverified_quality"
+    },
+    "tracker_training_evaluation": {
+      "performed": false,
+      "tracker_weights_updated": false,
+      "two_frame_pair_metrics": null,
+      "train_graph_official_metrics": null
     }
   },
-  "notes": "User adopted exp043 as a reusable comparison result. Public LB 0.950; conditional center-distance evaluation uses 20 train videos and 10894 matched points. Raw pair-level OOF predictions and graph-level per-video metrics are unavailable.",
+  "notes": "User adopted the x138 pipeline with a self-trained coordinate head. Public LB 0.950; conditional center-distance evaluation uses 20 train videos and 10894 matched points. Tracker weights were fixed and tracker-training pair/graph metrics were not measured. Raw point-level OOF predictions are unavailable.",
   "updated_at": "2026-09-24T08:05:52.414931+00:00"
 }
