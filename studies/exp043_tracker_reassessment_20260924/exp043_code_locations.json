@@ -1,0 +1,57 @@
+{
+  "source": "experiments/exp043_x138_self_trained_head/exp043_x138_self_trained_head_inference.py",
+  "patches": [
+    {
+      "line": 1637,
+      "label": "candidate dump",
+      "before": "            candidates = sorted(",
+      "after": "            if _CACHE_THRESHOLD > 0:\n                _ci, _cj = np.nonzero(probs > _CACHE_THRESHOLD)\n                if _ci.size:\n                    _CACHE_EDGES.append((\n                        np.asarray(idx_src)[_ci].astype(np.int32),\n                        np.asarray(idx_tgt)[_cj].astype(np.int32),\n                        probs[_ci, _cj].astype(np.float32),\n                    ))\n            candidates = sorted("
+    },
+    {
+      "line": 1637,
+      "label": "cache write",
+      "before": "        graph = build_graph(coords, edges)",
+      "after": "        if _CACHE_DIR:\n            import pathlib\n            _cd = pathlib.Path(_CACHE_DIR)\n            _cd.mkdir(parents=True, exist_ok=True)\n            if _CACHE_EDGES:\n                _es = np.concatenate([e[0] for e in _CACHE_EDGES])\n                _et = np.concatenate([e[1] for e in _CACHE_EDGES])\n                _ep = np.concatenate([e[2] for e in _CACHE_EDGES])\n            else:\n                _es = np.empty(0, np.int32); _et = np.empty(0, np.int32)\n                _ep = np.empty(0, np.float32)\n            np.savez_compressed(\n                _cd / f'{name}.npz', coords=coords,\n                edge_src=_es, edge_tgt=_et, edge_prob=_ep,\n                admitted=np.asarray(edges, dtype=np.float64),\n            )\n            print(f'CACHE {name}: {len(coords)} nodes, {_es.size} edges', flush=True)\n            _CACHE_EDGES.clear()\n        graph = build_graph(coords, edges)"
+    },
+    {
+      "line": 1637,
+      "label": "lowdet globals",
+      "before": "_CACHE_DIR = os.environ.get('BIOHUB_CACHE_DIR', '').strip()\n",
+      "after": "_CACHE_DIR = os.environ.get('BIOHUB_CACHE_DIR', '').strip()\n_LOWDET_THRESHOLD = float(os.environ.get('BIOHUB_LOWDET_THRESHOLD', '0') or 0)\n_LOWDET: list = []\n"
+    },
+    {
+      "line": 1637,
+      "label": "lowdet peaks",
+      "before": "                arr = _detect_cells_pooled(\n                    det_logits[f_idx][0], t, cfg.det_threshold, pool_k,\n                )\n                coord_offset[t] = (global_node_count, global_node_count + len(arr))\n",
+      "after": "                arr = _detect_cells_pooled(\n                    det_logits[f_idx][0], t, cfg.det_threshold, pool_k,\n                )\n                if _LOWDET_THRESHOLD > 0:\n                    _low = _detect_cells_pooled(det_logits[f_idx][0], t, _LOWDET_THRESHOLD, pool_k)\n                    if len(_low):\n                        _lg = det_logits[f_idx][0][0]\n                        _lz = torch.as_tensor(_low[:, 1:].astype(np.int64), device=_lg.device)\n                        _lsc = torch.sigmoid(_lg[_lz[:, 0], _lz[:, 1], _lz[:, 2]]).float().cpu().numpy()\n                        _LOWDET.append((_low.astype(np.float32), _lsc.astype(np.float32)))\n                coord_offset[t] = (global_node_count, global_node_count + len(arr))\n"
+    },
+    {
+      "line": 1637,
+      "label": "lowdet write",
+      "before": "            np.savez_compressed(\n                _cd / f'{name}.npz', coords=coords,\n",
+      "after": "            if _LOWDET:\n                _lc = np.concatenate([e[0] for e in _LOWDET]).astype(np.float32)\n                _lc[:, 1:] *= np.array(downsample, dtype=np.float32)\n                _lc = _lc.astype(np.int16)\n                _lsc = np.concatenate([e[1] for e in _LOWDET]).astype(np.float32)\n            else:\n                _lc = np.empty((0, 4), np.int16)\n                _lsc = np.empty(0, np.float32)\n            _LOWDET.clear()\n            print(f'LOWDET {name}: {len(_lc)} peaks above {_LOWDET_THRESHOLD}', flush=True)\n            np.savez_compressed(\n                _cd / f'{name}.npz', coords=coords, low_coords=_lc, low_score=_lsc,\n"
+    }
+  ],
+  "functions": {
+    "motion_relink_edges": {
+      "line": 2247,
+      "end_line": 2470
+    },
+    "load_low_detections": {
+      "line": 2909,
+      "end_line": 2937
+    },
+    "readmit_discarded_detections": {
+      "line": 2977,
+      "end_line": 3028
+    },
+    "filter_output_graph": {
+      "line": 3571,
+      "end_line": 3792
+    },
+    "write_test_submission": {
+      "line": 3797,
+      "end_line": 3944
+    }
+  }
+}

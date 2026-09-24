@@ -1,0 +1,190 @@
+{
+  "status": "debug_completed",
+  "notes": "数値安定化したmasked BCEでColab T4の10 epochs×2foldを再学習。両胚の既知接続再現率は旧実行より低く、exp016対照も下回る。事前指定のgraph進行条件は未達。公式graph scoreとLBは未測定で、実験の完了・採否はユーザー判断待ち。",
+  "colab": {
+    "run_id": "trackastra_logbce_v2",
+    "gpu": "Tesla T4",
+    "notebook_runtime_seconds": 27072.530513331,
+    "resume_receipts": {
+      "0": "129f91bb4cfde631702c803e62d8fb30f441e6773ad2bdd781321225ced7512f",
+      "1": "57faa11c41214e9adb8220dff947637ce18cf092abe90227f54df1a2b76b98c1"
+    },
+    "cli_session": "exp040-trackastra-logbce-v2-20260924",
+    "final_archive_sha256": "25c10aa3fad768b75aa212940d5bd5d304fbda3ae9fcd22b04b641a7354b10e4",
+    "final_archive_bytes": 1377082588,
+    "archived_metrics_sha256": "e7f57f992b80c6348fc0413d95b29e741a006f6dd135bb598e33b975b87549fd",
+    "final_artifacts_dir": "artifacts/colab_runs/trackastra_logbce_v2",
+    "artifact_verification": "archive, completion marker, model manifest, two model SHA, twenty epoch receipts and both labeled score SHA independently verified after streaming extraction",
+    "session_terminated": true
+  },
+  "fold_evaluation": {
+    "0": {
+      "embryo": "6bba",
+      "threshold": 0.9798409342765808,
+      "internal_control": {
+        "known_edges": 2247,
+        "recovered_edges": 2155,
+        "known_parent_children": 2247,
+        "correct_parent_top1": 2194,
+        "legacy_negative_denominator": 1694048,
+        "legacy_negative_predictions": 126,
+        "known_negative_denominator": 7981,
+        "known_negative_predictions": 1,
+        "division_parents": 3,
+        "recovered_division_parents": 1,
+        "eligible_pairs": 693,
+        "excluded_empty_gt_pairs": 0,
+        "edge_recall": 0.9590565198041834,
+        "parent_top1_rate": 0.9764129951045839
+      },
+      "outer_control": {
+        "known_edges": 103393,
+        "recovered_edges": 100230,
+        "known_parent_children": 103393,
+        "correct_parent_top1": 101246,
+        "legacy_negative_denominator": 42247867,
+        "legacy_negative_predictions": 4355,
+        "known_negative_denominator": 1037067,
+        "known_negative_predictions": 14,
+        "division_parents": 108,
+        "recovered_division_parents": 48,
+        "eligible_pairs": 12392,
+        "excluded_empty_gt_pairs": 280,
+        "edge_recall": 0.9694079870010542,
+        "parent_top1_rate": 0.979234571005774
+      },
+      "outer_candidate": {
+        "known_edges": 103393,
+        "recovered_edges": 63799,
+        "known_parent_children": 103393,
+        "correct_parent_top1": 90313,
+        "legacy_negative_denominator": 42247867,
+        "legacy_negative_predictions": 6090,
+        "known_negative_denominator": 1037067,
+        "known_negative_predictions": 96,
+        "division_parents": 108,
+        "recovered_division_parents": 17,
+        "eligible_pairs": 12392,
+        "excluded_empty_gt_pairs": 280,
+        "edge_recall": 0.6170533788554351,
+        "parent_top1_rate": 0.8734924027738822
+      },
+      "pair_gate": {
+        "passed": false,
+        "checks": {
+          "known_edge_recall_strict": false,
+          "parent_top1_nondecrease": false,
+          "division_nondecrease": false,
+          "legacy_negative_5_percent": false,
+          "known_negative_5_percent": false
+        }
+      },
+      "labeled_scores_path": "fold_0_outer_labeled_scores.jsonl",
+      "labeled_scores_sha256": "8d140481c91e6c5716eccda8726d0c00dcbc06619d82ea4dc3d01534b570a0d5"
+    },
+    "1": {
+      "embryo": "44b6",
+      "threshold": 0.9855477809906006,
+      "internal_control": {
+        "known_edges": 8821,
+        "recovered_edges": 8648,
+        "known_parent_children": 8821,
+        "correct_parent_top1": 8720,
+        "legacy_negative_denominator": 3398846,
+        "legacy_negative_predictions": 220,
+        "known_negative_denominator": 80040,
+        "known_negative_predictions": 0,
+        "division_parents": 9,
+        "recovered_division_parents": 6,
+        "eligible_pairs": 1156,
+        "excluded_empty_gt_pairs": 32,
+        "edge_recall": 0.9803877111438613,
+        "parent_top1_rate": 0.9885500510146242
+      },
+      "outer_control": {
+        "known_edges": 18949,
+        "recovered_edges": 17959,
+        "known_parent_children": 18949,
+        "correct_parent_top1": 18351,
+        "legacy_negative_denominator": 13702859,
+        "legacy_negative_predictions": 1341,
+        "known_negative_denominator": 77415,
+        "known_negative_predictions": 4,
+        "division_parents": 22,
+        "recovered_division_parents": 6,
+        "eligible_pairs": 6315,
+        "excluded_empty_gt_pairs": 714,
+        "edge_recall": 0.9477544989181487,
+        "parent_top1_rate": 0.9684416064172252
+      },
+      "outer_candidate": {
+        "known_edges": 18949,
+        "recovered_edges": 8892,
+        "known_parent_children": 18949,
+        "correct_parent_top1": 17072,
+        "legacy_negative_denominator": 13702859,
+        "legacy_negative_predictions": 596,
+        "known_negative_denominator": 77415,
+        "known_negative_predictions": 1,
+        "division_parents": 22,
+        "recovered_division_parents": 2,
+        "eligible_pairs": 6315,
+        "excluded_empty_gt_pairs": 714,
+        "edge_recall": 0.4692595915351734,
+        "parent_top1_rate": 0.9009446408781466
+      },
+      "pair_gate": {
+        "passed": false,
+        "checks": {
+          "known_edge_recall_strict": false,
+          "parent_top1_nondecrease": false,
+          "division_nondecrease": false,
+          "legacy_negative_5_percent": true,
+          "known_negative_5_percent": true
+        }
+      },
+      "labeled_scores_path": "fold_1_outer_labeled_scores.jsonl",
+      "labeled_scores_sha256": "889d399e343b2fe44f9c1ba6b0aa60c6b0c562384e0b280b9cb56714afcb6ea1"
+    }
+  },
+  "graph_eligible": false,
+  "post_run_audit": {
+    "date": "2026-09-24",
+    "source_function_class_ast_matches": 62,
+    "old_loss_clamp_threshold": 1e-07,
+    "old_loss_true_positive_probability_in_gradient_reproduction": 2.06115369216775e-09,
+    "old_loss_true_logit_gradient_in_reproduction": -0.009999999776482582,
+    "old_loss_wrong_competitor_gradient_in_reproduction": 0.0,
+    "loss_numerical_fix_implemented": true,
+    "corrected_training_executed": true,
+    "fixed_half_threshold_diagnostics": {
+      "0": {
+        "evaluation_embryo": "6bba",
+        "known_edges": 103393,
+        "candidate_recovered_edges": 89931,
+        "candidate_edge_recall": 0.8697977619374619,
+        "control_recovered_edges": 100230,
+        "candidate_legacy_negative_predictions": 33273,
+        "control_legacy_negative_predictions": 4355,
+        "candidate_known_negative_predictions": 646,
+        "control_known_negative_predictions": 14,
+        "candidate_positive_scores_below_clamp": 95
+      },
+      "1": {
+        "evaluation_embryo": "44b6",
+        "known_edges": 18949,
+        "candidate_recovered_edges": 16897,
+        "candidate_edge_recall": 0.8917093250303446,
+        "control_recovered_edges": 17959,
+        "candidate_legacy_negative_predictions": 4861,
+        "control_legacy_negative_predictions": 1341,
+        "candidate_known_negative_predictions": 29,
+        "control_known_negative_predictions": 4,
+        "candidate_positive_scores_below_clamp": 4
+      }
+    },
+    "resume_source_sha_guard_implemented": true,
+    "audited_run_id": "trackastra_cap4096_v1",
+    "corrected_run_id": "trackastra_logbce_v2"
+  }
+}

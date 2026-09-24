@@ -1,0 +1,1043 @@
+{
+  "captured_at_utc": "2026-09-24T09:06:18.571231+00:00",
+  "git_head": "9e5e5ddfc65d5928e38f27435790487684f1e3d5",
+  "worktree_status": [
+    " M backlog/KAGGLE_DIRECTION.md",
+    " M backlog/contrastive_parent_child.md",
+    " M backlog/dense_region_labels.md",
+    " D backlog/division_candidate_budget.md",
+    " M backlog/division_local_ilp.md",
+    " M backlog/division_triplets.md",
+    " M backlog/explicit_no_match.md",
+    " M backlog/image_count_prior.md",
+    " M backlog/known_parent_constraint.md",
+    " M backlog/multi_time_past_candidate_attention.md",
+    " D backlog/past_candidate_attention.md",
+    " D backlog/past_feature_cross_attention.md",
+    " D backlog/public_x138_replay.md",
+    " M backlog/sample_loss_balance.md",
+    " M backlog/sparse_det_mask.md",
+    " D backlog/trackastra_association.md",
+    " M docs/surveys/README.md",
+    " M docs/surveys/biohub-backlog-readiness_20260910.md",
+    " M docs/surveys/biohub-backlog-status-audit_20260912.md",
+    " M docs/surveys/biohub-public-0953-differences_20260923.md",
+    " M experiment_summary.md",
+    " M experiments/exp001_temporal_unet3d_baseline/requirements.md",
+    " M experiments/exp003_official_metric_audit/requirements.md",
+    " M experiments/exp012_group_error_readout/README.md",
+    " M experiments/exp012_group_error_readout/SESSION_NOTES.md",
+    " M experiments/exp012_group_error_readout/result.md",
+    " M scripts/check_strategy_docs.py",
+    "?? docs/surveys/biohub-exp041-past-feature-analysis_20260923.md",
+    "?? docs/surveys/biohub-exp043-tracker-reassessment_20260924.md",
+    "?? docs/surveys/biohub-gnn-public-evidence_20260915.md",
+    "?? docs/surveys/biohub-trackastra-association-design_20260923.md",
+    "?? docs/surveys/biohub-tracking-next-ideas_20260923.md",
+    "?? experiments/exp026_division_candidate_budget/README.md",
+    "?? experiments/exp026_division_candidate_budget/SESSION_NOTES.md",
+    "?? experiments/exp026_division_candidate_budget/artifacts/.gitkeep",
+    "?? experiments/exp026_division_candidate_budget/assets/parent_split_manifest.json",
+    "?? experiments/exp026_division_candidate_budget/config.yaml",
+    "?? experiments/exp026_division_candidate_budget/exp026_division_candidate_budget_diagnostic.ipynb",
+    "?? experiments/exp026_division_candidate_budget/exp026_division_candidate_budget_diagnostic.py",
+    "?? experiments/exp026_division_candidate_budget/metrics.json",
+    "?? experiments/exp026_division_candidate_budget/requirements.md",
+    "?? experiments/exp026_division_candidate_budget/result.md",
+    "?? experiments/exp026_division_candidate_budget/settings.py",
+    "?? experiments/exp026_division_candidate_budget/tests/test_candidate_budget.py",
+    "?? experiments/exp031_frame_self_attention_spatial/README.md",
+    "?? experiments/exp031_frame_self_attention_spatial/SESSION_NOTES.md",
+    "?? experiments/exp031_frame_self_attention_spatial/artifacts/.gitkeep",
+    "?? experiments/exp031_frame_self_attention_spatial/config.yaml",
+    "?? experiments/exp031_frame_self_attention_spatial/exp031_frame_self_attention_spatial_inference.ipynb",
+    "?? experiments/exp031_frame_self_attention_spatial/exp031_frame_self_attention_spatial_inference.py",
+    "?? experiments/exp031_frame_self_attention_spatial/exp031_frame_self_attention_spatial_train.ipynb",
+    "?? experiments/exp031_frame_self_attention_spatial/exp031_frame_self_attention_spatial_train.py",
+    "?? experiments/exp031_frame_self_attention_spatial/frozen_tracker.py",
+    "?? experiments/exp031_frame_self_attention_spatial/graph_inference.py",
+    "?? experiments/exp031_frame_self_attention_spatial/metrics.json",
+    "?? experiments/exp031_frame_self_attention_spatial/requirements.md",
+    "?? experiments/exp031_frame_self_attention_spatial/result.md",
+    "?? experiments/exp031_frame_self_attention_spatial/settings.py",
+    "?? experiments/exp031_frame_self_attention_spatial/simple_node_transformer.py",
+    "?? experiments/exp031_frame_self_attention_spatial/tests/test_contract.py",
+    "?? experiments/exp031_frame_self_attention_spatial/tests/test_self_attention_model.py",
+    "?? experiments/exp037_past_candidate_attention/README.md",
+    "?? experiments/exp037_past_candidate_attention/SESSION_NOTES.md",
+    "?? experiments/exp037_past_candidate_attention/artifacts/.gitkeep",
+    "?? experiments/exp037_past_candidate_attention/attention_train_pipeline.py",
+    "?? experiments/exp037_past_candidate_attention/config.yaml",
+    "?? experiments/exp037_past_candidate_attention/exp037_past_candidate_attention_train.ipynb",
+    "?? experiments/exp037_past_candidate_attention/exp037_past_candidate_attention_train.py",
+    "?? experiments/exp037_past_candidate_attention/frozen_tracker.py",
+    "?? experiments/exp037_past_candidate_attention/metrics.json",
+    "?? experiments/exp037_past_candidate_attention/past_candidate_attention.py",
+    "?? experiments/exp037_past_candidate_attention/past_candidate_data.py",
+    "?? experiments/exp037_past_candidate_attention/requirements.md",
+    "?? experiments/exp037_past_candidate_attention/result.md",
+    "?? experiments/exp037_past_candidate_attention/runtime_helpers.py",
+    "?? experiments/exp037_past_candidate_attention/settings.py",
+    "?? experiments/exp037_past_candidate_attention/tests/test_contract.py",
+    "?? experiments/exp037_past_candidate_attention/tests/test_past_candidate_attention.py",
+    "?? experiments/exp037_past_candidate_attention/tests/test_past_candidate_data.py",
+    "?? experiments/exp037_past_candidate_attention/velocity_history.py",
+    "?? experiments/exp038_past_candidate_knn_attention/README.md",
+    "?? experiments/exp038_past_candidate_knn_attention/SESSION_NOTES.md",
+    "?? experiments/exp038_past_candidate_knn_attention/artifacts/.gitkeep",
+    "?? experiments/exp038_past_candidate_knn_attention/attention_train_pipeline.py",
+    "?? experiments/exp038_past_candidate_knn_attention/build_notebook.py",
+    "?? experiments/exp038_past_candidate_knn_attention/config.yaml",
+    "?? experiments/exp038_past_candidate_knn_attention/exp038_past_candidate_knn_attention_train.ipynb",
+    "?? experiments/exp038_past_candidate_knn_attention/exp038_past_candidate_knn_attention_train.py",
+    "?? experiments/exp038_past_candidate_knn_attention/frozen_tracker.py",
+    "?? experiments/exp038_past_candidate_knn_attention/knn_diagnostics.py",
+    "?? experiments/exp038_past_candidate_knn_attention/metrics.json",
+    "?? experiments/exp038_past_candidate_knn_attention/past_candidate_attention.py",
+    "?? experiments/exp038_past_candidate_knn_attention/past_candidate_data.py",
+    "?? experiments/exp038_past_candidate_knn_attention/requirements.md",
+    "?? experiments/exp038_past_candidate_knn_attention/result.md",
+    "?? experiments/exp038_past_candidate_knn_attention/runtime_helpers.py",
+    "?? experiments/exp038_past_candidate_knn_attention/settings.py",
+    "?? experiments/exp038_past_candidate_knn_attention/tests/conftest.py",
+    "?? experiments/exp038_past_candidate_knn_attention/tests/test_contract.py",
+    "?? experiments/exp038_past_candidate_knn_attention/tests/test_knn_diagnostics.py",
+    "?? experiments/exp038_past_candidate_knn_attention/tests/test_past_candidate_attention.py",
+    "?? experiments/exp038_past_candidate_knn_attention/tests/test_past_candidate_data.py",
+    "?? experiments/exp038_past_candidate_knn_attention/velocity_history.py",
+    "?? experiments/exp040_trackastra_association/README.md",
+    "?? experiments/exp040_trackastra_association/SESSION_NOTES.md",
+    "?? experiments/exp040_trackastra_association/analyze_runtime_profile.py",
+    "?? experiments/exp040_trackastra_association/artifacts/.gitkeep",
+    "?? experiments/exp040_trackastra_association/assets/runtime_budget_cap4096.json",
+    "?? experiments/exp040_trackastra_association/build_colab_bundle.py",
+    "?? experiments/exp040_trackastra_association/colab_cli_manifest.py",
+    "?? experiments/exp040_trackastra_association/colab_cli_refresh.py",
+    "?? experiments/exp040_trackastra_association/colab_cli_run.py",
+    "?? experiments/exp040_trackastra_association/colab_cli_worker.py",
+    "?? experiments/exp040_trackastra_association/config.yaml",
+    "?? experiments/exp040_trackastra_association/exp040_trackastra_association_train.ipynb",
+    "?? experiments/exp040_trackastra_association/exp040_trackastra_association_train.py",
+    "?? experiments/exp040_trackastra_association/metrics.json",
+    "?? experiments/exp040_trackastra_association/requirements.md",
+    "?? experiments/exp040_trackastra_association/result.md",
+    "?? experiments/exp040_trackastra_association/settings.py",
+    "?? experiments/exp040_trackastra_association/tests/test_colab_cli.py",
+    "?? experiments/exp040_trackastra_association/tests/test_trackastra_association.py",
+    "?? experiments/exp040_trackastra_association/trackastra_association.py",
+    "?? experiments/exp040_trackastra_association/vendor/LICENSE",
+    "?? experiments/exp041_past_feature_cross_attention/README.md",
+    "?? experiments/exp041_past_feature_cross_attention/SESSION_NOTES.md",
+    "?? experiments/exp041_past_feature_cross_attention/artifacts/.gitkeep",
+    "?? experiments/exp041_past_feature_cross_attention/config.yaml",
+    "?? experiments/exp041_past_feature_cross_attention/exp041_past_feature_cross_attention_train.ipynb",
+    "?? experiments/exp041_past_feature_cross_attention/exp041_past_feature_cross_attention_train.py",
+    "?? experiments/exp041_past_feature_cross_attention/frozen_tracker.py",
+    "?? experiments/exp041_past_feature_cross_attention/metrics.json",
+    "?? experiments/exp041_past_feature_cross_attention/past_feature_attention.py",
+    "?? experiments/exp041_past_feature_cross_attention/past_feature_data.py",
+    "?? experiments/exp041_past_feature_cross_attention/requirements.md",
+    "?? experiments/exp041_past_feature_cross_attention/result.md",
+    "?? experiments/exp041_past_feature_cross_attention/runtime_helpers.py",
+    "?? experiments/exp041_past_feature_cross_attention/settings.py",
+    "?? experiments/exp041_past_feature_cross_attention/tests/test_past_feature_attention.py",
+    "?? experiments/exp041_past_feature_cross_attention/tests/test_past_feature_data.py",
+    "?? experiments/exp041_past_feature_cross_attention/velocity_history.py",
+    "?? experiments/exp042_public_x138_replay/README.md",
+    "?? experiments/exp042_public_x138_replay/SESSION_NOTES.md",
+    "?? experiments/exp042_public_x138_replay/artifacts/.gitkeep",
+    "?? experiments/exp042_public_x138_replay/assets/reference_notebook/biohub-x138.ipynb",
+    "?? experiments/exp042_public_x138_replay/build_notebook.py",
+    "?? experiments/exp042_public_x138_replay/compare_replays.py",
+    "?? experiments/exp042_public_x138_replay/config.yaml",
+    "?? experiments/exp042_public_x138_replay/exp042_public_x138_replay_inference.ipynb",
+    "?? experiments/exp042_public_x138_replay/exp042_public_x138_replay_inference.py",
+    "?? experiments/exp042_public_x138_replay/metrics.json",
+    "?? experiments/exp042_public_x138_replay/requirements.md",
+    "?? experiments/exp042_public_x138_replay/result.md",
+    "?? experiments/exp042_public_x138_replay/ruff.toml",
+    "?? experiments/exp042_public_x138_replay/settings.py",
+    "?? experiments/exp042_public_x138_replay/tests/test_x138_replay.py",
+    "?? studies/biohub_public_notebooks_20260923/x138_v1284_attachment.json",
+    "?? studies/exp041_past_feature_analysis_20260923/analyze_metrics.py",
+    "?? studies/exp041_past_feature_analysis_20260923/readout.json",
+    "?? studies/exp043_tracker_reassessment_20260924/exp036_score_bins.csv",
+    "?? studies/exp043_tracker_reassessment_20260924/exp040_corrected_run.json",
+    "?? studies/exp043_tracker_reassessment_20260924/exp043_code_locations.json",
+    "?? studies/exp043_tracker_reassessment_20260924/exp043_public_test_readout.json",
+    "?? studies/exp043_tracker_reassessment_20260924/experiment_inventory.json",
+    "?? studies/exp043_tracker_reassessment_20260924/pair_metrics.json",
+    "?? studies/exp043_tracker_reassessment_20260924/readout.py",
+    "?? studies/exp043_tracker_reassessment_20260924/source_manifest.json",
+    "?? studies/gnn_public_20260915/gnn_search.csv",
+    "?? studies/gnn_public_20260915/inspect_notebooks.py",
+    "?? studies/gnn_public_20260915/notebooks_top100.csv",
+    "?? studies/next_tracking_ideas_20260923/check_outputs.py",
+    "?? studies/next_tracking_ideas_20260923/idea_portfolio.json",
+    "?? studies/next_tracking_ideas_20260923/pass_a.md",
+    "?? studies/next_tracking_ideas_20260923/pass_b.md",
+    "?? studies/next_tracking_ideas_20260923/pass_c.md",
+    "?? studies/next_tracking_ideas_20260923/pass_d.md",
+    "?? studies/next_tracking_ideas_20260923/strategy_context.json",
+    "?? studies/next_tracking_ideas_20260923/task_first.md",
+    "?? studies/next_tracking_ideas_20260924/exp043_document_review.txt",
+    "?? studies/next_tracking_ideas_20260924/idea_portfolio.json",
+    "?? studies/next_tracking_ideas_20260924/review_addendum.md",
+    "?? studies/next_tracking_ideas_20260924/revise_portfolio.py",
+    "?? studies/next_tracking_ideas_20260924/strategy_context.json",
+    "?? studies/next_tracking_ideas_20260924/update_report.py"
+  ],
+  "warning": "Some evidence is uncommitted and other experiment tasks may update it; hashes identify this snapshot.",
+  "files": [
+    {
+      "path": "SUBMISSIONS.md",
+      "bytes": 2955,
+      "sha256": "061b2e4dc91b0ad112945b8a933f2caa66567df43db2ac9e358371fbd23d8691"
+    },
+    {
+      "path": "backlog/KAGGLE_DIRECTION.md",
+      "bytes": 49823,
+      "sha256": "e19ea71e727eabcfa88d6d74a0b14d4dea73d16399c4e3eb43761ba00c67fd83"
+    },
+    {
+      "path": "docs/surveys/biohub-exp041-past-feature-analysis_20260923.md",
+      "bytes": 24780,
+      "sha256": "02ed9ebaa76ef291a150364346f6aa019837578bca19a31d92285bd27d227133"
+    },
+    {
+      "path": "docs/surveys/biohub-public-0953-differences_20260923.md",
+      "bytes": 18849,
+      "sha256": "52b61f33e1920a17093366d35b06e83a859aeabd72d05360a1d3f78e39e735ef"
+    },
+    {
+      "path": "experiment_summary.md",
+      "bytes": 6784,
+      "sha256": "88f60e1ffdb1335bf06fb49e2fb285263b094eeba13430edbd28160701532f94"
+    },
+    {
+      "path": "experiments/exp001_temporal_unet3d_baseline/metrics.json",
+      "bytes": 2863,
+      "sha256": "e945bba1185d9ae629e1f4a16d2d17a4592ed35d71975b89229f3246de07d10a"
+    },
+    {
+      "path": "experiments/exp002_unet3d_expandable_segments/metrics.json",
+      "bytes": 7104,
+      "sha256": "33147e9712713e253a73bd734392f2fb923658c8b43f80ff7ab767acc8594228"
+    },
+    {
+      "path": "experiments/exp003_official_metric_audit/metrics.json",
+      "bytes": 18753,
+      "sha256": "82befa2ee77391ceea67583c9cd96746325c2ff2255072de88d34572c3a4502e"
+    },
+    {
+      "path": "experiments/exp004_embryo_holdout_baseline/metrics.json",
+      "bytes": 4603,
+      "sha256": "d4b47a6aeff80d14a2c828bfbc74f3b3e8e10ca96a97df7d3322f44c39ecee02"
+    },
+    {
+      "path": "experiments/exp005_embryo_holdout_batch8/metrics.json",
+      "bytes": 16081,
+      "sha256": "81e212d7ab7c8b6c004d549a4479860dbfae08f65c781990cf4438f5cf6acad7"
+    },
+    {
+      "path": "experiments/exp006_embryo_holdout_seed314159/metrics.json",
+      "bytes": 13998,
+      "sha256": "ab0db4fc76d0f1b0f210153b89ed6e1387796b621c46cafdb6974712a46403a1"
+    },
+    {
+      "path": "experiments/exp007_graph_checkpoint_selection/metrics.json",
+      "bytes": 8631,
+      "sha256": "af1b3a9925098274e02ac07da5598fa20cde89a367aed4c46deb98abf6b0ffd2"
+    },
+    {
+      "path": "experiments/exp008_deformation_pair_aux/metrics.json",
+      "bytes": 1868,
+      "sha256": "6fc44913581dd94811a8af8c7b32b57d60a6cd288546b2c67a1a1e5d851bd79c"
+    },
+    {
+      "path": "experiments/exp009_exp006_twofold_ensemble/metrics.json",
+      "bytes": 4102,
+      "sha256": "6872fae58862a7de75119d04c5cf58bac727809760b86daf018e6270b549b739"
+    },
+    {
+      "path": "experiments/exp010_exp006_deterministic_replay/metrics.json",
+      "bytes": 6758,
+      "sha256": "1e8a86e5d9946db667c81c6c9127e4c6e050a2cdc21790634bde8b5c2b771745"
+    },
+    {
+      "path": "experiments/exp011_public_detector_selection/metrics.json",
+      "bytes": 2366,
+      "sha256": "3784b97e184d839ba795fc760d86ec12bfb41309623429e4c7df573eced3bca8"
+    },
+    {
+      "path": "experiments/exp012_group_error_readout/metrics.json",
+      "bytes": 3183,
+      "sha256": "f092173d436cb29060387230d2086154b01f14fc6af80afe3f2630ead4edd7cd"
+    },
+    {
+      "path": "experiments/exp013_public_notebook_replay/metrics.json",
+      "bytes": 8030,
+      "sha256": "3c3f4c293d01b68ff9e70cb8fd194c6c959653bbe16219c59761b999bb2cc082"
+    },
+    {
+      "path": "experiments/exp014_exact_window_cache/metrics.json",
+      "bytes": 6193,
+      "sha256": "7ba8ae30bbb54932dde1d28782f773574c02b124c277d28115ae54c339f5cdc5"
+    },
+    {
+      "path": "experiments/exp015_oracle_stage_limits/exp015_oracle_stage_limits_inference.py",
+      "bytes": 206712,
+      "sha256": "d9a7f46dda21a01d03ffa0072e4e4396dd2542ec4d4996b934bec5b116f49e04"
+    },
+    {
+      "path": "experiments/exp015_oracle_stage_limits/metrics.json",
+      "bytes": 11060,
+      "sha256": "4a80a8b1ecbcc1cde6c4f7998ee0d0f067d10838df4b5b7ceea731b1dbb68672"
+    },
+    {
+      "path": "experiments/exp016_frozen_image_encoder/SESSION_NOTES.md",
+      "bytes": 46984,
+      "sha256": "84214debde88591a30b1ed9ff2ad01ce0cb5114ffba32dee2edb8634d915c066"
+    },
+    {
+      "path": "experiments/exp016_frozen_image_encoder/config.yaml",
+      "bytes": 12662,
+      "sha256": "8b7c9ca24c2c8c8fa14a94bf73d496ff78d358fe5aa37b8033f8adc74e885a77"
+    },
+    {
+      "path": "experiments/exp016_frozen_image_encoder/metrics.json",
+      "bytes": 51083,
+      "sha256": "2e18e922845156a909d9f6aefe46520aaebd160801b909409acced614bd03034"
+    },
+    {
+      "path": "experiments/exp016_frozen_image_encoder/requirements.md",
+      "bytes": 25020,
+      "sha256": "f05b5daab09a4ba86c65630b99d550bffc05017044a171010a6a108f609dc2c2"
+    },
+    {
+      "path": "experiments/exp016_frozen_image_encoder/result.md",
+      "bytes": 11776,
+      "sha256": "f586f3adbcacc2ea1caab55419d4e4711e3f0ae6c5b033b3a01c35f1138f3822"
+    },
+    {
+      "path": "experiments/exp017_cross_crop_registration_audit/SESSION_NOTES.md",
+      "bytes": 3952,
+      "sha256": "9def3036605ba1c131714825912876f2b27df6d6060eeef7305174ab26e4e311"
+    },
+    {
+      "path": "experiments/exp017_cross_crop_registration_audit/config.yaml",
+      "bytes": 3215,
+      "sha256": "439c7f97a588084bcf9be29f8b5c1d9be0ae211d10976b2f27fbb9aaca09a6a9"
+    },
+    {
+      "path": "experiments/exp017_cross_crop_registration_audit/metrics.json",
+      "bytes": 4211,
+      "sha256": "888be267fc4be006c3dfafcfef92dd7ba7d1b980dca69b953de3197f2c6bc6c4"
+    },
+    {
+      "path": "experiments/exp017_cross_crop_registration_audit/requirements.md",
+      "bytes": 13032,
+      "sha256": "50bfaad260be562a9b03ea6288c2df1c253c49c8b8b5367ea2df188dea5bd246"
+    },
+    {
+      "path": "experiments/exp017_cross_crop_registration_audit/result.md",
+      "bytes": 4419,
+      "sha256": "e68ab1b03b002bfa9a1477468c0ac544fb7fa0efcb4f68196a745ec5cb2c0a82"
+    },
+    {
+      "path": "experiments/exp018_graph_cost_scale/SESSION_NOTES.md",
+      "bytes": 18861,
+      "sha256": "562d4fd931711389c6afdfe05a8c4f5d010c8865443ef90461bb195a2ff8b61e"
+    },
+    {
+      "path": "experiments/exp018_graph_cost_scale/config.yaml",
+      "bytes": 7460,
+      "sha256": "844229c1901c78cdb25b192a9ddbbbe9d96110ae6c96807a91bf854daa5de8ca"
+    },
+    {
+      "path": "experiments/exp018_graph_cost_scale/metrics.json",
+      "bytes": 6838,
+      "sha256": "1eb9f7a91e180cf9506c7b84fcc568be6bf7e9a2f3b34cc4d52efd49cfcc8aa9"
+    },
+    {
+      "path": "experiments/exp018_graph_cost_scale/requirements.md",
+      "bytes": 17763,
+      "sha256": "27613b6139d82147277504139ee6a14590311233ad366b0a60dd56247e089409"
+    },
+    {
+      "path": "experiments/exp018_graph_cost_scale/result.md",
+      "bytes": 4966,
+      "sha256": "0c481eb6de48e4de6bb7b240abe1d51beba8836bdf587721fe9c34636b48bb0f"
+    },
+    {
+      "path": "experiments/exp019_partial_edge_mask/SESSION_NOTES.md",
+      "bytes": 9853,
+      "sha256": "03b7b87ba073c8226633b5a9456347ef7f8b75ff2b0ea403182e3191da147559"
+    },
+    {
+      "path": "experiments/exp019_partial_edge_mask/config.yaml",
+      "bytes": 10454,
+      "sha256": "aeb770681cff246c7d28351ed6656091c8c2dcba355e5d0a5d7ca6fd7659a734"
+    },
+    {
+      "path": "experiments/exp019_partial_edge_mask/metrics.json",
+      "bytes": 38712,
+      "sha256": "0e3b615a1152d6fbb18d1078f2a6d4d0bded4009db71a3fae77ad47540ef4f06"
+    },
+    {
+      "path": "experiments/exp019_partial_edge_mask/requirements.md",
+      "bytes": 9382,
+      "sha256": "1cfb1a1f17181976701fab5de271c53055e130417194e5b138d3651cd42204da"
+    },
+    {
+      "path": "experiments/exp019_partial_edge_mask/result.md",
+      "bytes": 4439,
+      "sha256": "8cc29042063cbfd31d11e109c239d60a06bea23184755f53d10b387c60cae106"
+    },
+    {
+      "path": "experiments/exp020_division_triplet_candidates/SESSION_NOTES.md",
+      "bytes": 2389,
+      "sha256": "14be4f605cc410f2f3a203f1a1f62f56143c87d5163486d1b871289dc07bdecb"
+    },
+    {
+      "path": "experiments/exp020_division_triplet_candidates/config.yaml",
+      "bytes": 2656,
+      "sha256": "1f6ad8aade740e1a2f2e4404e23416d85a8772c04c75a30de17e37f18e6a7138"
+    },
+    {
+      "path": "experiments/exp020_division_triplet_candidates/metrics.json",
+      "bytes": 3563,
+      "sha256": "3d63474fdc224031e0462c751c08ba83599e93974db21c2f935e25718ff720f2"
+    },
+    {
+      "path": "experiments/exp020_division_triplet_candidates/requirements.md",
+      "bytes": 8759,
+      "sha256": "727cf8544a064b55833b651131f76599a5c12789746f628e3b45fc3ca75ec2e5"
+    },
+    {
+      "path": "experiments/exp020_division_triplet_candidates/result.md",
+      "bytes": 3547,
+      "sha256": "f0bd3d5adbb05803852d704920ca52c3ff097049ab936a18b50590ab40ecc64c"
+    },
+    {
+      "path": "experiments/exp021_division_teacher_audit/SESSION_NOTES.md",
+      "bytes": 3247,
+      "sha256": "fcc0202e7ed7f21000b70e392e96b598b4253e2d71201dcee8c2ba54e4e794b1"
+    },
+    {
+      "path": "experiments/exp021_division_teacher_audit/config.yaml",
+      "bytes": 2839,
+      "sha256": "451774d6b1025b41db23942cbf959c4443ecfb456f28b2729e17f148356afa53"
+    },
+    {
+      "path": "experiments/exp021_division_teacher_audit/metrics.json",
+      "bytes": 3151,
+      "sha256": "be231ea5780f1047e8bbd204f8d92cb1f188726aa2f47fe909296e2721f4e58f"
+    },
+    {
+      "path": "experiments/exp021_division_teacher_audit/requirements.md",
+      "bytes": 8067,
+      "sha256": "61c0ade1692ee690d3be317c2ef34de3f183c2e9bf3203e4f0c06d059e0d5458"
+    },
+    {
+      "path": "experiments/exp021_division_teacher_audit/result.md",
+      "bytes": 4521,
+      "sha256": "0921d756ee360336eeb7170b5c65c47abcf4a2530cbc51ca5b583e23a8162991"
+    },
+    {
+      "path": "experiments/exp022_synthetic_division_teacher_audit/SESSION_NOTES.md",
+      "bytes": 3383,
+      "sha256": "2e373667d02f4036ecacee9be7cdcec631932ea23b82ccfd50b0203cf33c14c8"
+    },
+    {
+      "path": "experiments/exp022_synthetic_division_teacher_audit/config.yaml",
+      "bytes": 2539,
+      "sha256": "f5251bc9917f33d7a26d0aaadd618694f6b5487dca9f6244e938ed4154c0dacc"
+    },
+    {
+      "path": "experiments/exp022_synthetic_division_teacher_audit/metrics.json",
+      "bytes": 3916,
+      "sha256": "0a0500fc1accf3ae11a639e16820c6ae3ec1ee1936407d8a9f9ae329ccaf1c8f"
+    },
+    {
+      "path": "experiments/exp022_synthetic_division_teacher_audit/requirements.md",
+      "bytes": 7600,
+      "sha256": "a5af4961c62334cf65fd16a9350eda456fa0888d043a1433f94860f718458ab1"
+    },
+    {
+      "path": "experiments/exp022_synthetic_division_teacher_audit/result.md",
+      "bytes": 4264,
+      "sha256": "045a8d4c125fae95dee0488c71f57d278f4f308e43dea4e9e7cbef76ac891c23"
+    },
+    {
+      "path": "experiments/exp023_synthetic_detector_teacher_audit/SESSION_NOTES.md",
+      "bytes": 5396,
+      "sha256": "d10d48bd9a152ea3a2a664b31a205570bce7d23079d9f66d67101d9b3c6f0a22"
+    },
+    {
+      "path": "experiments/exp023_synthetic_detector_teacher_audit/config.yaml",
+      "bytes": 4047,
+      "sha256": "2bdf913a4bcb1a99c5abffd832deb0d9c2dc4f11a1febde583f9b9acc4c96fb7"
+    },
+    {
+      "path": "experiments/exp023_synthetic_detector_teacher_audit/metrics.json",
+      "bytes": 6078,
+      "sha256": "70b265462390b6afe958c1c482422d4acfdac1483999b5716a25935f6ed8be38"
+    },
+    {
+      "path": "experiments/exp023_synthetic_detector_teacher_audit/requirements.md",
+      "bytes": 8957,
+      "sha256": "93f0d184ce025e15e28620714bbd3d5da83392e62d5f8a790cac74c9bd515af9"
+    },
+    {
+      "path": "experiments/exp023_synthetic_detector_teacher_audit/result.md",
+      "bytes": 6590,
+      "sha256": "83dc2857c0e2baa58c61dd0e4e74aa01d13db3d41e1a5e1cd05fcced75c0c51f"
+    },
+    {
+      "path": "experiments/exp024_tracker_six_epochs/SESSION_NOTES.md",
+      "bytes": 10581,
+      "sha256": "1565ce3e8e9fb80fd99b2f7e777e856b9ead9117eaf822041a1c727f4d5c6317"
+    },
+    {
+      "path": "experiments/exp024_tracker_six_epochs/config.yaml",
+      "bytes": 11376,
+      "sha256": "be3c63973691a93e2365543440a3d8cff6bb02f5e874e303b07e4af22cc3bd93"
+    },
+    {
+      "path": "experiments/exp024_tracker_six_epochs/metrics.json",
+      "bytes": 46438,
+      "sha256": "056749861d5ddc3e61d17fdea600cde95fbe7b1445cf3776338ef0a9004bc363"
+    },
+    {
+      "path": "experiments/exp024_tracker_six_epochs/requirements.md",
+      "bytes": 19371,
+      "sha256": "aab68292adda6c0dca87f15815c92c0f845401879e3c8614f2ca91401f3caae0"
+    },
+    {
+      "path": "experiments/exp024_tracker_six_epochs/result.md",
+      "bytes": 5073,
+      "sha256": "7f91361447307849a41c7a22f7d88d14ac4b7261e9c3da34870a51046e0250b4"
+    },
+    {
+      "path": "experiments/exp025_frame_self_attention/SESSION_NOTES.md",
+      "bytes": 20416,
+      "sha256": "2c2f596c1c8b63926c88b1ac10cae7402f6f18a93612a0954053c10d1e92b2f0"
+    },
+    {
+      "path": "experiments/exp025_frame_self_attention/config.yaml",
+      "bytes": 10898,
+      "sha256": "738e6957542bd3c396c914ec1cd65742a61a6aff9d6a049f939a2a8f628dd166"
+    },
+    {
+      "path": "experiments/exp025_frame_self_attention/metrics.json",
+      "bytes": 64388,
+      "sha256": "f6e4b5219434d2e094e11c63828006f7f7e985fe5e91bbdcfa3e16fb6ae895fb"
+    },
+    {
+      "path": "experiments/exp025_frame_self_attention/requirements.md",
+      "bytes": 13468,
+      "sha256": "828ff6ab20bec29b034bdc427ee43dfe947bbb58a6396d118b4c8c808f187a37"
+    },
+    {
+      "path": "experiments/exp025_frame_self_attention/result.md",
+      "bytes": 18335,
+      "sha256": "7074dce47453f11b3b640370811c942b90947fefd3984fcdbd6ea04942544360"
+    },
+    {
+      "path": "experiments/exp025_kalman_hungarian_links/SESSION_NOTES.md",
+      "bytes": 9803,
+      "sha256": "0fe7738fcc690f7d2fe368bb3e0d75930c5e3aec9b21bba0941f6af69a5d2423"
+    },
+    {
+      "path": "experiments/exp025_kalman_hungarian_links/config.yaml",
+      "bytes": 6183,
+      "sha256": "1879ac0ce5b9cfb9072517ee1e7d48df6bc169952f777564331734aab035398a"
+    },
+    {
+      "path": "experiments/exp025_kalman_hungarian_links/metrics.json",
+      "bytes": 39480,
+      "sha256": "c2473c9fb00016ce45dfce5e42cc1d348d169766a2229553eccef53bd7aac5ec"
+    },
+    {
+      "path": "experiments/exp025_kalman_hungarian_links/requirements.md",
+      "bytes": 11726,
+      "sha256": "f377650abba28507bd10401be9b95c251d9212eb0c0723e3198ba7c195ba2afb"
+    },
+    {
+      "path": "experiments/exp025_kalman_hungarian_links/result.md",
+      "bytes": 6051,
+      "sha256": "3c328965602011501b187923962614048fdf0ea87bb42098f5008307255b0be5"
+    },
+    {
+      "path": "experiments/exp026_division_candidate_budget/SESSION_NOTES.md",
+      "bytes": 3037,
+      "sha256": "19591347b8ff89769ad830e6283766a881f567a69601a5953a034142966a84f9"
+    },
+    {
+      "path": "experiments/exp026_division_candidate_budget/config.yaml",
+      "bytes": 5390,
+      "sha256": "3a2b3569c9e53fee23376d8626b9e48aed614d521e5b889c4d177e00a9d33252"
+    },
+    {
+      "path": "experiments/exp026_division_candidate_budget/metrics.json",
+      "bytes": 1850,
+      "sha256": "f8876f5de3b68e50b410698eaed6673d08dba1d2ffd985b325664a0e78014015"
+    },
+    {
+      "path": "experiments/exp026_division_candidate_budget/requirements.md",
+      "bytes": 9432,
+      "sha256": "d6aed4bbc296505b29c4c0442ab3fc543c5864d5a4cca882ec137d77781a5f4c"
+    },
+    {
+      "path": "experiments/exp026_division_candidate_budget/result.md",
+      "bytes": 1054,
+      "sha256": "d6531cfdb75af9a87163279a57d7c15d9fd1357738d2bac547926175cedb8069"
+    },
+    {
+      "path": "experiments/exp027_multi_frame_tracker/SESSION_NOTES.md",
+      "bytes": 23024,
+      "sha256": "f0d8821de21aed322709de9dd81914d831af1b54e75392abe6b2f55c4cbd2806"
+    },
+    {
+      "path": "experiments/exp027_multi_frame_tracker/config.yaml",
+      "bytes": 12286,
+      "sha256": "fa8887b0b444861b901389914927f89065da49d6e3f6ef43b15915702f922b1d"
+    },
+    {
+      "path": "experiments/exp027_multi_frame_tracker/metrics.json",
+      "bytes": 146603,
+      "sha256": "317148d3e94bd632eeb32dd2aa86c83b6f012acda556620a07c90dc1406640da"
+    },
+    {
+      "path": "experiments/exp027_multi_frame_tracker/requirements.md",
+      "bytes": 14793,
+      "sha256": "4b9fe3b5435a13c0debf33dd53089c54d4e372eedb70fd6fb3bebe5099ab7971"
+    },
+    {
+      "path": "experiments/exp027_multi_frame_tracker/result.md",
+      "bytes": 9033,
+      "sha256": "f563585d63c2885abe03de3b092c4e5b98d40288d35767b867eec6f49954883e"
+    },
+    {
+      "path": "experiments/exp028_direct_graph_prediction/SESSION_NOTES.md",
+      "bytes": 5313,
+      "sha256": "a1df598860016381389f1b6d423f178faae5fb7d180143f05ee9e5281c3f8d97"
+    },
+    {
+      "path": "experiments/exp028_direct_graph_prediction/config.yaml",
+      "bytes": 6070,
+      "sha256": "1eda67a950d7972eed0e5bbad82df4fc44398d0653a9ac8f0e7f6878003313bc"
+    },
+    {
+      "path": "experiments/exp028_direct_graph_prediction/metrics.json",
+      "bytes": 7262,
+      "sha256": "0ebdc771c72c35a4864871fc359a896848e299bd0be441c1822f32dfe88a88ae"
+    },
+    {
+      "path": "experiments/exp028_direct_graph_prediction/requirements.md",
+      "bytes": 23888,
+      "sha256": "2d2cd40a8b44c42e496ee828374aab2c31a51bb5e315320f230c935c9a29b447"
+    },
+    {
+      "path": "experiments/exp028_direct_graph_prediction/result.md",
+      "bytes": 2725,
+      "sha256": "61ae9737d05405bea2eff24f2bfc8998a1563a6b1d00a51d8d0e3627ee3a1e01"
+    },
+    {
+      "path": "experiments/exp029_mother_daughter_set_selection/SESSION_NOTES.md",
+      "bytes": 14395,
+      "sha256": "a14fc16aca8824545833a96aa5ff9eed861a8a2f1d87dac74cebccfba756616b"
+    },
+    {
+      "path": "experiments/exp029_mother_daughter_set_selection/config.yaml",
+      "bytes": 6964,
+      "sha256": "21f9362f3cdc6aead013f4926b82d5ddaf31dce205e680c1306dbfff09e5f4c1"
+    },
+    {
+      "path": "experiments/exp029_mother_daughter_set_selection/metrics.json",
+      "bytes": 33268,
+      "sha256": "1264ecd95e2cdd401d21756cd178f00221e56133428341c6eed8d283efecdd01"
+    },
+    {
+      "path": "experiments/exp029_mother_daughter_set_selection/requirements.md",
+      "bytes": 11264,
+      "sha256": "d8ebb9c96add39b5d8d858f86048ae94d2430227fc016d8ee1c17a60ae4d566a"
+    },
+    {
+      "path": "experiments/exp029_mother_daughter_set_selection/result.md",
+      "bytes": 5953,
+      "sha256": "4d5d5895df912da514698f334bad59f75e4e42082b7ff57354922befac03738c"
+    },
+    {
+      "path": "experiments/exp030_frame_self_attention_diagnostics/SESSION_NOTES.md",
+      "bytes": 6797,
+      "sha256": "ff517a66cdb03cf9d227327fe94cddffdd4ce7ad677ee4c6edd38808588350d9"
+    },
+    {
+      "path": "experiments/exp030_frame_self_attention_diagnostics/config.yaml",
+      "bytes": 3315,
+      "sha256": "d91d9da275d293dc408d7503896faff184a862695fa412ef3bf59c0ce31ff9cf"
+    },
+    {
+      "path": "experiments/exp030_frame_self_attention_diagnostics/metrics.json",
+      "bytes": 7255,
+      "sha256": "a00242984d13cb78bcb754e13c83002a3434c99621293d6109feb6acab6bd746"
+    },
+    {
+      "path": "experiments/exp030_frame_self_attention_diagnostics/requirements.md",
+      "bytes": 9859,
+      "sha256": "d5c38a1c01bc93c0b67df48760db23720d40580f8b31f3a5c53c711aaf49c515"
+    },
+    {
+      "path": "experiments/exp030_frame_self_attention_diagnostics/result.md",
+      "bytes": 3686,
+      "sha256": "2b861712b77c33d4fa4c1f97c1fbc7c486128bb1d7a367538c758fe8cfbabd33"
+    },
+    {
+      "path": "experiments/exp031_frame_self_attention_spatial/SESSION_NOTES.md",
+      "bytes": 9578,
+      "sha256": "c71ed749664f607af1ebb8c3d60b076db1a71656183a8093b14153113a8a5368"
+    },
+    {
+      "path": "experiments/exp031_frame_self_attention_spatial/config.yaml",
+      "bytes": 10871,
+      "sha256": "040173b2b013207c3feff69b7c4ab531a132c8ae321abcff972c43d0034952cb"
+    },
+    {
+      "path": "experiments/exp031_frame_self_attention_spatial/metrics.json",
+      "bytes": 81722,
+      "sha256": "a6bd6a7ba83742f18c19641548ef12c25259b5667007f051853f3ef6a3476f43"
+    },
+    {
+      "path": "experiments/exp031_frame_self_attention_spatial/requirements.md",
+      "bytes": 15162,
+      "sha256": "ebe065b96fbaa2dbfc744ee15bcf1250c1dfe950701c258add0fc0b95105f44e"
+    },
+    {
+      "path": "experiments/exp031_frame_self_attention_spatial/result.md",
+      "bytes": 3492,
+      "sha256": "4e4d137fcb057130ca6060483874c9e20d6cf4d7c28558ce47c67dc7a2903489"
+    },
+    {
+      "path": "experiments/exp032_three_frame_ten_epoch_training/SESSION_NOTES.md",
+      "bytes": 11507,
+      "sha256": "e289bbc02d298355160de2e7f890d7413d31cbdb5de4016193dc7c2f5e38b56a"
+    },
+    {
+      "path": "experiments/exp032_three_frame_ten_epoch_training/config.yaml",
+      "bytes": 11368,
+      "sha256": "98fa9e151fb0f614d9f3b099ef0c77f873d804b40415a93ff330f86e3ba59b1c"
+    },
+    {
+      "path": "experiments/exp032_three_frame_ten_epoch_training/metrics.json",
+      "bytes": 170463,
+      "sha256": "63cef69e0c3d827c083b871d0d382993209c0579d52b3a4c1a77a9b210784e2a"
+    },
+    {
+      "path": "experiments/exp032_three_frame_ten_epoch_training/requirements.md",
+      "bytes": 10956,
+      "sha256": "ec4af16c8b3d2294ba74b11e0c95262fadbf30aed57c564d0af0eaf89939a61b"
+    },
+    {
+      "path": "experiments/exp032_three_frame_ten_epoch_training/result.md",
+      "bytes": 4023,
+      "sha256": "c474fd4ac909296ee2f0f6d169f7bcaa8e37fe46cabc769872c265dd2df81a2f"
+    },
+    {
+      "path": "experiments/exp033_frame_self_attention_diagnostics/SESSION_NOTES.md",
+      "bytes": 7161,
+      "sha256": "fffba3735521ef1c3565a7d1f3779ff2d53eb9203be55b9a98015eafa159bf2c"
+    },
+    {
+      "path": "experiments/exp033_frame_self_attention_diagnostics/config.yaml",
+      "bytes": 6249,
+      "sha256": "48c724695f5203477b63458d7f89b614153e673ede1ecebd005430e4a62db904"
+    },
+    {
+      "path": "experiments/exp033_frame_self_attention_diagnostics/metrics.json",
+      "bytes": 149675,
+      "sha256": "f909ddc25efaca6001173d3d7a440acb61e6f2c41c4e77b7289cf02f79713809"
+    },
+    {
+      "path": "experiments/exp033_frame_self_attention_diagnostics/requirements.md",
+      "bytes": 9652,
+      "sha256": "0f72c23e2cca5224207c2e6d14bbf2f8e88e1c2d8d0310db5caa48be9ac81b4d"
+    },
+    {
+      "path": "experiments/exp033_frame_self_attention_diagnostics/result.md",
+      "bytes": 4443,
+      "sha256": "f23fa4c8066ca64b9b1ed83b060e2a3504391438224824b4a248f8ea20cd4af4"
+    },
+    {
+      "path": "experiments/exp034_frame_self_attention_distance_bias/SESSION_NOTES.md",
+      "bytes": 8473,
+      "sha256": "e97e9c5143d55182c3722edb05e3a3c5e2aed6c3f76358029cf38fc7ac8d834c"
+    },
+    {
+      "path": "experiments/exp034_frame_self_attention_distance_bias/config.yaml",
+      "bytes": 12163,
+      "sha256": "f9b256cc6a30c70f5f5aa4830798d9f9c5496e783734631801cd474b024d104b"
+    },
+    {
+      "path": "experiments/exp034_frame_self_attention_distance_bias/metrics.json",
+      "bytes": 6884,
+      "sha256": "6540439a9e1b216caf3b50e7b473372b7f11ebb0b7f72b0504105c43dd2f98d3"
+    },
+    {
+      "path": "experiments/exp034_frame_self_attention_distance_bias/requirements.md",
+      "bytes": 6393,
+      "sha256": "9ad0adad160c93c8f916439d8e3aaf29ad71a7c55a73543c64e53a0753714e7b"
+    },
+    {
+      "path": "experiments/exp034_frame_self_attention_distance_bias/result.md",
+      "bytes": 3229,
+      "sha256": "642c52ae0587baafc7a187da2c021d780d1bc7fa9aadb222bac5a6f3743264aa"
+    },
+    {
+      "path": "experiments/exp035_velocity_features/SESSION_NOTES.md",
+      "bytes": 6789,
+      "sha256": "f0d1160c6ea8fed92982eb6e875eb5ea0a9672e7d8c8c576ed6281225c199d64"
+    },
+    {
+      "path": "experiments/exp035_velocity_features/config.yaml",
+      "bytes": 15360,
+      "sha256": "8f0c1c4d793f60ebd9a5b5cb2214230414ccd2ead2f2986eb597313f24ffd591"
+    },
+    {
+      "path": "experiments/exp035_velocity_features/metrics.json",
+      "bytes": 64202,
+      "sha256": "084ce3dcef354ae7745f1d1d246e956672ffa3b17c3a44f42b6314f9f78c9a29"
+    },
+    {
+      "path": "experiments/exp035_velocity_features/requirements.md",
+      "bytes": 13625,
+      "sha256": "1deb941cd0af218806e62c31de9b7de591a46e60996ba8e88088f73fd83bd0bf"
+    },
+    {
+      "path": "experiments/exp035_velocity_features/result.md",
+      "bytes": 4282,
+      "sha256": "e5141ef3d43c672e09dcf8b2e70c22c3fd3fe9ce24e080fb3086f0a5d9374acd"
+    },
+    {
+      "path": "experiments/exp036_detection_score_pair_features/SESSION_NOTES.md",
+      "bytes": 7042,
+      "sha256": "d964360deb4b42e4ddd6115d9dbf5ed81e72b42041c2b44cfdf6af51842aaacd"
+    },
+    {
+      "path": "experiments/exp036_detection_score_pair_features/config.yaml",
+      "bytes": 8059,
+      "sha256": "7e5e0a7d4342af6085d82cf82e6e649c6ec7d390b14887f63627cb976ede31d9"
+    },
+    {
+      "path": "experiments/exp036_detection_score_pair_features/metrics.json",
+      "bytes": 80833,
+      "sha256": "4c08e7cfb5dbdf982a723a07a181af6269b201fc203b3d58997206745943eafd"
+    },
+    {
+      "path": "experiments/exp036_detection_score_pair_features/requirements.md",
+      "bytes": 13413,
+      "sha256": "ee5838b37f9b90036605b72459d323c0047ec32e644cb689aa3fcb442b34ab0d"
+    },
+    {
+      "path": "experiments/exp036_detection_score_pair_features/result.md",
+      "bytes": 3194,
+      "sha256": "a3ab002d2e79ea44c7b1cb659211c5123f6625154adbb2d7dc8b8db4c93cb751"
+    },
+    {
+      "path": "experiments/exp037_past_candidate_attention/SESSION_NOTES.md",
+      "bytes": 5723,
+      "sha256": "a96c349795e27dcef2825caad53577f8b7f04fdae7d98c6083041cb17232de57"
+    },
+    {
+      "path": "experiments/exp037_past_candidate_attention/config.yaml",
+      "bytes": 9207,
+      "sha256": "311817dd44f0e4a2c718e51f4bc7a3c99102eaa8f5b7a0a734d28084b5a21836"
+    },
+    {
+      "path": "experiments/exp037_past_candidate_attention/metrics.json",
+      "bytes": 14864,
+      "sha256": "a41b0c52910d695da9b2fb31faf758b9522fab67b91f62922731c8099726f178"
+    },
+    {
+      "path": "experiments/exp037_past_candidate_attention/requirements.md",
+      "bytes": 15375,
+      "sha256": "1df4437564878a9c2cf32ca60aa86bfec59968ffa70921ba6087323a3eb5fe3f"
+    },
+    {
+      "path": "experiments/exp037_past_candidate_attention/result.md",
+      "bytes": 3210,
+      "sha256": "4570a59dc273325d42a46dd9fbafabecdea6da1233724c3d0699aea913d7ae8c"
+    },
+    {
+      "path": "experiments/exp038_past_candidate_knn_attention/SESSION_NOTES.md",
+      "bytes": 7167,
+      "sha256": "f4c41ae2b457a334dd1ab62578f4dedddd9743471bbd7d52f2d9d38cf0ff1b91"
+    },
+    {
+      "path": "experiments/exp038_past_candidate_knn_attention/config.yaml",
+      "bytes": 9811,
+      "sha256": "87830ef87ecc91e85229991f68f2dc501d62e643964a258c61b49d2c0ab38e26"
+    },
+    {
+      "path": "experiments/exp038_past_candidate_knn_attention/metrics.json",
+      "bytes": 4578,
+      "sha256": "25373ada03061141b741722f6c14dfa341c83295070d5aed49a0170f83af030f"
+    },
+    {
+      "path": "experiments/exp038_past_candidate_knn_attention/requirements.md",
+      "bytes": 20626,
+      "sha256": "11410dce9f2d5d42b661257d0dfe7960c53141a67b54705d126c004d1ade356e"
+    },
+    {
+      "path": "experiments/exp038_past_candidate_knn_attention/result.md",
+      "bytes": 2552,
+      "sha256": "caccec80a17a370ce79f89eef34bc986381e48d7a848c216d74d458060eeabb2"
+    },
+    {
+      "path": "experiments/exp039_dog_features/SESSION_NOTES.md",
+      "bytes": 6926,
+      "sha256": "1f34173de750c725bb852822753365d428001873663f1ec7eb1420d2f9583d6c"
+    },
+    {
+      "path": "experiments/exp039_dog_features/config.yaml",
+      "bytes": 9132,
+      "sha256": "122b8914a394ce97481d3e43c33b8c8617863259d65f969c13b8a8863e917b5c"
+    },
+    {
+      "path": "experiments/exp039_dog_features/metrics.json",
+      "bytes": 680595,
+      "sha256": "933da94e3fa015ffa74973616448146473b8a8c2b21dfc34fa28c3b29f5deb7f"
+    },
+    {
+      "path": "experiments/exp039_dog_features/requirements.md",
+      "bytes": 31434,
+      "sha256": "5ce2a589e2e1d7aac5d86def5a1bb011fd316ebf813391e2e2dd1adcab53a84a"
+    },
+    {
+      "path": "experiments/exp039_dog_features/result.md",
+      "bytes": 4534,
+      "sha256": "1ab020f774dc1df686e74e8c02857c82b8d6b6891c22cea696c61463007e97d5"
+    },
+    {
+      "path": "experiments/exp040_trackastra_association/SESSION_NOTES.md",
+      "bytes": 19274,
+      "sha256": "71bb6af5187eb65ccc828dc09d203ffb13ee8735826d75d788e4594efb65359b"
+    },
+    {
+      "path": "experiments/exp040_trackastra_association/config.yaml",
+      "bytes": 7959,
+      "sha256": "a55034264b3481e60675bbd9c76e6847db4de8e88c82fd10b7b24549905865f3"
+    },
+    {
+      "path": "experiments/exp040_trackastra_association/metrics.json",
+      "bytes": 25097,
+      "sha256": "b4973c40b2d6e237082edef118a0230bcf650dad89b1ec9f6e05222c6305feb0"
+    },
+    {
+      "path": "experiments/exp040_trackastra_association/requirements.md",
+      "bytes": 37840,
+      "sha256": "fa20f35e1278b03538943bfacd9657baae6372bffeb0609a6d7a95008681f8cc"
+    },
+    {
+      "path": "experiments/exp040_trackastra_association/result.md",
+      "bytes": 6670,
+      "sha256": "259bbe143550f2fe1e71a43525e64858af37d329165a445933d218c1a52ee65e"
+    },
+    {
+      "path": "experiments/exp041_past_feature_cross_attention/SESSION_NOTES.md",
+      "bytes": 10690,
+      "sha256": "df85ab60d935657622b5d96c65c050ae160bf550cc858a69f8e35cffd33d24bc"
+    },
+    {
+      "path": "experiments/exp041_past_feature_cross_attention/config.yaml",
+      "bytes": 9245,
+      "sha256": "1654fd10df32691509548e1e82653702020d3fd77b2d5a54453d90947adfb282"
+    },
+    {
+      "path": "experiments/exp041_past_feature_cross_attention/metrics.json",
+      "bytes": 99750,
+      "sha256": "9acc18c74a09128331e1cd2ff02ee8119d3860ed5c7f5e67a5cb4639e5abe78c"
+    },
+    {
+      "path": "experiments/exp041_past_feature_cross_attention/requirements.md",
+      "bytes": 40076,
+      "sha256": "b90933eb393b67bb8f8112ac6299443e02837489fe130e41ca9d5a19399010d8"
+    },
+    {
+      "path": "experiments/exp041_past_feature_cross_attention/result.md",
+      "bytes": 5766,
+      "sha256": "fd08a352e74e48b03e4105c9fbb294aa9daaf3844d6ad00e5ce29d28b2f4ece8"
+    },
+    {
+      "path": "experiments/exp042_public_x138_replay/SESSION_NOTES.md",
+      "bytes": 3489,
+      "sha256": "acdc79394fb1bccc0124fbc9d747ba56eefd309ace5a3f31c5e1391fbe6dfbde"
+    },
+    {
+      "path": "experiments/exp042_public_x138_replay/config.yaml",
+      "bytes": 4152,
+      "sha256": "cee757091f1e34410b31b1c3640a9197c3f96948ecac63ed92cd99b129f8f4ca"
+    },
+    {
+      "path": "experiments/exp042_public_x138_replay/metrics.json",
+      "bytes": 2058,
+      "sha256": "b8b40de5c063c6789b9a483d35f865a8453bdbd2d427941b7c6b22a6c1f8f8c0"
+    },
+    {
+      "path": "experiments/exp042_public_x138_replay/requirements.md",
+      "bytes": 21736,
+      "sha256": "a1397b5aa23f0ecd7f6ba557b3b58f3a82f7575ea3a782d0ae4a8edd3ed91970"
+    },
+    {
+      "path": "experiments/exp042_public_x138_replay/result.md",
+      "bytes": 1452,
+      "sha256": "751afccef1d647273109bc2221ae29aec4c6d78ba0fdecf39d8e1dc1f6b94623"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/SESSION_NOTES.md",
+      "bytes": 13936,
+      "sha256": "d5e4253cc6b94a66cbeb3f1a6cd4728488d97fd7af39ca2a0d4834d98305e130"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/artifacts/inference_v2/run_stats.csv",
+      "bytes": 3677,
+      "sha256": "a5e076b0b8d2a3ef5bf6f8a2959e4024a7ffa122fd268c658fc6861c3254cd64"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/build_inference_notebook.py",
+      "bytes": 4967,
+      "sha256": "092fa3a2c24ac2ba33cf24ddc88d2a0ad2720f08d538396e65902a1045e141ae"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/config.yaml",
+      "bytes": 3728,
+      "sha256": "e408862c5c5bd1fa134c4c228b360ed29250000db2d5cbcd622f1850207c1dcf"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/exp043_x138_self_trained_head_inference.py",
+      "bytes": 252935,
+      "sha256": "8b795f7845af624dd0739c4592f6cbd345d7fa8f136dd63383f123c600efdc4d"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/metrics.json",
+      "bytes": 14381,
+      "sha256": "575cf41798ec7eacfd95cb1a52d7ee9f7716a3b84b76749192c06ca4dd854124"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/requirements.md",
+      "bytes": 8270,
+      "sha256": "71c3e8b82fef375cda1f289c347caa262e53c993edb98cb35174e2f9af27b984"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/result.md",
+      "bytes": 6864,
+      "sha256": "753604f2c7d126766e041c2850061cb9fea948285910eb078651a0be756bb26a"
+    },
+    {
+      "path": "studies/exp043_tracker_reassessment_20260924/readout.py",
+      "bytes": 8049,
+      "sha256": "fb3fc77ef7295c74c9f8fb288a67e08ab43d117fbaa169e899dd2e9ae37630ff"
+    }
+  ]
+}

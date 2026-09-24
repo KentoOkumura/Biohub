@@ -1,0 +1,354 @@
+[
+  {
+    "experiment": "exp001_temporal_unet3d_baseline",
+    "status": "failed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Train kernel version 3 resolved offline dependencies but failed the same-configuration smoke test during the first backward pass: GPU 0 had 14.56 GiB total, 1.75 GiB free, and could not allocate 1.84 GiB. No checkpoint was produced, so inference was not run. Competition submission is not authorized.",
+    "metrics_path": "experiments/exp001_temporal_unet3d_baseline/metrics.json"
+  },
+  {
+    "experiment": "exp002_unet3d_expandable_segments",
+    "status": "usable",
+    "metric": "edge_accuracy_times_node_recall",
+    "public_lb": 0.453,
+    "notes": "Kaggle inference version 1 completed on four runtime-discovered public test datasets; submit-check passed and submission ref 56153451 completed with Public LB 0.453.",
+    "metrics_path": "experiments/exp002_unet3d_expandable_segments/metrics.json"
+  },
+  {
+    "experiment": "exp003_official_metric_audit",
+    "status": "completed",
+    "metric": "metric_component_agreement",
+    "public_lb": null,
+    "notes": "User approved completion on 2026-09-11. CPU audit v1: 9 fixtures and 4 fixed samples, zero failures; real-sample scores agree and 3 synthetic scores differ. Diagnostic only; CV and LB remain null.",
+    "metrics_path": "experiments/exp003_official_metric_audit/metrics.json"
+  },
+  {
+    "experiment": "exp004_embryo_holdout_baseline",
+    "status": "failed",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "Fold 1 smoke failed: OutOfMemoryError: CUDA out of memory. Tried to allocate 2.09 GiB. GPU 0 has a total capacity of 14.56 GiB of which 756.81 MiB is free. Including non-PyTorch memory, this process has 13.82 GiB memory in use. Of the allocated memory 13.43 GiB is allocated by PyTorch, and 180.74 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)",
+    "metrics_path": "experiments/exp004_embryo_holdout_baseline/metrics.json"
+  },
+  {
+    "experiment": "exp005_embryo_holdout_batch8",
+    "status": "completed",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "All 199 embryo-held-out predictions, candidate caches, and official metric rows were saved and re-evaluated from the fixed graphs. The user closed the experiment after reviewing the result; no competition submission was created.",
+    "metrics_path": "experiments/exp005_embryo_holdout_batch8/metrics.json"
+  },
+  {
+    "experiment": "exp006_embryo_holdout_seed314159",
+    "status": "debug_completed",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "Kaggle inference version 1 completed all 199 embryo-held-out predictions with no missing rows. Official metrics were recomputed from the saved graphs and matched. Exact prediction differences and per-video error correlations against exp005 were saved. No competition submission was created.",
+    "metrics_path": "experiments/exp006_embryo_holdout_seed314159/metrics.json"
+  },
+  {
+    "experiment": "exp007_graph_checkpoint_selection",
+    "status": "discarded",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "Kaggle train version 1 completed normally and saved six epoch checkpoints from two embryo-disjoint folds. Evaluation version 1 scored all six checkpoints; both selectors chose epoch 2 in both folds. It then failed from Kaggle working-disk exhaustion before full outer evaluation. The remediation was implemented and tested, but the user chose not to rerun because identical selected checkpoints cannot establish a selector improvement and the current direction fixes a public detector before tracker training. Outer official CV and its artifact hashes were not obtained.",
+    "metrics_path": "experiments/exp007_graph_checkpoint_selection/metrics.json"
+  },
+  {
+    "experiment": "exp008_deformation_pair_aux",
+    "status": "planned",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "Migrated from backlog/deformation_pairs.md on 2026-09-11. Implementation and execution are intentionally deferred.",
+    "metrics_path": "experiments/exp008_deformation_pair_aux/metrics.json"
+  },
+  {
+    "experiment": "exp009_exp006_twofold_ensemble",
+    "status": "debug_completed",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": 0.693,
+    "notes": "Kaggle inference version 1 and repository submit-check completed. Submission ref 56182729 completed with Public LB 0.693; scoring_elapsed_minutes=231.",
+    "metrics_path": "experiments/exp009_exp006_twofold_ensemble/metrics.json"
+  },
+  {
+    "experiment": "exp010_exp006_deterministic_replay",
+    "status": "discarded",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "Authoritative run 1 completed train and all 199 held-out predictions. The user stopped the experiment before run 2 because the old joint detector-tracker route is no longer the active learning direction; deterministic reproducibility remains unverified and deterministic_anchor stays false.",
+    "metrics_path": "experiments/exp010_exp006_deterministic_replay/metrics.json"
+  },
+  {
+    "experiment": "exp011_public_detector_selection",
+    "status": "usable",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Static selection and checksum audit finished; the user adopted this selection on 2026-09-12. No Kaggle run, model training, prediction, or submission happened.",
+    "metrics_path": "experiments/exp011_public_detector_selection/metrics.json"
+  },
+  {
+    "experiment": "exp012_group_error_readout",
+    "status": "completed",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "User closed exp012 on 2026-09-13 after the Kaggle CPU diagnostic achieved full coverage; results feed oracle_stage_limits.",
+    "metrics_path": "experiments/exp012_group_error_readout/metrics.json"
+  },
+  {
+    "experiment": "exp013_public_notebook_replay",
+    "status": "usable",
+    "metric": "adjusted_edge_jaccard + 0.1 * division_jaccard",
+    "public_lb": 0.944,
+    "notes": "同一条件の2回replayは一致し、code submission ref 56199738はCOMPLETE、Public LB 0.944。ユーザー判断により後続比較の基準としてusableに確定。CVとPrivate LBは未取得。",
+    "metrics_path": "experiments/exp013_public_notebook_replay/metrics.json"
+  },
+  {
+    "experiment": "exp014_exact_window_cache",
+    "status": "usable",
+    "metric": "exact_cache_round_trip_and_exp013_output_equivalence",
+    "public_lb": null,
+    "notes": "Kaggle private Notebook version 1は成功し、全396 windowの配列・primary/secondary edge logitsとexp013最終出力が完全一致した。cache読込は集計上、画像特徴抽出の0.141%だった。Kaggle submissionは行っていない。",
+    "metrics_path": "experiments/exp014_exact_window_cache/metrics.json"
+  },
+  {
+    "experiment": "exp015_oracle_stage_limits",
+    "status": "completed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Kaggle inference version 1 and CPU diagnostic version 6 completed. Results are a conditional oracle diagnostic, not independent CV. The user accepted completion as a diagnostic on 2026-09-14.",
+    "metrics_path": "experiments/exp015_oracle_stage_limits/metrics.json"
+  },
+  {
+    "experiment": "exp016_frozen_image_encoder",
+    "status": "completed",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "Kaggle train version 3 produced two fold tracker models, Colab cache replay produced all 199 ILP graphs with exact public-control reproduction, Kaggle official-eval version 5 completed fixed graph repair, and CPU version 6 computed the official metric for all 199 control and retrained graphs twice with identical summaries. Overall score changed from 0.9117803563 to 0.9120545013 (+0.0002741450), but 44b6 decreased by 0.0024463507 while 6bba increased by 0.0008675982. Improvement on both embryos was not confirmed by retraining alone. The retrained fold models and fixed graph evaluation are the baseline for future tracker changes, with the public tracker retained as a reference. The user confirmed experiment completion by requesting commit and push on 2026-09-19; no submission was created.",
+    "metrics_path": "experiments/exp016_frozen_image_encoder/metrics.json"
+  },
+  {
+    "experiment": "exp017_cross_crop_registration_audit",
+    "status": "completed",
+    "metric": "cross_crop_registration_evidence",
+    "public_lb": null,
+    "notes": "Kaggle CPU kernel v2 completed. No same-embryo pair, including all 24 pairs with identical nonempty repeated-frame schedules, passed the multi-timepoint 2D and 3D registration evidence contract. The user accepted completing the experiment and retaining sample-level tracker training without directly connecting crops. No model, prediction, or submission was produced.",
+    "metrics_path": "experiments/exp017_cross_crop_registration_audit/metrics.json"
+  },
+  {
+    "experiment": "exp018_graph_cost_scale",
+    "status": "discarded",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "All five Kaggle CPU alpha shards and aggregate version 2 completed with full coverage and no metric failures. The bidirectional promotion gate failed because alpha=2 selected on 6bba reduced the held-out 44b6 combined score, so the fixed-repair stage was not run. On 2026-09-16, the user confirmed the experiment complete and the graph_cost_scale method discarded.",
+    "metrics_path": "experiments/exp018_graph_cost_scale/metrics.json"
+  },
+  {
+    "experiment": "exp019_partial_edge_mask",
+    "status": "discarded",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "Official graph evaluation completed conditionally on the public image encoder; user rejected exp019 after the overall score declined versus exp016. No submission was created.",
+    "metrics_path": "experiments/exp019_partial_edge_mask/metrics.json"
+  },
+  {
+    "experiment": "exp020_division_triplet_candidates",
+    "status": "completed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Kaggle CPU version 1 completed all 199 samples and 19,701 windows. User accepted diagnostic completion on 2026-09-19. The division_triplets learning candidate remains open; no model, CV, LB, or submission.",
+    "metrics_path": "experiments/exp020_division_triplet_candidates/metrics.json"
+  },
+  {
+    "experiment": "exp021_division_teacher_audit",
+    "status": "completed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Kaggle CPU version 2 completed 199 samples/19,701 windows. User accepted the teacher diagnostic as completed on 2026-09-19 and chose to seek additional teachers before training division_triplets. No model, CV, LB, or submission.",
+    "metrics_path": "experiments/exp021_division_teacher_audit/metrics.json"
+  },
+  {
+    "experiment": "exp022_synthetic_division_teacher_audit",
+    "status": "completed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Kaggle CPU version 2 completed 32 synthetic sequences. User accepted the diagnostic as completed on 2026-09-20 and approved a small fixed-detector connection audit next. No model, CV, LB, or submission.",
+    "metrics_path": "experiments/exp022_synthetic_division_teacher_audit/metrics.json"
+  },
+  {
+    "experiment": "exp023_synthetic_detector_teacher_audit",
+    "status": "completed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "ユーザー判断で診断実験を完了。合成教師の学習効果は未検証。",
+    "metrics_path": "experiments/exp023_synthetic_detector_teacher_audit/metrics.json"
+  },
+  {
+    "experiment": "exp024_tracker_six_epochs",
+    "status": "discarded",
+    "metric": null,
+    "public_lb": null,
+    "notes": "User rejected and completed the six-epoch experiment on 2026-09-20. The adjacent-frame diagnostic favored the saved epoch-2 baseline on both embryos, and the predeclared graph continuation gate failed. Official graph score and leaderboard score for exp024 were not computed.",
+    "metrics_path": "experiments/exp024_tracker_six_epochs/metrics.json"
+  },
+  {
+    "experiment": "exp025_frame_self_attention",
+    "status": "running",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Models A and B each completed two Kaggle folds x three epochs, with SHA-verified checkpoints. On adjacent-frame pair metrics, B improved on A but showed mixed results versus saved exp016 control: pair precision and false positives worsened on both embryos. Official graph score remains unmeasured; no adoption or completion decision has been made.",
+    "metrics_path": "experiments/exp025_frame_self_attention/metrics.json"
+  },
+  {
+    "experiment": "exp025_kalman_hungarian_links",
+    "status": "discarded",
+    "metric": "conditional_official_combined_score",
+    "public_lb": null,
+    "notes": "User judged exp025 complete and not adopted on 2026-09-20. Kaggle CPU v2 evaluated 199 videos; Kalman reduced official combined score and division Jaccard in both embryos. No submission.",
+    "metrics_path": "experiments/exp025_kalman_hungarian_links/metrics.json"
+  },
+  {
+    "experiment": "exp026_division_candidate_budget",
+    "status": "scaffold_completed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "初段の実装・静的検証完了。Kaggle全件実行はexp025完走出力待ち。",
+    "metrics_path": "experiments/exp026_division_candidate_budget/metrics.json"
+  },
+  {
+    "experiment": "exp027_multi_frame_tracker",
+    "status": "completed",
+    "metric": "fixed_candidate_public_teacher_edge_metrics",
+    "public_lb": null,
+    "notes": "Saved-weight context diagnostic v1 completed; train v4 reproduced. All recall flips versus the two-frame model kept the correct parent at rank 1 and crossed probability 0.5. No net top-1 gain from previous input in either embryo.",
+    "metrics_path": "experiments/exp027_multi_frame_tracker/metrics.json"
+  },
+  {
+    "experiment": "exp028_direct_graph_prediction",
+    "status": "debug_completed",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "Kaggle train v1 completed; two-frame early gate failed for both embryos. Full graph inference and official score were not run. Adoption/completion awaits user judgment.",
+    "metrics_path": "experiments/exp028_direct_graph_prediction/metrics.json"
+  },
+  {
+    "experiment": "exp029_mother_daughter_set_selection",
+    "status": "debug_completed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Kaggle kernel version 4 completed fold 1 using SHA-verified v2 resume artifacts. Both outer embryos fail the two-frame early gate for known-edge recall, observable false-edge rate, and division recovery against saved exp016. Full graph and official score remain unmeasured; adoption and completion await user judgment. Division diagnostic on all 151 GT-division windows reproduced the saved counts. All 128 covered outer divisions are dominated by their own proper subset before decoding; removing pruning still recovers zero. The final models also recover none of the 117 covered training divisions.",
+    "metrics_path": "experiments/exp029_mother_daughter_set_selection/metrics.json"
+  },
+  {
+    "experiment": "exp030_frame_self_attention_diagnostics",
+    "status": "completed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "User confirmed diagnostic experiment completion on 2026-09-20. Checkpoint compatibility and representative/largest-window T4 execution were verified. No model accuracy, official graph score, or submission was measured; architecture adoption remains for exp031.",
+    "metrics_path": "experiments/exp030_frame_self_attention_diagnostics/metrics.json"
+  },
+  {
+    "experiment": "exp031_frame_self_attention_spatial",
+    "status": "running",
+    "metric": "fixed_candidate_public_teacher_edge_metrics",
+    "public_lb": null,
+    "notes": "Six-model train stage completed and SHA-verified. Pair-level automatic graph progression condition failed; official graph score not measured. Awaiting user decision on full graph inference.",
+    "metrics_path": "experiments/exp031_frame_self_attention_spatial/metrics.json"
+  },
+  {
+    "experiment": "exp032_three_frame_ten_epoch_training",
+    "status": "debug_completed",
+    "metric": "fixed_candidate_public_teacher_edge_metrics",
+    "public_lb": null,
+    "notes": "Ten-epoch Colab training and fixed-window diagnostic complete. Official graph score not measured; user decision pending.",
+    "metrics_path": "experiments/exp032_three_frame_ten_epoch_training/metrics.json"
+  },
+  {
+    "experiment": "exp033_frame_self_attention_diagnostics",
+    "status": "completed",
+    "metric": "conditional_fixed_candidate_pair_ranking",
+    "public_lb": null,
+    "notes": "Saved-checkpoint pair-ranking diagnostic completed on Kaggle. All eight reference 0.5 comparisons reproduced; official graph score and submission were not computed. The user marked exp033 complete on 2026-09-21; Self-Attention architecture adoption remains undecided.",
+    "metrics_path": "experiments/exp033_frame_self_attention_diagnostics/metrics.json"
+  },
+  {
+    "experiment": "exp034_frame_self_attention_distance_bias",
+    "status": "completed",
+    "metric": "official_adjusted_edge_jaccard_plus_0.1_division_jaccard",
+    "public_lb": null,
+    "notes": "Kaggle train version 2 completed 2 folds x 3 epochs and saved two verified checkpoints. Tracker training showed no material improvement, and the user closed the experiment without running the full graph replay or official metric.",
+    "metrics_path": "experiments/exp034_frame_self_attention_distance_bias/metrics.json"
+  },
+  {
+    "experiment": "exp035_velocity_features",
+    "status": "running",
+    "metric": "fixed_candidate_velocity_pair_diagnostics",
+    "public_lb": null,
+    "notes": "Velocity pair diagnostic completed against saved exp016 fold models. The pair gate failed; full graph inference was not started.",
+    "metrics_path": "experiments/exp035_velocity_features/metrics.json"
+  },
+  {
+    "experiment": "exp036_detection_score_pair_features",
+    "status": "discarded",
+    "metric": "fixed_candidate_public_teacher_edge_metrics",
+    "public_lb": null,
+    "notes": "Pair-level progression gate failed; stopped before full-graph inference as required. On 2026-09-23, the user marked the experiment discarded.",
+    "metrics_path": "experiments/exp036_detection_score_pair_features/metrics.json"
+  },
+  {
+    "experiment": "exp037_past_candidate_attention",
+    "status": "failed",
+    "metric": "fixed_candidate_past_candidate_attention_pair_diagnostics",
+    "public_lb": null,
+    "notes": "Version 2 cleared CUDA OOM with mathematically equivalent target chunking and gradient checkpointing, then stopped before full training because the 198.17-hour conservative projection exceeded the 12-hour gate.",
+    "metrics_path": "experiments/exp037_past_candidate_attention/metrics.json"
+  },
+  {
+    "experiment": "exp038_past_candidate_knn_attention",
+    "status": "failed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Kaggle v2 passed K=8 retention in both folds but the conservative 10.93h runtime projection exceeded the 6.515h budget gate; training and pair evaluation did not start.",
+    "metrics_path": "experiments/exp038_past_candidate_knn_attention/metrics.json"
+  },
+  {
+    "experiment": "exp039_dog_features",
+    "status": "discarded",
+    "metric": "fixed_candidate_public_teacher_edge_metrics",
+    "public_lb": null,
+    "notes": "User decided to discard and close exp039 on 2026-09-23. Pair-level gate failed in both embryos; full-graph inference, official score, and submission were not run.",
+    "metrics_path": "experiments/exp039_dog_features/metrics.json"
+  },
+  {
+    "experiment": "exp040_trackastra_association",
+    "status": "debug_completed",
+    "metric": "per_embryo_known_edge_recall_at_internal_calibrated_threshold",
+    "public_lb": null,
+    "notes": "数値安定化したmasked BCEでColab T4の10 epochs×2foldを再学習。両胚の既知接続再現率は旧実行より低く、exp016対照も下回る。事前指定のgraph進行条件は未達。公式graph scoreとLBは未測定で、実験の完了・採否はユーザー判断待ち。",
+    "metrics_path": "experiments/exp040_trackastra_association/metrics.json"
+  },
+  {
+    "experiment": "exp041_past_feature_cross_attention",
+    "status": "debug_completed",
+    "metric": "fixed_candidate_past_feature_cross_attention_pair_diagnostics",
+    "public_lb": null,
+    "notes": "Past-feature cross-attention pair diagnostic completed against saved exp016 fold models. The pair gate failed; full graph inference was not started.",
+    "metrics_path": "experiments/exp041_past_feature_cross_attention/metrics.json"
+  },
+  {
+    "experiment": "exp042_public_x138_replay",
+    "status": "scaffold_completed",
+    "metric": null,
+    "public_lb": null,
+    "notes": "Reference and replay notebook implemented; x138 V1284 dataset version identified but inaccessible (403), checkpoint SHA unknown. No Kaggle run or submission.",
+    "metrics_path": "experiments/exp042_public_x138_replay/metrics.json"
+  },
+  {
+    "experiment": "exp043_x138_self_trained_head",
+    "status": "completed",
+    "metric": "matched_known_center_distance_um (video-grouped, conditional on public image model)",
+    "public_lb": 0.95,
+    "notes": "User adopted the x138 pipeline with a self-trained coordinate head. Public LB 0.950; conditional center-distance evaluation uses 20 train videos and 10894 matched points. Tracker weights were fixed and tracker-training pair/graph metrics were not measured. Raw point-level OOF predictions are unavailable.",
+    "metrics_path": "experiments/exp043_x138_self_trained_head/metrics.json"
+  }
+]
