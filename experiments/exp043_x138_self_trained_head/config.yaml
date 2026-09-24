@@ -1,0 +1,109 @@
+experiment:
+  name: exp043_x138_self_trained_head
+  description: "固定した公開画像モデルの特徴から座標補正モデルを自前学習し、x138推論に組み込む"
+  route: public_x138_self_trained_coordinate_head
+  created_at: "2026-09-24"
+  notebooks: [train, inference]
+
+lineage:
+  parent: exp042_public_x138_replay
+  hypothesis_id: N/A
+  backlog_candidate: N/A
+  diff_summary: "取得不能な作者V1284重みを代用せず、同じ入力特徴と構造の座標補正モデルをtrain GEFFから新規学習する"
+
+source:
+  reference_kernel: anvithpothula/biohub-x138
+  reference_notebook_sha256: 6b655e39bbfd2d3d6c762badea69847d3f00f5b548f385cb01b07ee2600fde6d
+  reference_path: ../../docs/notebooks/biohub-cell-tracking-during-development/anvithpothula__biohub-x138/biohub-x138.ipynb
+
+data:
+  source: competition_train_runtime
+  train_zarr: train/*.zarr
+  train_geff: train/*.geff
+  selection_seed: 42
+  videos_per_embryo: 10
+  expected_embryos: [44b6, 6bba]
+  candidate_match_radius_um: 7.0
+  native_spacing_zyx_um: [1.625, 0.40625, 0.40625]
+  feature_grid_spacing_zyx_um: [1.625, 1.625, 1.625]
+  feature_width: 224
+  public_artifacts:
+    - pilkwang/biohub-tracking-support-pack-50ep-v1
+    - pilkwang/biohub-temporal-unet3d-seed314159-v1
+    - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+
+model:
+  name: x138_v1284_architecture_self_trained
+  params:
+    hidden_width: 32
+    max_shift_um: 2.0
+    loss: huber
+    huber_delta_um: 1.0
+    optimizer: AdamW
+    learning_rate: 0.001
+    weight_decay: 0.0001
+    epochs: 150
+    batch_size: 256
+    validation_folds: 5
+    seed: 20260924
+    checkpoint_sha256: 32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc
+
+overrides:
+  project_defaults: [validation.metric]
+
+validation:
+  method: video_grouped_five_fold
+  baseline: zero_coordinate_shift
+  report_by_embryo: true
+  conditional_on_public_image_model_training: true
+  metric: matched_known_center_distance_um
+  evaluate_full_x138_on_public_test: true
+  public_test_has_no_labels: true
+
+runtime:
+  use_amp: true
+  num_workers: 2
+  batch_size: null
+  capture_budget_minutes: 180
+  pilot_video_count: 2
+  kaggle:
+    train:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+        - kentookumura/exp043-self-trained-coordinate-head
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: stable_sha256_video_selection_and_fixed_training_seed
+  stochastic_components: [torch_training_order, cuda_inference, ilp]
+  parallel_rng_policy: deterministic_video_partition_no_shared_rng
+  feature_sha_policy: captured_float32_arrays_per_video
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: true
+    submission_sha: true
+
+notes:
+  - "x138作者の追加checkpointは未取得。作者のscoreや重みの再現を主張しない。"
+  - "予測候補に対応しない疎なGEFF注釈は負例にしない。"
+  - "Kaggle Notebookの実行は承認済み。competition submissionは別途明示承認が必要。"
