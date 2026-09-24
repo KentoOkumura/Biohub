@@ -95,20 +95,19 @@
 | P1 | `HYP-20260910-09` | [`x138_detection_recovery`](x138_detection_recovery.md) | 得点・画像・接続から回収候補を選ぶ | exp043の固定候補。同実験内でtrain対照・教師を作成。 | `検討メモ・設計不可` |
 | P1 | `HYP-20260910-09` | [`x138_edge_candidates`](x138_edge_candidates.md) | 競合する接続候補をILPへ残す | exp043の同一得点。閾値・件数・費用上限を確定。 | `検討メモ・設計不可` |
 | P1 | `HYP-20260910-12` | [`public_x138_replay`](public_x138_replay.md) | x138全体を忠実再現 | 追加座標補正重みの取得・固定。 | `設計可能・実験化未承認` |
+| P1 | `HYP-20260910-10` | [`neighbor_dynamics`](neighbor_dynamics.md) | 近傍運動を共有するGNNで再接続 | exp043対照。同実験で学習から全graph評価。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-10` | [`past_candidate_attention`](past_candidate_attention.md) | 接続候補ごとに全過去候補の3点座標特徴を集約 | exp015固定候補・exp016保存済み対照。13→32→32のMLPとattention、履歴を使わない選択肢。予測履歴生成は不要。全候補の時間・メモリを確認。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-10` | [`x138_window_features`](x138_window_features.md) | 前後窓の固定画像特徴で接続を学ぶ | exp043と同条件学習対照。窓・統合・損失を確定。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-10` | [`position_history_tracker`](position_history_tracker.md) | 予測対応した位置列を入力して接続を学習 | exp015/016の分割外履歴。履歴生成・集約・信頼度・分裂後処理を確定する。 | `検討メモ・設計不可` |
-| P2 | `HYP-20260910-10` | [`neighbor_dynamics`](neighbor_dynamics.md) | 近傍移動からのずれと信頼度を学ぶ | exp043の近傍移動ルール・同入力対照、exp035診断。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-10` | [`trackastra_association`](trackastra_association.md) | Trackastraの窓内対応学習 | exp015/016。教師・構造を確定。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-10` | [`past_feature_cross_attention`](past_feature_cross_attention.md) | 過去特徴へのcross-attention | exp015/016。特徴元窓・構造を確定。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-03` | [`division_candidate_budget`](division_candidate_budget.md) | 同じ組数で距離のみと画像・運動の候補を比較 | exp020/021、exp016得点、exp025の不採用結果。初段で候補契約を固定し、分裂学習後に同じ得点で実選別を確認する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-03` | [`division_triplets`](division_triplets.md) | 同じ分裂組モデルで合成事前学習の有無を比較 | 完了したexp023の検出後教師（32時系列・正例1,035件）とdivision_candidate_budgetの初段契約。合成分割・sampling、実画像の未知組を除外する教師mask、損失・共通復号を確定する。 | `検討メモ・設計不可` |
-| P2 | `HYP-20260910-11` | [`shared_edge_graph_learning`](shared_edge_graph_learning.md) | 共有得点でgraph比較学習 | exp043同入力対照・exp029診断。損失とILP対照を定め、小例適合を先行。 | `検討メモ・設計不可` |
+| P2 | `HYP-20260910-11` | [`shared_edge_graph_learning`](shared_edge_graph_learning.md) | GNNと共有接続得点で母と2娘を選択 | exp043対照。損失・選択を確定。予備実験なしで全graph評価。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-12` | [`sparse_motion_graph`](sparse_motion_graph.md) | 近傍候補で多時点予測を可能に | exp015のGPU予測区間6時間39分54秒、peak GPU memory 688MB、candidate edge recall 94.829%。初回tracker学習で候補間計算が時間・メモリを支配すると実測された場合だけ、学習前に候補制限を診断する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-14` | [`contrastive_feature_audit`](contrastive_feature_audit.md) | 対照学習の教師と固定特徴を診断 | exp015 cacheと固定tracker基準。確定負例・重複対応を監査し、距離のみと小型特徴モデルの親候補順位を比較する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260915-01` | [`contrastive_parent_child`](contrastive_parent_child.md) | 正しい親子対応の特徴を対照学習 | contrastive_feature_audit、固定tracker基準、partial_edge_maskとの教師mask分離。既存接続損失を残し対照損失の有無だけを比較する。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-10` | [`multi_time_past_candidate_attention`](multi_time_past_candidate_attention.md) | 過去座標の複数時点集約 | 1時点版の証拠。時間差・集約を確定。 | `検討メモ・設計不可` |
-| P3 | `HYP-20260910-10` | [`x138_two_step_links`](x138_two_step_links.md) | 2時点先の対応で経路を選ぶ | exp043の固定隣接候補。予測器・経路得点を確定。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-02` | [`subvoxel_offset`](subvoxel_offset.md) | voxel未満の中心位置を補正 | [`exp015_oracle_stage_limits`](../experiments/exp015_oracle_stage_limits/)。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `設計可能・実験化未承認` |
 | P3 | `HYP-20260910-06` | [`correlated_jitter`](correlated_jitter.md) | 時間相関のある位置誤差を学ぶ | [`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-06` | [`missing_frame_noise`](missing_frame_noise.md) | 連続する見逃しから補正を学ぶ | [`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
@@ -142,6 +141,7 @@
 | P3 | `HYP-20260910-09` | [`contrastive_edge_candidates`](contrastive_edge_candidates.md) | 特徴の類似度で接続候補を追加 | contrastive_parent_childの照合特徴。固定中心間の追加edge数を距離方式と揃え、候補回収と最終graphの選別を分ける。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-09` | [`x138_local_graph_choice`](x138_local_graph_choice.md) | 複数局所graphを保持・選択 | exp043、局所選択。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-06` | [`x138_history_error_training`](x138_history_error_training.md) | 実誤履歴で学習し実予測へ調整 | exp043、誤履歴。 | `検討メモ・設計不可` |
+| P4 | `HYP-20260910-10` | [`x138_two_step_links`](x138_two_step_links.md) | 3時点GNNと2時点先対応で経路選択 | GNN案内で後続。先行2案の結果と残り時間・計算枠から再開判断。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260910-12` | [`public_x138_tracker_comparison`](public_x138_tracker_comparison.md) | 公開/exp016重みを比較 | public_x138_replay・exp016の2fold重み。 | `設計可能・実験化未承認` |
 | P4 | `HYP-20260910-01` | [`sparse_det_mask`](sparse_det_mask.md) | 検出の未知領域を負例から外す | 検出損失と検出器の更新を必要とするため現方針では保留。検出器更新への方針変更が明示承認され、未知領域と背景の教師設計が成立した場合に再検討する。検出不足の診断だけでは再開しない。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260911-01` | [`nnunet_center_detection`](nnunet_center_detection.md) | nnU-Netで中心マップを学習して追跡へ渡す | nnU-Netによる検出器学習は現方針の対象外。検出器更新への方針変更が明示承認され、中心教師と学習費用の条件が成立した場合に再検討する。 | `検討メモ・設計不可` |
