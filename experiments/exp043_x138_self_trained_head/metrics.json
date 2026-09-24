@@ -1,6 +1,6 @@
 {
   "experiment": "exp043_x138_self_trained_head",
-  "status": "usable",
+  "status": "completed",
   "cv": null,
   "public_lb": 0.95,
   "private_lb": null,
@@ -436,5 +436,5 @@
     }
   },
   "notes": "User adopted the x138 pipeline with a self-trained coordinate head. Public LB 0.950; conditional center-distance evaluation uses 20 train videos and 10894 matched points. Tracker weights were fixed and tracker-training pair/graph metrics were not measured. Raw point-level OOF predictions are unavailable.",
-  "updated_at": "2026-09-24T08:05:52.414931+00:00"
+  "updated_at": "2026-09-24T08:34:57.486958+00:00"
 }

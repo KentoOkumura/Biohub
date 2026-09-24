@@ -90,7 +90,6 @@
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
 | P1 | `HYP-20260910-12` | [`public_x138_replay`](public_x138_replay.md) | x138全体を忠実再現 | 追加座標補正重みの取得・固定。 | `設計可能・実験化未承認` |
-| P2 | `HYP-20260910-12` | [`public_x138_tracker_comparison`](public_x138_tracker_comparison.md) | 公開/exp016重みを比較 | public_x138_replay・exp016の2fold重み。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-10` | [`past_candidate_attention`](past_candidate_attention.md) | 接続候補ごとに全過去候補の3点座標特徴を集約 | exp015固定候補・exp016保存済み対照。13→32→32のMLPとattention、履歴を使わない選択肢。予測履歴生成は不要。全候補の時間・メモリを確認。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-10` | [`position_history_tracker`](position_history_tracker.md) | 予測対応した位置列を入力して接続を学習 | exp015/016の分割外履歴。履歴生成・集約・信頼度・分裂後処理を確定する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-10` | [`trackastra_association`](trackastra_association.md) | Trackastraの窓内対応学習 | exp015/016。教師・構造を確定。 | `検討メモ・設計不可` |
@@ -132,6 +131,7 @@
 | P3 | `HYP-20260910-11` | [`explicit_no_match`](explicit_no_match.md) | 対応なしを明示的な出力に | partial_edge_mask。公開検出器固定のトラッカー学習基準を共通の先行条件とする。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-06` | [`contrastive_context_noise`](contrastive_context_noise.md) | 候補欠落に強いtracker特徴を学ぶ | contrastive_parent_childと学習側の実誤差。合成文脈で学習後に実予測で調整する。検出点補正のreal_error_finetuneとは別案。 | `検討メモ・設計不可` |
 | P3 | `HYP-20260910-09` | [`contrastive_edge_candidates`](contrastive_edge_candidates.md) | 特徴の類似度で接続候補を追加 | contrastive_parent_childの照合特徴。固定中心間の追加edge数を距離方式と揃え、候補回収と最終graphの選別を分ける。 | `検討メモ・設計不可` |
+| P4 | `HYP-20260910-12` | [`public_x138_tracker_comparison`](public_x138_tracker_comparison.md) | 公開/exp016重みを比較 | public_x138_replay・exp016の2fold重み。 | `設計可能・実験化未承認` |
 | P4 | `HYP-20260910-01` | [`sparse_det_mask`](sparse_det_mask.md) | 検出の未知領域を負例から外す | 検出損失と検出器の更新を必要とするため現方針では保留。検出器更新への方針変更が明示承認され、未知領域と背景の教師設計が成立した場合に再検討する。検出不足の診断だけでは再開しない。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260911-01` | [`nnunet_center_detection`](nnunet_center_detection.md) | nnU-Netで中心マップを学習して追跡へ渡す | nnU-Netによる検出器学習は現方針の対象外。検出器更新への方針変更が明示承認され、中心教師と学習費用の条件が成立した場合に再検討する。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260910-09` | [`candidate_union`](candidate_union.md) | 異なる検出法の候補を統合 | 原案の領域教師由来の中心が未成立。追加の固定公開情報源と取得条件・候補数を揃える対照・費用が確定するまで保留。単一検出器の閾値変更へ原案を置き換えない。 | `検討メモ・設計不可` |
