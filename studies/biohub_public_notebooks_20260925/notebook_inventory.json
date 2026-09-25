@@ -1,0 +1,177 @@
+[
+  {
+    "ref": "amanatar/biohub-geometric-fusion",
+    "metadata": {
+      "id": "amanatar/biohub-geometric-fusion",
+      "id_no": 134098803,
+      "title": "Biohub Geometric Fusion",
+      "code_file": "biohub-geometric-fusion.ipynb",
+      "language": "python",
+      "kernel_type": "notebook",
+      "is_private": false,
+      "enable_gpu": true,
+      "enable_tpu": false,
+      "enable_internet": false,
+      "keywords": [
+        "gpu"
+      ],
+      "dataset_sources": [
+        "pilkwang/biohub-deepcenter-unet3d-center-prior-v1",
+        "pilkwang/biohub-temporal-unet3d-seed314159-v1",
+        "pilkwang/biohub-tracking-support-pack-50ep-v1"
+      ],
+      "kernel_sources": [],
+      "competition_sources": [
+        "biohub-cell-tracking-during-development"
+      ],
+      "model_sources": [],
+      "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+      "machine_shape": "NvidiaTeslaT4"
+    },
+    "source": "docs/notebooks/biohub-cell-tracking-during-development/20260925/amanatar__biohub-geometric-fusion/biohub-geometric-fusion.ipynb",
+    "sha256": "f82a606e2e3289f1d6dce078d381dd7b0caf148c92bb25f2f05bea80d4e79a37",
+    "cells": 12,
+    "code_lines": 4469
+  },
+  {
+    "ref": "anvithpothula/biohub-x138",
+    "metadata": {
+      "id": "anvithpothula/biohub-x138",
+      "id_no": 135218473,
+      "title": "biohub x138",
+      "code_file": "biohub-x138.ipynb",
+      "language": "python",
+      "kernel_type": "notebook",
+      "is_private": false,
+      "enable_gpu": true,
+      "enable_tpu": false,
+      "enable_internet": false,
+      "keywords": [
+        "gpu"
+      ],
+      "dataset_sources": [
+        "pilkwang/biohub-deepcenter-unet3d-center-prior-v1",
+        "pilkwang/biohub-temporal-unet3d-seed314159-v1",
+        "pilkwang/biohub-tracking-support-pack-50ep-v1",
+        "anvithpothula/biohub-v1284-head-s075"
+      ],
+      "kernel_sources": [],
+      "competition_sources": [
+        "biohub-cell-tracking-during-development"
+      ],
+      "model_sources": [],
+      "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+      "machine_shape": "NvidiaTeslaT4"
+    },
+    "source": "docs/notebooks/biohub-cell-tracking-during-development/20260925/anvithpothula__biohub-x138/biohub-x138.ipynb",
+    "sha256": "6b655e39bbfd2d3d6c762badea69847d3f00f5b548f385cb01b07ee2600fde6d",
+    "cells": 12,
+    "code_lines": 4925
+  },
+  {
+    "ref": "evgendvorkin/biohub-0-947-lb-proxy-score-0-9490",
+    "metadata": {
+      "id": "evgendvorkin/biohub-0-947-lb-proxy-score-0-9490",
+      "id_no": 125651046,
+      "title": "Biohub  0.947 LB PROXY_SCORE=0.9490",
+      "code_file": "biohub-0-947-lb-proxy-score-0-9490.ipynb",
+      "language": "python",
+      "kernel_type": "notebook",
+      "is_private": false,
+      "enable_gpu": true,
+      "enable_tpu": false,
+      "enable_internet": false,
+      "keywords": [
+        "gpu"
+      ],
+      "dataset_sources": [
+        "pilkwang/biohub-deepcenter-unet3d-center-prior-v1",
+        "pilkwang/biohub-temporal-unet3d-seed314159-v1",
+        "pilkwang/biohub-tracking-support-pack-50ep-v1"
+      ],
+      "kernel_sources": [
+        ""
+      ],
+      "competition_sources": [
+        "biohub-cell-tracking-during-development"
+      ],
+      "model_sources": [],
+      "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+      "machine_shape": "NvidiaTeslaT4"
+    },
+    "source": "docs/notebooks/biohub-cell-tracking-during-development/20260925/evgendvorkin__biohub-0-947-lb-proxy-score-0-9490/biohub-0-947-lb-proxy-score-0-9490.ipynb",
+    "sha256": "72ace1da5d9cecd906effb92c796643950194c1ab16eeb61900cf43a8842ad27",
+    "cells": 31,
+    "code_lines": 4189
+  },
+  {
+    "ref": "kunaldesale2408/biohub-cell-tracking",
+    "metadata": {
+      "id": "kunaldesale2408/biohub-cell-tracking",
+      "id_no": 130667075,
+      "title": "Biohub Cell Tracking",
+      "code_file": "biohub-cell-tracking.ipynb",
+      "language": "python",
+      "kernel_type": "notebook",
+      "is_private": false,
+      "enable_gpu": true,
+      "enable_tpu": false,
+      "enable_internet": false,
+      "keywords": [
+        "gpu"
+      ],
+      "dataset_sources": [
+        "pilkwang/biohub-deepcenter-unet3d-center-prior-v1",
+        "pilkwang/biohub-temporal-unet3d-seed314159-v1",
+        "pilkwang/biohub-tracking-support-pack-50ep-v1",
+        "anvithpothula/biohub-v1284-head-s075"
+      ],
+      "kernel_sources": [],
+      "competition_sources": [
+        "biohub-cell-tracking-during-development"
+      ],
+      "model_sources": [],
+      "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+      "machine_shape": "NvidiaTeslaT4"
+    },
+    "source": "docs/notebooks/biohub-cell-tracking-during-development/20260925/kunaldesale2408__biohub-cell-tracking/biohub-cell-tracking.ipynb",
+    "sha256": "9cd5d1490dfdd434b21027c4e934478f9def530c6670a2a86f5480b03b5d696e",
+    "cells": 13,
+    "code_lines": 4887
+  },
+  {
+    "ref": "raunakdey07/biohub-harmonic-fusion-v3",
+    "metadata": {
+      "id": "raunakdey07/biohub-harmonic-fusion-v3",
+      "id_no": 128498813,
+      "title": "Biohub: Harmonic Fusion V3",
+      "code_file": "biohub-harmonic-fusion-v3.ipynb",
+      "language": "python",
+      "kernel_type": "notebook",
+      "is_private": false,
+      "enable_gpu": true,
+      "enable_tpu": false,
+      "enable_internet": false,
+      "keywords": [
+        "gpu"
+      ],
+      "dataset_sources": [
+        "pilkwang/biohub-deepcenter-unet3d-center-prior-v1",
+        "pilkwang/biohub-temporal-unet3d-seed314159-v1",
+        "pilkwang/biohub-tracking-support-pack-50ep-v1",
+        "anvithpothula/biohub-v1284-head-s075"
+      ],
+      "kernel_sources": [],
+      "competition_sources": [
+        "biohub-cell-tracking-during-development"
+      ],
+      "model_sources": [],
+      "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461",
+      "machine_shape": "NvidiaTeslaT4"
+    },
+    "source": "docs/notebooks/biohub-cell-tracking-during-development/20260925/raunakdey07__biohub-harmonic-fusion-v3/biohub-harmonic-fusion-v3.ipynb",
+    "sha256": "9ab32885574092ab46a8d90bfa96393332c6e5a6249d33c92a9051efbc9779ca",
+    "cells": 20,
+    "code_lines": 4777
+  }
+]

@@ -5,18 +5,18 @@
 - 対応する上位仮説: `HYP-20260910-12`
 - 関連する上位仮説: `HYP-20260910-14`（公式評価と候補順位）。座標補正などの個別機構は直接検証しない。
 - 作成日: 2026-09-23
-- 最終更新日: 2026-09-24
+- 最終更新日: 2026-09-25
 - 依頼原文: 「バックログ案にするとどうなりますか？」「先ほどのバックログ案2件をバックログに追加してください」
 - 期待する成果: 再現したx138で、公開primary trackerとexp016の保存済み再学習trackerを同じ入力・後処理で比較する。従来構成の同じ比較も合わせ、新しい入力・後処理の下で重みの順位が変わるかを示す。
-- 親実験 / 比較対象: 学習済み重み・旧構成の対照は[`exp016_frozen_image_encoder`](../experiments/exp016_frozen_image_encoder/)、新構成は[`public_x138_replay`](public_x138_replay.md)の忠実再現。追加学習は行わない。
+- 親実験 / 比較対象: 学習済み重み・旧構成の対照は[`exp016_frozen_image_encoder`](../experiments/exp016_frozen_image_encoder/)、新構成は[`exp042_public_x138_replay`](../experiments/exp042_public_x138_replay/)の忠実再現。追加学習は行わない。
 - 優先度: P4
-- 優先度の理由: 作者の追加座標補正重みは未取得で、忠実なx138再現を先行条件とする本候補は現在実行できない。[exp043](../experiments/exp043_x138_self_trained_head/result.md)は自前学習した別のheadを使う採用・完了済み構成であり、今後のtracker学習評価の直接の対照には本候補を使わない。作者重みが取得でき、保存済みexp016重みの転用比較を改めて行う目的が生じた場合に再開する。
+- 優先度の理由: 作者の追加座標補正重みは2026-09-25に取得済みとなり、取得に関する先行条件は解消した。ただし保存済みexp016 trackerを転用して比べる目的は再開されていない。[exp043](../experiments/exp043_x138_self_trained_head/result.md)を現行基準とする方針とP4を維持する。今回追加した[座標head交換比較](x138_author_head_comparison.md)はtrackerを固定する別の比較であり、その依頼を本候補の再開承認とは扱わない。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: 「検証中の仮説」の`HYP-20260910-12`、未着手バックログの本候補。
 
 ## 観測事実と根拠
 
 - 実測済みの事実: exp016のtrain 199動画の公式指標は公開重み0.9117803563、再学習重み0.9120545013。全体差は+0.0002741450だが、44b6は-0.0024463507、6bbaは+0.0008675982で両胚の改善条件を満たしていない。exp016は未提出。公開x138の0.953と直接比較できる数値ではない。
-- 根拠ファイル / 一次資料: [exp016結果](../experiments/exp016_frozen_image_encoder/result.md)、[metrics](../experiments/exp016_frozen_image_encoder/metrics.json)の`official_graph_evaluation`、[要件](../experiments/exp016_frozen_image_encoder/requirements.md)、[設定](../experiments/exp016_frozen_image_encoder/config.yaml)、[x138の訂正済み調査](../docs/surveys/biohub-public-0953-differences_20260923.md)、[先行候補](public_x138_replay.md)。
+- 根拠ファイル / 一次資料: [exp016結果](../experiments/exp016_frozen_image_encoder/result.md)、[metrics](../experiments/exp016_frozen_image_encoder/metrics.json)の`official_graph_evaluation`、[要件](../experiments/exp016_frozen_image_encoder/requirements.md)、[設定](../experiments/exp016_frozen_image_encoder/config.yaml)、[x138の訂正済み調査](../docs/surveys/biohub-public-0953-differences_20260923.md)、[先行する再現実験](../experiments/exp042_public_x138_replay/requirements.md)。
 - 利用する保存済み生成物とSHA: [exp016 model manifest](../experiments/exp016_frozen_image_encoder/artifacts/train_v3/model_manifest.json)に記録したfold 0 / fold 1の`primary_tracker_best.pth`、[公式評価生成物](../experiments/exp016_frozen_image_encoder/artifacts/official_eval_v6/)、[exp015設定](../experiments/exp015_oracle_stage_limits/config.yaml)の旧特徴cache。file SHA・model state SHA・分割・注釈SHAを各manifestとmetricsで照合する。x138側の全checkpoint・source・新特徴のSHAは先行候補の実測manifestから受け取る。
 - 仮定: Assumption: 保存済みexp016 trackerは同じ`SimpleNodeTransformer`構造なのでx138の補正座標・特徴にも入力できる。ただしその分布で学習しておらず、精度改善や旧構成での順位の維持を仮定しない。
 
@@ -91,7 +91,7 @@
 
 ## 先行条件 / 依存
 
-- `public_x138_replay`の忠実再現と全checkpoint manifest。公開testの再現性と必要artifactが成立すれば比較設計を実行でき、先行候補のLB採用判断までは必須にしない。ただし本候補自体の実験化・実行承認は必要。
+- [exp042](../experiments/exp042_public_x138_replay/requirements.md)で定義した忠実再現と全checkpoint manifest。公開testの再現性と必要artifactが成立すれば比較設計を実行でき、先行候補のLB採用判断までは必須にしない。ただし本候補自体の実験化・実行承認は必要。
 - exp016の保存済み2fold重み・旧graph・公式評価証拠、train画像・GEFFを取得できること。
 
 ## 調査・実行時に確認する事項
@@ -112,6 +112,8 @@
 
 - 2026-09-23: 既存66候補の優先度を再点検し、他候補の順位と進行中実験は維持。x138再現をP1、依存する重み比較をP2とした。
 - 2026-09-24: exp043採用・完了後、ユーザー依頼で本候補をP4へ変更した。作者重みの未取得と、exp043で新たにtrackerを学習して比べる目的との差を再開条件に反映した。
+
+- 2026-09-25: [公開Notebook再調査](../docs/surveys/biohub-public-notebooks-followup_20260925.md)で作者headを取得済みと確認し、取得不能という現状記述を更新。P4と比較内容は維持し、移行済み再現候補のリンクをexp042へ更新した。
 
 ## 次セッションへの引き継ぎ確認
 

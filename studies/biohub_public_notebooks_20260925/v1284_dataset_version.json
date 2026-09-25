@@ -1,0 +1,31 @@
+{
+  "id": 12103746,
+  "ref": "anvithpothula/biohub-v1284-head-s075",
+  "title": "biohub v1284 head s075",
+  "currentVersionNumber": 1,
+  "lastUpdated": "2026-09-20T14:13:26.057Z",
+  "isPrivate": false,
+  "isFeatured": false,
+  "licenseName": "CC0: Public Domain",
+  "totalBytes": 33913,
+  "versions": [
+    {
+      "creatorNameNullable": "Anvith Pothula",
+      "creatorRefNullable": "biohub-v1284-head-s075",
+      "versionNotesNullable": "Initial release",
+      "statusNullable": "Ready",
+      "versionNumber": 1,
+      "creationDate": "2026-09-20T14:13:26.057Z",
+      "creatorName": "Anvith Pothula",
+      "hasCreatorName": true,
+      "creatorRef": "biohub-v1284-head-s075",
+      "hasCreatorRef": true,
+      "versionNotes": "Initial release",
+      "hasVersionNotes": true,
+      "status": "Ready",
+      "hasStatus": true
+    }
+  ],
+  "checked_at_utc": "2026-09-25T10:20:12.296672+00:00",
+  "endpoint": "https://www.kaggle.com/api/v1/datasets/view/anvithpothula/biohub-v1284-head-s075"
+}

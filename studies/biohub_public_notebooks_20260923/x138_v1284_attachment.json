@@ -1,0 +1,24 @@
+{
+  "checked_at_utc": "2026-09-23T14:48:07.629678+00:00",
+  "kernel": "anvithpothula/biohub-x138",
+  "kernel_id": 135218473,
+  "kernel_version": 1,
+  "source_api": "KernelsService/GetKernelVersion",
+  "attachment": {
+    "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+    "sourceId": 19822532,
+    "datasetId": 12103746,
+    "mountSlug": "datasets/anvithpothula/biohub-v1284-head-s075"
+  },
+  "file_access": {
+    "datasets_files": "403 Forbidden",
+    "datasets_download": "403 Forbidden",
+    "v1284_head_pt_in_public_kernel_output": false
+  },
+  "previous_sha_comparison_scope": [
+    "primary",
+    "secondary",
+    "deepcenter"
+  ],
+  "v1284_checkpoint_sha256": null
+}

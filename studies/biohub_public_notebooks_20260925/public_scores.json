@@ -1,0 +1,478 @@
+[
+  {
+    "id": 134098803,
+    "title": "Biohub Geometric Fusion",
+    "currentRunId": 351532492,
+    "mostRecentRunId": 351532492,
+    "url": "/code/amanatar/biohub-geometric-fusion",
+    "bestPublicScore": 0.948,
+    "updatedTime": "2026-09-21T09:18:35.700Z",
+    "hasLinkedSubmission": true,
+    "ref": "amanatar/biohub-geometric-fusion",
+    "checked_at_utc": "2026-09-25T10:15:53.205291+00:00",
+    "version": {
+      "id": 212926956,
+      "versionNumber": 3,
+      "kernelId": null
+    },
+    "run": {
+      "id": 351532492,
+      "kernelId": 134098803,
+      "status": "COMPLETE",
+      "dateCreated": "2026-09-21T09:18:34.137Z",
+      "dateEvaluated": "2026-09-21T09:18:35.700Z"
+    },
+    "execution_and_attachment_evidence": [
+      {
+        "versionNumber": 3
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "biohub-temporal-unet3d-seed314159-v1"
+      },
+      {
+        "runTimeSeconds": 14216.8573879,
+        "succeeded": true
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "biohub-temporal-unet3d-seed314159-v1"
+      }
+    ]
+  },
+  {
+    "id": 135218473,
+    "title": "biohub x138",
+    "currentRunId": 351539814,
+    "mostRecentRunId": 351539814,
+    "url": "/code/anvithpothula/biohub-x138",
+    "bestPublicScore": 0.953,
+    "updatedTime": "2026-09-21T09:47:58.620Z",
+    "hasLinkedSubmission": true,
+    "ref": "anvithpothula/biohub-x138",
+    "checked_at_utc": "2026-09-25T10:15:53.584606+00:00",
+    "version": {
+      "id": 212933175,
+      "versionNumber": 1,
+      "kernelId": null
+    },
+    "run": {
+      "id": 351539814,
+      "kernelId": 135218473,
+      "status": "COMPLETE",
+      "dateCreated": "2026-09-21T09:47:56.683Z",
+      "dateEvaluated": "2026-09-21T09:47:58.620Z"
+    },
+    "execution_and_attachment_evidence": [
+      {
+        "versionNumber": 1
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "competitions/biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "datasets/pilkwang/biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 19822532,
+        "datasetId": 12103746,
+        "mountSlug": "datasets/anvithpothula/biohub-v1284-head-s075"
+      },
+      {
+        "runTimeSeconds": 1228.4461723,
+        "succeeded": true
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "competitions/biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "datasets/pilkwang/biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 19822532,
+        "datasetId": 12103746,
+        "mountSlug": "datasets/anvithpothula/biohub-v1284-head-s075"
+      }
+    ]
+  },
+  {
+    "id": 125651046,
+    "title": "Biohub  0.947 LB PROXY_SCORE=0.9490",
+    "currentRunId": 351319021,
+    "mostRecentRunId": 351900841,
+    "url": "/code/evgendvorkin/biohub-0-947-lb-proxy-score-0-9490",
+    "bestPublicScore": 0.947,
+    "updatedTime": "2026-09-22T15:39:25.976666700Z",
+    "hasLinkedSubmission": true,
+    "ref": "evgendvorkin/biohub-0-947-lb-proxy-score-0-9490",
+    "checked_at_utc": "2026-09-25T10:15:53.986073+00:00",
+    "version": {
+      "id": 212737284,
+      "versionNumber": 31,
+      "kernelId": null
+    },
+    "run": {
+      "id": 351319021,
+      "kernelId": 125651046,
+      "status": "COMPLETE",
+      "dateCreated": "2026-09-20T13:21:15.903Z",
+      "dateEvaluated": "2026-09-20T13:21:17.320Z"
+    },
+    "execution_and_attachment_evidence": [
+      {
+        "versionNumber": 31
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "competitions/biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "datasets/pilkwang/biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_KERNEL_VERSION",
+        "sourceId": 335940940,
+        "mountSlug": "notebooks/evgendvorkin/biohabv-2"
+      },
+      {
+        "runTimeSeconds": 6581.7072412,
+        "succeeded": true
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "competitions/biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "datasets/pilkwang/biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_KERNEL_VERSION",
+        "sourceId": 335940940,
+        "mountSlug": "notebooks/evgendvorkin/biohabv-2"
+      }
+    ]
+  },
+  {
+    "id": 130667075,
+    "title": "Biohub Cell Tracking",
+    "currentRunId": 352321925,
+    "mostRecentRunId": 352321925,
+    "url": "/code/kunaldesale2408/biohub-cell-tracking",
+    "bestPublicScore": 0.953,
+    "updatedTime": "2026-09-24T06:13:53.006666700Z",
+    "hasLinkedSubmission": true,
+    "ref": "kunaldesale2408/biohub-cell-tracking",
+    "checked_at_utc": "2026-09-25T10:15:54.382778+00:00",
+    "version": {
+      "id": 213648738,
+      "versionNumber": 10,
+      "kernelId": null
+    },
+    "run": {
+      "id": 352321925,
+      "kernelId": 130667075,
+      "status": "COMPLETE",
+      "dateCreated": "2026-09-24T06:13:51.323Z",
+      "dateEvaluated": "2026-09-24T06:13:53.007Z"
+    },
+    "execution_and_attachment_evidence": [
+      {
+        "versionNumber": 10
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "competitions/biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "datasets/pilkwang/biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 19822532,
+        "datasetId": 12103746,
+        "mountSlug": "datasets/anvithpothula/biohub-v1284-head-s075"
+      },
+      {
+        "runTimeSeconds": 1414.4647676,
+        "succeeded": true
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "competitions/biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "datasets/pilkwang/biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 19822532,
+        "datasetId": 12103746,
+        "mountSlug": "datasets/anvithpothula/biohub-v1284-head-s075"
+      }
+    ]
+  },
+  {
+    "id": 128498813,
+    "title": "Biohub: Harmonic Fusion V3",
+    "currentRunId": 352639153,
+    "mostRecentRunId": 352639153,
+    "url": "/code/raunakdey07/biohub-harmonic-fusion-v3",
+    "bestPublicScore": 0.947,
+    "updatedTime": "2026-09-25T09:09:04.280Z",
+    "hasLinkedSubmission": true,
+    "ref": "raunakdey07/biohub-harmonic-fusion-v3",
+    "checked_at_utc": "2026-09-25T10:15:54.756687+00:00",
+    "version": {
+      "id": 213951774,
+      "versionNumber": 5,
+      "kernelId": null
+    },
+    "run": {
+      "id": 352639153,
+      "kernelId": 128498813,
+      "status": "COMPLETE",
+      "dateCreated": "2026-09-25T09:09:01.613Z",
+      "dateEvaluated": "2026-09-25T09:09:04.280Z"
+    },
+    "execution_and_attachment_evidence": [
+      {
+        "versionNumber": 5
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "competitions/biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "datasets/pilkwang/biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 19822532,
+        "datasetId": 12103746,
+        "mountSlug": "datasets/anvithpothula/biohub-v1284-head-s075"
+      },
+      {
+        "runTimeSeconds": 1008.3826143,
+        "succeeded": true
+      },
+      {
+        "sourceType": "EDITOR_TYPE_NOTEBOOK"
+      },
+      {
+        "sourceId": 136605,
+        "mountSlug": "competitions/biohub-cell-tracking-during-development"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17751825,
+        "datasetId": 11061989,
+        "mountSlug": "datasets/pilkwang/biohub-deepcenter-unet3d-center-prior-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 17804310,
+        "datasetId": 10999845,
+        "mountSlug": "datasets/pilkwang/biohub-tracking-support-pack-50ep-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 18187037,
+        "datasetId": 11184174,
+        "mountSlug": "datasets/pilkwang/biohub-temporal-unet3d-seed314159-v1"
+      },
+      {
+        "sourceType": "DATA_SOURCE_TYPE_DATASET_VERSION",
+        "sourceId": 19822532,
+        "datasetId": 12103746,
+        "mountSlug": "datasets/anvithpothula/biohub-v1284-head-s075"
+      }
+    ]
+  }
+]

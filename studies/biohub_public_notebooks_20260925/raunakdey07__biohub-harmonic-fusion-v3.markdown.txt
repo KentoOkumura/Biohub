@@ -1,0 +1,81 @@
+
+# CELL 0
+# Biohub Cell Tracking: Harmonic Fusion V3 (0.953 Record Edition)
+
+This notebook implements a state-of-the-art 3D lineage reconstruction pipeline for the **Biohub Cell Tracking During Development** competition, achieving a **0.953** on the public leaderboard. 
+
+### Credits & Attribution
+A massive round of applause and flowers to **Anvith Pothula**, whose exceptional insights and approaches served as the primary inspiration for this iteration of the pipeline. Building upon strong community foundations, this "record edition" integrates Igor's conceptual inspiration with aggressive post-processing optimizations, holdout-selected hyperparameter sweeps, and bidirectional temporal associations.
+
+### Pipeline Architecture & V3 Upgrades
+
+This pipeline represents a highly tuned, robust inference engine utilizing dual temporal models, bidirectional association matching, and strict biological geometry validation. 
+
+### Key Innovations in this Release:
+1. **Dual Edge-Feature TTA:** Introduces a massive upgrade to the inference engine. Both the primary and secondary models now utilize an exhaustive 8-way spatial Test-Time Augmentation (D4 flips, rotations, and transposes) strictly on the extracted edge features, drastically stabilizing connection probabilities.
+2. **V1284 Coordinate Refinement:** A frozen-feature coordinate regression head is dynamically patched into the inference loop, moving fused detector centers closer to ground-truth truth coordinates prior to ILP assignment.
+3. **Low-Detection Gapfill:** Instead of relying solely on the primary detector threshold, the pipeline dumps sub-threshold peaks (`>0.3`) into an offline cache. The post-processing engine then reads this pool to intelligently bridge fragmented tracks across occlusions.
+4. **Runtime Hardening & ILP Fallback:** Kaggle's hidden test set is significantly larger than the visible one. To prevent timeout failures, this pipeline implements strict ILP timeouts (`1200s`) and a global repair deadline (`27000s`); if the deadline is exceeded, the pipeline gracefully degrades to a faster, simplified post-processing loop.
+5. **Automated Post-Process Sweeping:** If local validation is enabled, the notebook sweeps a grid of post-processing configurations (e.g., tight/relaxed motion gates, gap steps) against held-out training data and automatically selects the highest-scoring parameter set for the final submission.
+
+# CELL 1
+## 1. Environment Configuration & Runtime Hardening
+
+This section defines the core levers for the post-processing engine and establishes the runtime safety boundaries.
+
+**Key Overrides & Additions in V3:**
+* **Wide Division Constraints:** Expands the search radius (`BIOHUB_SAFE_DIV_MAX_UM="9.0"`, `BIOHUB_SAFE_DIV_SISTER_MAX_UM="14.0"`) but enforces strict new geometric filters, including Sister Symmetry (`0.6`) and Divergence (`2.25 µm`) to prevent highly asymmetric or non-diverging daughter cell hallucinations.
+* **Low-Detection Parameters:** Establishes `BIOHUB_LOWDET_THRESHOLD="0.3"` and configures the gap filler to utilize this cached peak pool for track bridging.
+* **Safety Deadlines:** Defines `BIOHUB_ILP_TIMEOUT_S="1200"` and `BIOHUB_REPAIR_DEADLINE_S="27000"` (7.5 hours) to ensure the notebook completes successfully on the expanded hidden test set.
+
+# CELL 3
+## 2. Configuration Guard & Dictionary Initialization
+
+To ensure strict experimental control, this block asserts that the configuration accurately reflects the intended model-level changes relative to the baseline. It tests expected numeric thresholds (e.g., `BIOHUB_DET_THRESHOLD: 0.965`, `BIOHUB_ILP_DISAPPEARANCE_WEIGHT: 2`) and compiles all active variables into `CONFIG_DISPLAY` for a printed audit trail.
+
+# CELL 6
+## 3. Offline Dependency & Artifact Materialization
+
+Kaggle evaluation runs completely offline, requiring all libraries and neural network artifacts to be locally materialized and validated.
+
+This stage resolves the primary model (`12f688...`), the secondary temporal UNet (`9bac2fa...`), and the DeepCenter veto gate (`804099...`), verifying their SHA256 checksums to guarantee exact, immutable bytes are passed to the inference stage. It emits a sealed JSON receipt (`bidirectional_production_runtime_integrity.json`) upon successful validation.
+
+# CELL 8
+## 4. Dynamic Runtime Patching & GPU-Sharded Inference
+
+This is the execution core of the notebook. The raw `predict_unet_transformer.py` inference script is read into memory and injected with **five major functionality patches** at runtime via AST compilation before execution.
+
+### Injected Pipeline Patches:
+1. **8-Way D4 TTA & Edge-Feature TTA:** Overrides the default 4-way flip TTA with comprehensive 8-view planar spatial augmentation applied directly to edge features for both primary and secondary models.
+2. **Dual-Seed Calibration & Frame Retention:** Blends edge probabilities dynamically. A frozen guard falls back to the primary detector if candidate retention drops below 90%.
+3. **ILP Timeout & Diagnostic Hooks:** Injects the 1200-second solver limit per dataset and hooks in per-dataset detection timing logs.
+4. **Low-Detection Dump:** Caches sub-threshold peaks (`>0.3`) into local storage for the downstream gap-filler.
+5. **V1284 Coordinate Refinement:** Injects `v1284_coordinate_refinement.py` immediately after the readmit dump to regress and refine fused detector centers using the `V1284_HEAD` model.
+
+Once patched, the script splits the test datasets across all available CUDA devices using `subprocess.Popen` for parallel inference, subsequently merging the output `.geff` graphs.
+
+# CELL 10
+## 5. Advanced Graph Post-Processing Engine
+
+This cell houses the complete graph refinement engine, transforming the raw ILP `.geff` files into final cellular trajectories using sophisticated heuristic checks.
+
+### Pipeline Flow:
+* **Motion Relinking:** Predicts cell motion based on local neighborhood flow via `cKDTree` and overrides raw spatial distance with velocity-adjusted predictions.
+* **Low-Detection Readmission & Gap Filling (`fill_gaps_from_low_detections`):** Reads the cached sub-threshold peaks and uses them to bridge 1-frame and 2-frame track occlusions.
+* **Geometry-Validated Safe Divisions:** Evaluates unassigned candidate cells against strict Sister Symmetry and Divergence logic. The `_DCDeepCenterUNet3D` spatial heatmap acts as an absolute veto gate to drop hallucinated paths.
+* **Fallback Degradation:** If the 7.5-hour `REPAIR_DEADLINE_S` is exceeded, this block dynamically disables expensive repair loops and outputs a simplified, fallback graph to prevent submission timeouts.
+
+# CELL 14
+## 6. Local Validation & Bipartite Metric Scoring
+
+If `BIOHUB_VALIDATOR_ENABLE` is active, this block sets up local proxy scoring against held-out training samples. It implements a rigorous matching algorithm:
+* **`match_nodes_bipartite`:** Solves the linear assignment problem between predicted and ground-truth nodes.
+* **`compute_edge_confusion`:** Calculates True Positive, False Positive, and False Negative rates to generate an `adjusted_edge_jaccard` score.
+* **`compute_division_confusion`:** Maps weakly connected components to rigorously evaluate tracking across cell division forks.
+
+# CELL 16
+## 7. Post-Process Parameter Sweeping & Final Submission
+
+To guarantee optimal performance, the pipeline sweeps a predefined grid of post-processing configurations (`PP_CANDIDATES`)—such as variations in gap closing distance, motion relink bounds, and deepcenter thresholds—against the local validator.
+
+It selects the highest-scoring parameter set (based on a strict margin rule) and re-writes the final `submission.csv`. The final block prints a complete `PIPELINE MANIFEST` summarizing the resolved state of the submission.

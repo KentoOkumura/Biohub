@@ -50,7 +50,7 @@
 | --- | --- | --- | --- | --- |
 | `HYP-20260909-01` | 主催者公開コードの `TemporalUNet3D` と `SimpleNodeTransformer` をrandom initializationから公式公開checkpointと同じ3 epochs学習し、そのcheckpointでhidden testを推論すれば、学習から再現可能な3D U-NetのPublic LB比較基準を確立できる。 | — | [`exp001_temporal_unet3d_baseline`](../experiments/exp001_temporal_unet3d_baseline/)<br>[`exp002_unet3d_expandable_segments`](../experiments/exp002_unet3d_expandable_segments/) | 胚を分けた主評価用CVとPublic LBの整合、診断用holdoutとPublic LBの関係 |
 | `HYP-20260910-01` | 未注釈の中心・接続を未知として扱う教師と損失にすると、実在する細胞や第2娘を抑える学習が減り、公式指標が改善する。 | [`sample_loss_balance`](sample_loss_balance.md)<br>[`sparse_det_mask`](sparse_det_mask.md)<br>[`dense_region_labels`](dense_region_labels.md) | [`exp019_partial_edge_mask`](../experiments/exp019_partial_edge_mask/) | 負例の保証、過検出への退化、胚ごとの効果 |
-| `HYP-20260910-02` | 中心位置を固定せず画像と接続の情報で補正・選択すると、位置誤差に由来する一対一対応の失敗と誤接続を減らせる。 | [`anisotropic_position`](anisotropic_position.md)<br>[`match_radius_point`](match_radius_point.md)<br>[`joint_position_edges`](joint_position_edges.md)<br>[`image_label_centers`](image_label_centers.md) | - | exp043の直接実験で位置補正は実装済み。接続への単独寄与は座標・接続診断へ引継ぎ。分布・共同選択は未検証。 |
+| `HYP-20260910-02` | 中心位置を固定せず画像と接続の情報で補正・選択すると、位置誤差に由来する一対一対応の失敗と誤接続を減らせる。 | [`x138_author_head_comparison`](x138_author_head_comparison.md)<br>[`anisotropic_position`](anisotropic_position.md)<br>[`match_radius_point`](match_radius_point.md)<br>[`joint_position_edges`](joint_position_edges.md)<br>[`image_label_centers`](image_label_centers.md) | - | exp043の直接実験で位置補正は実装済み。接続への単独寄与は座標・接続診断へ引継ぎ。分布・共同選択は未検証。 |
 | `HYP-20260910-03` | 母細胞・2娘・前後画像を一つの分裂事象として扱えば、独立した接続や距離だけの判定より分裂と通常継続を区別できる。 | [`division_triplets`](division_triplets.md)<br>[`division_local_ilp`](division_local_ilp.md)<br>[`division_time_dist`](division_time_dist.md)<br>[`division_state_model`](division_state_model.md)<br>[`division_search_gate`](division_search_gate.md)<br>[`division_context`](division_context.md) | [`exp026_division_candidate_budget`](../experiments/exp026_division_candidate_budget/) | 同予算での組回収、合成教師の実画像への転移、局所再割当。exp023の教師接続を学習効果とは扱わない |
 | `HYP-20260910-04` | 同じ動画の画像から運動・見た目・相対配置の基準を作ると、動画共通の基準だけでは誤る接続を改善できる。 | [`video_calibration`](video_calibration.md)<br>[`motion_reference`](motion_reference.md)<br>[`appearance_reference`](appearance_reference.md)<br>[`relative_neighbors`](relative_neighbors.md) | - | 予測参照の汚染、利用できる範囲、参照不足時の処理。appearance_referenceで履歴の追加と対照損失を別比較する |
 | `HYP-20260910-05` | 密な検出・領域・移動・軌跡の不完全な予測を信頼度付き教師として使うと、疎い公式注釈だけの学習より細胞と接続を回収できる。 | [`focus_center_teacher`](focus_center_teacher.md)<br>[`teacher_agreement`](teacher_agreement.md)<br>[`track_teacher`](track_teacher.md)<br>[`flow_feature_teacher`](flow_feature_teacher.md)<br>[`shape_aux_teacher`](shape_aux_teacher.md)<br>[`teacher_review_labels`](teacher_review_labels.md) | - | 教師の来歴と誤り、fold分離、教師から生徒への改善移行。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
@@ -75,6 +75,8 @@
 
 2026-09-24の[統合・分割と全候補再評価](../docs/surveys/biohub-backlog-reorganization_20260924.md)を反映。優先度は着手順であり、採否・実験化承認ではない。P4は各詳細の再開条件が成立するまで保留する。P1内は共通診断を取得し、候補保持・検出回収から誤りに合う案を選ぶ。
 
+2026-09-25: 作者headの取得を受け、exp043のhead交換比較をP2へ追加。既存候補の優先度は維持する。
+
 教師・特徴診断は対照学習候補へ、旧座標補正の未測定効果は座標・接続診断へ統合。位置変更は局所graph選択から既存の共同位置選択候補へ分離した。候補名が似ていても入力・出力・比較が異なる案は維持する。
 
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
@@ -82,6 +84,7 @@
 | P1 | `HYP-20260910-14` | [`x138_coordinate_effect_audit`](x138_coordinate_effect_audit.md) | 補正と接続を同条件診断 | 対象動画・headの評価来歴・教師対応・graph診断の範囲を確定する。基準作成だけの別実験は必須にせず、候補保持または検出回収と同じ実験内で取得できる。 | `検討メモ・設計不可` |
 | P1 | `HYP-20260910-09` | [`x138_edge_candidates`](x138_edge_candidates.md) | 競合する接続候補をILPへ残す | exp043と同じ入力の枝刈り前得点、候補上限、費用上限、段階別の評価を確定する。候補を増やしただけで改善としない。 | `検討メモ・設計不可` |
 | P1 | `HYP-20260910-09` | [`x138_detection_recovery`](x138_detection_recovery.md) | 得点・画像・接続から回収候補を選ぶ | 同じ回収候補で現行ルールが落とす既知接続と識別可能な教師を確認する。出力単位・損失・競合解消方式を決めてから学習する。 | `検討メモ・設計不可` |
+| P2 | `HYP-20260910-02` | [`x138_author_head_comparison`](x138_author_head_comparison.md) | exp043の座標補正重みだけを作者版へ交換 | 作者head取得済み。同じ20動画のexp045自前head対照を条件一致時に再利用し、両胚の公式graph指標を比較する。 | `設計可能・実験化未承認` |
 | P2 | `HYP-20260910-10` | [`neighbor_dynamics`](neighbor_dynamics.md) | 近傍運動を共有するGNNで再接続 | 同じ近傍情報を使う現行再接続を対照とし、残差・信頼度で識別できる競合が残ることと、学習得点が実際の再接続へ渡る契約を確認する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-11` | [`shared_edge_graph_learning`](shared_edge_graph_learning.md) | GNNと共有接続得点で母と2娘を選択 | 正解2娘を同じ母の1娘・空集合より高くできるか、誤接続・分裂保持と合法な最終選択を同じ実験で確認する。GNNの追加だけを改善根拠にしない。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-09` | [`x138_local_graph_choice`](x138_local_graph_choice.md) | 位置固定で複数局所graphを保持・選択 | P1の診断で単一解への確定による損失を確認する。複数解の上限だけでなく、画像・時間情報による実選択と両胚の最終指標を測る。 | `検討メモ・設計不可` |
@@ -123,7 +126,7 @@
 | P4 | `HYP-20260910-09` | [`contrastive_edge_candidates`](contrastive_edge_candidates.md) | 特徴の類似度で接続候補を追加 | contrastive_parent_childから同入力の照合特徴を取得し、同じ追加edge数で距離方式より候補回収が増えると確認する。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260910-06` | [`x138_history_error_training`](x138_history_error_training.md) | 実誤履歴で学習し実予測へ調整 | 同じ入力・損失の履歴モデルで、正解履歴と実予測履歴の差が主要な損失として確認される。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260910-10` | [`x138_two_step_links`](x138_two_step_links.md) | 3時点GNNと2時点先対応で経路選択 | GNN案内で後続。先行2案の結果と残り時間・計算枠から再開判断。 | `検討メモ・設計不可` |
-| P4 | `HYP-20260910-12` | [`public_x138_tracker_comparison`](public_x138_tracker_comparison.md) | 公開/exp016重みを比較 | public_x138_replay・exp016の2fold重み。 | `設計可能・実験化未承認` |
+| P4 | `HYP-20260910-12` | [`public_x138_tracker_comparison`](public_x138_tracker_comparison.md) | 公開/exp016重みを比較 | exp042の忠実再現・exp016の2fold重み。作者headは取得済みだがtracker転用比較の再開目的を要する。 | `設計可能・実験化未承認` |
 | P4 | `HYP-20260910-01` | [`sparse_det_mask`](sparse_det_mask.md) | 検出の未知領域を負例から外す | 検出損失と検出器の更新を必要とするため現方針では保留。検出器更新への方針変更が明示承認され、未知領域と背景の教師設計が成立した場合に再検討する。検出不足の診断だけでは再開しない。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260911-01` | [`nnunet_center_detection`](nnunet_center_detection.md) | nnU-Netで中心マップを学習して追跡へ渡す | nnU-Netによる検出器学習は現方針の対象外。検出器更新への方針変更が明示承認され、中心教師と学習費用の条件が成立した場合に再検討する。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260910-09` | [`candidate_union`](candidate_union.md) | 異なる検出法の候補を統合 | 原案の領域教師由来の中心が未成立。追加の固定公開情報源と取得条件・候補数を揃える対照・費用が確定するまで保留。単一検出器の閾値変更へ原案を置き換えない。 | `検討メモ・設計不可` |

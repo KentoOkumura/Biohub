@@ -1,0 +1,69 @@
+{
+  "checked_at_utc": "2026-09-25T10:19:08.969200+00:00",
+  "dataset_ref": "anvithpothula/biohub-v1284-head-s075",
+  "file": "data/external/biohub-v1284-head-s075/v1284_head.pt",
+  "size_bytes": 33913,
+  "sha256": "625a0d9340f48193f2ec294fc2d81c5bb3c03087eab78ef0ae998a9c4c7da00c",
+  "load_mode": "torch.load(map_location=cpu, weights_only=True)",
+  "parameter_count": 7299,
+  "contents": {
+    "state_dict": {
+      "0.weight": {
+        "shape": [
+          32,
+          224
+        ],
+        "dtype": "torch.float32",
+        "finite": true,
+        "min": -0.2543058395385742,
+        "max": 0.21670275926589966
+      },
+      "0.bias": {
+        "shape": [
+          32
+        ],
+        "dtype": "torch.float32",
+        "finite": true,
+        "min": -0.16748268902301788,
+        "max": 0.08877529948949814
+      },
+      "2.weight": {
+        "shape": [
+          3,
+          32
+        ],
+        "dtype": "torch.float32",
+        "finite": true,
+        "min": -0.08962897956371307,
+        "max": 0.07493558526039124
+      },
+      "2.bias": {
+        "shape": [
+          3
+        ],
+        "dtype": "torch.float32",
+        "finite": true,
+        "min": 0.016989391297101974,
+        "max": 0.04540222883224487
+      }
+    },
+    "mean": {
+      "shape": [
+        224
+      ],
+      "dtype": "torch.float32",
+      "finite": true,
+      "min": -1.2534711360931396,
+      "max": 1.2139188051223755
+    },
+    "scale": {
+      "shape": [
+        224
+      ],
+      "dtype": "torch.float32",
+      "finite": true,
+      "min": 0.08988240361213684,
+      "max": 0.5461342930793762
+    }
+  }
+}

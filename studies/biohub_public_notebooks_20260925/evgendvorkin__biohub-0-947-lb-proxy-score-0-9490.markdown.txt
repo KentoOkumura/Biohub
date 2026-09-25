@@ -1,0 +1,361 @@
+
+# CELL 0
+## 📖 What is this competition about?
+
+Imagine watching a 3D movie of a zebrafish embryo under a microscope. 
+But this isn't ordinary cinema — **each frame is volumetric, not flat**.
+
+Think of it as a layered cake with 64 slices, and hundreds of glowing cells floating in every layer. 
+Your job is to trace the fate of **every single cell** from the beginning of the movie to the end.
+
+---
+
+### 🎯 Three main tasks
+
+| Task | What to do | Real-life analogy |
+|------|-----------|-------------------|
+| 🔍 **Detect** | Find all cells in a frame | Find all glowing marbles in murky jelly |
+| 🔗 **Track** | Link cells across frames | Figure out that the marble in frame #5 is the same one from frame #4 |
+| 🌳 **Lineage** | Spot division events | Notice when one marble splits into two |
+
+---
+
+### 😤 Why is this hard?
+
+- **Thousands of cells**, all looking identical — like tennis balls in a crowd
+- They **move, deform, and divide** during filming
+- Images are **noisy** — not all cells are clearly visible, some hide
+- Annotations are **sparse** — scientists labeled only a fraction of cells, 
+  total count is a mystery (hint: check `estimated_number_of_nodes`)
+
+---
+
+### 📊 How are solutions scored?
+
+The metric has **two components**:
+
+| Component | Weight | What it measures | Plain English |
+|-----------|--------|-----------------|---------------|
+| **Edge Jaccard** | ~85% | Quality of cell-to-cell links | Did you connect the right cells with arrows? |
+| **Division Jaccard** | ~15% | Quality of division detection | Did you find where a mother cell split into two daughters? |
+
+**Final score** = weighted sum of the two Jaccard metrics.
+
+💡 **Gotcha:** Due to the formula, the metric **can exceed 1.0**!
+
+---
+
+### 🧠 Key insight about the metric
+
+> Cell coordinates are compared in **physical space** (microns), 
+> not in voxels. Scale: `z=1.625 µm/voxel`, `y=x=0.40625 µm/voxel`.
+
+This means a 1-voxel error in Z ≠ a 1-voxel error in X/Y. 
+**XY centroid accuracy is 4× more important** than Z!
+
+---
+
+### 📁 Input data
+
+- **4D video:** shape `(T=100, Z=64, Y=256, X=256)`, `uint16` format
+- **Storage format:** Zarr v3 (modern format for large arrays)
+- **Dataset size:** 87.61 GB, 199 training videos + hidden test set
+- **Train/Test split:** by embryo (one embryo won't appear in both train and test)
+
+---
+
+### 🏆 Output format
+
+A CSV file with a graph of two row types:
+
+| Row | Description | Example |
+|-----|-------------|---------|
+| **Node** | Cell with ID and coords (t, z, y, x) | `node, 1, 0, 32, 128, 128` |
+| **Edge** | Link between cells (source_id → target_id) | `edge, -1, -1, -1, -1, -1, 1, 2` |
+
+Where:
+- **Node:** *"Cell #1 at frame 0 is at position (z=32, y=128, x=128)"*
+- **Edge:** *"Cell #1 from frame 0 is the same cell as #2 in frame 1"*
+
+# CELL 1
+# 🧬 Biohub Cell Tracking — Harmonic Fusion V3 + PPSWEEP
+
+**Leaderboard Score: 0.947**
+
+Финальная версия пайплайна. Гибрид лучших публичных решений с нашими точечными улучшениями: dual-seed ансамбль, harmonic bidirectional fusion, Edge Feature TTA, DeepCenter TTA, PPSWEEP.
+
+## 📊 Evolution
+
+| # | Ver | LB | Proxy | Adj Edge | Div Jac | Div TP/FP/FN | Missed GT | Spurious | Frag | Key change |
+|---|-----|-----|-------|----------|---------|--------------|-----------|----------|------|------------|
+| 1 | v10 | 0.923 | 0.9292 | 0.9167 | 0.1250 | 1/2/2 | 39 | 95670 | 55 | Baseline (dual-seed + harmonic) |
+| 2 | v11 | 0.927 | 0.9294 | 0.9152 | 0.1429 | 1/1/3 | 39 | 95605 | 57 | Safe div: 12/15→8/11, parent mid-track |
+| 3 | v15 | 0.928 | 0.9315 | 0.9172 | 0.1429 | 1/1/3 | 35 | 93450 | 61 | SEC_DET 0.475→0.70, GAP_UM 5.8→6.5 |
+| 4 | v16 | 0.930 | 0.9438 | 0.9238 | 0.2000 | 1/0/3 | 36 | 92193 | 55 | BIDIR 0.30→0.15, DIV_W 1.0→1.2, GAP2+RESCUE |
+| 5 | v17 | 0.931 | 0.9325 | 0.9158 | 0.1667 | 1/1/3 | 35 | 94541 | 60 | SEC_DET 0.70→0.475 (rollback) |
+| 6 | v20 | 0.933 | 0.9361 | 0.9194 | 0.1667 | 1/1/3 | 40 | 90993 | 56 | SEC_DET 0.475→0.80, BIDIR 0.30→0.15 |
+| 7 | v22 | 0.930 | 0.9396 | 0.9229 | 0.1667 | 1/1/3 | 42 | 90482 | 53 | SEC_DET 0.80→0.85 |
+| 8 | v27 | 0.934 | 0.9384 | 0.9218 | 0.1667 | 1/0/3 | 36 | 91455 | 56 | EDGE_W 0.15→0.20, BIDIR 0.30→0.15, GAP 6.5→5.8 |
+| 9 | v28 | 0.942 | 0.9417 | 0.9217 | 0.2000 | 1/0/3 | 36 | ~91455 | — | Safe div geometry (9/14) + SYMMETRY_TAU 0.6 |
+| 10 | v29 | 0.944 | 0.9490 | 0.9260 | 0.2308 | 3/1/9 | — | — | — | Edge Feature TTA + MOTION_RELINK_TIGHT 5.5 |
+| 11 | v30 | 0.945 | 0.9430 | 0.9230 | 0.2000 | 1/0/4 | — | ~100179 | 48 | EDGE_FEATURE_TTA + Secondary Edge TTA 0.75 |
+| 12 | **v31** | **0.947** | **0.9511** | **0.9280** | **0.2308** | **3/1/9** | — | — | — | **DeepCenter TTA working + SAFE_DIV_VETO ON + PPSWEEP (tight55)** |
+
+## 🚀 Key breakthroughs
+
+- **v28 (+0.008):** Safe div geometry 9/14 + SYMMETRY_TAU 0.6. GT analysis showed thresholds 7/12 cut ~25–29% of real divisions.
+- **v29 (+0.002):** Edge Feature TTA — averaging feature maps of 8 views for edge model. Edge Jaccard 0.9115→0.9256 on 44b6_12dfb391.
+- **v30 (+0.001):** Secondary Edge Feature TTA (weight 0.75). Stable Div Jaccard 0.2000.
+- **v31 (+0.002):** DeepCenter TTA (8 views for veto logits) + SAFE_DIV_VETO ON + PPSWEEP (selected tight55). Proxy 0.9511.
+
+## 📚 Sources
+
+**Our final v31 work:**
+- [raunakdey07/biohub-harmonic-fusion-v3](https://www.kaggle.com/code/raunakdey07/biohub-harmonic-fusion-v3) — 0.947, our fork with DeepCenter TTA + PPSWEEP (copied from KAIWALYA RAUT)
+
+**Our evolution breakdowns:**
+- v10→v27 (0.923→0.934): SEC_DET/BIDIR/EDGE_WEIGHT tuning + Safe Div tightening
+- v28 (0.942): Division geometry overhaul (9/14) + SYMMETRY_TAU 0.6
+- v29 (0.944): Edge Feature TTA + MOTION_RELINK_TIGHT 5.5
+- v30 (0.945): Secondary Edge Feature TTA (weight 0.75)
+
+**Public works that inspired us:**
+- [rishabhr0y/biohub-div45-stack](https://www.kaggle.com/code/rishabhr0y/biohub-div45-stack) — 0.938, Division geometry + SYMMETRY_TAU
+- [kunaldesale2408/biohub-cell-tracking](https://www.kaggle.com/code/kunaldesale2408/biohub-cell-tracking) — 0.940, detection + ILP division weight
+- [analyticaobscura/biohub-lb-942](https://www.kaggle.com/code/analyticaobscura/biohub-lb-942) — 0.942, PPSWEEP + extended validator
+- [rogerrogerroger3r/biohub-run79](https://www.kaggle.com/code/rogerrogerroger3r/biohub-run79) — 0.944, Edge Feature TTA
+- [sjlee101/biohub-lf-dctta](https://www.kaggle.com/code/sjlee101/biohub-lf-dctta) — 0.947, DeepCenter TTA + PPSWEEP
+
+## 🧩 Pipeline components
+
+- **TemporalUNet3D** — cell detector in 3D+time
+- **Node Transformer** — edge scoring between neighboring frames
+- **ILP solver** — global lineage graph reconstruction
+- **DeepCenter + TTA** — veto gate for reconstructed nodes with 8-view augmentation
+- **Dual-seed ensemble** — primary + secondary (seed 314159)
+- **Harmonic bidirectional fusion** — forward/reverse via harmonic mean
+- **PPSWEEP** — automated post-process parameter sweep
+
+# CELL 2
+## 1. Глобальная конфигурация пайплайна
+
+Пульт управления: параметры пишутся в `os.environ`. Никаких вычислений.
+
+**Ключевые параметры:**
+- `DET_THRESHOLD = 0.965`
+- `GAP_CLOSE_UM = 5.0` (в v30 было 5.8)
+- `SAFE_DIV_MAX_UM = 9.0`, `SISTER_MAX = 14.0`, `SYMMETRY_TAU = 0.6`
+- `DEEPCENTER_SAFE_DIV_VETO = 1`, `DEEPCENTER_TTA = 1`
+- `BIDIRECTIONAL_EDGE_WEIGHT = 0.15`
+- `VALIDATOR_N_PER_TYPE = 4` (8 видео)
+- `PPSWEEP_SELECT_MARGIN = 0.001`
+
+# CELL 4
+## 2. Configuration Guard — защита от случайных изменений
+
+Проверяет, что ключевые параметры из первой ячейки не изменились. Сравнивает `os.environ` с эталонными значениями. Если хоть один параметр отличается — ноутбук падает с `RuntimeError` и выводит JSON с расхождениями.
+
+**Что проверяется:**
+
+| Тип | Параметр | Эталон |
+|---|---|---|
+| Число | `DET_THRESHOLD` | 0.965 |
+| Число | `ILP_APPEARANCE_WEIGHT` | 0.0 |
+| Число | `ILP_DISAPPEARANCE_WEIGHT` | 2.0 |
+| Число | `GAP_CLOSE_UM` | 5.0 |
+| Число | `OUTPUT_MIN_TRACK_LEN` | 6.0 |
+| Число | `BIDIRECTIONAL_EDGE_WEIGHT` | 0.15 |
+| Текст | `BIDIRECTIONAL_FUSION_MODE` | harmonic_probability |
+| Текст | `DUAL_SEED_MIN_CANDIDATE_RETENTION` | 0.90 |
+
+**Зачем:** при копировании ноутбука или случайной правке сразу видно, что конфиг сломался, а не получаем другой скор без объяснения.
+
+**Итог:** `Configuration guard: PASS` — все параметры совпадают с эталоном.
+
+# CELL 6
+## 3. Импорты, пути и подготовка конфигурации
+
+Превращает настройки из первой ячейки в Python-переменные и задаёт все пути. Модели тут не запускаются — подготовительный этап.
+
+**Импортируются:** `csv`, `json`, `os`, `subprocess`, `sys`, `time`, `Path`, `pandas`, `display`.
+
+**Пути:**
+- `COMP_DIR` — корень соревнования
+- `TEST_DIR` — папка с тестовыми `.zarr`
+- `WORKING_DIR` — `/kaggle/working`
+- `REPO_DIR` — распакованный код моделей
+- `SUBMISSION_PATH`, `RUN_STATS_PATH` — итоговые файлы
+
+**Параметры читаются из `os.environ` с fallback-значениями:**
+- `DET_THRESHOLD` — порог детекции
+- `ILP_*` — веса ILP
+- `OUTPUT_*`, `GAP_*`, `SAFE_DIV_*`, `DEEPCENTER_*` — постобработка и veto
+
+**Ключевые группы (для 31-й версии):**
+
+| Группа | Ключевые значения |
+|---|---|
+| Detection | `DET_THRESHOLD = 0.965` |
+| ILP | `appearance=0.0`, `disappearance=2.0`, `division=1.2` |
+| Gap closing | `GAP_CLOSE_UM = 5.0`, `MAX_GAP = 2`, `DENSITY_ADAPTIVE = 1` |
+| Gap2 | `RECOVERY = 1` |
+| Safe div | `MAX = 9.0`, `SISTER = 14.0`, `SYMMETRY_TAU = 0.6`, `DIVERGE = 2.25` |
+| Short-track rescue | `MIN_LEN = 4`, `MIN_PROB = 0.88`, `MAX_DIST = 3.0` |
+| DeepCenter | `GAP_VETO = 1`, `SAFE_DIV_VETO = 1`, `GAP_THR = 0.25`, `SAFE_DIV_THR = 0.25`, `EPOCH = 2` |
+
+**Важно:** `DEEPCENTER_TTA` в этой ячейке не читается — он обрабатывается позже в патче инференса (Cell 5/6). В `CONFIG_DISPLAY` его тоже нет.
+
+**Итог:** полный конфиг печатается в JSON — быстрая проверка, что все параметры применились правильно.
+
+# CELL 8
+## 4. Установка зависимостей, поиск моделей и проверка целостности
+
+Подготовка окружения перед инференсом: зависимости, распаковка репо, проверка SHA256, подключение secondary.
+
+**Что делает:**
+- `PACKAGE_SPECS` / `EXTRA_SPECS_BY_NAME` — список зависимостей (tracksdata, zarr, geff, ilpy, polars, blosc2 и др.).
+- `find_offline_package_dirs` — ищет offline-wheels в датасетах.
+- `ensure_dependencies` — 5 попыток установки с переустановкой polars и zarr<3.
+- `find_artifacts_root` — находит `biohub-tracking-support-pack-50ep-v1`.
+- `materialize_inference_repo` — распаковка `repo` и `weights`.
+- SHA256 проверка всех `.py` и трёх чекпоинтов (primary, secondary, deepcenter).
+- `_find_secondary_artifact_root` — подключает secondary seed 314159, пишет в env (`EDGE_WEIGHT=0.15`, `DETECTION_WEIGHT=0.80`, `LINK_MODE=low_margin_consensus`, `EDGE_THRESHOLD=0.48`).
+- Отчёт `bidirectional_production_runtime_integrity.json`.
+
+# CELL 10
+## 5. Патчи инференса и запуск предсказания
+
+Патчит `predict_unet_transformer.py`: 8-view TTA детекции, dual-seed ансамбль, retention guard, harmonic bidirectional fusion, edge-feature TTA для primary и secondary, coordinate manifest hook.
+
+Затем параллельно запускает инференс на 2 GPU с шардингом и мержит результаты.
+
+# CELL 12
+## 6. Постобработка графа и создание submission.csv
+
+Финальный конвейер: загружает `.geff`, применяет цепочку постобработчиков и пишет `submission.csv`.
+
+**Что делает по шагам:**
+
+- `graph_from_geff` — загрузка графа.
+- `read_test_frame` — чтение 3D-кадра из Zarr (blosc2 fast path, fallback на zarr).
+- `refine_synthetic_midpoint` — уточнение координат восстановленного узла по локальному центру масс.
+- **DeepCenter veto** — `_DCDeepCenterUNet3D` + TTA по 8 views проверяет gap-узлы и safe-div кandidates.
+- **Motion relink** — двухпроходная венгерская оптимизация (tight 6µm / relaxed 10µm) с учётом скорости.
+- **Gap closing** — восстановление пропущенного кадра между треками t и t+2, адаптивный порог по плотности (cKDTree).
+- **Gap2 recovery** — восстановление через 2 кадра с 3 рёбрами и проверкой контекста движения.
+- **Safe divisions** — вторая дочка добавляется при mutual NN + divergence + symmetry-tau.
+- **Short-track filter** — удаление компонент короче 6 узлов (кроме делений).
+- **Linefit smoothing** — сглаживание координат внутри линейных треков без изменения топологии.
+
+**`filter_output_graph`** — главный постобработчик, последовательно вызывает всё выше.
+
+**Запись submission** — для каждого графа: узлы + рёбра, с проверками на dangling edges и покрытие датасетов.
+
+В конце — `write_test_submission("base")`.
+
+# CELL 14
+## 7. Аудит сабмита и отчёта о frame-retention guard
+
+Независимая label-free проверка `submission.csv` и логов `retention_guard_*.jsonl`. Не меняет предсказания — только валидирует.
+
+**Этапы:**
+
+1. **Схема CSV** — колонки, непрерывность `id`, только `node`/`edge`.
+2. **Покрытие датасетов** — сверка с `.zarr` в `TEST_DIR`.
+3. **Retention guard логи** — нет дубликатов, все фильмы покрыты, `minimum_retention=0.9`, корректность `use_primary`.
+4. **Топология** — `t ≥ 0`, координаты неотрицательны, `target = source_t + 1`, `indegree ≤ 1`, `outdegree ≤ 2`, счёт `division_parents`.
+5. **Диагностика по фильмам** — frames, fallback_frames, min/median retention.
+6. **Отчёт** — `dual_seed_frame_retention_guard_report.json` с SHA256, топологией, diagnostics, quality_promotion.
+
+# CELL 16
+## 8. Валидатор: выбор отложенных train-видео и запуск предсказания
+
+Локальная проверка без траты попыток LB. Берёт train-видео, которых нет в тесте, прогоняет через тот же пайплайн и позже (Cell 9) считает официальную метрику.
+
+**Что делает:**
+
+- Исключает train-видео, совпадающие с TEST_DIR.
+- **Division-aware отбор:** для каждого кандидата проверяет GT-граф на наличие деления. Деления аннотированы лишь в ~44% видео, поэтому алфавитный отбор мог бы дать сэмпл без делений.
+- Разбивает по префиксу эмбриона (`44b6`, `6bba`), берёт по `VALIDATOR_N_PER_TYPE` (=4) видео на префикс.
+- Пишет `kaggle_val_splits.json` с отобранными видео как test.
+- **Параллельный инференс** на 2 GPU с шардингом, мерж через `_merge_validator_shards` (метод с постфиксом `_val`, чтобы не смешивать с основными предсказаниями).
+- Печатает время предсказания.
+
+# CELL 18
+## 9. Валидатор: расчёт официальной метрики
+
+Считает официальную метрику на отложенных train-видео из Cell 8. Не влияет на итоговый `submission.csv`.
+
+**Основные функции:**
+
+- `match_nodes_bipartite` — сопоставление pred↔GT по кадрам, венгерский алгоритм, порог 7 µm.
+- `compute_edge_confusion` — TP/FP/FN по рёбрам. TP — оба конца совпали с GT и между ними есть GT-ребро.
+- `edge_jaccard` — TP / (TP + FP + FN).
+- `adjusted_jaccard` — штраф за перепредсказание узлов относительно `estimated_number_of_nodes`.
+- `weakly_connected_components` — компоненты без учёта направления.
+- `compute_division_confusion` — патч организаторов: одна компонента должна покрывать обе дочерние линии + якорь + развилка.
+- `decompose_errors` — разбивка ошибок: missed, spurious, recovered, fragmented, lost_to_detection, wrong_association.
+- `read_estimated_true_node_count` — извлекает `estimated_number_of_nodes` из `.geff`.
+- `score_sample` — метрики одного видео.
+- `aggregate_official` — итог: `adjusted_edge_jaccard + 0.1 * division_jaccard` (PROXY_SCORE).
+
+**Важно:** перед `filter_output_graph` глобально подменяется `TEST_DIR` на `TRAIN_DIR` (DeepCenter veto читает кадры через этот глобал), после — восстанавливается.
+
+Итоги пишутся в `validator_results.csv`.
+
+# CELL 20
+## 10. Кэширование валидатора и базовая оценка
+
+Готовит инфраструктуру для PPSWEEP: кэширует графы и GT один раз, дальше перебор конфигов идёт за минуты без повторного инференса.
+
+**Что делает:**
+
+- `PP_SWEEP_KEYS` — 20 перебираемых пост-процесс параметров.
+- `PP_BASE_CONFIG` — снимок текущих значений как база.
+- `pp_apply` / `pp_restore` — временная подмена глобалов (тип сохраняется).
+- `VAL_RAW_GRAPHS` / `VAL_GT` — кэш сырых предсказаний и GT.
+- `score_validator_config` — прогон `filter_output_graph` со всеми override'ами, скоринг официальной метрикой. Внутри подменяет `TEST_DIR → TRAIN_DIR` для DeepCenter, потом восстанавливает.
+
+**Что выводит:**
+- Таблицу по каждому видео: `edge_jaccard`, `adj`, `div(tp/fp/fn)`, `safe_div_added`.
+- Сводку `[base]`: `adjusted_edge_jaccard`, `division_jaccard`, `PROXY_SCORE`.
+
+Пишет `validator_results.csv`.
+
+# CELL 22
+## 11. PPSWEEP — перебор пост-процесс конфигураций
+
+Автоматический свип 7 кандидатов по пост-процесс параметрам. Каждый конфиг скорится на 8 кэшированных графах (Cell 10) без повторного инференса — минуты вместо часов.
+
+**Кандидаты:**
+- `gap45` — `GAP_CLOSE_UM=4.5`
+- `tight55` — `MOTION_RELINK_TIGHT_UM=5.5`
+- `relaxed9` — `MOTION_RELINK_RELAXED_UM=9.0`
+- `bonus125` — `MOTION_RELINK_LEARNED_BONUS=1.25`
+- `gap2step40` — `GAP2_MAX_STEP_UM=4.0`
+- `reuse28` — `GAP_CLOSE_REUSE_UM=2.8`
+- `dcgap035` — `DEEPCENTER_GAP_THRESHOLD=0.35`
+
+**Логика выбора:**
+- Правило positive: `proxy ≥ base + 0.0005` и `adj ≥ base − 0.0005`.
+- Комбо из положительных: объединяются по ключам.
+- Финальный выбор — при `proxy ≥ base + 0.001` и `adj ≥ base − 0.0005`.
+
+**Итог:** печатает SWEEP TABLE, сохраняет `ppsweep_results.csv` и `ppsweep_selected.json`. Если выбран не base — перезапускает `write_test_submission` с override'ами.
+
+**Финальная проверка submission:** колонки, непрерывность `id`, покрытие датасетов, топология (`target = source_t + 1`, `indegree ≤ 1`, `outdegree ≤ 2`).
+
+# CELL 24
+## 12. Pipeline Manifest — проверка фактического состояния
+
+Финальная отладочная ячейка. Ничего не считает и не меняет — только печатает реальное состояние механизмов в рантайме, а не то, что декларировано в конфиге.
+
+**Что проверяется:**
+
+- **Dual-seed** — найден ли файл secondary-весов. Если нет — warning о fallback на single-seed.
+- **Bidirectional fusion** — weight, active, mode.
+- **DeepCenter veto** — requested vs loaded, путь к чекпоинту, epoch, флаги gap veto и safe-div veto. Если запрошен, но не загружен — предупреждение, что veto'ы no-op.
+- **Safe-div thresholds** — parent, sister, global_cap, frame_cap.
+- **Validator** — enabled, held_out_samples, match_radius.
+
+**Зачем:** последний рубеж контроля. Если скор подозрительный — сюда смотрят первым делом, чтобы понять, реально ли работали механизмы.
