@@ -1,0 +1,80 @@
+experiment:
+  name: exp049_x138_edge_selection_diagnostic
+  description: "exp047の固定得点について候補、ILP、後処理の辺IDを追跡する"
+  route: public_x138_edge_selection_diagnostic
+  created_at: "2026-09-26"
+  notebooks: [diagnostic]
+lineage:
+  parent: exp047_x138_edge_candidates
+  hypothesis_id: HYP-20260910-09
+  backlog_candidate: x138_edge_selection_diagnostic
+  diff_summary: "得点と予測設定を固定し、辺別順位、段階遷移、少数の正解固定ILPを診断する"
+source:
+  cache_manifest: ../exp047_x138_edge_candidates/artifacts/outer_cache_dataset/cache_manifest.json
+  selection: ../exp047_x138_edge_candidates/artifacts/evidence/inference_v1/exp047_selection.json
+  fixed_id_diagnostic: ../exp047_x138_edge_candidates/artifacts/evidence/inference_v1/fixed_id_diagnostic.json
+  official_metric: ../exp047_x138_edge_candidates/artifacts/evidence/inference_v1/official_metric.json
+  stage_root: null
+  cache_selection_sha256: ba7eb44348be9ee18a0a15180276dbb92399a5c5995e26ae3b3d667b8cc30daa
+  official_metric_sha256: bce246fa9783db769ece67d9959c1a5939edb74c37f0df9157070219566ed59e
+data:
+  expected_embryos: [44b6, 6bba]
+  videos_per_embryo: 10
+  known_center_match_radius_um: 7.0
+  native_spacing_zyx_um: [1.625, 0.40625, 0.40625]
+model:
+  name: fixed_public_x138_with_exp043_head
+  params:
+    active_variants: [baseline, expanded]
+    trainable_models: 0
+    fold_count: 0
+    booster_count: 0
+    baseline_edge_probability_strictly_greater_than: 0.48
+    expanded_edge_probability_strictly_greater_than: 0.10
+    expanded_max_parents_per_daughter: 3
+    ilp_edge_weight: -1.0
+    ilp_appearance_weight: 0.0
+    ilp_disappearance_weight: 2.0
+    ilp_division_weight: 1.2
+    ilp_timeout_seconds_per_video: 1200
+    forced_cases_per_embryo_per_type: 3
+validation:
+  pilot_videos_per_embryo: 1
+  require_stage_id_and_count_match: true
+  require_normal_ilp_optimal: true
+  max_forced_cases: 12
+  official_metric: exp047_saved_only
+  notebook_limit_hours: 12
+runtime:
+  use_amp: false
+  num_workers: 1
+  batch_size: null
+  weekly_gpu_hours_limit: 45
+  kaggle:
+    diagnostic:
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      kernel_sources:
+        - kentookumura/exp047-x138-edge-candidates-inference
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: sha256_of_stem_and_event_ids
+  stochastic_components: [ilp_tie_selection]
+  parallel_rng_policy: sequential_video_execution
+  feature_sha_policy: exp047_cache_file_sha256
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: false
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+notes:
+  - "GEFFで未注釈の辺を真の負例としない。"
+  - "正解固定ILPは診断に限り予測や公式scoreへ混ぜない。"
+  - "exp045由来cacheとexp047実行時の辺IDを照合できなければ原因分類を止める。"

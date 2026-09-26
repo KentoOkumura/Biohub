@@ -1,0 +1,146 @@
+{
+  "experiment": "exp049_x138_edge_selection_diagnostic",
+  "status": "completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "input_preflight": {
+      "status": "candidate_cache_verified",
+      "selection_sha256": "ba7eb44348be9ee18a0a15180276dbb92399a5c5995e26ae3b3d667b8cc30daa",
+      "official_metric_sha256": "bce246fa9783db769ece67d9959c1a5939edb74c37f0df9157070219566ed59e",
+      "videos": 20,
+      "cache_source": "exp045 refined v1 recovered Kaggle cache"
+    },
+    "stage_retrieval": {
+      "source_kernel": "kentookumura/exp047-x138-edge-candidates-inference",
+      "source_kernel_version": 1,
+      "status": "pilot_files_retrieved"
+    },
+    "pilot": {
+      "status": "passed_on_kaggle",
+      "videos": [
+        "44b6_1d530831",
+        "6bba_07e24132"
+      ],
+      "arms": [
+        "baseline",
+        "expanded"
+      ],
+      "normal_ilp_edge_set_and_objective_match": true,
+      "kernel_version": 6
+    },
+    "full_diagnostic": {
+      "status": "completed_on_kaggle",
+      "videos": 20,
+      "event_rows": 22398,
+      "saved_stage_counts_match_exp047": true,
+      "normal_ilp_edge_set_and_objective_match_on_both_embryo_pilots": true,
+      "by_embryo": {
+        "44b6": {
+          "known_edges": 3022,
+          "known_divisions": 3,
+          "baseline": {
+            "known_edges_candidate": 2841,
+            "known_edges_ilp": 2775,
+            "known_edges_final": 2764,
+            "known_divisions_candidate": 1,
+            "known_divisions_ilp": 0,
+            "known_divisions_final": 1
+          },
+          "expanded": {
+            "known_edges_candidate": 2992,
+            "known_edges_ilp": 2822,
+            "known_edges_final": 2805,
+            "known_divisions_candidate": 2,
+            "known_divisions_ilp": 0,
+            "known_divisions_final": 1,
+            "new_known_edges_candidate": 151,
+            "new_known_edges_ilp": 51,
+            "new_known_edges_final": 50,
+            "new_known_divisions_candidate": 1,
+            "new_known_divisions_ilp": 0,
+            "new_known_divisions_final": 0
+          }
+        },
+        "6bba": {
+          "known_edges": 8161,
+          "known_divisions": 13,
+          "baseline": {
+            "known_edges_candidate": 7621,
+            "known_edges_ilp": 7384,
+            "known_edges_final": 7338,
+            "known_divisions_candidate": 3,
+            "known_divisions_ilp": 0,
+            "known_divisions_final": 0
+          },
+          "expanded": {
+            "known_edges_candidate": 8017,
+            "known_edges_ilp": 7561,
+            "known_edges_final": 7501,
+            "known_divisions_candidate": 11,
+            "known_divisions_ilp": 0,
+            "known_divisions_final": 0,
+            "new_known_edges_candidate": 396,
+            "new_known_edges_ilp": 136,
+            "new_known_edges_final": 136,
+            "new_known_divisions_candidate": 8,
+            "new_known_divisions_ilp": 0,
+            "new_known_divisions_final": 0
+          }
+        }
+      },
+      "forced_ilp": {
+        "cases": 11,
+        "optimal": 11,
+        "objective_delta_min": 0.019559770822525024,
+        "objective_delta_max": 2.5462311506271362
+      },
+      "saved_official_score": {
+        "baseline": 0.8903484877662319,
+        "expanded": 0.8780876820597969
+      },
+      "artifact_sha256": {
+        "input_checks.json": "3c14905dff5f308ac1e0133d1f5b8321844e6c5f213f5bf8d9d150853e1d4811",
+        "pilot_events.json": "bf604afbdfb8eac254290ee409d2f25bb0913aec898a1a826d678613c5998071",
+        "edge_events.json": "71e9b173a9cf99dac0f3d5b2d2b499bde88edfe1be74e5b89d1cc46fa61f51f5",
+        "forced_ilp.json": "ef7f3bfda8a108dc2f39d3f045954801d4d94bd708cf50f491c1c5848da0a884",
+        "summary.json": "b498b06c1354cf5e8383f858e8df121a0a4eff65a9361845f4f07c1a69ba87ba"
+      }
+    },
+    "kaggle": {
+      "kernel_id": "kentookumura/exp049-edge-selection-diagnostic",
+      "kernel_version": 6,
+      "url": "https://www.kaggle.com/code/kentookumura/exp049-edge-selection-diagnostic",
+      "status": "KernelWorkerStatus.COMPLETE",
+      "resource": "CPU",
+      "internet_enabled": false,
+      "failure": null,
+      "execution_history": [
+        {
+          "version": 1,
+          "failure": "ModuleNotFoundError: zarr"
+        },
+        {
+          "version": 2,
+          "failure": "duplicate offline wheel directory discovery"
+        },
+        {
+          "version": 3,
+          "failure": "exp047 source mount fixed path absent"
+        },
+        {
+          "version": 4,
+          "failure": "notebooks mount omitted from source discovery"
+        },
+        {
+          "version": 5,
+          "failure": "cache manifest absent in original Kaggle output"
+        }
+      ],
+      "notebook_runtime_seconds": 1790
+    }
+  },
+  "notes": "20動画の段階別診断と11事象の正解固定ILPをKaggle version 6で完了。公式scoreはexp047の保存済み値。2026-09-26のユーザーの完了判断を記録し、採用・不採用判断は受けていない。"
+}

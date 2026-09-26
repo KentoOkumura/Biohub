@@ -13,7 +13,7 @@
 - 優先度: P2
 - 優先度の理由: 固定位置で合法な複数の接続graphを保持・選択する比較へ範囲を限定する。pairの得点改善が最終選択へ届かない場合に、出力の選び方を変える候補として残す。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手バックログ](KAGGLE_DIRECTION.md#検証中の仮説)
-- 先行条件 / 依存: [座標補正と接続の対照](../experiments/exp045_x138_coordinate_effect_audit/requirements.md)と[接続選択の段階別診断](x138_edge_selection_diagnostic.md)。[exp047](../experiments/exp047_x138_edge_candidates/)の候補得点は条件が同じなら再利用できるが、候補拡張の成功を必須にしない。
+- 先行条件 / 依存: [座標補正と接続の対照](../experiments/exp045_x138_coordinate_effect_audit/requirements.md)と[接続選択の段階別診断](../experiments/exp049_x138_edge_selection_diagnostic/)。[exp047](../experiments/exp047_x138_edge_candidates/)の候補得点は条件が同じなら再利用できるが、候補拡張の成功を必須にしない。
 
 ## 2026-09-24の再評価
 

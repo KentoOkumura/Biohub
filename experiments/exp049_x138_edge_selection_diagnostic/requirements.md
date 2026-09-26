@@ -1,3 +1,50 @@
+# exp049_x138_edge_selection_diagnostic 要件と実装方法
+
+## 実験化の入口・引き継ぎ・承認
+
+- 実験化承認: 2026-09-26、ユーザーの「x138_edge_selection_diagnosticを実装してください」。元候補は設計可能で未決事項なし。実験化と実装を進め、採否・完了・competition submissionは別判断とする。
+- 対応する上位仮説: `HYP-20260910-09`。関連仮説は`HYP-20260910-11`。
+- 親実験と対照: `exp047_x138_edge_candidates`の同一得点・同一20動画。提出構成の基準は`exp043_x138_self_trained_head`。
+## 手法契約
+
+- input: 固定検出ID・補正座標・融合後softmax接続確率、exp047の対照と拡張候補、GEFFの既知接続、段階別の辺ID、保存済み公式評価。
+- target / objective: 新規学習なし。既知の正しい親の候補内順位と、候補・ILP・後処理の採否を調べる。部分注釈の未知辺を真の負例にしない。
+- output: 胚別・動画別の有効母数、既知辺と2娘組の遷移、確定できる親矛盾、得点順位、ILPの選択競合、正解固定時の実行可能性と目的値差、保存済み公式指標との対応。
+- loss: なし。
+- decode: exp047と同じ対照`p>0.48`、拡張`p>0.10`かつ娘ごと上位3親、固定ILP費用・制約と後処理。正解固定は診断に限定する。
+- 処理単位: 辺・娘・2娘組、動画全体のILP、胚別集計。
+- 実装区分: 参照手法の再現ではなく保存済み比較の詳細診断。`faithful` / `staged-faithful` / `proxy`は該当しない。このリポジトリ内の変更classは、予測を変更せず診断情報を追加するため`add-only`。
+- 固定するもの: 検出器、画像特徴、座標head、両tracker、融合得点、候補規則、通常ILP費用と制約、後処理、評価器、20動画。
+- 変更するもの: 辺別記録、得点順位、選択段階、最大12事象の正解固定ILPだけ。提出用予測処理を変更しない。
+## 実装方法
+
+- 実装方法: 得点cacheのSHAと候補集合を先に確認する。exp047の段階別NPZから元検出IDの辺集合を読み、保存済み件数・既知接続数・通常ILPの辺集合と照合する。両胚各1動画のpilotが一致した後で20動画を処理する。正解固定再解法はexp047のILP目的関数と制約を保ち、1件1200秒・各胚各事象種最大3件とする。
+## 探索幅とpivot判定
+
+- 探索幅: 対照1、候補拡張1、正解固定最大12事象。新規学習・設定探索なし。
+- pivot判定: 診断で次に変更すべき処理を絞り、変更の実験化はユーザー判断を待つ。
+- 停止条件: cache・元source・通常解の不一致、段階別辺IDの欠損、部分注釈による分類不能、費用上限。原因を推測で補わない。
+- 禁止事項: 閾値・費用の調整、再学習、正解固定解の正式予測化、同じ20動画で後続モデルを選ぶこと、competition submission。
+- 根拠: [exp047要件](../exp047_x138_edge_candidates/requirements.md)、[結果](../exp047_x138_edge_candidates/result.md)、[数値](../exp047_x138_edge_candidates/metrics.json)、[exp043結果](../exp043_x138_self_trained_head/result.md)。
+
+## 再現性・リスク
+
+- cacheと公式評価のSHAを固定し、通常ILPの辺集合と段階IDの一致を必須とする。
+- head学習外20動画も公開画像モデルの学習画像であり独立CVではない。GEFFの部分注釈による不明を残す。
+- CPUのMILP solverはexp047と異なるため、同一辺集合を再現できない場合は正解固定比較を行わない。
+
+## 受け入れ基準
+
+- [ ] 候補・通常ILP・後処理の辺IDと段階別件数をexp047の証拠と照合する。
+- [ ] pilot両胚各1動画が一致した場合だけ20動画の分類を行う。
+- [ ] 両胚の既知辺・既知2娘組について有効母数、得点順位、遷移、不明数を示す。
+- [ ] 最大12事象の正解固定ILPの実行可能性・目的値差を通常解と分けて記録する。
+- [ ] `make check-exp EXP=exp049_x138_edge_selection_diagnostic`と`make test-exp EXP=exp049_x138_edge_selection_diagnostic`を通す。
+
+## 移行元候補の契約・根拠・判断履歴
+
+以下は候補詳細を実験化時点の記録として移したもの。候補の状態と「実験化未承認」は移行前の履歴である。
+
 # x138_edge_selection_diagnostic
 
 - 候補名: `x138_edge_selection_diagnostic`
@@ -8,16 +55,16 @@
 - 最終更新日: 2026-09-26
 - 依頼原文: 「今までの議論から次は何をすればいいのか整理してください」「バックログに追加してください」。接続候補の拡張後に、接続得点とILPのどちらが最終結果を制限したか切り分けたい。
 - 期待する成果: exp047で増えた正しい候補と誤接続について、候補得点、ILP選択、後処理の各段階で確認できる損失と競合を胚別に示し、次に変更する処理を選ぶ根拠を得る。診断そのものによる精度改善は主張しない。
-- 親実験 / 比較対象: [exp043](../experiments/exp043_x138_self_trained_head/)を提出構成の基準とし、[exp047](../experiments/exp047_x138_edge_candidates/)の同一得点・同一20動画の対照と拡張を比較する。
+- 親実験 / 比較対象: [exp043](../exp043_x138_self_trained_head/)を提出構成の基準とし、[exp047](../exp047_x138_edge_candidates/)の同一得点・同一20動画の対照と拡張を比較する。
 - 優先度: P1
 - 優先度の理由: exp047の候補増加だけでは最終scoreが下がった。得点を再学習するか、ILP費用・制約または後処理を変えるかの判断前に、保存済み得点を使って直接切り分けられる。
-- `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手バックログ](KAGGLE_DIRECTION.md#検証中の仮説)
+- `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手バックログ](../../backlog/KAGGLE_DIRECTION.md#検証中の仮説)
 
 ## 観測事実と根拠
 
 - 実測済みの事実: exp047は44b6と6bbaの両方で既知接続候補を増やしたが、head学習外20動画の公式combined scoreは0.890348から0.878088へ低下した。公式edge TPは合計55増、FPは合計132増。既知2娘の候補は44b6で1から2、6bbaで3から11へ増えたが、ILP後は両胚とも0。拡張ILPは全20動画で最適終了した。ILP後と最終graphの段階別件数だけでは、得点・全体費用・制約・後処理を個別の原因と断定できない。
-- 根拠ファイル / 一次資料: [exp047結果](../experiments/exp047_x138_edge_candidates/result.md)、[exp047契約](../experiments/exp047_x138_edge_candidates/requirements.md)、[exp047数値](../experiments/exp047_x138_edge_candidates/metrics.json)、[exp043結果](../experiments/exp043_x138_self_trained_head/result.md)。
-- 利用する保存済み生成物とSHA: [20動画の縮小得点cache](../experiments/exp047_x138_edge_candidates/artifacts/outer_cache_dataset/cache_manifest.json)はexp045補正ありの回収cache由来で、選択SHA256は`ba7eb44348be9ee18a0a15180276dbb92399a5c5995e26ae3b3d667b8cc30daa`。exp047の[固定ID診断](../experiments/exp047_x138_edge_candidates/artifacts/evidence/inference_v1/fixed_id_diagnostic.json)と[公式評価](../experiments/exp047_x138_edge_candidates/artifacts/evidence/inference_v1/official_metric.json)を照合に使う。公式評価JSONのSHA256は`bce246fa9783db769ece67d9959c1a5939edb74c37f0df9157070219566ed59e`。これらの生成物はGit追跡対象ではなく、ない環境ではexp047と同条件で再取得して一致を確認する。
+- 根拠ファイル / 一次資料: [exp047結果](../exp047_x138_edge_candidates/result.md)、[exp047契約](../exp047_x138_edge_candidates/requirements.md)、[exp047数値](../exp047_x138_edge_candidates/metrics.json)、[exp043結果](../exp043_x138_self_trained_head/result.md)。
+- 利用する保存済み生成物とSHA: [20動画の縮小得点cache](../exp047_x138_edge_candidates/artifacts/outer_cache_dataset/cache_manifest.json)はexp045補正ありの回収cache由来で、選択SHA256は`ba7eb44348be9ee18a0a15180276dbb92399a5c5995e26ae3b3d667b8cc30daa`。exp047の[固定ID診断](../exp047_x138_edge_candidates/artifacts/evidence/inference_v1/fixed_id_diagnostic.json)と[公式評価](../exp047_x138_edge_candidates/artifacts/evidence/inference_v1/official_metric.json)を照合に使う。公式評価JSONのSHA256は`bce246fa9783db769ece67d9959c1a5939edb74c37f0df9157070219566ed59e`。これらの生成物はGit追跡対象ではなく、ない環境ではexp047と同条件で再取得して一致を確認する。
 - 仮定: 保存済み縮小cacheとexp047評価Notebookの得点・候補IDが照合でき、同じsourceからILP前後と後処理後の辺IDを再取得できる。照合に失敗した場合は原因分類へ進まない。
 
 ## この候補が直接検証する仮説と範囲
@@ -27,7 +74,7 @@
 - 仮説が正しい場合に期待する観測: 両胚について、既知の正しい辺・2娘組が候補から最終graphまでどこで失われたかを有効母数付きで示せる。得点順位が低い事象、得点順位は高いがILPで落ちる事象、ILP後に後処理で変わる事象を分け、確認できないものは不明とする。
 - 仮説を棄却する観測: 入力や選択結果を同条件で照合できない、または部分注釈と保存情報だけでは段階ごとの分類が成立しない。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: 得点を変更したトラッカー、[検出回収候補の選択](x138_detection_recovery.md)、[複数の局所graphの選択](x138_local_graph_choice.md)について、別実験で正解を使わずに選び最終公式指標を改善できるか。
+- 上位仮説の判断に残る検証: 得点を変更したトラッカー、[検出回収候補の選択](../../backlog/x138_detection_recovery.md)、[複数の局所graphの選択](../../backlog/x138_local_graph_choice.md)について、別実験で正解を使わずに選び最終公式指標を改善できるか。
 
 ## 入力・予測対象・出力・推論方法
 
