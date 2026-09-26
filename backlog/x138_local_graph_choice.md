@@ -13,7 +13,7 @@
 - 優先度: P2
 - 優先度の理由: 固定位置で合法な複数の接続graphを保持・選択する比較へ範囲を限定する。pairの得点改善が最終選択へ届かない場合に、出力の選び方を変える候補として残す。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手バックログ](KAGGLE_DIRECTION.md#検証中の仮説)
-- 先行条件 / 依存: [座標補正と接続の対照](x138_coordinate_effect_audit.md)。[x138_edge_candidates](x138_edge_candidates.md)の候補得点は条件が同じなら再利用できるが、その成功を必須にしない。
+- 先行条件 / 依存: [座標補正と接続の対照](../experiments/exp045_x138_coordinate_effect_audit/requirements.md)と[接続選択の段階別診断](x138_edge_selection_diagnostic.md)。[exp047](../experiments/exp047_x138_edge_candidates/)の候補得点は条件が同じなら再利用できるが、候補拡張の成功を必須にしない。
 
 ## 2026-09-24の再評価
 
@@ -37,7 +37,7 @@
 - 仮説を棄却する観測: edgeは増えても両娘・局所graphは揃わない、候補解がほぼ同じ、正解を見た選択だけが改善する、または同じ費用の単一解に劣る。
 - この候補だけで上位仮説を判断できるか: いいえ
 - 上位仮説の判断に残る検証: 別検出器からの回収、複数trackerの融合、画像側の更新は含まない。
-- 既存候補との差: x138_edge_candidatesは同じ得点のedgeを既存ILPへ増やす案、[whole_graph_choice](whole_graph_choice.md)は複数trackerの完成graph選択。本候補は競合する局所構造の複数解を生成して選ぶ。[joint_position_edges](joint_position_edges.md)へ位置変更を分離し、共同位置選択の実装を二重に行わない。
+- 既存候補との差: [exp047](../experiments/exp047_x138_edge_candidates/)は同じ得点のedgeを既存ILPへ増やした実験、[whole_graph_choice](whole_graph_choice.md)は複数trackerの完成graph選択。本候補は競合する局所構造の複数解を生成して選ぶ。[joint_position_edges](joint_position_edges.md)へ位置変更を分離し、共同位置選択の実装を二重に行わない。
 
 ## 入力・予測対象・出力・推論方法
 

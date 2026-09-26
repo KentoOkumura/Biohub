@@ -1,0 +1,103 @@
+experiment:
+  name: exp047_x138_edge_candidates
+  description: "exp043の接続得点を固定し、ILPへ渡す接続候補を各娘上位3親まで広げる"
+  route: public_x138_edge_candidate_expansion
+  created_at: "2026-09-26"
+  notebooks: [pilot, inference]
+
+lineage:
+  parent: exp043_x138_self_trained_head
+  hypothesis_id: HYP-20260910-09
+  backlog_candidate: x138_edge_candidates
+  diff_summary: "融合後softmax得点を固定し、exp043のp>0.48全辺とp>0.10かつ各娘上位3親の辺をILP候補とする"
+
+source:
+  parent_config: ../exp043_x138_self_trained_head/config.yaml
+  parent_inference: ../exp043_x138_self_trained_head/exp043_x138_self_trained_head_inference.py
+  exp045_config: ../exp045_x138_coordinate_effect_audit/config.yaml
+  head_sha256: 32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc
+
+data:
+  source: competition_train_runtime
+  selection_seed: 42
+  internal_rank_start_per_embryo: 1
+  internal_rank_end_per_embryo: 10
+  evaluation_rank_start_per_embryo: 11
+  evaluation_rank_end_per_embryo: 20
+  expected_embryos: [44b6, 6bba]
+  internal_videos: 20
+  evaluation_videos: 20
+  known_center_match_radius_um: 7.0
+  native_spacing_zyx_um: [1.625, 0.40625, 0.40625]
+
+model:
+  name: fixed_public_x138_with_exp043_head
+  params:
+    active_variants: [baseline, expanded]
+    trainable_models: 0
+    baseline_edge_probability_strictly_greater_than: 0.48
+    expanded_edge_probability_strictly_greater_than: 0.10
+    expanded_max_parents_per_daughter: 3
+    keep_all_baseline_edges: true
+    tie_break: parent_candidate_id_ascending
+    ilp_timeout_seconds_per_video: 1200
+    ilp_costs: inherited_from_exp043
+    postprocessing: inherited_from_exp043
+
+validation:
+  method: paired_video_conditional_on_public_image_model
+  official_metric: combined_score
+  report_by_embryo: true
+  internal_known_edge_gain_min_per_embryo: 1
+  pilot_videos_per_embryo: 1
+  pilot_selected_contradiction_increase_max: 0
+  pilot_peak_memory_fraction_limit: 0.80
+  notebook_limit_hours: 12
+
+runtime:
+  use_amp: true
+  num_workers: 1
+  batch_size: null
+  weekly_gpu_hours_limit: 45
+  kaggle:
+    pilot:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+        - kentookumura/exp043-self-trained-coordinate-head
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+        - kentookumura/exp043-self-trained-coordinate-head
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: stable_sha256_video_selection_no_training
+  stochastic_components: [cuda_inference, ilp]
+  parallel_rng_policy: sequential_variant_video_execution
+  feature_sha_policy: per_video_score_and_coordinate_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+
+notes:
+  - "未注釈の接続を真の負例と断定しない。"
+  - "head学習外20動画も公開画像モデルの学習画像なので独立CVではない。"
+  - "Kaggle Notebook実行は承認済み。competition submissionは別途明示承認が必要。"
