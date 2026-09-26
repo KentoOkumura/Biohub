@@ -1,0 +1,157 @@
+experiment:
+  name: exp048_x138_primary_past_feature_attention
+  description: 直前8候補の固定画像特徴を親・娘の組ごとにprimary pair MLP内部で参照し、primaryと追加attentionを共同学習する
+  route: x138_primary_pair_history_attention
+  created_at: '2026-09-26'
+  notebooks:
+  - train
+lineage:
+  parent: exp043_x138_self_trained_head
+  hypothesis_id: HYP-20260910-10
+  backlog_candidate: x138_primary_past_feature_attention
+  diff_summary: exp043の固定検出・特徴・座標・復号を保ち、exp044同一pair captureの過去画像特徴を組別attentionでprimary
+    pair MLP内部へ渡す
+source:
+  reference_kernel: anvithpothula/biohub-x138
+  reference_notebook_sha256: 6b655e39bbfd2d3d6c762badea69847d3f00f5b548f385cb01b07ee2600fde6d
+  reference_path: ../../docs/notebooks/biohub-cell-tracking-during-development/anvithpothula__biohub-x138/biohub-x138.ipynb
+  exp043_inference_sha256: 8b795f7845af624dd0739c4592f6cbd345d7fa8f136dd63383f123c600efdc4d
+data:
+  source: competition_train_runtime
+  train_zarr: train/*.zarr
+  train_geff: train/*.geff
+  selection_seed: 42
+  videos_per_embryo: 10
+  expected_embryos:
+  - 44b6
+  - 6bba
+  candidate_match_radius_um: 7.0
+  native_spacing_zyx_um:
+  - 1.625
+  - 0.40625
+  - 0.40625
+  feature_grid_spacing_zyx_um:
+  - 1.625
+  - 1.625
+  - 1.625
+  feature_width: 224
+  public_artifacts:
+  - pilkwang/biohub-tracking-support-pack-50ep-v1
+  - pilkwang/biohub-temporal-unet3d-seed314159-v1
+  - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+model:
+  name: primary_SimpleNodeTransformer_with_pair_history_attention
+  trainable_components:
+  - primary_SimpleNodeTransformer
+  - pair_history_attention
+  frozen_components:
+  - primary_TemporalUNet3D
+  - primary_detection_head
+  - secondary_TemporalUNet3D
+  - secondary_SimpleNodeTransformer
+  - self_trained_coordinate_head
+  - DeepCenter
+  - x138_graph_postprocessing
+  primary_checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  coordinate_head_sha256: 32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc
+  primary_params:
+    feat_dim: 64
+    hidden_dim: 128
+    n_heads: 4
+    n_blocks: 4
+    dropout: 0.3
+    pair_chunk_size: 32
+  attention:
+    max_past_candidates: 8
+    past_feature_dim: 64
+    motion_feature_dim: 13
+    pair_input_dim: 259
+    hidden_dim: 128
+    n_heads: 4
+    source_chunk_size: 32
+    target_chunk_size: 32
+    vector_scale_um: 5.0
+    cosine_epsilon: 1.0e-08
+    null_token_value: 0.0
+    adapter_initialization: zero
+  training:
+    seed: 20260924
+    epochs: 3
+    learning_rate: 0.0001
+    weight_decay: 0.0001
+    focal_gamma: 2.0
+    gradient_clip_norm: 1.0
+    internal_validation_videos_per_embryo: 2
+    budget_minutes: 480
+    active_modes:
+    - primary_only
+    - primary_with_past_feature_attention
+    checkpoint_selection: min_internal_active_pair_error_rate_then_max_known_edge_recall_then_latest_epoch
+  fusion:
+    bidirectional_weight: 0.15
+    secondary_edge_weight: 0.15
+    secondary_link_mode: low_margin_consensus
+    secondary_low_margin_max: 0.35
+    secondary_mix_temperature: 1.0
+overrides:
+  project_defaults:
+  - validation.metric
+validation:
+  method: leave_one_embryo_out_pair_windows
+  baseline: frozen_exp043_pair_logits_and_independently_retrained_primary_on_same_capture
+  report_by_embryo: true
+  conditional_on_public_image_model_training: true
+  metric: known_edge_recall_and_active_pair_errors
+  candidate_retention_minimum: 0.99
+  baseline_logit_max_abs_error: 0.0001
+  edge_probability_threshold: 0.48
+  diagnostic_thresholds: [0.3, 0.48, 0.7]
+  density_radius_um: 5.0
+  graph_progression: both_embryos_strict_known_edge_recall_gain_over_both_controls_nonincreasing_active_pair_errors_and_division_recall
+  evaluate_full_x138_on_public_test: false
+  division_required: true
+runtime:
+  use_amp: false
+  num_workers: 0
+  batch_size: 1
+  capture_budget_minutes: 180
+  pilot_video_count: 2
+  kaggle:
+    train:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+  forecast_safety_factor: 1.5
+  forecast_size_quantiles: [0.0, 0.5, 0.75, 0.9, 0.99, 1.0]
+  maximum_notebook_minutes: 720
+  weekly_gpu_hours_limit: 45
+  reuse_capture_if_verified: false
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: stable_sha256_video_selection_and_fixed_tracker_training_seed
+  stochastic_components:
+  - torch_training_order
+  - cuda_inference
+  - ilp
+  parallel_rng_policy: deterministic_video_partition_no_shared_rng
+  feature_sha_policy: captured_float32_arrays_per_pair
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: true
+    submission_sha: true
+notes:
+- 公開画像モデル・座標head・secondary・候補生成・fusionは固定する。
+- GEFF部分注釈下のactive-pair errorsを真の誤接続総数としない。
+- 同条件primaryのみ対照の学習経路は確定設計に含む。後続の「実行してください」でKaggleでの再学習が承認された。
+- pair進行条件を満たしても全graphとcompetition submissionは別判断。

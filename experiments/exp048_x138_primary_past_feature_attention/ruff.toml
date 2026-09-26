@@ -1,0 +1,6 @@
+extend = "../../pyproject.toml"
+extend-exclude = [
+    # x138 public cells are copied byte-for-byte and checked against the pinned notebook.
+    "exp048_x138_primary_past_feature_attention_train.py",
+    "exp048_x138_primary_past_feature_attention_inference.py",
+]

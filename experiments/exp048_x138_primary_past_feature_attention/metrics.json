@@ -1,0 +1,274 @@
+{
+  "experiment": "exp048_x138_primary_past_feature_attention",
+  "status": "discarded",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "known_edge_recall_and_active_pair_errors",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp048-x138-primary-past-feature-attention-train",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp048-x138-primary-past-feature-attention-train",
+      "kernel_source_ids": [],
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": 12130.787,
+      "internet_enabled": false,
+      "kernel_status": "KernelWorkerStatus.COMPLETE",
+      "notebook_runtime_source": "last_elapsed_event_in_downloaded_kaggle_log",
+      "gpu_quota_remaining_hours_after": 32.47,
+      "gpu_quota_remaining_hours_before": 35.84,
+      "gpu_quota_account_delta_hours": 3.37
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": "7ce903a635e67676493e9bd2c281f316410317315e1937afaa3f7448c002ff28",
+      "feature_content_sha": "544f32c692b16d7195d068eb0386b9b8d2fef7be2cd6b3c1a14a7c085f5a34af",
+      "row_count": null,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "1b84a0b70f76385ba988d5d708afb15e8d58cd7fd55bf422efc669599fe9cdf6",
+      "model_count": 4,
+      "model_shas": {
+        "fold_0_primary_only": "7176f886777e6994133858bfbce9235c2cffe989a91b539ba34769bfe4589681",
+        "fold_0_primary_with_past_feature_attention": "87326713afabdc12cd287408a2207cefdf554cb01d50e1117a2b0292b42c831f",
+        "fold_1_primary_only": "1234dc2801abd26613c4de9753cbcdc67d42e9c7759a976229d2f85dc6d6ca45",
+        "fold_1_primary_with_past_feature_attention": "be65a67a4fed66dd09c553c6c18a307293534f1584771e217701989872d0ac46"
+      },
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null,
+      "notebook_source_sha256": "1fa7779f6a944808f09624cf48577f296ca7f4d75cdcb3c0a813b120a710e432",
+      "notebook_ipynb_sha256": "9fd2a915f3d8dc08f51b44d504940fd61035601e42bdfe5c71c73c81c3e20f89",
+      "training_pipeline_sha256": "655db48c47cf34bba28e74871c8a7f1d4ffb1bf96e047f4fe452845a0e7321df",
+      "config_sha256": "85df8f51efd111a8f1ab7755a9bdf19cb64b21d2063f3034fca6a734466186e9",
+      "capture_sha": "20f208c38d7d78f248ce3620336cdc2bdc72e3f033d5e59536796e4df4ff0526",
+      "pair_metrics_sha": "b3050ffabfd91b177853977ef829896aa47491421eacb150d4ecfe383502c22d",
+      "graph_progression_gate_sha": "9809d9b6ea2895dc418910985de77407693df3ab121055a4c864557e730565ae",
+      "train_receipt_sha": "b077c5a8d55a6533214de250d80261ed546504880c36bbfeb8967be664d75a45",
+      "candidate_retention_sha": "4d97869af511ee3b5cc48c5c9be122b089d83bf0f7eebf32b311be3330e5d979",
+      "baseline_parity_sha": "dd2d0b40861bfe2a596bbbba8ea230e638ee8e93ddaffa057b9c28ad114d9da7",
+      "runtime_forecast_sha": "3b1ee728187852a44da4088c289acab5ecf28848522663d4b52512ca30b6ef63",
+      "selected_train_videos_sha": "725087d59030def039c9b2c15d323bbd741d93cd1eb488b00cd7d8ca8be25d92",
+      "kaggle_log_sha": "1b0c7c6193ef995f34633e948edb3339ca7e9205c7a5b5bc7a3e6ca9ea2d3b53"
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [
+      {
+        "kernel_version": 1,
+        "kernel_status": "KernelWorkerStatus.ERROR",
+        "stop_reason": "control_inclusive_runtime_forecast_exceeded_budget_before_training",
+        "training_started": false,
+        "capture_seconds": 2338.294735431671,
+        "candidate_retention": {
+          "44b6": {
+            "eligible": 3275,
+            "recall": 1.0,
+            "recovered": 3275
+          },
+          "6bba": {
+            "eligible": 7183,
+            "recall": 0.9997215648057914,
+            "recovered": 7181
+          }
+        },
+        "baseline_parity": {
+          "all_past_mask_max_abs": 0.0,
+          "fusion_replay_max_abs": 0.0,
+          "paths": [
+            "/kaggle/working/tracker_capture/44b6_d29c9ab2/000000_000001.npz",
+            "/kaggle/working/tracker_capture/44b6_d29c9ab2/000049_000050.npz",
+            "/kaggle/working/tracker_capture/44b6_d29c9ab2/000098_000099.npz",
+            "/kaggle/working/tracker_capture/6bba_76db78c1/000000_000001.npz",
+            "/kaggle/working/tracker_capture/6bba_76db78c1/000049_000050.npz",
+            "/kaggle/working/tracker_capture/6bba_76db78c1/000098_000099.npz"
+          ],
+          "primary_forward_max_abs": 7.62939453125e-06,
+          "primary_reverse_max_abs": 5.7220458984375e-06,
+          "zero_adapter_full_max_abs": 8.58306884765625e-06
+        },
+        "runtime_forecast": {
+          "batch_seconds": {
+            "primary_only": 3.7789837650002482,
+            "primary_with_past_feature_attention": 13.032399800999883
+          },
+          "capture_seconds": 2338.294735431671,
+          "conservative_total_seconds": 111461.74167221735,
+          "epochs": 3,
+          "fit_batches_per_mode_across_folds": 1427,
+          "forecast_training_seconds": 71969.53304604656,
+          "largest_pair_counts": {
+            "previous": 986,
+            "sources": 984,
+            "targets": 1009
+          },
+          "largest_path": "/kaggle/working/tracker_capture/44b6_18ced818/000022_000023.npz",
+          "mode_count": 2,
+          "peak_memory_bytes": {
+            "primary_only": 170598400,
+            "primary_with_past_feature_attention": 2300411904
+          }
+        },
+        "artifact_sha256": {
+          "candidate_retention": "4d97869af511ee3b5cc48c5c9be122b089d83bf0f7eebf32b311be3330e5d979",
+          "baseline_parity": "dd2d0b40861bfe2a596bbbba8ea230e638ee8e93ddaffa057b9c28ad114d9da7",
+          "runtime_forecast": "b26d6ed1db4d878d718567c4a64dfd972c6a758c9ccd9d085936126b6de4f619",
+          "selected_train_videos": "725087d59030def039c9b2c15d323bbd741d93cd1eb488b00cd7d8ca8be25d92"
+        },
+        "training_pipeline_sha256": "184fd0503b4770ac116ef0b2f7a5f0e3bdb94f79a8cead34f9cfa1bea882c67d"
+      }
+    ],
+    "pair_evaluation": {
+      "edge_probability_threshold": 0.48,
+      "capture_seconds": 2502.322840690613,
+      "training_and_pair_evaluation_seconds": 9023.323121638,
+      "candidate_retention": {
+        "44b6": {
+          "eligible": 3275,
+          "recall": 1.0,
+          "recovered": 3275
+        },
+        "6bba": {
+          "eligible": 7183,
+          "recall": 0.9997215648057914,
+          "recovered": 7181
+        }
+      },
+      "initial_parity_max_abs": {
+        "forward": 7.62939453125e-06,
+        "reverse": 5.7220458984375e-06,
+        "fused": 8.58306884765625e-06,
+        "all_past_mask": 0.0
+      },
+      "both_embryos_graph_progression_passed": false,
+      "by_embryo": {
+        "44b6": {
+          "outer_videos": 10,
+          "known_edges": 3302,
+          "active_pairs": 2215209,
+          "division_parents": 2,
+          "public_primary": {
+            "recovered_known_edges": 3162,
+            "known_edge_recall": 0.9576014536644458,
+            "active_pair_errors": 383,
+            "active_pair_error_rate": 0.00017289565002670177,
+            "false_edges_on_active_pairs": 243,
+            "recovered_division_parents": 1,
+            "top1_known_parent_edges": 3189,
+            "mean_known_edge_margin": 3.4986409065417994
+          },
+          "primary_only": {
+            "recovered_known_edges": 3144,
+            "known_edge_recall": 0.9521502119927316,
+            "active_pair_errors": 363,
+            "active_pair_error_rate": 0.00016386715655272258,
+            "false_edges_on_active_pairs": 205,
+            "recovered_division_parents": 1,
+            "top1_known_parent_edges": 3188,
+            "mean_known_edge_margin": 3.1122490670881726
+          },
+          "primary_only_selected_epoch": 0,
+          "primary_with_past_feature_attention": {
+            "recovered_known_edges": 3066,
+            "known_edge_recall": 0.9285281647486372,
+            "active_pair_errors": 408,
+            "active_pair_error_rate": 0.00018418126686917577,
+            "false_edges_on_active_pairs": 172,
+            "recovered_division_parents": 1,
+            "top1_known_parent_edges": 3185,
+            "mean_known_edge_margin": 2.594260332784387
+          },
+          "primary_with_past_feature_attention_selected_epoch": 1,
+          "history_model_all_past_masked": {
+            "recovered_known_edges": 3073,
+            "known_edge_recall": 0.9306480920654149,
+            "active_pair_errors": 404,
+            "active_pair_error_rate": 0.00018237556817437994,
+            "false_edges_on_active_pairs": 175,
+            "recovered_division_parents": 1,
+            "top1_known_parent_edges": 3185,
+            "mean_known_edge_margin": 2.604086217195752
+          },
+          "graph_progression_passed": false
+        },
+        "6bba": {
+          "outer_videos": 10,
+          "known_edges": 7275,
+          "active_pairs": 3243792,
+          "division_parents": 11,
+          "public_primary": {
+            "recovered_known_edges": 7016,
+            "known_edge_recall": 0.9643986254295532,
+            "active_pair_errors": 627,
+            "active_pair_error_rate": 0.00019329229494369552,
+            "false_edges_on_active_pairs": 368,
+            "recovered_division_parents": 1,
+            "top1_known_parent_edges": 7089,
+            "mean_known_edge_margin": 3.7520680572855514
+          },
+          "primary_only": {
+            "recovered_known_edges": 6962,
+            "known_edge_recall": 0.9569759450171821,
+            "active_pair_errors": 637,
+            "active_pair_error_rate": 0.00019637510666528556,
+            "false_edges_on_active_pairs": 324,
+            "recovered_division_parents": 1,
+            "top1_known_parent_edges": 7088,
+            "mean_known_edge_margin": 3.999479970415843
+          },
+          "primary_only_selected_epoch": 2,
+          "primary_with_past_feature_attention": {
+            "recovered_known_edges": 6944,
+            "known_edge_recall": 0.9545017182130584,
+            "active_pair_errors": 658,
+            "active_pair_error_rate": 0.00020284901128062466,
+            "false_edges_on_active_pairs": 327,
+            "recovered_division_parents": 0,
+            "top1_known_parent_edges": 7077,
+            "mean_known_edge_margin": 4.07113252827392
+          },
+          "primary_with_past_feature_attention_selected_epoch": 2,
+          "history_model_all_past_masked": {
+            "recovered_known_edges": 6943,
+            "known_edge_recall": 0.9543642611683849,
+            "active_pair_errors": 653,
+            "active_pair_error_rate": 0.00020130760541982963,
+            "false_edges_on_active_pairs": 321,
+            "recovered_division_parents": 1,
+            "top1_known_parent_edges": 7078,
+            "mean_known_edge_margin": 4.053031851714829
+          },
+          "graph_progression_passed": false
+        }
+      }
+    }
+  },
+  "notes": "Kaggle version 2 completed 2 modes x 2 held-out embryos with 4 verified checkpoints. Both embryos failed the predefined pair-to-graph progression condition; official score and graph inference were not measured. User explicitly judged the experiment complete and not adopted on 2026-09-26. The tested initial design remains below both controls in the predefined pair evaluation."
+}
