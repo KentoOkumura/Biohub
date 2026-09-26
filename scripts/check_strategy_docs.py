@@ -20,7 +20,7 @@ MAX_DIRECTION_LINES = 220
 MAX_LINE_LENGTH = 800
 # Hypothesis rows repeat full candidate and experiment names in link targets.
 # Keep prose/backlog rows short while allowing the required lineage link list.
-MAX_HYPOTHESIS_ROW_LENGTH = 1_200
+MAX_HYPOTHESIS_ROW_LENGTH = 1_400
 ALLOWED_STATES = {"検討メモ・設計不可", "設計可能・実験化未承認"}
 ALLOWED_PRIORITIES = {"P0", "P1", "P2", "P3", "P4"}
 DESIGN_READY_STATE = "設計可能・実験化未承認"
