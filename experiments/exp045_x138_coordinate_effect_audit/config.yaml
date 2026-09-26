@@ -1,0 +1,108 @@
+experiment:
+  name: exp045_x138_coordinate_effect_audit
+  description: "exp043の固定座標headが接続・分裂・最終graphへ及ぼす作用を段階別に監査する"
+  route: public_x138_coordinate_effect_audit
+  created_at: "2026-09-24"
+  notebooks: [pilot, inference, official]
+
+lineage:
+  parent: exp043_x138_self_trained_head
+  hypothesis_id: HYP-20260910-14
+  backlog_candidate: x138_coordinate_effect_audit
+  diff_summary: "採用済み最終headを学習外20動画で補正なしと比較し、得点から公式graph指標まで追跡する"
+
+source:
+  parent_config: ../exp043_x138_self_trained_head/config.yaml
+  parent_inference: ../exp043_x138_self_trained_head/exp043_x138_self_trained_head_inference.py
+  head_dataset: kentookumura/exp043-self-trained-coordinate-head
+  head_sha256: 32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc
+  public_evaluator_sha256: 614813cc51c3581c6ccda4bb20725a19da8ecac4a27620654bfca58319cffa3c
+
+data:
+  source: competition_train_runtime
+  train_zarr: train/*.zarr
+  train_geff: train/*.geff
+  selection_seed: 42
+  selected_rank_start_per_embryo: 11
+  selected_rank_end_per_embryo: 20
+  excluded_training_rank_end_per_embryo: 10
+  expected_embryos: [44b6, 6bba]
+  expected_videos: 20
+  native_spacing_zyx_um: [1.625, 0.40625, 0.40625]
+  feature_grid_spacing_zyx_um: [1.625, 1.625, 1.625]
+
+model:
+  name: fixed_public_x138_with_exp043_head
+  params:
+    active_arms: [zero, refined]
+    trainable_models: 0
+    matching_radius_um: 7.0
+    score_capture_threshold: 1.0e-8
+
+validation:
+  method: paired_video_head_unseen_conditional
+  official_metric: combined_score
+  report_by_embryo: true
+  conditional_on_public_image_model_training: true
+  official_evaluator_max_distance_um: 7.0
+  pilot_videos_per_embryo: 1
+  require_all_videos: true
+
+runtime:
+  use_amp: true
+  num_workers: 1
+  batch_size: null
+  max_notebook_hours: 12
+  weekly_gpu_hours_limit: 45
+  kaggle:
+    pilot:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+        - kentookumura/exp043-self-trained-coordinate-head
+    official:
+      enable_gpu: false
+      enable_tpu: false
+      enable_internet: false
+      machine_shape: null
+      include_experiment_sources: true
+      kernel_sources: []
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - kentookumura/exp045-x138-coordinate-audit-v1-artifacts
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+        - pilkwang/biohub-tracking-support-pack-50ep-v1
+        - pilkwang/biohub-temporal-unet3d-seed314159-v1
+        - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+        - kentookumura/exp043-self-trained-coordinate-head
+
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: stable_sha256_video_selection_no_training
+  stochastic_components: [cuda_inference, ilp]
+  parallel_rng_policy: sequential_arm_video_execution
+  feature_sha_policy: per_arm_sample_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+
+notes:
+  - "診断はheadにとって動画単位の学習外だが、公開画像モデルのtrain集合なので独立CVではない。"
+  - "GEFFは診断と公式評価にのみ使用し、推論へ渡さない。"
+  - "competition submissionは行わない。"

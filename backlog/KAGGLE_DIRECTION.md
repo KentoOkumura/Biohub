@@ -29,7 +29,7 @@
 ## 現在の重点
 
 1. 採用済み[exp043](../experiments/exp043_x138_self_trained_head/result.md)のPublic LB 0.950を提出全体の基準とする。旧exp013は0.944。差を座標head単独やtracker学習の改善とは解釈しない。
-2. [座標・接続診断](x138_coordinate_effect_audit.md)を最初の改善実験へ組み込み、候補得点、整数線形計画（ILP）、再接続、回収・分裂、最終graphで正解接続が残る段階を調べる。独立した基準作成expを必須にしない。
+2. [exp045の座標・接続診断](../experiments/exp045_x138_coordinate_effect_audit/result.md)は完了。採用済みheadの学習動画を除く両胚各10動画で、補正ありのtrain内scoreが0.879239→0.890348へ改善した。固定公開画像モデル下の条件付き結果であり、Public LBでのhead単独効果は未確認。
 3. P1は同じ得点の[接続候補保持](x138_edge_candidates.md)と、既存の[検出回収候補の選択](x138_detection_recovery.md)。P2は再接続の近傍情報、分裂の共有得点、固定位置の局所graph選択。GNNであること自体は優先理由にしない。
 4. Transformer内部の特徴・attention追加、履歴延長、対照損失などは再開条件付きP4へ下げる。[exp040修正版](../experiments/exp040_trackastra_association/result.md)・[exp041](../experiments/exp041_past_feature_cross_attention/result.md)の単体未達は根拠だが、手法全体の無効や未測定の公式score低下は主張しない。
 5. exp043入力のtrain対照は必要な改善実験内で取得する。exp015/016の旧cache・数値は直接代用しない。公開モデルと座標headの学習来歴を含む条件付き比較であり、独立CVとPublic LBの整合は未判定。
@@ -62,7 +62,7 @@
 | `HYP-20260910-11` | 対応なしと観測可能な構造制約を学習・復号へ明示すると、誤接続を抑えながら正しい継続と分裂を保持できる。 | [`shared_edge_graph_learning`](shared_edge_graph_learning.md)<br>[`final_graph_edit`](final_graph_edit.md)<br>[`neural_graph_selection`](neural_graph_selection.md)<br>[`explicit_no_match`](explicit_no_match.md)<br>[`image_count_prior`](image_count_prior.md)<br>[`known_parent_constraint`](known_parent_constraint.md) | [`exp018_graph_cost_scale`](../experiments/exp018_graph_cost_scale/)<br>[`exp028_direct_graph_prediction`](../experiments/exp028_direct_graph_prediction/)<br>[`exp029_mother_daughter_set_selection`](../experiments/exp029_mother_daughter_set_selection/) | 部分教師・分裂の得点、直接選択、最終修正の効果。 |
 | `HYP-20260910-12` | 等価な処理の再利用や局所的な計算配分により、高解像度・多時点・密な候補の手法を予算内で比較し最終精度を改善できる。 | [`uncertain_highres`](uncertain_highres.md)<br>[`sparse_motion_graph`](sparse_motion_graph.md)<br>[`public_x138_tracker_comparison`](public_x138_tracker_comparison.md)<br>[`distill_reinvest`](distill_reinvest.md) | [`exp011_public_detector_selection`](../experiments/exp011_public_detector_selection/)<br>[`exp013_public_notebook_replay`](../experiments/exp013_public_notebook_replay/)<br>[`exp014_exact_window_cache`](../experiments/exp014_exact_window_cache/)<br>[`exp016_frozen_image_encoder`](../experiments/exp016_frozen_image_encoder/)<br>[`exp042_public_x138_replay`](../experiments/exp042_public_x138_replay/) | 追加座標補正を含むx138の再現性・費用、公開/exp016重みの順位。 |
 | `HYP-20260910-13` | 位置と系譜を保って撮像条件や境界・密度を変える学習により、別の胚の見え方に対する性能低下を抑えられる。 | [`anisotropic_blur`](anisotropic_blur.md)<br>[`photometric_shift`](photometric_shift.md)<br>[`lineage_density_aug`](lineage_density_aug.md)<br>[`crop_boundary_aug`](crop_boundary_aug.md) | - | 実際の胚差との対応、ラベル整合、片側胚の悪化。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
-| `HYP-20260910-14` | 現行公式指標・胚を分けた評価・段階別の上限検査を用いると、独自proxyや学習内指標では見えない候補の順位差と失敗箇所を識別できる。 | [`x138_coordinate_effect_audit`](x138_coordinate_effect_audit.md) | [`exp003_official_metric_audit`](../experiments/exp003_official_metric_audit/)<br>[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)<br>[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)<br>[`exp007_graph_checkpoint_selection`](../experiments/exp007_graph_checkpoint_selection/)<br>[`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)<br>[`exp015_oracle_stage_limits`](../experiments/exp015_oracle_stage_limits/) | 位置・採点・候補保持・最終graphの作用段階。対照学習固有の診断はcontrastive_parent_child内へ統合し関連仮説として維持。 |
+| `HYP-20260910-14` | 現行公式指標・胚を分けた評価・段階別の上限検査を用いると、独自proxyや学習内指標では見えない候補の順位差と失敗箇所を識別できる。 | - | [`exp003_official_metric_audit`](../experiments/exp003_official_metric_audit/)<br>[`exp004_embryo_holdout_baseline`](../experiments/exp004_embryo_holdout_baseline/)<br>[`exp005_embryo_holdout_batch8`](../experiments/exp005_embryo_holdout_batch8/)<br>[`exp007_graph_checkpoint_selection`](../experiments/exp007_graph_checkpoint_selection/)<br>[`exp012_group_error_readout`](../experiments/exp012_group_error_readout/)<br>[`exp015_oracle_stage_limits`](../experiments/exp015_oracle_stage_limits/)<br>[`exp045_x138_coordinate_effect_audit`](../experiments/exp045_x138_coordinate_effect_audit/) | 位置・採点・候補保持・最終graphの作用段階。対照学習固有の診断はcontrastive_parent_child内へ統合し関連仮説として維持。 |
 | `HYP-20260911-01` | nnU-Netのデータに応じた前処理・構造・学習設定を中心マップの予測へ適応すると、疎注釈を適切に扱う条件で現行検出器より細胞を回収でき、両胚の公式接続・分裂指標が改善する。 | [`nnunet_center_detection`](nnunet_center_detection.md) | - | 中心教師とnnU-Net設定の寄与、背景と未知領域の識別、時間入力と接続特徴、学習・推論費用。対応候補は現方針では保留し、詳細の再開条件を確認する。 |
 | `HYP-20260915-01` | 固定画像特徴から学ぶtrackerへ、正しい親子対応を近づけ確定した誤親から離す対照損失を加えると、接続分類損失だけの場合より近傍の取り違えと両胚の公式graph誤りを減らせる。 | [`contrastive_parent_child`](contrastive_parent_child.md) | - | 共有tracker特徴への寄与、疎い教師と分裂の整合、固定候補内の順位から公式指標への移行。履歴・欠落への頑健性・候補回収は関連仮説で別比較する。 |
 | `HYP-20260920-01` | 公開画像特徴を固定して既存のprimary trackerを追加学習する際、学習を3エポックより長くすると、同じ教師・損失・復号でも両胚の公式graph精度を改善できる。 | — | [`exp024_tracker_six_epochs`](../experiments/exp024_tracker_six_epochs/) | 6エポックで後半の重みが内部検証から選ばれるか、両胚の公式scoreへ改善が残るか。異なる学習率や長さでも成立するかは別検証。 |
@@ -77,11 +77,10 @@
 
 2026-09-25: 作者headの取得を受け、exp043のhead交換比較をP2へ追加。既存候補の優先度は維持する。
 
-教師・特徴診断は対照学習候補へ、旧座標補正の未測定効果は座標・接続診断へ統合。位置変更は局所graph選択から既存の共同位置選択候補へ分離した。候補名が似ていても入力・出力・比較が異なる案は維持する。
+教師・特徴診断は対照学習候補へ、旧座標補正の未測定効果はexp045の座標・接続診断へ移行。位置変更は局所graph選択から既存の共同位置選択候補へ分離した。候補名が似ていても入力・出力・比較が異なる案は維持する。
 
 | 優先度 | 対応仮説 | アイデア | 短い要約 | 主な先行条件 / 依存 | 状態 |
 | --- | --- | --- | --- | --- | --- |
-| P1 | `HYP-20260910-14` | [`x138_coordinate_effect_audit`](x138_coordinate_effect_audit.md) | 補正と接続を同条件診断 | 対象動画・headの評価来歴・教師対応・graph診断の範囲を確定する。基準作成だけの別実験は必須にせず、候補保持または検出回収と同じ実験内で取得できる。 | `検討メモ・設計不可` |
 | P1 | `HYP-20260910-09` | [`x138_edge_candidates`](x138_edge_candidates.md) | 競合する接続候補をILPへ残す | exp043と同じ入力の枝刈り前得点、候補上限、費用上限、段階別の評価を確定する。候補を増やしただけで改善としない。 | `検討メモ・設計不可` |
 | P1 | `HYP-20260910-09` | [`x138_detection_recovery`](x138_detection_recovery.md) | 得点・画像・接続から回収候補を選ぶ | 同じ回収候補で現行ルールが落とす既知接続と識別可能な教師を確認する。出力単位・損失・競合解消方式を決めてから学習する。 | `検討メモ・設計不可` |
 | P2 | `HYP-20260910-02` | [`x138_author_head_comparison`](x138_author_head_comparison.md) | exp043の座標補正重みだけを作者版へ交換 | 作者head取得済み。同じ20動画のexp045自前head対照を条件一致時に再利用し、両胚の公式graph指標を比較する。 | `設計可能・実験化未承認` |

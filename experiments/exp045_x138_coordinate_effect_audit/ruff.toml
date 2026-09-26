@@ -1,0 +1,7 @@
+extend = "../../pyproject.toml"
+extend-exclude = [
+    # The public x138 implementation is copied into the executable notebook.
+    "exp045_x138_coordinate_effect_audit_inference.py",
+    "exp045_x138_coordinate_effect_audit_pilot.py",
+    "exp045_x138_coordinate_effect_audit_official.py",
+]
