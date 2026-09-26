@@ -5,8 +5,8 @@
 公開 biohub x138 V1 の全推論を、追加の V1284 座標補正モデルを含めて再実行する。旧公開構成の基準は exp013。
 
 - 差分: x138 の補正座標、特徴補間、接続の組み直し、未使用検出点の再追加、欠落補完を元の順序で保持し、入力・中間座標・graph・提出ファイルの記録を追加した。
-- リスク: 公開実行からdataset refとversion IDは特定したが、Kaggle APIが403を返す。checkpoint本体とSHAは未取得で、入力guardは実行を拒否する。
-- 次: 追加checkpointを固定し、公開test全件のcleanな2実行と提出前検証を行う。
+- リスク: 公開版のV1284 checkpointを取得してSHAを固定した。残るリスクはCUDA・SCIP・2 GPU分割と時間依存の処理縮小による出力差。
+- 次: Public LB 0.953を確認済み。hidden testの動画別ILPログとPrivate LBは未取得。
 
 ## 正の記録
 
@@ -18,4 +18,4 @@
 
 ## 実行入口
 
-- 追加checkpointへのアクセスとSHAを確認してから [inference notebook](exp042_public_x138_replay_inference.ipynb) をKaggleへ準備・pushする。手順と停止条件は [SESSION_NOTES.md](SESSION_NOTES.md) を参照。
+- SHAを固定した [inference notebook](exp042_public_x138_replay_inference.ipynb) をKaggleへ準備・pushする。手順と停止条件は [SESSION_NOTES.md](SESSION_NOTES.md) を参照。

@@ -50,7 +50,7 @@
 | exp039_dog_features | frozen_detector_dog_node_tracker | exp016_frozen_image_encoder | 破棄 | - | - | - | 2026-09-23 |
 | exp040_trackastra_association | frozen_feature_trackastra_association | exp016_frozen_image_encoder | デバッグ完了 | - | - | - | 2026-09-23 |
 | exp041_past_feature_cross_attention | frozen_feature_past_feature_cross_attention | exp016_frozen_image_encoder | デバッグ完了 | - | - | - | 2026-09-23 |
-| exp042_public_x138_replay | public_x138_replay | exp013_public_notebook_replay | 雛形完了 | - | - | - | 2026-09-23 |
+| exp042_public_x138_replay | public_x138_replay | exp013_public_notebook_replay | 完了 | - | 0.953 | - | 2026-09-26 |
 | exp043_x138_self_trained_head | public_x138_self_trained_coordinate_head | exp042_public_x138_replay | 完了 | - | 0.95 | - | 2026-09-24 |
 | exp045_x138_coordinate_effect_audit | public_x138_coordinate_effect_audit | exp043_x138_self_trained_head | 完了 | - | - | - | 2026-09-26 |
 | exp047_x138_edge_candidates | public_x138_edge_candidate_expansion | exp043_x138_self_trained_head | 完了 | - | - | - | 2026-09-26 |

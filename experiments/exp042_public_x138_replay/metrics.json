@@ -1,26 +1,27 @@
 {
   "experiment": "exp042_public_x138_replay",
-  "status": "scaffold_completed",
+  "status": "completed",
   "cv": null,
-  "public_lb": null,
+  "public_lb": 0.953,
   "private_lb": null,
   "metric": null,
   "evidence": {
     "kaggle": {
-      "kernel_id": null,
-      "kernel_version": null,
-      "url": null,
+      "kernel_id": "kentookumura/exp042-public-x138-replay-inference",
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp042-public-x138-replay-inference",
       "kernel_source_ids": [],
-      "resource": null,
-      "notebook_runtime_seconds": null,
-      "internet_enabled": null
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": 1269.8,
+      "internet_enabled": false,
+      "docker_image": "gcr.io/kaggle-private-byod/python@sha256:37c64f7dd9c54116ecd1bcc88817c5469b88387388fade02bfa8bf3fc647d461"
     },
     "artifacts": {
-      "input_file_sha": null,
+      "input_file_sha": "f21143360ee0ae4c6305c119e19eacfee489370ce1db8b19d64cc8ec5288770c",
       "cache_file_sha": null,
       "feature_schema_sha": null,
-      "feature_content_sha": null,
-      "row_count": null,
+      "feature_content_sha": "a8b0d371b7b4f947839581cde17dcba3aa0cffdd70c2f84c9a1816f0327f38fa",
+      "row_count": 238260,
       "group_count": null,
       "feature_count": null,
       "raw_gzip_sha": null,
@@ -31,19 +32,70 @@
       "selected_mode": null,
       "selected_model": null,
       "oof_prediction_sha": null,
-      "test_prediction_content_sha": null,
-      "submission_sha": null
+      "test_prediction_content_sha": "89deb006571e9e1ee79669c384951f4e069752b872fa8cff4dce5b997ca21a77",
+      "submission_sha": "d52a5da2ae5cb0d1b22499f6ca51a00838a6c32ae9a1986ec756ea72e7909e03"
     },
     "submission_validation": {
-      "passed": null,
-      "checked_at": null,
-      "row_count": null,
-      "id_column": null,
-      "target_columns": [],
-      "duplicate_id_count": null,
-      "missing_value_count": null,
-      "infinite_value_count": null,
-      "target_statistics": {},
+      "passed": true,
+      "checked_at": "2026-09-26T04:47:27.417213+00:00",
+      "row_count": 238260,
+      "id_column": "id",
+      "target_columns": [
+        "node_id",
+        "t",
+        "z",
+        "y",
+        "x",
+        "source_id",
+        "target_id"
+      ],
+      "duplicate_id_count": 0,
+      "missing_value_count": 0,
+      "infinite_value_count": 0,
+      "target_statistics": {
+        "node_id": {
+          "min": -1.0,
+          "max": 77308.0,
+          "mean": 14204.49228573827,
+          "std": 20823.401337348885
+        },
+        "t": {
+          "min": -1.0,
+          "max": 99.0,
+          "mean": 24.082737345756737,
+          "std": 31.92964872789513
+        },
+        "z": {
+          "min": -1.0,
+          "max": 63.0,
+          "mean": 15.569818685469656,
+          "std": 20.68435921700934
+        },
+        "y": {
+          "min": -1.0,
+          "max": 253.0,
+          "mean": 62.05120456644002,
+          "std": 78.73781031930271
+        },
+        "x": {
+          "min": -1.0,
+          "max": 254.0,
+          "mean": 64.45504490892303,
+          "std": 81.91588179926492
+        },
+        "source_id": {
+          "min": -1.0,
+          "max": 77308.0,
+          "mean": 13578.005233778225,
+          "std": 20437.883664924822
+        },
+        "target_id": {
+          "min": -1.0,
+          "max": 77308.0,
+          "mean": 13860.409233610342,
+          "std": 20700.886445053227
+        }
+      },
       "errors": [],
       "fallback_rows": null,
       "prediction_min": null,
@@ -57,15 +109,59 @@
       "prediction_diff_abs_max": null,
       "prediction_diff_mean": null
     },
-    "reruns": [],
+    "reruns": [
+      {
+        "kernel_version": 2,
+        "feature_content_sha": "a8b0d371b7b4f947839581cde17dcba3aa0cffdd70c2f84c9a1816f0327f38fa",
+        "test_prediction_content_sha": "89deb006571e9e1ee79669c384951f4e069752b872fa8cff4dce5b997ca21a77",
+        "submission_sha": "d52a5da2ae5cb0d1b22499f6ca51a00838a6c32ae9a1986ec756ea72e7909e03",
+        "reference_submission_sha": "d52a5da2ae5cb0d1b22499f6ca51a00838a6c32ae9a1986ec756ea72e7909e03",
+        "byte_identical_to_reference": true,
+        "difference_notes": null
+      }
+    ],
     "v1284_checkpoint": {
       "dataset_ref": "anvithpothula/biohub-v1284-head-s075",
       "dataset_id": 12103746,
       "version_id": 19822532,
-      "sha256": null,
-      "acquired": false,
-      "access_check": "Kaggle datasets metadata/download returned 403"
+      "sha256": "625a0d9340f48193f2ec294fc2d81c5bb3c03087eab78ef0ae998a9c4c7da00c",
+      "acquired": true,
+      "access_check": "Kaggle datasets files succeeded on 2026-09-26; local checkpoint SHA256 verified"
+    },
+    "public_replay": {
+      "version_1": {
+        "receipt_sha256": "6a3ac053db3139381cab4d1815746e3d6377972635329c3156d8fbc47649a902",
+        "pre_refinement_coordinates_sha256": "55f85645ffb6833d348a5b83439f884b984d86c274dd02667a1840113942a635",
+        "post_refinement_coordinates_sha256": "a8b0d371b7b4f947839581cde17dcba3aa0cffdd70c2f84c9a1816f0327f38fa",
+        "graph_topology_sha256": "89deb006571e9e1ee79669c384951f4e069752b872fa8cff4dce5b997ca21a77",
+        "submission_sha256": "d52a5da2ae5cb0d1b22499f6ca51a00838a6c32ae9a1986ec756ea72e7909e03",
+        "submission_rows": 238260,
+        "v1284_changed_rows": 143633,
+        "max_ilp_seconds": 77.5,
+        "repair_fallback_count": 0,
+        "deadline_degraded_count": 0
+      },
+      "version_2": {
+        "receipt_sha256": "6a3ac053db3139381cab4d1815746e3d6377972635329c3156d8fbc47649a902",
+        "pre_refinement_coordinates_sha256": "55f85645ffb6833d348a5b83439f884b984d86c274dd02667a1840113942a635",
+        "post_refinement_coordinates_sha256": "a8b0d371b7b4f947839581cde17dcba3aa0cffdd70c2f84c9a1816f0327f38fa",
+        "graph_topology_sha256": "89deb006571e9e1ee79669c384951f4e069752b872fa8cff4dce5b997ca21a77",
+        "submission_sha256": "d52a5da2ae5cb0d1b22499f6ca51a00838a6c32ae9a1986ec756ea72e7909e03",
+        "submission_rows": 238260,
+        "v1284_changed_rows": 143633,
+        "max_ilp_seconds": 73.5,
+        "repair_fallback_count": 0,
+        "deadline_degraded_count": 0
+      },
+      "comparison": {
+        "report_sha256": "0b94c1e87c0728d991997b06e35218bb09188a4c73c97da20b6c01a1f18d8cb8",
+        "comparison_fields": 15,
+        "mismatches": [],
+        "byte_identical_to_reference": true,
+        "matches_published_public_test_submission_sha256": true
+      }
     }
   },
-  "notes": "Reference and replay notebook implemented; x138 V1284 dataset version identified but inaccessible (403), checkpoint SHA unknown. No Kaggle run or submission."
+  "notes": "Author x138 replay V1/V2 public-test outputs matched; submission ref 56569806 completed with Public LB 0.953. Hidden-test rerun determinism remains unverified.",
+  "updated_at": "2026-09-26T12:44:00.840216+00:00"
 }

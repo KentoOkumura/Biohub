@@ -37,7 +37,7 @@ data:
     dataset_ref: anvithpothula/biohub-v1284-head-s075
     dataset_id: 12103746
     version_id: 19822532
-    sha256: null
+    sha256: 625a0d9340f48193f2ec294fc2d81c5bb3c03087eab78ef0ae998a9c4c7da00c
 
 model:
   name: public_x138_v1_bundle
@@ -113,5 +113,5 @@ reproducibility:
     submission_sha: true
 
 notes:
-  - "追加checkpointのdataset ref・version IDは公開Notebook実行メタデータで確認。Kaggle APIが403を返すためfile SHA未取得。アクセスとSHAを確認するまでpushしない。"
+  - "追加checkpointのdataset ref・version IDは公開Notebook実行メタデータで確認。取得したファイルのSHA256を固定した。"
   - "公開testの2回一致だけではhidden test費用やPublic LBを証明しない。submissionは別途承認が必要。"
