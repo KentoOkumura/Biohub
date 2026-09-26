@@ -1,0 +1,29 @@
+{
+  "kind": "synthetic_objective_check_not_competition_evaluation",
+  "costs": {
+    "edge": -1.0,
+    "appearance": 0.0,
+    "disappearance": 2.0,
+    "division": 1.2
+  },
+  "cases": [
+    {
+      "second_daughter_probability": 0.1,
+      "normal_objective": -3.0,
+      "forced_division_objective": -1.9000000000000001,
+      "extra_cost": 1.0999999999999999
+    },
+    {
+      "second_daughter_probability": 0.5,
+      "normal_objective": -3.0,
+      "forced_division_objective": -2.3,
+      "extra_cost": 0.7000000000000002
+    },
+    {
+      "second_daughter_probability": 1.0,
+      "normal_objective": -3.0,
+      "forced_division_objective": -2.8,
+      "extra_cost": 0.20000000000000018
+    }
+  ]
+}

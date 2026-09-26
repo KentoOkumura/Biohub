@@ -1,0 +1,702 @@
+{
+  "schema_version": "2",
+  "task_summary": "exp049後の具体的アクションの候補比較。提案のみで、実験化・バックログ更新・Kaggle実行・採否判断は行わない。",
+  "evidence_cutoff": "2026-09-26; exp049 diagnostic v6 and prior-turn synthetic ILP check; no new competition evaluation.",
+  "allowed_sources": [
+    "experiments/exp049_x138_edge_selection_diagnostic/result.md",
+    "experiments/exp047_x138_edge_candidates/result.md",
+    "experiments/exp018_graph_cost_scale/result.md",
+    "experiments/exp029_mother_daughter_set_selection/result.md",
+    "experiments/exp043_x138_self_trained_head/result.md",
+    "studies/biohub_exp049_ilp_objective_20260926/objective_check.json",
+    "backlog/KAGGLE_DIRECTION.md",
+    "backlog/shared_edge_graph_learning.md",
+    "backlog/x138_local_graph_choice.md"
+  ],
+  "assumptions": [
+    "Assumption: exp043 features can be recaptured with identical windows at a cost that must be measured.",
+    "Assumption: partial labels provide sufficient known divisions and certified conflicting candidates for ranking; counts on new training splits are unknown.",
+    "未解決: 現在のGPU残量、締切までの日数、学習案の具体的層数・損失比・費用のみ対照の値・新しい評価動画。"
+  ],
+  "evidence": {
+    "E049": "experiments/exp049_x138_edge_selection_diagnostic/result.md",
+    "E047": "experiments/exp047_x138_edge_candidates/result.md",
+    "E018": "experiments/exp018_graph_cost_scale/result.md",
+    "E029": "experiments/exp029_mother_daughter_set_selection/result.md",
+    "E043": "experiments/exp043_x138_self_trained_head/result.md",
+    "Eproof": "studies/biohub_exp049_ilp_objective_20260926/objective_check.json",
+    "Epolicy": "backlog/KAGGLE_DIRECTION.md",
+    "Eshared": "backlog/shared_edge_graph_learning.md",
+    "Elocal": "backlog/x138_local_graph_choice.md"
+  },
+  "task_card": {
+    "prediction": "3D cell centers and directed continuation/division edges; score rewards correct edges and divisions and penalizes supported wrong links and excess nodes.",
+    "availability": "Hidden inference has image sequence, fixed model predictions/features and geometry; no GEFF or true count labels. Ground truth training graphs are partial.",
+    "unit": "Embryo -> video -> neighboring frames/competing parents/daughter sets; shared daughters couple choices.",
+    "uncertainty": "Hard edge threshold and single ILP solution discard plausible competing links and mother-two-daughter combinations.",
+    "invariants": [
+      "Time direction",
+      "one parent per daughter",
+      "at most two daughters per mother",
+      "coordinate/feature transforms must agree",
+      "unknown annotation is not absence"
+    ],
+    "shift": "Cell density, appearance, motion, detection gaps, candidate count, solver cost and memory can change on hidden videos."
+  },
+  "task_first_pass": [
+    {
+      "id": "T1",
+      "idea": "Fixed image features and geometry -> partial mother-daughter supervision -> daughter-set scores -> constrained set selection; share continuation edges and a symmetric division interaction.",
+      "uses_current_point_predictor": true
+    },
+    {
+      "id": "T2",
+      "idea": "Fixed dense image features -> observed voxel-to-voxel temporal correspondence -> affinity field -> graph extraction without the current point candidates.",
+      "uses_current_point_predictor": false,
+      "gate": "Hold: missing dense feature cache and correspondence supervision; must not silently train a new detector."
+    },
+    {
+      "id": "T3",
+      "idea": "Fixed dense image features -> observed trajectories -> a set of continuous short trajectories -> centers and branching graph without current candidates.",
+      "uses_current_point_predictor": false,
+      "gate": "Hold: cardinality and absence are unidentifiable from partial labels, plus new center output conflicts with fixed-detection comparison."
+    },
+    {
+      "id": "T4",
+      "idea": "Whole same-video observed motion -> reference flow with reliability -> motion residual costs -> legal association; use existing costs when reference unavailable.",
+      "uses_current_point_predictor": true
+    },
+    {
+      "id": "T5",
+      "idea": "Fixed predicted candidates and disagreement -> a distribution over legal local graphs -> partial ranking loss -> one consistent graph.",
+      "uses_current_point_predictor": true
+    },
+    {
+      "id": "T6",
+      "idea": "Train-only prediction errors -> corrupted intermediate candidates -> restoration of observed links -> same legal decoder after real-prediction refinement.",
+      "uses_current_point_predictor": true
+    }
+  ],
+  "validation_compute_pass": [
+    "Prove event-cost dominance analytically and use one scalar-only comparison inside the improvement experiment; avoid a separate threshold search.",
+    "Freeze fresh evaluation videos before training, exclude exp049's inspected videos from untouched claims, and assess both embryos as conditional comparisons.",
+    "Decompose only genuinely disconnected components of the full candidate factor graph; preserve shared-daughter and boundary constraints and verify identical objective/edges before acceleration.",
+    "Capture exact temporal-window features once and amortize training/diagnostics on cached inputs; never substitute an old experiment's mismatched features."
+  ],
+  "independence_notes": [
+    "Root already held conversation history; task-first list is task-oriented reasoning, not a blinded benchmark.",
+    "Representation subagent used the minimal packet and skill only.",
+    "Information subagent additionally read current policy.",
+    "Candidate subagent accidentally saw existing backlog names in policy; not a fully blinded pass. Agents did not see one another's ideas or root rankings."
+  ],
+  "opportunity_probes": {
+    "same_entity": "I06: same-video motion used as reference, coverage measured, fallback to original score.",
+    "imperfect_intermediate": "I08: train-side error measurement -> correlated corruption pretraining -> real prediction refinement -> held-group real-input comparison.",
+    "invariants": "Time, mother/daughter cardinality and coordinate transforms are valid; fluorescence or cell volume conservation is not assumed. I12 requires a cheap transformation check."
+  },
+  "closure_ledger": [
+    {
+      "evidence_id": "E047",
+      "closed_instantiation": "Fixed probability >0.10 and top3 parent edge expansion with unchanged cost and postprocessing on the specified 20 videos.",
+      "not_closed": "Learned event costs, division-aware scoring, other candidate sources and local graph choice.",
+      "reason": "Additional known candidates increased while final score fell in both embryos; FP +132, TP +55."
+    },
+    {
+      "evidence_id": "E018",
+      "closed_instantiation": "Scalar edge cost sweep on old exp015 candidates with fixed event costs.",
+      "not_closed": "Current exp043 inputs and learned conditional mother/daughter event scores.",
+      "reason": "No two-direction combined improvement; old candidate/repair regime differs."
+    },
+    {
+      "evidence_id": "E029",
+      "closed_instantiation": "Separate one/two-daughter heads and original partial-set loss/configuration on old inputs.",
+      "not_closed": "Shared edge scores, explicit division comparisons, other structured outputs.",
+      "reason": "All 128 covered correct two-daughter sets lost to a subset, including training examples."
+    },
+    {
+      "evidence_id": "Eproof",
+      "closed_instantiation": "Selecting divisions in an optimal solution under edge cost -p, appearance 0 and division1.2 with p<=1 and the verified constraints.",
+      "not_closed": "Correct division identification with learned scores or final postprocessing; no measured performance gain.",
+      "reason": "Removing one daughter edge while keeping its subtree and starting it anew lowers cost by at least0.2."
+    }
+  ],
+  "idea_cards": [
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I01",
+      "title": "母・娘集合の共有得点と分裂相互作用を学ぶ",
+      "mechanism_family": "representation",
+      "origin_pass": "task_first",
+      "novelty_level": "representation_change",
+      "hypothesis": "正解2娘と1娘・空集合の比較を直接学び、分裂候補を合法な全体解へ残せる。",
+      "changed_mechanism": "既存の辺得点を通常継続と2娘で共有し、娘順序不変の分裂相互作用を追加。固定1.2の費用をそのまま学習出力へ重ねない。",
+      "input_target_decode": "固定候補・特徴→既知接続と2娘→空・1娘・2娘の得点→部分教師損失と既知分裂の比較損失→娘の取り合いを制約した集合選択。",
+      "nearest_prior_attempt": "exp029 / shared_edge_graph_learning",
+      "exact_difference": "別々の1娘・2娘headの比較失敗に対して接続項を共有し、既知分裂の損失寄与と選択目的への接続を明示する。",
+      "counterevidence": "exp029では学習内の正解2娘すら選べなかった。GNN化だけでは解消しない。空集合や1娘のみという完全教師は不足。",
+      "cheap_test": "同じ実験の動作確認で集合の表現可能性・勾配・出力制約を確認。単体指標は記録し、既存候補で明示された一続きの全graph評価方針を守る。",
+      "kill_criterion": "実行不能・数値破綻・予算超過で停止。最終評価で両胚combined改善とdivision非悪化を満たさなければ採用を推奨しない。",
+      "coverage_test": "両端検出済み辺と母・2娘が候補にそろう件数を胚別に記録する。",
+      "selectability_test": "既知2娘が自身の1娘・空集合を上回る率と、推論で実際に選ばれた正解・確定矛盾を別々に測る。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I02",
+      "title": "隣接frame全体の割当を共同予測する",
+      "mechanism_family": "representation",
+      "origin_pass": "evidence_inversion",
+      "novelty_level": "representation_change",
+      "hypothesis": "娘を取り合う母の競合を学習中に扱うと、辺ごとの順位を上げるだけより合法な正解が残る。",
+      "changed_mechanism": "独立した辺出力からframe内で結合された割当行列へ変更。",
+      "input_target_decode": "2frameの固定特徴→部分的に既知の対応→合法割当の得点→観測と整合する割当の部分尤度→親娘次数を守る共同選択。",
+      "nearest_prior_attempt": "exp028 / exp029",
+      "exact_difference": "娘集合間の競合を学習目的に含める。単なるsoftmaxの追加ではない。",
+      "counterevidence": "全割当の正規化が大きく、近似が正解を落とす可能性。接続なしの識別不足。",
+      "cheap_test": "小さな競合成分で正確な列挙と学習近似を照合する。",
+      "kill_criterion": "近似と合法解が一致しない、または競合が増えると費用上限を超える。",
+      "coverage_test": "既知対応を含む合法割当が候補にあるか確認。",
+      "selectability_test": "同じ割当候補を用い、部分正解なしで選ぶ解と正解を使った上限を分離。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I03",
+      "title": "母から娘への変位を分布として出力する",
+      "mechanism_family": "representation",
+      "origin_pass": "task_first",
+      "novelty_level": "representation_change",
+      "hypothesis": "一点や一辺の得点より連続位置分布が候補順位に運動の不確実性を残せる。",
+      "changed_mechanism": "既存の辺候補得点を直接出す処理から変位分布に変更。",
+      "input_target_decode": "母の固定特徴と配置→既知変位→単一または2娘の同時変位分布→観測点の尤度→固定検出点に確率を割り当てて合法選択。",
+      "nearest_prior_attempt": "exp035 velocity_features",
+      "exact_difference": "速度を付加するのでなく予測対象を変位分布にする。",
+      "counterevidence": "部分注釈だけでは娘数の分布を識別できない。分布を広げるだけの退化。",
+      "cheap_test": "候補数を揃えて既知親の順位と包含率を比較。",
+      "kill_criterion": "包含率だけ増え順位が改善しない、または余計な親接続が増える。",
+      "coverage_test": "同じ候補数で既知接続と2娘の包含率。",
+      "selectability_test": "固定候補内の正解順位と合法選択後の誤り。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I04",
+      "title": "短い区間の接続履歴をまとめて選ぶ",
+      "mechanism_family": "candidate_generation",
+      "origin_pass": "evidence_inversion",
+      "novelty_level": "representation_change",
+      "hypothesis": "後続画像が曖昧な2frameの母娘対応を判別する。",
+      "changed_mechanism": "確定単位を隣接辺から分裂を含む数frameの履歴へ変更。",
+      "input_target_decode": "前後の固定特徴・候補→既知短経路→複数合法履歴→部分経路尤度→境界を整合した履歴選択。",
+      "nearest_prior_attempt": "x138_two_step_links",
+      "exact_difference": "未来の観測を候補順位の更新に用い、未来GTは入力しない。",
+      "counterevidence": "履歴数の増加と欠測で正解経路が早期に失われる。窓ごとの特徴再取得が必要。",
+      "cheap_test": "短区間で2frameと後続観測付きの順位を比較。",
+      "kill_criterion": "候補数を増やす以外で順位が改善しない、または12時間に収まらない。",
+      "coverage_test": "既知経路・2娘後続を保持できる割合。",
+      "selectability_test": "同じ履歴集合を用い未来画像の有無で実選択を比較。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I05",
+      "title": "分裂費用を画像と母娘の配置から予測する",
+      "mechanism_family": "representation",
+      "origin_pass": "cross_pollination",
+      "novelty_level": "role_change",
+      "hypothesis": "一律に分裂を抑える費用を条件付き得点にすると、通常接続を保ちながら分裂を選別できる。",
+      "changed_mechanism": "固定division costを事象ごとの値へ置換する軽量案。",
+      "input_target_decode": "固定画像特徴・母娘配置→既知分裂と確定矛盾→分裂事象得点→部分比較損失→辺選択と2娘選択の整合制約。",
+      "nearest_prior_attempt": "shared_edge_graph_learning",
+      "exact_difference": "GNN・共有得点の原案とは別の縮小案であり、無断で原案の実装として扱わない。",
+      "counterevidence": "固定分裂項の補正だけでは母娘の競合が解消しない。負例教師が限られる。",
+      "cheap_test": "教師を特定できる事象に限定して既知分裂の順位を測る。",
+      "kill_criterion": "分裂数だけ増えて誤分裂が増える、教師不足で学習比較が成立しない。",
+      "coverage_test": "母と2娘がそろう事象数。",
+      "selectability_test": "固定費用だけの変更と条件付き得点を同じ候補で比較。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I06",
+      "title": "同動画内の運動を参照して接続残差を学ぶ",
+      "mechanism_family": "information",
+      "origin_pass": "task_first",
+      "novelty_level": "role_change",
+      "hypothesis": "動画内の共通運動を差し引いた残差なら別細胞への接続を識別しやすい。",
+      "changed_mechanism": "近傍の予測移動を正解教師でなく観測参照として使う。",
+      "input_target_decode": "同動画の座標・固定特徴→既知接続→参照運動との適合得点→部分教師接続損失→同じ構造制約で選択。不十分な参照では元の得点へ戻す。",
+      "nearest_prior_attempt": "neighbor_dynamics / exp035",
+      "exact_difference": "絶対速度の特徴追加でなく参照量と信頼度を条件にする。",
+      "counterevidence": "誤った参照が集団的な誤接続を作る。分裂で近傍運動と乖離し得る。",
+      "cheap_test": "保存座標で参照量別・距離別の正解順位を測る。",
+      "kill_criterion": "参照不足時に元の得点より悪い、参照集合の変更で効果が逆転する。",
+      "coverage_test": "有効参照のある接続・分裂の割合。",
+      "selectability_test": "参照ありとfallback領域を分けた実選択の誤り。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I07",
+      "title": "分裂後の2軌跡の持続を分裂の証拠にする",
+      "mechanism_family": "information",
+      "origin_pass": "cross_pollination",
+      "novelty_level": "role_change",
+      "hypothesis": "近接だけより後続で独立して続く2軌跡が分裂候補を判別する。",
+      "changed_mechanism": "後続特徴を接続追加ではなく2娘事象の得点へ使う。",
+      "input_target_decode": "母・2娘・後続固定特徴→既知分裂→持続証拠付き事象得点→部分順位損失→2辺同時選択。",
+      "nearest_prior_attempt": "division_context",
+      "exact_difference": "新しい多時点画像encoderを学習せず、対応が保証された固定窓特徴を使う別設計。",
+      "counterevidence": "後続検出欠損と似た別細胞を区別できない。特徴窓の互換性が未確認。",
+      "cheap_test": "既知事象で後続観測を加えた順位変化を測る。",
+      "kill_criterion": "必要な特徴が取得不能、または後続情報が正しい組を識別しない。",
+      "coverage_test": "後続両枝まで観測可能な分裂数。",
+      "selectability_test": "同じ母娘候補で後続特徴の有無による選択差。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "Training-side measured coordinate bias, temporal correlation, missing or duplicate candidates and rank reversals; retain known identities and do not label unknowns.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I08",
+      "title": "実予測の誤差を再現した入力から接続修正を学ぶ",
+      "mechanism_family": "data_generation",
+      "origin_pass": "task_first",
+      "novelty_level": "role_change",
+      "hypothesis": "実予測に似た候補誤差で学ぶと学習時に正しすぎる入力への依存を減らせる。",
+      "changed_mechanism": "学習側で測った誤差の時間相関・欠損・順位逆転を再現して事前学習し、実予測で微調整。",
+      "input_target_decode": "学習側の予測誤差→既知接続を保存した破損入力→修正得点→部分教師の接続・分裂損失→同じ合法選択。",
+      "nearest_prior_attempt": "x138_history_error_training",
+      "exact_difference": "単なるjitterではなく誤差測定・合成事前学習・実予測微調整を接続する。",
+      "counterevidence": "合成誤差とhiddenのずれ、入力を写す退化、正解不明な欠損ラベル。",
+      "cheap_test": "実予測の誤差分布との照合後、事前学習なしと同じモデルで比較。",
+      "kill_criterion": "合成入力だけで改善し、実入力では効果が消える。",
+      "coverage_test": "破損後も教師の意味が残る正例数と誤差分布の適合。",
+      "selectability_test": "held側の実入力で事前学習なしより実選択が改善するか。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I09",
+      "title": "複数の合法な局所graphを保持して選ぶ",
+      "mechanism_family": "fusion_uncertainty",
+      "origin_pass": "cross_pollination",
+      "novelty_level": "representation_change",
+      "hypothesis": "母娘競合を含む複数解を残すと画像情報で正しい構造を選べる。",
+      "changed_mechanism": "単辺の和集合でなく少数の合法graphを候補にする。",
+      "input_target_decode": "同じ固定点・辺・画像特徴→部分注釈と整合する構造→候補graph順位→確認できる構造矛盾に対する部分順位損失→境界を整合して1解選択。",
+      "nearest_prior_attempt": "x138_local_graph_choice / exp047",
+      "exact_difference": "候補追加から合法な複数解の保持と選択へ変更。",
+      "counterevidence": "同じ目的関数で再選択するだけでは改善しない。GT固定解は推論候補にできない。",
+      "cheap_test": "正解を使わず生成した解の包含率と実選択を並べる。",
+      "kill_criterion": "oracle選択だけが改善、教師を定義できない、境界競合や費用上限。",
+      "coverage_test": "GTを使わず生成した候補に正解局所構造が含まれる割合。",
+      "selectability_test": "同じ候補から画像を用いた順位付けで選ぶ結果と上限を分離。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "Eproof",
+        "E018",
+        "E049"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I10",
+      "title": "費用だけの対照と未使用評価を同じ改善実験へ組み込む",
+      "mechanism_family": "validation",
+      "origin_pass": "evidence_inversion",
+      "novelty_level": "role_change",
+      "hypothesis": "学習案の効果を単なる分裂抑制の解除と区別できる。",
+      "changed_mechanism": "既存の分裂費用の支配関係を確認し、費用のみの対照を主実験内に1条件追加。",
+      "input_target_decode": "既存費用・学習側候補→分裂選択可能性と比較契約→事前固定の費用対照と評価split→学習なし→同じ後処理と公式評価。",
+      "nearest_prior_attempt": "exp018 / exp049",
+      "exact_difference": "倍率の広範囲探索でなく、母娘表現変更の効果を識別する対照。新規独立診断実験に分割しない。",
+      "counterevidence": "費用だけで正しい分裂を見分けられず誤分裂が増える。exp018の旧入力の失敗は現入力への保証ではない。",
+      "cheap_test": "既存の人工例検査を参照し、実入力の費用・確率範囲・通常出力との一致を主実験の入力検査で確認。",
+      "kill_criterion": "外側20動画で費用を選ぶ、後処理を同時に変更する、または実行条件を固定できないなら比較不成立。",
+      "coverage_test": "全条件で同じ分裂候補の包含数と元候補IDを照合。",
+      "selectability_test": "全条件の最終公式TP/FPとdivisionを比較し、分裂を出せたことと精度改善を区別。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I11",
+      "title": "独立した候補成分を同じ目的関数で解く",
+      "mechanism_family": "compute_enabler",
+      "origin_pass": "evidence_inversion",
+      "novelty_level": "role_change",
+      "hypothesis": "完全に独立な成分なら同じ解を短時間で得て学習済み費用の検証を増やせる。",
+      "changed_mechanism": "目的関数と制約を変えず、実際に切り離せる成分だけ別に解く。",
+      "input_target_decode": "候補factor graph→独立成分→成分別最適解→損失なし→同一の全体解へ結合。",
+      "nearest_prior_attempt": "exp049 exact replay",
+      "exact_difference": "近似的な時間窓分割ではなく真の独立成分の分解。",
+      "counterevidence": "動画全体が一つの巨大成分なら高速化しない。境界を切ると同等性が壊れる。",
+      "cheap_test": "小動画で目的値と辺集合を照合し、同点の扱いを明記。",
+      "kill_criterion": "交差制約が残る、費用が同じでも合法性が崩れる、または高速化がない。",
+      "coverage_test": "全候補辺と制約が各成分に欠落なく割り当てられるか。",
+      "selectability_test": "精度差を期待せず同等性を確認し、その後I01の全graph比較を完走できることを受入条件にする。"
+    },
+    {
+      "roles": [
+        "predictor",
+        "selector"
+      ],
+      "information_sources": [
+        "exp043 fixed detections, physical coordinates and exact-window image features",
+        "official partial GEFF annotations for training only"
+      ],
+      "evidence_ids": [
+        "E049",
+        "E047",
+        "E043"
+      ],
+      "deployment_error_simulated": "not applicable: real fixed-model predictions are used; artificial corruption is a separate comparison.",
+      "preserved_invariants": [
+        "Time-directed adjacent-frame output",
+        "One mother per daughter and at most two daughters per mother",
+        "Unknown annotation is not a negative label",
+        "Fixed detector, image encoder and coordinate head"
+      ],
+      "full_test": "Use a preregistered fresh evaluation split in both embryos; settings selected only inside the training side. Compare complete graphs with the official evaluator on Kaggle and report both components, false links and runtime. This is a conditional comparison under the fixed public image model, not independent CV. Submission is separately authorized.",
+      "reopen_criterion": "Reopen only with additional discriminating evidence or verified inputs addressing the stated failure, without tuning on the inspected exp049 videos.",
+      "hidden_inference_contract": "Only the image sequence and fixed-model predictions/features are used; no GEFF, true identities, annotation density or sample-specific decisions. Offline Kaggle output must obey the submission graph format.",
+      "compute_estimate": "Unmeasured. Reuse verified caches when equivalent; include feature extraction and full inference in the free weekly 45 GPU-hour budget and 12-hour notebook limit. Account for exp048 usage before scheduling.",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I12",
+      "title": "検証した幾何変換で少数分裂例を増やす",
+      "mechanism_family": "data_generation",
+      "origin_pass": "cross_pollination",
+      "novelty_level": "role_change",
+      "hypothesis": "既知分裂のIDと時間を保つ幾何変換なら部分教師の分裂寄与を増やせる。",
+      "changed_mechanism": "実測で成立する変換だけを固定特徴・座標の整合を保って適用。",
+      "input_target_decode": "既知分裂と画像→変換後も同じ系譜→追加学習例→同じ部分損失→同じ復号。",
+      "nearest_prior_attempt": "synthetic_divisions / division_triplets",
+      "exact_difference": "輝度や体積保存を仮定せず、座標変換と必要な特徴再抽出の一致に限定。",
+      "counterevidence": "特徴の回転同変性は保証されず再抽出が必要。複製だけで有効情報は増えない。",
+      "cheap_test": "変換前後の対応・物理単位・特徴取得を確認。",
+      "kill_criterion": "変換で分裂形態が壊れる、再抽出費用超過、または実画像評価へ移らない。",
+      "coverage_test": "変換後も検出と教師が対応する既知事象数。",
+      "selectability_test": "同じ学習量で変換あり/なしの実入力の選択性能を比較。"
+    }
+  ],
+  "portfolio": [
+    {
+      "idea_id": "I01",
+      "slot": "exploration",
+      "why": "次の本命。共有得点・分裂比較・集合選択を既存shared_edge_graph_learningへ対応付ける。単なる定数変更を本案の実装としない。"
+    },
+    {
+      "idea_id": "I10",
+      "slot": "safe",
+      "why": "I01と同一実験内の比較・評価設計。追加診断だけの実験を増やさず、費用変更だけの寄与と学習の寄与を識別する。"
+    },
+    {
+      "idea_id": "I09",
+      "slot": "orthogonal",
+      "why": "I01の局所得点は改善しても競合解の選択で失われる場合の後続。"
+    },
+    {
+      "idea_id": "I06",
+      "slot": "orthogonal",
+      "why": "通常接続が主要な残課題なら同動画参照で違う情報を与える。"
+    },
+    {
+      "idea_id": "I08",
+      "slot": "exploration",
+      "why": "実予測と学習入力の誤差差が実測された場合の後続。今すぐ追加学習を重ねない。"
+    }
+  ],
+  "rejected": [
+    {
+      "idea": "Deep-EIoU型の探索拡大だけを先行する",
+      "failed_gate": "既知候補の追加後に選択で落ちる証拠があり、現在の分裂費用では2娘が選ばれない。",
+      "reopen_condition": "正しい候補が不足する事象を同条件で特定し、分裂と両立する選択方式を用意する。"
+    },
+    {
+      "idea": "分裂費用やedge倍率の広範囲探索",
+      "failed_gate": "exp018の旧入力では両胚改善なし。同じ20動画で救済探索すると選択に使った評価になる。",
+      "reopen_condition": "新しい因果的根拠と学習側だけの事前固定比較。"
+    },
+    {
+      "idea": "正解固定11解を推論候補または全graph改善上限とみなす",
+      "failed_gate": "GTはhidden推論で使えず、11件は個別強制で同時実行可能性や識別可能性を示さない。",
+      "reopen_condition": "GTなし候補生成と独立した実選択の改善を実証する。"
+    },
+    {
+      "idea": "新しい画像検出器またはdense trajectory-set中心出力",
+      "failed_gate": "現行の固定検出器比較を変えるうえ、部分注釈で個数・absence教師が不足。",
+      "reopen_condition": "学習方針の変更承認と教師・費用の成立。"
+    },
+    {
+      "idea": "蛍光輝度・細胞体積の保存を既知法則として使う",
+      "failed_gate": "このデータで観測の安定性が未確認。",
+      "reopen_condition": "学習側で撮像・背景・cropを含むcheap EDAが支持する。"
+    }
+  ],
+  "recommended_action_order": [
+    "設計を確定: shared_edge_graph_learningの入力・候補・共有接続項・順序不変な2娘項・部分教師損失・ILP組込み・後処理を1契約へまとめる。固定1.2の費用を学習得点へ重ねて抑制を再導入しない。",
+    "同じ実験で比較: 現行exp043、分裂を許す固定費用の対照1構成、共有得点学習1構成。後2者は同じ候補集合を使い、候補追加と学習効果を混同しない。対照の再学習なし。",
+    "2方向の学習から全graph・公式評価まで1実験で実施。既知事象数と単体指標を記録。shared_edge案に保存済みのユーザー方針により途中の精度だけで全graphを省略しない。",
+    "両胚combined改善とdivision非悪化、通常接続の誤りとruntimeを確認。exp049の20動画を未使用評価と呼ばず、新評価を先に固定する。結果をユーザーへ提示し採否と提出は別判断。",
+    "学習で正しい組を識別できても全体選択に残らない場合にI09、通常接続の運動取り違えならI06、実予測入力への弱さが実測された場合にI08へ進む。"
+  ]
+}
