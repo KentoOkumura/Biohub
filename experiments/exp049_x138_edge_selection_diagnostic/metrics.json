@@ -140,6 +140,37 @@
         }
       ],
       "notebook_runtime_seconds": 1790
+    },
+    "score_competition_readout": {
+      "source": "exp047 Kaggle inference version 1 candidate_cache and exp049 Kaggle version 6 edge_events",
+      "original_cache_sha_verified_videos": 20,
+      "new_known_edges_candidate": 547,
+      "new_known_edges_rejected_by_ilp": 360,
+      "selected_higher_score_parent_for_daughter": 228,
+      "selected_lower_score_parent_for_daughter": 34,
+      "no_parent_edge_selected_for_daughter": 98,
+      "rejected_rank1_known_edges": 81,
+      "rejected_true_parent_selected_one_child": 205,
+      "new_known_divisions_candidate": 9,
+      "new_known_divisions_ilp": 0,
+      "all_new_known_division_parents_selected_one_child": true,
+      "readout_sha256": "21a12a438121ca41fffd609aded04d3f7b1fceca3142688f1bd3e860dc8e03a0",
+      "by_embryo": {
+        "44b6": {
+          "ilp_rejected": 100,
+          "selected_higher_score_parent": 65,
+          "selected_lower_score_parent": 7,
+          "no_parent_edge_selected": 28,
+          "rejected_rank1": 23
+        },
+        "6bba": {
+          "ilp_rejected": 260,
+          "selected_higher_score_parent": 163,
+          "selected_lower_score_parent": 27,
+          "no_parent_edge_selected": 70,
+          "rejected_rank1": 58
+        }
+      }
     }
   },
   "notes": "20動画の段階別診断と11事象の正解固定ILPをKaggle version 6で完了。公式scoreはexp047の保存済み値。2026-09-26のユーザーの完了判断を記録し、採用・不採用判断は受けていない。"

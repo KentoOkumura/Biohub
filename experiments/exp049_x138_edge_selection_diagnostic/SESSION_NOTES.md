@@ -16,3 +16,4 @@
 - 2026-09-26: Kaggle diagnostic version 6のlive logsで、両胚各1動画のpilotにおける候補・段階別ID・通常ILP辺集合と目的値の照合通過を確認。残り18動画と正解固定ILPは実行中。
 - 2026-09-26: Kaggle diagnostic version 6は`KernelWorkerStatus.COMPLETE`。CPU・internet無効で約1,790秒。exp047の段階別辺IDと件数を固定20動画すべてで照合し、両胚pilotで通常ILPの辺集合と目的値が一致。20動画の既知辺・2娘組を追跡し、正解固定ILPは11件すべて最適終了した。Kaggle outputのJSONを`artifacts/evidence/diagnostic_v6/`へ回収し、SHAを`metrics.json`へ記録した。公式scoreはexp047の保存済み値のみを参照。
 - 2026-09-26: ユーザーの「完了しました」を実験の完了判断として記録。採用・不採用の判断、次の実験選択、competition submissionは含まれない。
+- 2026-09-26: ユーザーの指摘を受け、当初の結果説明で接続得点・ILP費用・選択競合の内訳が不足していたため追記。exp047 Kaggle version 1の元cache20動画を取得してexp049入力記録のSHAと一致させ、保存済み辺別出力との結合スクリプトを追加した。ILPで落ちた新規既知接続360本のうち、得点が高い別親の選択228本、得点が低い別親の選択34本、娘に親辺を選択しない98本。既知2娘組9組はいずれも母から1娘のみ選択された。追加readoutのSHAは`metrics.json`へ記録。
