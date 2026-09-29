@@ -1,0 +1,1199 @@
+{
+  "experiment": "exp051_x138_ilp_score_clipping",
+  "status": "discarded",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-evaluate",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp051-x138-ilp-score-clipping-evaluate",
+      "kernel_source_ids": [
+        "kentookumura/exp050-shared-edge-graph-learning-capture0",
+        "kentookumura/exp050-shared-edge-graph-learning-capture1",
+        "kentookumura/exp050-shared-edge-graph-learning-capture2",
+        "kentookumura/exp050-shared-edge-graph-learning-capture3",
+        "kentookumura/exp050-shared-edge-graph-learning-capture4"
+      ],
+      "resource": "CPU",
+      "notebook_runtime_seconds": null,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": null,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": null,
+      "model_shas": {},
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [],
+    "pilot": {
+      "tune0": {
+        "kernel_version": 2,
+        "video": "44b6_341df25f",
+        "candidate_score_sha256": "ff6e67aa4a26dd7a55168236e5017c1de9babfacd685f56bad42ab06e4e150df",
+        "repeated_optimal_selection_match": true,
+        "caps": {
+          "1.0": {
+            "selected_edges": 8476,
+            "clipped_edges": 0,
+            "solve_seconds": 13.189721363999979,
+            "objective_value": -6544.705575533211
+          },
+          "0.2": {
+            "selected_edges": 7937,
+            "clipped_edges": 9995,
+            "solve_seconds": 13.539783602999933,
+            "objective_value": -1245.5329488530756
+          }
+        }
+      },
+      "tune1": {
+        "kernel_version": 2,
+        "video": "6bba_337b1b3a",
+        "candidate_score_sha256": "46df2a03199ada429875c277afdc5e958dc72f8c7546bcd99c3935655b87b287",
+        "repeated_optimal_selection_match": true,
+        "caps": {
+          "1.0": {
+            "selected_edges": 28840,
+            "clipped_edges": 0,
+            "solve_seconds": 67.94560828200008,
+            "objective_value": -23309.359370544553
+          },
+          "0.2": {
+            "selected_edges": 27407,
+            "clipped_edges": 30839,
+            "solve_seconds": 70.49206964899997,
+            "objective_value": -3893.8337664589294
+          }
+        }
+      }
+    },
+    "tuning_runs": {
+      "tune0_version2": {
+        "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-tune0",
+        "kernel_version": 2,
+        "status": "ERROR",
+        "arm": "expanded_optuna_cost",
+        "attempted_trials": 5,
+        "valid_trials": 0,
+        "evaluation_nan_trials": 3,
+        "solver_timeout_trials": 1,
+        "arm_budget_timeout_trials": 1,
+        "outer_score_measured": false
+      },
+      "tune0_control_version1": {
+        "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-tune0-control",
+        "kernel_version": 1,
+        "status": "COMPLETE",
+        "resource": "CPU",
+        "internet_enabled": false,
+        "receipt_sha256": "ddee7149d236c86f1cda771df9c76dea3de4b58e7aba30574181c02e38d4fff5",
+        "log_sha256": "3f068d42bd23ae3aaa45ea659899ed94322b8073aa38365b1bb76c0eeb95f37b",
+        "selection_file_sha256": "54f49ea5b3db281515d6419caac38a5aed994284731cdd2218e86f320298ea5b",
+        "fold": 0,
+        "arm": "expanded_optuna_cost",
+        "fit_embryo": "44b6",
+        "attempted_trials": 7,
+        "valid_trials": 4,
+        "failed_trials": 3,
+        "selected_trial": 4,
+        "selected_cap": 1.0,
+        "selected_costs": [
+          0.9526387083896032,
+          1.0911830208648934,
+          1.9086113323635971
+        ],
+        "selected_inner_score": 0.9527944103603837,
+        "arm_elapsed_seconds": 21842.232924166998,
+        "arm_elapsed_over_6h_seconds": 242.2329241669977,
+        "selected_trial_elapsed_seconds": 18493.822719722997,
+        "all_valid_trials_have_five_finite_eval_rows": true,
+        "all_valid_video_ilp_optimal": true,
+        "pilot_matches_previous_rerun": true,
+        "inner_stems": [
+          "44b6_341df25f",
+          "44b6_7e557709",
+          "44b6_95029e92",
+          "44b6_9be80b04",
+          "44b6_e35b117d"
+        ],
+        "selected_trial_within_6h": true,
+        "full_arm_elapsed_6h_interpretation_pending": false,
+        "full_arm_elapsed_6h_limit_met": false
+      },
+      "tune0_clipped_version1": {
+        "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-tune0-clipped",
+        "kernel_version": 1,
+        "status": "COMPLETE",
+        "resource": "CPU",
+        "internet_enabled": false,
+        "receipt_sha256": "5ac200ddfb675a3cb80a797076b1ad6474df1fbd20eb5b3d5d5fb5fc016bf395",
+        "log_sha256": "af60961dedaa501fbfb7bde2a6079b094f819468b8f677db8dc48fc1874c8569",
+        "selection_file_sha256": "54f49ea5b3db281515d6419caac38a5aed994284731cdd2218e86f320298ea5b",
+        "fold": 0,
+        "arm": "expanded_optuna_cost_clipped",
+        "fit_embryo": "44b6",
+        "attempted_trials": 6,
+        "valid_trials": 5,
+        "failed_trials": 1,
+        "selected_trial": 3,
+        "selected_cap": 0.4909729556485983,
+        "selected_costs": [
+          0.6011150117432088,
+          2.1242177333881367,
+          -0.9382465171125927
+        ],
+        "selected_inner_score": 0.9801706401468548,
+        "arm_elapsed_seconds": 22510.964860436,
+        "arm_elapsed_over_6h_seconds": 910.9648604360009,
+        "selected_trial_elapsed_seconds": 15120.634388069,
+        "all_valid_trials_have_five_finite_eval_rows": true,
+        "all_valid_video_ilp_optimal": true,
+        "pilot_matches_previous_rerun": true,
+        "inner_stems": [
+          "44b6_341df25f",
+          "44b6_7e557709",
+          "44b6_95029e92",
+          "44b6_9be80b04",
+          "44b6_e35b117d"
+        ],
+        "selected_trial_within_6h": true,
+        "full_arm_elapsed_6h_interpretation_pending": false,
+        "full_arm_elapsed_6h_limit_met": false
+      },
+      "tune1_control_version1": {
+        "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-tune1-control",
+        "kernel_version": 1,
+        "status": "COMPLETE",
+        "resource": "CPU",
+        "internet_enabled": false,
+        "receipt_sha256": "65220d5f5316db26d86fec583b2aae1a0fc8575a0bdd9d62faac4be4a9e7835d",
+        "log_sha256": "a05e9c95ff98b7bc4d9a9f8b30e44b48d069e31d800b3e6e976bd11459b1735f",
+        "selection_file_sha256": "54f49ea5b3db281515d6419caac38a5aed994284731cdd2218e86f320298ea5b",
+        "fold": 1,
+        "arm": "expanded_optuna_cost",
+        "fit_embryo": "6bba",
+        "attempted_trials": 6,
+        "valid_trials": 5,
+        "failed_trials": 1,
+        "selected_trial": 4,
+        "selected_cap": 1.0,
+        "selected_costs": [
+          0.9697115002140642,
+          2.9957539309421573,
+          1.913067542545972
+        ],
+        "selected_inner_score": 0.9708855870396857,
+        "arm_elapsed_seconds": 21884.319255724,
+        "arm_elapsed_over_6h_seconds": 284.31925572399996,
+        "selected_trial_elapsed_seconds": 20620.295661756,
+        "all_valid_trials_have_five_finite_eval_rows": true,
+        "all_valid_video_ilp_optimal": true,
+        "pilot_matches_previous_rerun": true,
+        "inner_stems": [
+          "6bba_337b1b3a",
+          "6bba_372c8cb8",
+          "6bba_969618f6",
+          "6bba_9a41d029",
+          "6bba_bb9f20c3"
+        ],
+        "selected_trial_within_6h": true,
+        "full_arm_elapsed_6h_interpretation_pending": false,
+        "full_arm_elapsed_6h_limit_met": false
+      },
+      "tune1_version2": {
+        "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-tune1",
+        "kernel_version": 2,
+        "status": "CANCEL_ACKNOWLEDGED",
+        "control_evaluation_nan_trials_observed": 4,
+        "control_valid_trials_observed": 0,
+        "reuse_allowed": false,
+        "outer_score_measured": false
+      },
+      "tune1_clipped_version1": {
+        "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-tune1-clipped",
+        "kernel_version": 1,
+        "status": "ERROR",
+        "resource": "CPU",
+        "internet_enabled": false,
+        "metadata_sha256": "9b370ca5bf89aa31a7fff43800cb520d931de6c4a16ed27cfaed1273b5713230",
+        "notebook_sha256": "25bf36c70794a1f0b9bffe5f7bb1d1f3421363570b981f9021dcdd48934a835c",
+        "failure_stage": "official_evaluator_gt_root_guard",
+        "failure_message": "official evaluator GT root differs",
+        "log_sha256": "5a3da48eb9dc43becfa980c3342e1c391841b81376ac92fad31ceb727ccd61fd",
+        "split_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+        "capture_input_check_passed": true,
+        "attempted_trials": 0,
+        "valid_trials": 0,
+        "outer_score_measured": false
+      },
+      "tune1_clipped_version2": {
+        "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-tune1-clipped",
+        "kernel_version": 2,
+        "status": "COMPLETE",
+        "resource": "CPU",
+        "internet_enabled": false,
+        "metadata_sha256": "9b370ca5bf89aa31a7fff43800cb520d931de6c4a16ed27cfaed1273b5713230",
+        "notebook_sha256": "5f320e3361f2a7604892f59e601908f031f807a9987b53e09251a46e20187828",
+        "gt_root_bound_to_verified_train_dir": true,
+        "receipt_sha256": "d81a680bf7f53d4b5f25525b45b91e0124380e55d8683cee9c2d176bdb5d4752",
+        "log_sha256": "102fa85df7056fcad600ee8e31bf06161c62df1445a1296c4da5e257b95d4417",
+        "selection_file_sha256": "54f49ea5b3db281515d6419caac38a5aed994284731cdd2218e86f320298ea5b",
+        "fold": 1,
+        "arm": "expanded_optuna_cost_clipped",
+        "fit_embryo": "6bba",
+        "attempted_trials": 6,
+        "valid_trials": 5,
+        "failed_trials": 1,
+        "selected_trial": 3,
+        "selected_cap": 0.44061413558859996,
+        "selected_costs": [
+          0.0290138244243604,
+          2.201244888840849,
+          0.18485005529301768
+        ],
+        "selected_inner_score": 0.9683679592237938,
+        "arm_elapsed_seconds": 22323.819994902,
+        "arm_elapsed_over_6h_seconds": 723.8199949020018,
+        "selected_trial_elapsed_seconds": 15187.369397994,
+        "all_valid_trials_have_five_finite_eval_rows": true,
+        "all_valid_video_ilp_optimal": true,
+        "pilot_matches_previous_rerun": true,
+        "inner_stems": [
+          "6bba_337b1b3a",
+          "6bba_372c8cb8",
+          "6bba_969618f6",
+          "6bba_9a41d029",
+          "6bba_bb9f20c3"
+        ],
+        "selected_trial_within_6h": true,
+        "full_arm_elapsed_6h_interpretation_pending": false,
+        "full_arm_elapsed_6h_limit_met": false
+      }
+    },
+    "tuning_input_audit": {
+      "config_sha256": "578649cd79b3e6977d0fd59f2a866fdfbc4662fe837da5ea5ee6e5b9efdf3639",
+      "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+      "capture_receipts_sha256": "56ac4a90c164b83c835e2ab19f0d7bdd84e01781adf1bd5ce19fb219ca33493a",
+      "fold0_fixed_first_trial_graphs_match": true,
+      "partial_audit_sha256": "bc2c838294d0cbd42f91223fc300da46cf8e51fc55081fc3f9ca754cb85d0d2a",
+      "fold1_fixed_first_trial_graphs_match": true,
+      "final_audit_sha256": "45d26111fada60fa268dafa5f5b3795b31836674bd281785e7172530b0ee96b1"
+    },
+    "evaluate_run": {
+      "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-evaluate",
+      "kernel_version": 1,
+      "status": "ERROR",
+      "pushed_at": "2026-09-28 06:41 JST",
+      "metadata_sha256": "4dc5c849d1cc34002ba4723025ae78008fd568c01acb61762cac1ae03a1875bf",
+      "notebook_sha256": "3211a13053be51eaec524fa442561f4441a43238a510fda53233cf49c6da78c6",
+      "cpu": true,
+      "outer_video_count_planned": 20,
+      "outer_score_measured": false,
+      "planned_graphs": 40,
+      "successful_graphs_logged": 25,
+      "paired_videos_logged": 12,
+      "failed_video": "6bba_3abfe10a",
+      "failed_arm": "expanded_optuna_cost_clipped",
+      "solver_status": "TIMELIMIT",
+      "failed_ilp_elapsed_seconds": 1329.6,
+      "per_video_ilp_limit_seconds": 1200,
+      "gurobi_license_available": false,
+      "kaggle_output_files_observed": 0,
+      "kaggle_log_sha256": "1d6b527c275d8b883d7e1db76814efd21c7f37ed73504db8e46a8d02e29e47a4",
+      "failure_audit_sha256": "979668de8cb492f04f6e03bc9d046e67eb4dee1c4281075b76b829673de6759b",
+      "last_log_time_seconds": 28132.511034719
+    },
+    "runtime_device_audit": {
+      "exp050_capture_uses_gpu": true,
+      "exp051_tuning_uses_cpu": true,
+      "exp051_evaluate_uses_cpu": true,
+      "deepcenter_postprocess_runs_in_exp051": true,
+      "deepcenter_postprocess_device_in_exp051": "cpu",
+      "exp043_inference_uses_gpu": true,
+      "cpu_gpu_deepcenter_graph_equivalence_verified": false,
+      "control_and_clipped_use_same_cpu_postprocess": true
+    },
+    "evaluate_retry_plan": {
+      "status": "FAILED",
+      "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-evaluate",
+      "target_version": 2,
+      "device": "cpu",
+      "single_notebook": true,
+      "outer_video_count": 20,
+      "arms_per_video": 2,
+      "per_video_ilp_limit_seconds": 3600,
+      "time_limit_fallback": "validated_scip_feasible_incumbent",
+      "accepted_fallback_status": "TIMELIMIT",
+      "strict_optimal_tuning_config_sha256": "578649cd79b3e6977d0fd59f2a866fdfbc4662fe837da5ea5ee6e5b9efdf3639",
+      "evaluate_config_sha256": "0c8ee638421b5b45b55a0ab4942efe29cde56321bcd99139cd68506ebe1469ea",
+      "submission_end_to_end_runtime_verified": false
+    },
+    "evaluate_run_v2": {
+      "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-evaluate",
+      "kernel_version": 2,
+      "status": "CANCEL_ACKNOWLEDGED",
+      "pushed_at": "2026-09-28 19:03 JST",
+      "metadata_sha256": "4dc5c849d1cc34002ba4723025ae78008fd568c01acb61762cac1ae03a1875bf",
+      "notebook_sha256": "0a580b9364c2329b9799380f7cb0dd466c7835f105a8afd23ef4b411dc389da2",
+      "config_sha256": "0c8ee638421b5b45b55a0ab4942efe29cde56321bcd99139cd68506ebe1469ea",
+      "tuning_config_sha256": "578649cd79b3e6977d0fd59f2a866fdfbc4662fe837da5ea5ee6e5b9efdf3639",
+      "cpu": true,
+      "outer_video_count_planned": 20,
+      "planned_graphs": 40,
+      "per_video_ilp_limit_seconds": 3600,
+      "fallback_policy": "validate_scip_incumbent_on_timelimit",
+      "outer_score_measured": false,
+      "successful_graphs_logged": 38,
+      "paired_videos_logged": 19,
+      "published_graph_roots": 38,
+      "published_graph_roots_by_arm": {
+        "expanded_optuna_cost": 19,
+        "expanded_optuna_cost_clipped": 19
+      },
+      "missing_video": "6bba_fe670320",
+      "solver_status_counts_logged": {
+        "OPTIMAL": 36,
+        "TIMELIMIT": 2
+      },
+      "timelimit_graphs_logged": [
+        {
+          "video": "6bba_3abfe10a",
+          "arm": "expanded_optuna_cost_clipped",
+          "ilp_seconds": 3653.4
+        },
+        {
+          "video": "6bba_ebff6e76",
+          "arm": "expanded_optuna_cost_clipped",
+          "ilp_seconds": 3710.9
+        }
+      ],
+      "failure": "Notebook raised RuntimeError after crossing its 11.5-hour guard following video 19 of 20; official evaluation cell not reached",
+      "last_log_time_seconds": 43209.331196759,
+      "evaluation_receipt_published": false,
+      "full_graph_payload_downloaded": true,
+      "published_graph_payload_files_verified": 798,
+      "published_stage_files_verified": 380,
+      "reused_graph_manifest_sha256": "e2a86b417b3c38e2e7fc1917d256d849e142119336ee20ecd1998ffdf782ed4b",
+      "remote_output_index_sha256": "a9e942730dcb5d1a063600e6da3a4749f8c2a72e361e04e4565615ae83dce51b",
+      "log_sha256": "af041c839dcc0dcaaca113575b44885c2927681cf86399572138ee60dbaa798a",
+      "raw_kaggle_log_sha256": "d59726e218c34366ab8b0abb78679e5f0b6140a0edcf4310586c176ae643f122",
+      "selection_sha256": "54f49ea5b3db281515d6419caac38a5aed994284731cdd2218e86f320298ea5b",
+      "published_graph_index_sha256": "c360a22bb1c8dbc8692f2012f41e0960955d721f3d06019f394e911940c3b107",
+      "failure_audit_sha256": "4baab80fb7b2130b20b0443cf4b2d097f8d7977710c1bc919da8002cf3ca3b32"
+    },
+    "evaluate_resume": {
+      "source_kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-evaluate",
+      "source_kernel_version": 2,
+      "reused_graph_count_verified": 38,
+      "reused_graph_payload_files_verified": 798,
+      "reused_stage_files_verified": 380,
+      "reused_graph_manifest_sha256": "e2a86b417b3c38e2e7fc1917d256d849e142119336ee20ecd1998ffdf782ed4b",
+      "source_output_index_sha256": "a9e942730dcb5d1a063600e6da3a4749f8c2a72e361e04e4565615ae83dce51b",
+      "source_config_sha256": "0c8ee638421b5b45b55a0ab4942efe29cde56321bcd99139cd68506ebe1469ea",
+      "source_selection_sha256": "54f49ea5b3db281515d6419caac38a5aed994284731cdd2218e86f320298ea5b",
+      "missing_video": "6bba_fe670320",
+      "dataset_id": "kentookumura/exp051-x138-clipping-v2-graphs",
+      "dataset_version": 1,
+      "dataset_status": "ready",
+      "dataset_upload_archive_sha256": "8d5be3957e868cd549dab2328f8f8d06fcce45e4ea728fda375b801b3f54bd9c",
+      "dataset_upload_archive_bytes": 248306428,
+      "kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-evaluate-resume",
+      "version_1_status": "ERROR",
+      "version_1_invalid_kernel_source": "kentookumura/exp051-x138-ilp-score-clipping-evaluate",
+      "version_1_graphs_generated": 0,
+      "version_1_failure_log_sha256": "9507c1eafdfbd4286cd8bab3608e9f87a2171095f969cd68d8d73b20535b2bbc",
+      "version_2_package_config_sha256": "cc7c35a3e69bb8adac991e5440a9195478d34190e6deb1328591b3c2c68fbb0c",
+      "version_2_metadata_sha256": "a1a4eb8e4deed4d07b2a542d5b0e1664a148fe87f074bef626cbc58f90995cb7",
+      "version_2_notebook_sha256": "52ab975003cd4f5009ffa88991d34a4e40c8ff9e0c7bd57fe890a7cca2a76b9f",
+      "version_2_status": "ERROR",
+      "version_2_graphs_generated": 0,
+      "version_2_failure_log_sha256": "9a587a9332374a6029d56dbf6ba9846d572d147105f311de7d1b8a8516e9b624",
+      "version_2_failure": "stale packaged notebook requested reused_graphs.zip although Kaggle expanded Dataset files; source was updated but ipynb was not regenerated",
+      "version_3_status": "ERROR",
+      "version_3_metadata_sha256": "a1a4eb8e4deed4d07b2a542d5b0e1664a148fe87f074bef626cbc58f90995cb7",
+      "version_3_notebook_sha256": "79ce9b425c4cce545235327dd8170613ba708f696fb2a0ad0cebecde10862ae9",
+      "version_3_graphs_generated": 0,
+      "version_3_failure_log_sha256": "ef13aa369ad97207c48d9f6c07f0ad53476ea761bc4b66b217272e88ffe471e0",
+      "version_3_failure": "selection JSON file SHA was incorrectly compared with compact canonical content SHA in the version-2 source provenance guard",
+      "version_4_status": "COMPLETE",
+      "version_4_metadata_sha256": "a1a4eb8e4deed4d07b2a542d5b0e1664a148fe87f074bef626cbc58f90995cb7",
+      "version_4_notebook_sha256": "733f7cd4378684fc1108d365404402e586f3680472465c3ea28e3d240bc68266",
+      "version_4_resource": "CPU",
+      "version_4_graph_count_verified": 40,
+      "version_4_reused_graph_count_verified": 38,
+      "version_4_new_graph_count_verified": 2,
+      "version_4_solver_status_counts": {
+        "OPTIMAL": 38,
+        "TIMELIMIT": 2
+      },
+      "version_4_time_limited_incumbents": [
+        "6bba_3abfe10a/expanded_optuna_cost_clipped",
+        "6bba_ebff6e76/expanded_optuna_cost_clipped"
+      ],
+      "version_4_elapsed_seconds": 1175.0136364010002,
+      "version_4_log_sha256": "e3d71a140d651a12f6726d0406419c325a4bdb49736fc547a222f729b195f72e",
+      "version_4_receipt_sha256": "5b36279bc8eb520cb78041b133ec82135a8d9e9728fb2cc91070d61dcbccc5cc",
+      "version_4_official_metric_sha256": "80af5634f3f078cd763ce6472c619e96ca288098d20cc02c35e6fdde7643c6f9",
+      "version_4_stage_diagnostic_sha256": "0fc30b8db981f3b72d809fe6d1e95e915fe34e2ff84473184fa80c4fbbf8d145",
+      "version_4_edge_changes_sha256": "2b76d9ebce7cc34fb5e7ffd36e509fdda2b3bb0d3c661a366796a9f347c86e8b",
+      "version_4_audit_sha256": "8d61c794c3e13fa78b64f80b39ffc79620752f3a48485bc6f8cc9d1930d49128",
+      "official_score_measured": true,
+      "official_metric": "adjusted_edge_jaccard_plus_0.1_division_jaccard",
+      "official_scores": {
+        "overall": {
+          "expanded_optuna_cost": 0.8575093329581218,
+          "expanded_optuna_cost_clipped": 0.8513886543056594,
+          "delta_clipped_minus_control": -0.0061206786524624
+        },
+        "44b6": {
+          "expanded_optuna_cost": 0.8660363903419356,
+          "expanded_optuna_cost_clipped": 0.8667825221251819,
+          "delta_clipped_minus_control": 0.0007461317832463,
+          "division_jaccard_control": 0.0,
+          "division_jaccard_clipped": 0.0
+        },
+        "6bba": {
+          "expanded_optuna_cost": 0.8553889612540676,
+          "expanded_optuna_cost_clipped": 0.8475691111107737,
+          "delta_clipped_minus_control": -0.0078198501432939,
+          "division_jaccard_control": 0.0,
+          "division_jaccard_clipped": 0.0
+        }
+      },
+      "diagnostics_by_embryo": {
+        "44b6": {
+          "known_gained": 46,
+          "known_lost": 34,
+          "annotated_parent_contradictions_control": 4,
+          "annotated_parent_contradictions_clipped": 5,
+          "annotated_parent_absent_control": 129,
+          "annotated_parent_absent_clipped": 108,
+          "daughters_with_multiple_capped_parents": 802
+        },
+        "6bba": {
+          "known_gained": 87,
+          "known_lost": 78,
+          "annotated_parent_contradictions_control": 5,
+          "annotated_parent_contradictions_clipped": 5,
+          "annotated_parent_absent_control": 287,
+          "annotated_parent_absent_clipped": 251,
+          "daughters_with_multiple_capped_parents": 6
+        }
+      },
+      "reused_timelimit_incumbent_audit_detail_persisted": false,
+      "submission_end_to_end_runtime_verified": false,
+      "cpu_gpu_postprocess_graph_equivalence_verified": false,
+      "prespecified_both_embryos_improve": false
+    },
+    "score_degradation_analysis": {
+      "recorded_at": "2026-09-29T11:48:26.480722+09:00",
+      "scope": "Arithmetic analysis of existing Kaggle results; no retuning or new official run",
+      "files": {
+        "analyze.py": {
+          "path": "studies/exp051_clipping_failure_20260929/analyze.py",
+          "sha256": "b4922778a522c6f581ac81baef467bbd18fc49fecd275d6bce8798159d7b1245"
+        },
+        "record_findings.py": {
+          "path": "studies/exp051_clipping_failure_20260929/record_findings.py",
+          "sha256": "7647b1e48e1ea74904785f1bedf28ee812068435418bf311852118e417a7b7be"
+        },
+        "analysis.json": {
+          "path": "studies/exp051_clipping_failure_20260929/analysis.json",
+          "sha256": "86e9a72cda2407c734b93a92d65d1893359bb78266bfaef5def9296e67607d89"
+        },
+        "videos.csv": {
+          "path": "studies/exp051_clipping_failure_20260929/videos.csv",
+          "sha256": "f45bca33432df2a86a2f68849897f7953e190d0e79cc0669376b4c7b642ba113"
+        },
+        "stages.csv": {
+          "path": "studies/exp051_clipping_failure_20260929/stages.csv",
+          "sha256": "249f70262310a412348e270642bedbab9b754381d748b8e7306edd98f8cc54d1"
+        },
+        "trials.csv": {
+          "path": "studies/exp051_clipping_failure_20260929/trials.csv",
+          "sha256": "b4482783b5b4dd6ea047223297c83e1ae5c2bfae5d242064b8f6af6e026e6a62"
+        }
+      },
+      "input_summary_sha256": {
+        "edge_changes.json": "2b76d9ebce7cc34fb5e7ffd36e509fdda2b3bb0d3c661a366796a9f347c86e8b",
+        "evaluation_receipt.json": "5b36279bc8eb520cb78041b133ec82135a8d9e9728fb2cc91070d61dcbccc5cc",
+        "official_metric.json": "80af5634f3f078cd763ce6472c619e96ca288098d20cc02c35e6fdde7643c6f9",
+        "stage_diagnostic.json": "0fc30b8db981f3b72d809fe6d1e95e915fe34e2ff84473184fa80c4fbbf8d145"
+      },
+      "official_score_reaggregation_tolerance": 1e-12,
+      "final_node_count_matches_official": true,
+      "groups": {
+        "44b6": {
+          "arms": {
+            "expanded_optuna_cost": {
+              "adj_edge_jaccard": 0.8660363903419356,
+              "division_fn": 2,
+              "division_fp": 5,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 144,
+              "edge_fp": 207,
+              "edge_jaccard": 0.8520859671302149,
+              "edge_tp": 2022,
+              "edge_union": 2373,
+              "n": 10,
+              "node_adjustment_contribution": 0.013950423211720686,
+              "num_pred_nodes": 280437,
+              "score": 0.8660363903419356
+            },
+            "expanded_optuna_cost_clipped": {
+              "adj_edge_jaccard": 0.8667825221251819,
+              "division_fn": 2,
+              "division_fp": 5,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 135,
+              "edge_fp": 211,
+              "edge_jaccard": 0.854438367690366,
+              "edge_tp": 2031,
+              "edge_union": 2377,
+              "n": 10,
+              "node_adjustment_contribution": 0.012344154434815957,
+              "num_pred_nodes": 286693,
+              "score": 0.8667825221251819
+            }
+          },
+          "clipped_minus_control": {
+            "adj_edge_jaccard": 0.0007461317832463399,
+            "division_fn": 0,
+            "division_fp": 0,
+            "division_jaccard": 0.0,
+            "division_tp": 0,
+            "edge_fn": -9,
+            "edge_fp": 4,
+            "edge_jaccard": 0.002352400560151069,
+            "edge_tp": 9,
+            "edge_union": 4,
+            "n": 0,
+            "node_adjustment_contribution": -0.001606268776904729,
+            "num_pred_nodes": 6256,
+            "score": 0.0007461317832463399
+          },
+          "edge_changes": {
+            "annotated_parent_absent_clipped": 108,
+            "annotated_parent_absent_control": 129,
+            "candidate_edges_above_cap": 283757,
+            "daughters_with_multiple_capped_parents": 802,
+            "known_gained": 46,
+            "known_lost": 34
+          }
+        },
+        "6bba": {
+          "arms": {
+            "expanded_optuna_cost": {
+              "adj_edge_jaccard": 0.8553889612540676,
+              "division_fn": 6,
+              "division_fp": 4,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 561,
+              "edge_fp": 673,
+              "edge_jaccard": 0.870690558524573,
+              "edge_tp": 8309,
+              "edge_union": 9543,
+              "n": 10,
+              "node_adjustment_contribution": -0.015301597270505396,
+              "num_pred_nodes": 193825,
+              "score": 0.8553889612540676
+            },
+            "expanded_optuna_cost_clipped": {
+              "adj_edge_jaccard": 0.8475691111107737,
+              "division_fn": 6,
+              "division_fp": 5,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 576,
+              "edge_fp": 710,
+              "edge_jaccard": 0.8657620041753653,
+              "edge_tp": 8294,
+              "edge_union": 9580,
+              "n": 10,
+              "node_adjustment_contribution": -0.018192893064591598,
+              "num_pred_nodes": 200526,
+              "score": 0.8475691111107737
+            }
+          },
+          "clipped_minus_control": {
+            "adj_edge_jaccard": -0.007819850143293894,
+            "division_fn": 0,
+            "division_fp": 1,
+            "division_jaccard": 0.0,
+            "division_tp": 0,
+            "edge_fn": 15,
+            "edge_fp": 37,
+            "edge_jaccard": -0.004928554349207692,
+            "edge_tp": -15,
+            "edge_union": 37,
+            "n": 0,
+            "node_adjustment_contribution": -0.0028912957940862016,
+            "num_pred_nodes": 6701,
+            "score": -0.007819850143293894
+          },
+          "edge_changes": {
+            "annotated_parent_absent_clipped": 251,
+            "annotated_parent_absent_control": 287,
+            "candidate_edges_above_cap": 176819,
+            "daughters_with_multiple_capped_parents": 6,
+            "known_gained": 87,
+            "known_lost": 78
+          }
+        },
+        "6bba_without_two_timelimit_videos": {
+          "arms": {
+            "expanded_optuna_cost": {
+              "adj_edge_jaccard": 0.9122463894396292,
+              "division_fn": 5,
+              "division_fp": 4,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 281,
+              "edge_fp": 227,
+              "edge_jaccard": 0.926355465352276,
+              "edge_tp": 6390,
+              "edge_union": 6898,
+              "n": 8,
+              "node_adjustment_contribution": -0.014109075912646762,
+              "num_pred_nodes": 79483,
+              "score": 0.9122463894396292
+            },
+            "expanded_optuna_cost_clipped": {
+              "adj_edge_jaccard": 0.9077714958162344,
+              "division_fn": 5,
+              "division_fp": 5,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 281,
+              "edge_fp": 241,
+              "edge_jaccard": 0.9244791666666666,
+              "edge_tp": 6390,
+              "edge_union": 6912,
+              "n": 8,
+              "node_adjustment_contribution": -0.016707670850432232,
+              "num_pred_nodes": 81364,
+              "score": 0.9077714958162344
+            }
+          },
+          "clipped_minus_control": {
+            "adj_edge_jaccard": -0.0044748936233948156,
+            "division_fn": 0,
+            "division_fp": 1,
+            "division_jaccard": 0.0,
+            "division_tp": 0,
+            "edge_fn": 0,
+            "edge_fp": 14,
+            "edge_jaccard": -0.0018762986856093455,
+            "edge_tp": 0,
+            "edge_union": 14,
+            "n": 0,
+            "node_adjustment_contribution": -0.00259859493778547,
+            "num_pred_nodes": 1881,
+            "score": -0.0044748936233948156
+          },
+          "edge_changes": {
+            "annotated_parent_absent_clipped": 131,
+            "annotated_parent_absent_control": 135,
+            "candidate_edges_above_cap": 73748,
+            "daughters_with_multiple_capped_parents": 3,
+            "known_gained": 35,
+            "known_lost": 40
+          }
+        },
+        "all": {
+          "arms": {
+            "expanded_optuna_cost": {
+              "adj_edge_jaccard": 0.8575093329581218,
+              "division_fn": 8,
+              "division_fp": 9,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 705,
+              "edge_fp": 880,
+              "edge_jaccard": 0.866985565626049,
+              "edge_tp": 10331,
+              "edge_union": 11916,
+              "n": 20,
+              "node_adjustment_contribution": -0.009476232667927187,
+              "num_pred_nodes": 474262,
+              "score": 0.8575093329581218
+            },
+            "expanded_optuna_cost_clipped": {
+              "adj_edge_jaccard": 0.8513886543056594,
+              "division_fn": 8,
+              "division_fp": 10,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 711,
+              "edge_fp": 921,
+              "edge_jaccard": 0.8635109141088901,
+              "edge_tp": 10325,
+              "edge_union": 11957,
+              "n": 20,
+              "node_adjustment_contribution": -0.012122259803230784,
+              "num_pred_nodes": 487219,
+              "score": 0.8513886543056594
+            }
+          },
+          "clipped_minus_control": {
+            "adj_edge_jaccard": -0.0061206786524624635,
+            "division_fn": 0,
+            "division_fp": 1,
+            "division_jaccard": 0.0,
+            "division_tp": 0,
+            "edge_fn": 6,
+            "edge_fp": 41,
+            "edge_jaccard": -0.0034746515171588666,
+            "edge_tp": -6,
+            "edge_union": 41,
+            "n": 0,
+            "node_adjustment_contribution": -0.002646027135303597,
+            "num_pred_nodes": 12957,
+            "score": -0.0061206786524624635
+          },
+          "edge_changes": {
+            "annotated_parent_absent_clipped": 359,
+            "annotated_parent_absent_control": 416,
+            "candidate_edges_above_cap": 460576,
+            "daughters_with_multiple_capped_parents": 808,
+            "known_gained": 133,
+            "known_lost": 112
+          }
+        },
+        "two_timelimit_videos": {
+          "arms": {
+            "expanded_optuna_cost": {
+              "adj_edge_jaccard": 0.7071082279368638,
+              "division_fn": 1,
+              "division_fp": 0,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 280,
+              "edge_fp": 446,
+              "edge_jaccard": 0.7255198487712665,
+              "edge_tp": 1919,
+              "edge_union": 2645,
+              "n": 2,
+              "node_adjustment_contribution": -0.01841162083440273,
+              "num_pred_nodes": 114342,
+              "score": 0.7071082279368638
+            },
+            "expanded_optuna_cost_clipped": {
+              "adj_edge_jaccard": 0.6916025132531485,
+              "division_fn": 1,
+              "division_fp": 0,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 295,
+              "edge_fp": 469,
+              "edge_jaccard": 0.7136431784107946,
+              "edge_tp": 1904,
+              "edge_union": 2668,
+              "n": 2,
+              "node_adjustment_contribution": -0.022040665157646133,
+              "num_pred_nodes": 119162,
+              "score": 0.6916025132531485
+            }
+          },
+          "clipped_minus_control": {
+            "adj_edge_jaccard": -0.01550571468371531,
+            "division_fn": 0,
+            "division_fp": 0,
+            "division_jaccard": 0.0,
+            "division_tp": 0,
+            "edge_fn": 15,
+            "edge_fp": 23,
+            "edge_jaccard": -0.011876670360471908,
+            "edge_tp": -15,
+            "edge_union": 23,
+            "n": 0,
+            "node_adjustment_contribution": -0.003629044323243402,
+            "num_pred_nodes": 4820,
+            "score": -0.01550571468371531
+          },
+          "edge_changes": {
+            "annotated_parent_absent_clipped": 120,
+            "annotated_parent_absent_control": 152,
+            "candidate_edges_above_cap": 103071,
+            "daughters_with_multiple_capped_parents": 3,
+            "known_gained": 52,
+            "known_lost": 38
+          }
+        },
+        "without_two_timelimit_videos": {
+          "arms": {
+            "expanded_optuna_cost": {
+              "adj_edge_jaccard": 0.9004185037898796,
+              "division_fn": 7,
+              "division_fp": 9,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 425,
+              "edge_fp": 434,
+              "edge_jaccard": 0.9073454859238486,
+              "edge_tp": 8412,
+              "edge_union": 9271,
+              "n": 18,
+              "node_adjustment_contribution": -0.0069269821339689175,
+              "num_pred_nodes": 359920,
+              "score": 0.9004185037898796
+            },
+            "expanded_optuna_cost_clipped": {
+              "adj_edge_jaccard": 0.8972826605849251,
+              "division_fn": 7,
+              "division_fp": 10,
+              "division_jaccard": 0.0,
+              "division_tp": 0,
+              "edge_fn": 416,
+              "edge_fp": 452,
+              "edge_jaccard": 0.9065561416729465,
+              "edge_tp": 8421,
+              "edge_union": 9289,
+              "n": 18,
+              "node_adjustment_contribution": -0.009273481088021396,
+              "num_pred_nodes": 368057,
+              "score": 0.8972826605849251
+            }
+          },
+          "clipped_minus_control": {
+            "adj_edge_jaccard": -0.003135843204954525,
+            "division_fn": 0,
+            "division_fp": 1,
+            "division_jaccard": 0.0,
+            "division_tp": 0,
+            "edge_fn": -9,
+            "edge_fp": 18,
+            "edge_jaccard": -0.0007893442509020465,
+            "edge_tp": 9,
+            "edge_union": 18,
+            "n": 0,
+            "node_adjustment_contribution": -0.0023464989540524783,
+            "num_pred_nodes": 8137,
+            "score": -0.003135843204954525
+          },
+          "edge_changes": {
+            "annotated_parent_absent_clipped": 239,
+            "annotated_parent_absent_control": 264,
+            "candidate_edges_above_cap": 357505,
+            "daughters_with_multiple_capped_parents": 805,
+            "known_gained": 81,
+            "known_lost": 74
+          }
+        }
+      },
+      "all_video_stage_counts": {
+        "ilp": {
+          "graph": {
+            "expanded_optuna_cost": {
+              "added_nodes": 0,
+              "branch_nodes": 4,
+              "edges": 460676,
+              "nodes": 476312,
+              "retained_original_nodes": 476312
+            },
+            "expanded_optuna_cost_clipped": {
+              "added_nodes": 0,
+              "branch_nodes": 15010,
+              "edges": 486035,
+              "nodes": 491597,
+              "retained_original_nodes": 491597
+            }
+          },
+          "fixed_id_diagnostic": {
+            "expanded_optuna_cost": {
+              "all_division_nodes_detected": 8,
+              "annotated_parent_contradictions": 8,
+              "both_endpoints_detected": 10838,
+              "known_division_denominator": 8,
+              "known_divisions_selected": 0,
+              "known_edge_denominator": 11036,
+              "known_edges_selected": 9908,
+              "selected_edges": 460676
+            },
+            "expanded_optuna_cost_clipped": {
+              "all_division_nodes_detected": 8,
+              "annotated_parent_contradictions": 11,
+              "both_endpoints_detected": 10838,
+              "known_division_denominator": 8,
+              "known_divisions_selected": 3,
+              "known_edge_denominator": 11036,
+              "known_edges_selected": 10013,
+              "selected_edges": 486035
+            }
+          }
+        },
+        "relink": {
+          "graph": {
+            "expanded_optuna_cost": {
+              "added_nodes": 3071,
+              "branch_nodes": 0,
+              "edges": 457311,
+              "nodes": 479395,
+              "retained_original_nodes": 476324
+            },
+            "expanded_optuna_cost_clipped": {
+              "added_nodes": 3054,
+              "branch_nodes": 0,
+              "edges": 468210,
+              "nodes": 494660,
+              "retained_original_nodes": 491606
+            }
+          },
+          "fixed_id_diagnostic": {
+            "expanded_optuna_cost": {
+              "all_division_nodes_detected": 8,
+              "annotated_parent_contradictions": 9,
+              "both_endpoints_detected": 10838,
+              "known_division_denominator": 8,
+              "known_divisions_selected": 0,
+              "known_edge_denominator": 11036,
+              "known_edges_selected": 9875,
+              "selected_edges": 457311
+            },
+            "expanded_optuna_cost_clipped": {
+              "all_division_nodes_detected": 8,
+              "annotated_parent_contradictions": 10,
+              "both_endpoints_detected": 10838,
+              "known_division_denominator": 8,
+              "known_divisions_selected": 0,
+              "known_edge_denominator": 11036,
+              "known_edges_selected": 9908,
+              "selected_edges": 468210
+            }
+          }
+        },
+        "division": {
+          "graph": {
+            "expanded_optuna_cost": {
+              "added_nodes": 6634,
+              "branch_nodes": 298,
+              "edges": 463943,
+              "nodes": 482958,
+              "retained_original_nodes": 476324
+            },
+            "expanded_optuna_cost_clipped": {
+              "added_nodes": 8107,
+              "branch_nodes": 342,
+              "edges": 477680,
+              "nodes": 499713,
+              "retained_original_nodes": 491606
+            }
+          },
+          "fixed_id_diagnostic": {
+            "expanded_optuna_cost": {
+              "all_division_nodes_detected": 8,
+              "annotated_parent_contradictions": 9,
+              "both_endpoints_detected": 10838,
+              "known_division_denominator": 8,
+              "known_divisions_selected": 0,
+              "known_edge_denominator": 11036,
+              "known_edges_selected": 9877,
+              "selected_edges": 463943
+            },
+            "expanded_optuna_cost_clipped": {
+              "all_division_nodes_detected": 8,
+              "annotated_parent_contradictions": 10,
+              "both_endpoints_detected": 10838,
+              "known_division_denominator": 8,
+              "known_divisions_selected": 0,
+              "known_edge_denominator": 11036,
+              "known_edges_selected": 9912,
+              "selected_edges": 477680
+            }
+          }
+        },
+        "final": {
+          "graph": {
+            "expanded_optuna_cost": {
+              "added_nodes": 5896,
+              "branch_nodes": 298,
+              "edges": 458336,
+              "nodes": 474262,
+              "retained_original_nodes": 468366
+            },
+            "expanded_optuna_cost_clipped": {
+              "added_nodes": 7333,
+              "branch_nodes": 342,
+              "edges": 469919,
+              "nodes": 487219,
+              "retained_original_nodes": 479886
+            }
+          },
+          "fixed_id_diagnostic": {
+            "expanded_optuna_cost": {
+              "all_division_nodes_detected": 8,
+              "annotated_parent_contradictions": 9,
+              "both_endpoints_detected": 10838,
+              "known_division_denominator": 8,
+              "known_divisions_selected": 0,
+              "known_edge_denominator": 11036,
+              "known_edges_selected": 9856,
+              "selected_edges": 458336
+            },
+            "expanded_optuna_cost_clipped": {
+              "all_division_nodes_detected": 8,
+              "annotated_parent_contradictions": 10,
+              "both_endpoints_detected": 10838,
+              "known_division_denominator": 8,
+              "known_divisions_selected": 0,
+              "known_edge_denominator": 11036,
+              "known_edges_selected": 9877,
+              "selected_edges": 469919
+            }
+          }
+        }
+      },
+      "selected_tuning": {
+        "0/expanded_optuna_cost": {
+          "elapsed_seconds": 21842.232924166998,
+          "selected_cap": 1.0,
+          "selected_costs": [
+            0.9526387083896032,
+            1.0911830208648934,
+            1.9086113323635971
+          ],
+          "selected_summary": {
+            "adj_edge_jaccard": 0.9527944103603837,
+            "division_fn": 2,
+            "division_fp": 1,
+            "division_jaccard": 0.0,
+            "division_tp": 0,
+            "edge_jaccard": 0.935548172757475,
+            "n": 5,
+            "n_adj": 5,
+            "node_recall": 0.9916666666666666,
+            "score": 0.9527944103603837
+          },
+          "selected_trial": 4
+        },
+        "0/expanded_optuna_cost_clipped": {
+          "elapsed_seconds": 22510.964860436,
+          "selected_cap": 0.4909729556485983,
+          "selected_costs": [
+            0.6011150117432088,
+            2.1242177333881367,
+            -0.9382465171125927
+          ],
+          "selected_summary": {
+            "adj_edge_jaccard": 0.9551706401468548,
+            "division_fn": 1,
+            "division_fp": 2,
+            "division_jaccard": 0.25,
+            "division_tp": 1,
+            "edge_jaccard": 0.9406666666666667,
+            "n": 5,
+            "n_adj": 5,
+            "node_recall": 0.9923001949317738,
+            "score": 0.9801706401468548
+          },
+          "selected_trial": 3
+        },
+        "1/expanded_optuna_cost": {
+          "elapsed_seconds": 21884.319255724,
+          "selected_cap": 1.0,
+          "selected_costs": [
+            0.9697115002140642,
+            2.9957539309421573,
+            1.913067542545972
+          ],
+          "selected_summary": {
+            "adj_edge_jaccard": 0.9555009716550703,
+            "division_fn": 8,
+            "division_fp": 3,
+            "division_jaccard": 0.15384615384615385,
+            "division_tp": 2,
+            "edge_jaccard": 0.9565078349856092,
+            "n": 5,
+            "n_adj": 5,
+            "node_recall": 0.9956016894503016,
+            "score": 0.9708855870396857
+          },
+          "selected_trial": 4
+        },
+        "1/expanded_optuna_cost_clipped": {
+          "elapsed_seconds": 22323.819994902,
+          "selected_cap": 0.44061413558859996,
+          "selected_costs": [
+            0.0290138244243604,
+            2.201244888840849,
+            0.18485005529301768
+          ],
+          "selected_summary": {
+            "adj_edge_jaccard": 0.9540822449380796,
+            "division_fn": 8,
+            "division_fp": 4,
+            "division_jaccard": 0.14285714285714285,
+            "division_tp": 2,
+            "edge_jaccard": 0.9556123263611688,
+            "n": 5,
+            "n_adj": 5,
+            "node_recall": 0.996359868039861,
+            "score": 0.9683679592237938
+          },
+          "selected_trial": 3
+        }
+      },
+      "inner_44b6_to_outer_6bba": {
+        "inner_score_delta": 0.02737622978647114,
+        "inner_division_bonus_delta": 0.025,
+        "fraction_of_inner_gain_from_division_bonus": 0.9132009847592151,
+        "inner_annotated_divisions": 2,
+        "inner_control_correct_divisions": 0,
+        "inner_clipped_correct_divisions": 1
+      },
+      "interpretation_limits": [
+        "Aggregate score decomposition is arithmetic, not an isolated causal experiment.",
+        "Costs and cap were selected jointly; clipping alone was not isolated.",
+        "Fixed original-candidate matching differs from official final-graph matching.",
+        "Excluding timeout videos is post-hoc diagnosis, not a replacement official score.",
+        "Optimal results for the two time-limited graphs are unknown.",
+        "Both arms use CPU postprocessing; CPU/GPU equivalence is unverified.",
+        "No new inference, tuning, adoption decision, or submission was performed."
+      ]
+    }
+  },
+  "notes": "The Kaggle resume version 4 completed official evaluation on 20 outer videos and both arms. All 40 graph hashes match its receipt; 38 reused graphs and stages match the version-2 manifest, and two new graphs are OPTIMAL. Two reused clipped graphs used TIMELIMIT incumbents whose detailed feasibility audits were not persisted. The clipped arm improved 44b6 slightly but worsened 6bba and the overall score, so the prespecified both-embryo improvement condition was not met. Submission runtime and CPU/GPU postprocess equivalence are unverified. No competition submission. Experiment adoption and completion await user judgment.",
+  "updated_at": "2026-09-29T03:32:33.214230+00:00"
+}

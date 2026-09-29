@@ -1,0 +1,231 @@
+experiment:
+  name: exp051_x138_ilp_score_clipping
+  description: 固定x138の拡張接続候補でILP接続得点上限と費用調整対照を比較
+  route: public_x138_clipped_edge_ilp
+  created_at: '2026-09-26'
+  notebooks:
+  - tune0_control
+  - tune0_clipped
+  - tune1_control
+  - tune1_clipped
+  - evaluate
+  - evaluate_resume
+lineage:
+  parent: exp043_x138_self_trained_head
+  hypothesis_id: HYP-20260910-11
+  backlog_candidate: x138_ilp_score_clipping
+  diff_summary: 元接続確率を固定しILP接続費用だけ上限処理、費用を両条件で内部調整
+source:
+  baseline_experiment: exp043_x138_self_trained_head
+  candidate_experiment: exp047_x138_edge_candidates
+  diagnostic_experiment: exp049_x138_edge_selection_diagnostic
+  control_experiment: exp050_shared_edge_graph_learning
+data:
+  source: competition_train_runtime
+  expected_embryos:
+  - 44b6
+  - 6bba
+  selection_seed: 42
+  inner_rank_start: 31
+  inner_rank_end: 35
+  outer_rank_start: 21
+  outer_rank_end: 30
+  baseline_probability_strictly_greater_than: 0.48
+  candidate_probability_strictly_greater_than: 0.1
+  max_parents_per_daughter: 3
+  max_daughters_per_mother: null
+validation:
+  method: leave_one_embryo_out_conditional_on_fixed_public_image_model
+  official_metric: adjusted_edge_jaccard_plus_0.1_division_jaccard
+  arms:
+  - expanded_optuna_cost
+  - expanded_optuna_cost_clipped
+  require_full_graph: true
+  require_optimal_ilp: true
+  outer_accept_checked_incumbent_on_timelimit: true
+  evaluate_by_embryo: true
+model:
+  name: fixed_x138_score_clipping
+  params:
+    active_variants:
+    - unclipped
+    - clipped
+    trained_models: 0
+    folds: 2
+    seed: 42
+  decoding:
+    method: tracksdata_edge_ilp
+    edge_cost: -1.0
+    appearance_cost_initial: 0.0
+    disappearance_cost_initial: 2.0
+    division_cost_initial: 1.2
+    candidate_sort:
+    - source_id
+    - target_id
+    tie_secondary_objective: null
+    time_limit_seconds_per_video: 1200
+    require_optimal: true
+    num_threads: 1
+clipping:
+  apply_to: ilp_edge_cost_only
+  original_score_attribute: edge_prob
+  ilp_score_attribute: ilp_score
+  fixed_first_cap: 1.0
+  search_distribution: uniform
+  search_range:
+  - 0.2
+  - 0.5
+optuna:
+  sampler: TPESampler
+  startup_trials: 4
+  max_trials_per_fold_arm: 12
+  max_elapsed_hours_per_fold_arm: 6
+  min_valid_trials_per_fold_arm: 4
+  appearance_range:
+  - 0.0
+  - 1.0
+  disappearance_range:
+  - 0.0
+  - 3.0
+  division_range:
+  - -1.0
+  - 2.0
+  first_trial_costs:
+  - 0.0
+  - 2.0
+  - 1.2
+  failed_trial_policy: exclude
+  objective: official_combined_after_fixed_postprocess
+  tie_breakers:
+  - division_jaccard
+  - lexicographic_costs
+  - higher_cap
+runtime:
+  evaluate_ilp_time_limit_seconds_per_video: 3600
+  kaggle:
+    evaluate:
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-capture0
+      - kentookumura/exp050-shared-edge-graph-learning-capture1
+      - kentookumura/exp050-shared-edge-graph-learning-capture2
+      - kentookumura/exp050-shared-edge-graph-learning-capture3
+      - kentookumura/exp050-shared-edge-graph-learning-capture4
+      - kentookumura/exp051-x138-ilp-score-clipping-tune0-control
+      - kentookumura/exp051-x138-ilp-score-clipping-tune0-clipped
+      - kentookumura/exp051-x138-ilp-score-clipping-tune1-control
+      - kentookumura/exp051-x138-ilp-score-clipping-tune1-clipped
+    evaluate_resume:
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      - kentookumura/exp051-x138-clipping-v2-graphs
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      bootstrap_files:
+      - assets/reused_graph_manifest.json
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-capture0
+      - kentookumura/exp050-shared-edge-graph-learning-capture1
+      - kentookumura/exp050-shared-edge-graph-learning-capture2
+      - kentookumura/exp050-shared-edge-graph-learning-capture3
+      - kentookumura/exp050-shared-edge-graph-learning-capture4
+      - kentookumura/exp051-x138-ilp-score-clipping-tune0-control
+      - kentookumura/exp051-x138-ilp-score-clipping-tune0-clipped
+      - kentookumura/exp051-x138-ilp-score-clipping-tune1-control
+      - kentookumura/exp051-x138-ilp-score-clipping-tune1-clipped
+    tune0_control:
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-capture0
+      - kentookumura/exp050-shared-edge-graph-learning-capture1
+      - kentookumura/exp050-shared-edge-graph-learning-capture2
+      - kentookumura/exp050-shared-edge-graph-learning-capture3
+      - kentookumura/exp050-shared-edge-graph-learning-capture4
+    tune0_clipped:
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-capture0
+      - kentookumura/exp050-shared-edge-graph-learning-capture1
+      - kentookumura/exp050-shared-edge-graph-learning-capture2
+      - kentookumura/exp050-shared-edge-graph-learning-capture3
+      - kentookumura/exp050-shared-edge-graph-learning-capture4
+    tune1_control:
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-capture0
+      - kentookumura/exp050-shared-edge-graph-learning-capture1
+      - kentookumura/exp050-shared-edge-graph-learning-capture2
+      - kentookumura/exp050-shared-edge-graph-learning-capture3
+      - kentookumura/exp050-shared-edge-graph-learning-capture4
+    tune1_clipped:
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-capture0
+      - kentookumura/exp050-shared-edge-graph-learning-capture1
+      - kentookumura/exp050-shared-edge-graph-learning-capture2
+      - kentookumura/exp050-shared-edge-graph-learning-capture3
+      - kentookumura/exp050-shared-edge-graph-learning-capture4
+  notebook_hours_limit: 12
+  memory_limit_fraction: 0.8
+  weekly_gpu_hours_limit: 45
+  use_amp: false
+  num_workers: 2
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: sha256_42_video_rank_and_seed_42_plus_fold
+  stochastic_components:
+  - optuna_tpe
+  - ilp_tie_selection
+  parallel_rng_policy: fold_local_rng
+  feature_sha_policy: input_window_and_float32_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: false
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+notes:
+- Fixed public image models and exp043 coordinate head; no new model training.
+- Competition submission requires separate explicit approval.

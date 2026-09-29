@@ -1,0 +1,262 @@
+{
+  "graphs": {
+    "expanded_optuna_cost/44b6_0113de3b": {
+      "graph_sha256": "de767671f4b7a0c0856be72cc823d68fe7e65c121ef8fb04478f4ef18612e0cd",
+      "ilp_seconds": 64.6,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "d0644eaf573954731271a301455313e75dd3ddfa293cb2018628d8bdacf02ae5"
+    },
+    "expanded_optuna_cost/44b6_0c582fdc": {
+      "graph_sha256": "5bb904775969ccace7be43edfad9cd4061684164014d294767903703617de402",
+      "ilp_seconds": 111.2,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "7af375f83ed0dc104d7cde90ab8845bf2dc88d99260a4301229bb6e1324543ef"
+    },
+    "expanded_optuna_cost/44b6_1574802b": {
+      "graph_sha256": "46fbf984e59b9e59b923b84dcb6fcefff2bff3ed890907b4cdb543fe37acc473",
+      "ilp_seconds": 54.9,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "cc9c00e901b6bdca83fc182480ab064828fddc7867795a8f32c5c04915ed9d01"
+    },
+    "expanded_optuna_cost/44b6_40c45f5a": {
+      "graph_sha256": "eb33ec1fea806bf24a8372189cbf011c233fae65733a2153999b0a4dc20d5211",
+      "ilp_seconds": 175.3,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "a3d31ca49bdb1562468c79fa5780ebd4cfd017f3b9a105ed646ee8e909585f0b"
+    },
+    "expanded_optuna_cost/44b6_8cc6506c": {
+      "graph_sha256": "30be5b094732d73e3f8c670ae7e3754cb0c77a56e56541d3bed86940e42d17fe",
+      "ilp_seconds": 57.2,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "34d2b8b9c8aeca701b4973b3e01212e6d964a7ebf378402929c6ab881c1d1864"
+    },
+    "expanded_optuna_cost/44b6_949adeb1": {
+      "graph_sha256": "812d62b80d9a093151a15c6d3bc1f66352f27b0e04348589544df944436a227b",
+      "ilp_seconds": 295.6,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "a457f1240dfa1f070dabb70a673d6f2933f38cd27ee112e685ef714d8d392eee"
+    },
+    "expanded_optuna_cost/44b6_a2bb48bb": {
+      "graph_sha256": "e452ad9bfbaa0d2a78fe29721ab9416b8d7f41073806f6611e6effc439692861",
+      "ilp_seconds": 629.5,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "379d5e16adc79188b05c29470fa878c70f588ea11f9484a9d051b3c2a6a15860"
+    },
+    "expanded_optuna_cost/44b6_c771cb04": {
+      "graph_sha256": "38b60a2e6d7441a593c05d6fd443ac5a9ca6c0da605bc55fdc25473e27247116",
+      "ilp_seconds": 199.4,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "251422aa2ec658f1d5edca99befb920fca9879f476c7f93c153fbbbd4677b7a3"
+    },
+    "expanded_optuna_cost/44b6_c8e2a523": {
+      "graph_sha256": "32bf743e55c998893f3d1983d279ceca17d26595c85c24d27a21d6241f538ac3",
+      "ilp_seconds": 94.9,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "ed062d562e1d1288b8b4d4c7d46dbe2aa86a115b90d4505bc937e0402a6cbebf"
+    },
+    "expanded_optuna_cost/44b6_deabac95": {
+      "graph_sha256": "cb0b675df0521e4105a8204460247b96d105b363ba40f493fe736c9ce53a3f4e",
+      "ilp_seconds": 34.2,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "96b04067dc67a58fecb68549101fe250d3dce0799e2e9fe5a04d412bf2470620"
+    },
+    "expanded_optuna_cost/6bba_0e7c0d07": {
+      "graph_sha256": "b80a04564e2c35994d9fd80bfa864a87defd61df84bb6578594ec3a7347dc916",
+      "ilp_seconds": 91.1,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "5fda435fca87807a682bc241f9d90c464f1f9b795f01fda1567944d6c5bd54c6"
+    },
+    "expanded_optuna_cost/6bba_23af9eeb": {
+      "graph_sha256": "11580334adc4b5250cd4c6c1354eb9d92776858470210d275683b5c3e04a0e19",
+      "ilp_seconds": 6.1,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "41487195d34513f7c4e6e835c02095373828b38164768f228f6fed8491808fae"
+    },
+    "expanded_optuna_cost/6bba_3abfe10a": {
+      "graph_sha256": "e9f57cef06b92b8be4ac2813bad3673684c0f8f217b1e16b19c038484252400c",
+      "ilp_seconds": 559.8,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "56194e9567b3804664e7d72608b2ee0797b181a35d80a3f13bda68eaafc82602"
+    },
+    "expanded_optuna_cost/6bba_6feb10f0": {
+      "graph_sha256": "8bf7d8138ff5a656afedd0be7ebe99cbff041eb35c0ab87c82a62b7c971c10bb",
+      "ilp_seconds": 40.7,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "0b55edbc10faf15462cda38a49b906b211eaac7ffca9d1511a261511d4e48f8f"
+    },
+    "expanded_optuna_cost/6bba_6feeb0b1": {
+      "graph_sha256": "b550125f60471c52438c3aade4a5c820617dc40f68594c0d0834f3e5eb0a89cf",
+      "ilp_seconds": 10.2,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "657401907e1386c2595ebf3afa4dd61ce1c9a6c3c3fe3bbc56a2a188d5b7fa50"
+    },
+    "expanded_optuna_cost/6bba_b204cac7": {
+      "graph_sha256": "f20afdb2b82b79c0b1a5dfa2455ece5bd8f98688f072b1813c266b3088f46326",
+      "ilp_seconds": 10.6,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "d1d1e899f0ee4d6f9874a4af2153ed8fda17608b54b47a76795e17264e22575f"
+    },
+    "expanded_optuna_cost/6bba_b693381b": {
+      "graph_sha256": "055c955c71b53a35864b1d6d265f241f0cb5400ec85ec11cb4ffa5de4fd79821",
+      "ilp_seconds": 8.8,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "2e6a1a9dd8911b8ef899c1379f7d650971709f60eff341e7aabea0cb3b35b756"
+    },
+    "expanded_optuna_cost/6bba_d6ecebbb": {
+      "graph_sha256": "5e39dddd5fc09bdb55da779aaa3384c0f2a8d249db2ed3a5f1f29c4f785b0df8",
+      "ilp_seconds": 9.3,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "0f676b86a4c4917b53d61ec5d8aebff8381dbeb7957c28b55da81e346bec1812"
+    },
+    "expanded_optuna_cost/6bba_ebff6e76": {
+      "graph_sha256": "5ebc48ce48d4697c2f78b290f56247ed3106ef3fe8086483f4d04c7c71262cda",
+      "ilp_seconds": 619.5,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "fc32d164d158f26b87908b52a28a1f3f636947a63e79ef1048ce842c7022b025"
+    },
+    "expanded_optuna_cost_clipped/44b6_0113de3b": {
+      "graph_sha256": "74b47bf317f0a5b134e33f8436440906dc6e06e26568ac72f43db44a201b0c4b",
+      "ilp_seconds": 62.6,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "ae4e3b227bf82b6da1259993fe1870d64a6fcf42dce697720da2e7fdea3b3bd4"
+    },
+    "expanded_optuna_cost_clipped/44b6_0c582fdc": {
+      "graph_sha256": "e9ab29069870999fdb368d4fe29e483ee3ba96148106bc0f2817b9bb5e9e145c",
+      "ilp_seconds": 120.2,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "17343e382137fa708ccbe10ae1eb8a5ce452132ac7d294e05b8a64002ee8e001"
+    },
+    "expanded_optuna_cost_clipped/44b6_1574802b": {
+      "graph_sha256": "c9466fcf743ae0d923016fb2e0522bdb7a72ae97834e4da2660c61549b1df8fa",
+      "ilp_seconds": 54.1,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "6881e67fc32b8d4128f5c24cfebd10b08089afd2f593d311377dd158beecddf3"
+    },
+    "expanded_optuna_cost_clipped/44b6_40c45f5a": {
+      "graph_sha256": "e59f94fe4b5d5ec33aee1f11a098185d60c811dd6a2b52e57ea5886867491402",
+      "ilp_seconds": 169.0,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "295931507ff0fbc428c4c58b2dca2d3d9ee59a89465b92ba207548ad2a73c4c0"
+    },
+    "expanded_optuna_cost_clipped/44b6_8cc6506c": {
+      "graph_sha256": "7cbaac367a6be88d11de5f52d29bd4d1c018be8968a425d53a31ba9c8825d357",
+      "ilp_seconds": 59.0,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "d2ad8948109ce1adb1b18b6b3a580d339788ec2c0a6aba6b26ea0aee1ba9b339"
+    },
+    "expanded_optuna_cost_clipped/44b6_949adeb1": {
+      "graph_sha256": "546942eedcd795e3c9af4a3a9819f09274bb5af1a23d66f076d0057769577e71",
+      "ilp_seconds": 329.3,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "fc80540a1fe2d4581ef84579dd2007f1078d575336a3c9edd7021872e81da5ef"
+    },
+    "expanded_optuna_cost_clipped/44b6_a2bb48bb": {
+      "graph_sha256": "9983f2500fa213d431a7f8676fdf90ca2a3f16a7e6d588041be3fced6871ac46",
+      "ilp_seconds": 687.3,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "8f9d7f2261192475517b58d0293b4fee51af09c3e40d12d00dc5b1494f920c60"
+    },
+    "expanded_optuna_cost_clipped/44b6_c771cb04": {
+      "graph_sha256": "857e65fa9d5864605dda37ef6662df7c780bcae3b00933e65844e8c0eef74ded",
+      "ilp_seconds": 192.8,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "102c685799dc4f5be5e18ec0fa749cedba6478e202d84a224a9673fbdbf59601"
+    },
+    "expanded_optuna_cost_clipped/44b6_c8e2a523": {
+      "graph_sha256": "2449b3608ae03d8e33f45ae0face301beaa0dbf08947734668544089ee8a1e41",
+      "ilp_seconds": 92.0,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "e0fab974e57ed2a06e37b5915b9d067959ea043721f08319f82f8321ce8ef12e"
+    },
+    "expanded_optuna_cost_clipped/44b6_deabac95": {
+      "graph_sha256": "b41e02b4cac0ff2a9740cc9f106f60973a94297e9c83b6c4d90c886641a51a05",
+      "ilp_seconds": 35.6,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "daeff56c684a9cab713c5b093f46d46ba70b6956cd936c1e65cd36018094a02b"
+    },
+    "expanded_optuna_cost_clipped/6bba_0e7c0d07": {
+      "graph_sha256": "7dd532000710dabb454b29d7c06767ff9e822710a026908a93a402790f672238",
+      "ilp_seconds": 372.0,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "44f3d178e7e4c74471e7b556103b04212173541ae91fa5e3714ba50403aabc10"
+    },
+    "expanded_optuna_cost_clipped/6bba_23af9eeb": {
+      "graph_sha256": "f9f5a6bf6387b6fd43ccdd0dc3929cd242ed29748c69fc6b48144df9ff0d0c99",
+      "ilp_seconds": 11.9,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "a0202d2e4243f2459bbec5b5400ffe6448cd6e557fc2a826ee772e1af051d8d0"
+    },
+    "expanded_optuna_cost_clipped/6bba_3abfe10a": {
+      "graph_sha256": "55d2ac6fa2cd8b3ea1f56961d97d5b703f5fe4e03322048acca5c34dea3b2c50",
+      "ilp_seconds": 3653.4,
+      "solver_status": "TIMELIMIT",
+      "stages_sha256": "277a773a3a358f4cd751293c175b14324204a9c45a65eb38e0643dec4d210272"
+    },
+    "expanded_optuna_cost_clipped/6bba_6feb10f0": {
+      "graph_sha256": "ef1a61485c0a0c385f3e5dfc666391009166eb36c9af334f69032ec1c54b7441",
+      "ilp_seconds": 295.1,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "916e426f748bbe72f0a227fe3a227f5e8ab96b7c03f09b961a52f6abafe5ca06"
+    },
+    "expanded_optuna_cost_clipped/6bba_6feeb0b1": {
+      "graph_sha256": "9eeb5cda284412fe2d99b0f46e4e011b957492e0424ffb453c14409de3934eff",
+      "ilp_seconds": 48.5,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "4c89ce58393094b028a9780328742d6662b73d0a9ed5433f5f788e8e0c4670f2"
+    },
+    "expanded_optuna_cost_clipped/6bba_b204cac7": {
+      "graph_sha256": "273234cb90358d5a19d172bb0aab19a5203ac8f778c8a124d4b15d725c3f8d62",
+      "ilp_seconds": 15.0,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "1b91a861c701929d10076812efc95c164c9692112f3a9925a281e5c440a35086"
+    },
+    "expanded_optuna_cost_clipped/6bba_b693381b": {
+      "graph_sha256": "dcd3a0acdc23cf42383aa9153e5a27741bd8392537d18b5785696e9dc81fa9e4",
+      "ilp_seconds": 22.1,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "36b6d80e009a83f496e338bc3f97d1859276e09add3b3a46eca487d4d392b316"
+    },
+    "expanded_optuna_cost_clipped/6bba_d6ecebbb": {
+      "graph_sha256": "40ea78367a93a71241e2065dc0e7ade88d13f2eda0666e812d3d218f927f9b79",
+      "ilp_seconds": 20.1,
+      "solver_status": "OPTIMAL",
+      "stages_sha256": "1d0c24bbe754f21c62892adbd392852d87aa2608060313d631b4c3b63f841c51"
+    },
+    "expanded_optuna_cost_clipped/6bba_ebff6e76": {
+      "graph_sha256": "0640d931a81fcd4751975c2a91b6312f240b5c89fa0b95a1366b354abaf12ad4",
+      "ilp_seconds": 3710.9,
+      "solver_status": "TIMELIMIT",
+      "stages_sha256": "712550ad6188d05dbe2d28d3caab2d7e2b8fd8580b355b0a432a1a3e50e7810e"
+    }
+  },
+  "missing_stems": [
+    "6bba_fe670320"
+  ],
+  "remote_output_index_sha256": "a9e942730dcb5d1a063600e6da3a4749f8c2a72e361e04e4565615ae83dce51b",
+  "reused_stems": [
+    "44b6_0113de3b",
+    "44b6_0c582fdc",
+    "44b6_1574802b",
+    "44b6_40c45f5a",
+    "44b6_8cc6506c",
+    "44b6_949adeb1",
+    "44b6_a2bb48bb",
+    "44b6_c771cb04",
+    "44b6_c8e2a523",
+    "44b6_deabac95",
+    "6bba_0e7c0d07",
+    "6bba_23af9eeb",
+    "6bba_3abfe10a",
+    "6bba_6feb10f0",
+    "6bba_6feeb0b1",
+    "6bba_b204cac7",
+    "6bba_b693381b",
+    "6bba_d6ecebbb",
+    "6bba_ebff6e76"
+  ],
+  "selection_sha256": "54f49ea5b3db281515d6419caac38a5aed994284731cdd2218e86f320298ea5b",
+  "source_config_sha256": "0c8ee638421b5b45b55a0ab4942efe29cde56321bcd99139cd68506ebe1469ea",
+  "source_kernel_id": "kentookumura/exp051-x138-ilp-score-clipping-evaluate",
+  "source_kernel_version": 2,
+  "source_log_sha256": "af041c839dcc0dcaaca113575b44885c2927681cf86399572138ee60dbaa798a"
+}
