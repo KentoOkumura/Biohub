@@ -49,7 +49,7 @@ ILPを使わない方法として、候補グラフ上で情報を交換して�
 
 [exp029](../../experiments/exp029_mother_daughter_set_selection/result.md)では候補内の正解2娘128件全てが自己1娘・空集合より低得点。全候補を残した整数最適化でも分裂回収0件で、学習内の分裂117件も0件だった。正しい分裂を合法な高得点の自己部分集合へ置き換えられるため、**同じ得点をより正確に最適化するだけでは回収できない**。
 
-共有接続得点、分裂損失の寄与、グラフ間の直接比較はこの失敗に対応する変更だが、効果は未測定。[shared_edge_graph_learning](../../backlog/shared_edge_graph_learning.md)にも一部記録済みで、新規発案とは扱わない。具体的な損失と内部モデル選択は実装前に確定する。
+共有接続得点、分裂損失の寄与、グラフ間の直接比較はこの失敗に対応する変更だが、効果は未測定。[shared_edge_graph_learning](../../experiments/exp050_shared_edge_graph_learning/requirements.md)にも一部記録済みで、新規発案とは扱わない。具体的な損失と内部モデル選択は実装前に確定する。
 
 ## 比較する5案
 
@@ -92,7 +92,7 @@ JSONのschema検査は12案・7分類・5選択の構造を確認する。改善
 
 2026-09-24、ユーザーが「バックログに追加してcommitとpushしてください」と依頼した。
 
-- 案①は既存の[shared_edge_graph_learning](../../backlog/shared_edge_graph_learning.md)へ統合し、P2を維持。exp043と同入力の対照、ILP変数・制約の比較、後処理への効果伝達を追記した。
+- 案①は既存の[shared_edge_graph_learning](../../experiments/exp050_shared_edge_graph_learning/requirements.md)へ統合し、P2を維持。exp043と同入力の対照、ILP変数・制約の比較、後処理への効果伝達を追記した。
 - 案②は[neural_graph_selection](../../backlog/neural_graph_selection.md)へP3で登録。
 - 案③は[final_graph_edit](../../backlog/final_graph_edit.md)へP3で登録。
 

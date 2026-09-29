@@ -94,7 +94,7 @@ exp043は整数線形計画法（ILP）の後に近傍移動を使って接続�
 | [`x138_edge_candidates`](../../backlog/x138_edge_candidates.md) | P1→P1 | 新しいtrackerを学習せず、固定得点の枝刈りで失う接続・両娘を保持する比較を先に扱う。後処理後の残存まで測る。 |
 | [`x138_detection_recovery`](../../backlog/x138_detection_recovery.md) | P1→P1 | 現行exp043で実際に働く回収処理の採否・接続を変える。通常の高得点点への特徴追加より、出力へ作用する箇所と比較対象が明確。 |
 | [`neighbor_dynamics`](../../backlog/neighbor_dynamics.md) | P1→P2 | P1の診断の後。再接続に直接使う得点を学ぶ点は残すが、exp035の自己速度とexp043既存の近傍移動ルールを上回る証拠はまだない。GNNという構造名だけで上位にしない。 |
-| [`shared_edge_graph_learning`](../../backlog/shared_edge_graph_learning.md) | P2→P2 | exp029の正解2娘128/128件が1娘・空集合に負けた失敗に対し、出力得点の共有と分裂教師の寄与を変える案。通常trackerの特徴追加とは分けて残す。 |
+| [`shared_edge_graph_learning`](../../experiments/exp050_shared_edge_graph_learning/requirements.md) | P2→P2 | exp029の正解2娘128/128件が1娘・空集合に負けた失敗に対し、出力得点の共有と分裂教師の寄与を変える案。通常trackerの特徴追加とは分けて残す。 |
 | [`x138_local_graph_choice`](../../backlog/x138_local_graph_choice.md) | P3→P2 | 固定位置で合法な複数の接続graphを保持・選択する比較へ範囲を限定する。pairの得点改善が最終選択へ届かない場合に、出力の選び方を変える候補として残す。 |
 | [`division_triplets`](../../backlog/division_triplets.md) | P2→P3 | exp023で合成教師は得られたが実画像への改善移行は未検証。exp026の候補契約と教師・校正の設計が残り、x138の出力段階を直接変える案の後に扱う。 |
 | [`correlated_jitter`](../../backlog/correlated_jitter.md) | P3→P3 | 固定公開検出器のトラッカー学習基準と優先比較の結果を得た後、対応する誤りと追加費用を確認して扱う後続候補。 |

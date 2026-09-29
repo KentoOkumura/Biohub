@@ -1,0 +1,255 @@
+experiment:
+  name: exp050_shared_edge_graph_learning
+  description: 固定x138特徴で共有接続得点と2娘集合費用を学習し4条件の全graphを比較
+  route: public_x138_shared_edge_set_ilp
+  created_at: '2026-09-26'
+  notebooks:
+  - pilot
+  - capture0
+  - capture1
+  - capture2
+  - capture3
+  - capture4
+  - train
+  - tune
+  - inference
+  - submission_gnn
+  - submission_optuna
+  - submission_exp043
+  - submission_old_cost
+lineage:
+  parent: exp043_x138_self_trained_head
+  hypothesis_id: HYP-20260910-11
+  backlog_candidate: shared_edge_graph_learning
+  diff_summary: 固定x138出力の拡張候補に2層GNNと共有edge得点・予測分裂費用・集合ILPを追加し、Optuna費用調整とも比較
+source:
+  baseline_experiment: exp043_x138_self_trained_head
+  candidate_experiment: exp047_x138_edge_candidates
+  diagnostic_experiment: exp049_x138_edge_selection_diagnostic
+  set_supervision_experiment: exp029_mother_daughter_set_selection
+data:
+  source: competition_train_runtime
+  expected_embryos:
+  - 44b6
+  - 6bba
+  selection_seed: 42
+  outer_rank_start: 21
+  outer_rank_end: 30
+  inner_rank_start: 31
+  inner_rank_end: 35
+  match_radius_um: 7.0
+  candidate_probability_strictly_greater_than: 0.1
+  baseline_probability_strictly_greater_than: 0.48
+  max_parents_per_daughter: 3
+  max_daughters_per_mother: null
+validation:
+  method: leave_one_embryo_out_conditional_on_fixed_public_image_model
+  official_metric: adjusted_edge_jaccard_plus_0.1_division_jaccard
+  arms:
+  - exp043
+  - expanded_old_cost
+  - expanded_optuna_cost
+  - expanded_learned_set
+  require_full_graph: true
+  require_optimal_ilp: true
+  evaluate_by_embryo: true
+model:
+  name: shared_edge_gnn_set_score
+  params:
+    hidden_dim: 128
+    message_passing_rounds: 2
+    dropout: 0.1
+    edge_residual_zero_init: true
+    division_cost_initial: 1.2
+    division_cost_min: 0.0
+    division_cost_max: 2.0
+    partial_loss_weight: 1.0
+    division_loss_weight: 1.0
+    known_parent_loss_weight: 1.0
+    comparison_margin: 0.05
+    optimizer: AdamW
+    learning_rate: 0.0001
+    weight_decay: 0.01
+    gradient_clip_norm: 1.0
+    batch_size_windows: 1
+    epochs: 5
+    folds: 2
+    models_per_fold: 1
+    control_retrain: false
+    seed: 42
+    active_variants:
+    - shared_edge_gnn_set_score
+  decoding:
+    method: mother_daughter_set_ilp
+    appearance_cost: 0.0
+    disappearance_cost: 2.0
+    fixed_division_cost_applied: false
+    max_parents_per_daughter: 1
+    max_daughters_per_mother: 2
+    time_limit_seconds_per_video: 1200
+    require_optimal: true
+optuna:
+  sampler: TPESampler
+  seed_offset_from_model: 0
+  startup_trials: 4
+  max_trials_per_fold: 12
+  max_elapsed_hours_per_fold: 4
+  min_valid_trials_per_fold: 4
+  appearance_range:
+  - 0.0
+  - 1.0
+  disappearance_range:
+  - 0.0
+  - 3.0
+  division_range:
+  - -1.0
+  - 2.0
+  first_trial:
+  - 0.0
+  - 2.0
+  - 1.2
+  edge_cost: -1.0
+  objective: official_combined_after_fixed_postprocess
+  failed_trial_policy: exclude
+  tie_breakers:
+  - division_jaccard
+  - lexicographic_costs
+runtime:
+  use_amp: false
+  num_workers: 2
+  batch_size: 1
+  weekly_gpu_hours_limit: 45
+  notebook_hours_limit: 12
+  memory_limit_fraction: 0.8
+  kaggle:
+    train:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources: &id001
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-capture0
+      - kentookumura/exp050-shared-edge-graph-learning-capture1
+      - kentookumura/exp050-shared-edge-graph-learning-capture2
+      - kentookumura/exp050-shared-edge-graph-learning-capture3
+      - kentookumura/exp050-shared-edge-graph-learning-capture4
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources: *id001
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-train
+      - kentookumura/exp050-shared-edge-graph-learning-tune
+    submission_exp043:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: false
+      dataset_sources: *id001
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-train
+    submission_old_cost:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: false
+      dataset_sources: *id001
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-train
+    submission_gnn:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: false
+      dataset_sources: *id001
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-train
+    submission_optuna:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: false
+      bootstrap_files:
+      - exp050_optuna_solver_worker.py
+      dataset_sources: *id001
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-train
+      - kentookumura/exp050-shared-edge-graph-learning-tune
+    pilot:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources: *id001
+    tune:
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      kernel_sources:
+      - kentookumura/exp050-shared-edge-graph-learning-train
+    capture0:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources: *id001
+    capture1:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources: *id001
+    capture2:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources: *id001
+    capture3:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources: *id001
+    capture4:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources: *id001
+  capture_shards: 5
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: sha256_42_video_rank_and_seed_42_plus_fold
+  stochastic_components:
+  - torch_dataloader
+  - cuda_inference
+  - ilp_tie_selection
+  - optuna_tpe
+  parallel_rng_policy: fold_local_rng
+  feature_sha_policy: input_window_and_float32_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: false
+    submission_sha: false
+notes:
+- Fixed public image models and exp043 coordinate head; no parent control retraining.
+- Kaggle train graph evaluation is conditional on public image model training lineage.
+- Competition submission requires separate explicit user approval.

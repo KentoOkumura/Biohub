@@ -1,0 +1,1055 @@
+{
+  "experiment": "exp050_shared_edge_graph_learning",
+  "status": "discarded",
+  "cv": null,
+  "public_lb": 0.938,
+  "private_lb": null,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": 136037340,
+      "kernel_version": 2,
+      "url": "https://www.kaggle.com/code/kentookumura/exp050-shared-edge-graph-learning-train",
+      "kernel_source_ids": [
+        "kentookumura/exp050-shared-edge-graph-learning-capture0",
+        "kentookumura/exp050-shared-edge-graph-learning-capture1",
+        "kentookumura/exp050-shared-edge-graph-learning-capture2",
+        "kentookumura/exp050-shared-edge-graph-learning-capture3",
+        "kentookumura/exp050-shared-edge-graph-learning-capture4"
+      ],
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": 4958.7101373549995,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": "04a04c36ca0d1e6042567cb1158ef8d61cd24dbf3c28a63f589869a00cd17884",
+      "feature_content_sha": null,
+      "row_count": null,
+      "group_count": null,
+      "feature_count": 65,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": "c24b13d57729fe0149f6174e2b4515771f2b3967bd7da241b30dbb139b772ab9",
+      "model_count": 2,
+      "model_shas": {
+        "fold_0": "df045469c34c144123f35f148ad8f083b203226cab6cd63cb9ed30d59854ff33",
+        "fold_1": "7504c2505cd6cedb03c303e5122f73fc6bb45bddbabb0624cdcd4e2c0f53c771"
+      },
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": "522995f2bc30f4dfea3846a8aeb12079440a9d6b2c7b34777d039d0ae99687b8"
+    },
+    "submission_validation": {
+      "passed": true,
+      "checked_at": "2026-09-29T04:21:56.682047+00:00",
+      "row_count": 251988,
+      "id_column": "id",
+      "target_columns": [
+        "node_id",
+        "t",
+        "z",
+        "y",
+        "x",
+        "source_id",
+        "target_id"
+      ],
+      "duplicate_id_count": 0,
+      "missing_value_count": 0,
+      "infinite_value_count": 0,
+      "target_statistics": {
+        "node_id": {
+          "min": -1.0,
+          "max": 76973.0,
+          "mean": 14033.791152753305,
+          "std": 20629.227871345935
+        },
+        "t": {
+          "min": -1.0,
+          "max": 99.0,
+          "mean": 24.017683381748338,
+          "std": 31.90690673919336
+        },
+        "z": {
+          "min": -1.0,
+          "max": 63.0,
+          "mean": 15.4619585059606,
+          "std": 20.777866063152793
+        },
+        "y": {
+          "min": -1.0,
+          "max": 253.0,
+          "mean": 62.041442449640456,
+          "std": 78.7903807103543
+        },
+        "x": {
+          "min": -1.0,
+          "max": 255.0,
+          "mean": 64.5552367573059,
+          "std": 82.08932678265006
+        },
+        "source_id": {
+          "min": -1.0,
+          "max": 76973.0,
+          "mean": 13470.964204644666,
+          "std": 20294.82322146504
+        },
+        "target_id": {
+          "min": -1.0,
+          "max": 76973.0,
+          "mean": 13751.796010127466,
+          "std": 20552.22640849457
+        }
+      },
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [
+      {
+        "kernel": "kentookumura/exp050-shared-edge-graph-learning-train",
+        "kernel_version": 1,
+        "status": "error",
+        "failure_stage": "fold_loss_json_write",
+        "error": "TypeError: Object of type int64 is not JSON serializable",
+        "logged_folds": 2,
+        "logged_epochs_per_fold": 5,
+        "published_output_files": 0,
+        "retry_kernel_version": 2
+      },
+      {
+        "kernel": "kentookumura/exp050-shared-edge-graph-learning-tune",
+        "kernel_version": 1,
+        "status": "error",
+        "failure_stage": "official_metric_import",
+        "error": "ModuleNotFoundError: No module named 'biohub_tracking'",
+        "published_output_files": 0,
+        "root_cause": "tracking_repo/src was not added to sys.path before the biohub_tracking import",
+        "retry_kernel_version": 2
+      },
+      {
+        "kernel": "kentookumura/exp050-shared-edge-graph-learning-tune",
+        "kernel_version": 2,
+        "status": "cancel_acknowledged",
+        "failure_stage": "official_evaluation_on_cpu",
+        "error": "Cannot access accelerator device when none is available.",
+        "observed_invalid_trials": 2,
+        "published_output_files": 0,
+        "retry_kernel_version": 3
+      }
+    ],
+    "pilot": {
+      "status": "passed_on_kaggle",
+      "kernel": "kentookumura/exp050-shared-edge-graph-learning-pilot",
+      "kernel_version": 2,
+      "receipt_sha256": "02cc18770bbefd37c3b6e1bf8d6da8e4b74fe604bb4c7cf85d5595371adf658c",
+      "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+      "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+      "elapsed_seconds": 463.78617324000004,
+      "by_video": {
+        "44b6_d29c9ab2": {
+          "nodes": 37590,
+          "expanded_edges": 42134,
+          "feature_width": 65,
+          "matched_nodes": 1352,
+          "annotated_edges": 1328,
+          "loss": 0.32426556944847107,
+          "informative_mothers": 11,
+          "set_ilp_optimal": true
+        },
+        "6bba_76db78c1": {
+          "nodes": 5048,
+          "expanded_edges": 5964,
+          "feature_width": 65,
+          "matched_nodes": 617,
+          "annotated_edges": 604,
+          "loss": 0.32295969128608704,
+          "informative_mothers": 6,
+          "set_ilp_optimal": true
+        }
+      }
+    },
+    "capture_shards": [
+      {
+        "shard": 0,
+        "kernel": "kentookumura/exp050-shared-edge-graph-learning-capture0",
+        "kernel_version": 1,
+        "status": "capture_finished",
+        "videos": 40,
+        "receipt_sha256": "48a0817571ab9af65aee2aeb56668939c396dbcc5b4acab1618013bca2d82df2",
+        "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+        "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+        "elapsed_seconds": 9463.914603485
+      },
+      {
+        "shard": 1,
+        "kernel": "kentookumura/exp050-shared-edge-graph-learning-capture1",
+        "kernel_version": 1,
+        "status": "capture_finished",
+        "videos": 40,
+        "receipt_sha256": "981253aea17d16df626c42d2b0d3eac57e7567584a00a55f9d880d58032d6f9e",
+        "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+        "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+        "elapsed_seconds": 8674.825680968
+      },
+      {
+        "shard": 2,
+        "kernel": "kentookumura/exp050-shared-edge-graph-learning-capture2",
+        "kernel_version": 1,
+        "status": "capture_finished",
+        "videos": 40,
+        "receipt_sha256": "8f30043b56e38e176fa8cf175c18b9945c6a2ff0bc75c14e254d8c3d1beadcf0",
+        "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+        "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+        "elapsed_seconds": 8639.149994804
+      },
+      {
+        "shard": 3,
+        "kernel": "kentookumura/exp050-shared-edge-graph-learning-capture3",
+        "kernel_version": 1,
+        "status": "capture_finished",
+        "videos": 40,
+        "receipt_sha256": "e1a8b40436bedc9cab28bb43993b98f039801c32163c4acbc2ff7994da17c4d2",
+        "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+        "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+        "elapsed_seconds": 8799.887878313
+      },
+      {
+        "shard": 4,
+        "kernel": "kentookumura/exp050-shared-edge-graph-learning-capture4",
+        "kernel_version": 1,
+        "status": "capture_finished",
+        "videos": 39,
+        "receipt_sha256": "ea65f84e668768c04962db4bed7884e8459ef0d8f3ece5415fc8fb907834f6a0",
+        "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+        "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+        "elapsed_seconds": 8821.17284913
+      }
+    ],
+    "train": {
+      "status": "training_finished",
+      "kernel": "kentookumura/exp050-shared-edge-graph-learning-train",
+      "kernel_version": 2,
+      "receipt_sha256": "4e2b4ecb2b918e04e2bc0cf41896be3c9f315f888aff90dba402edfec9ff058f",
+      "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+      "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+      "cache_videos": 199,
+      "feature_content_sha_count": 199,
+      "feature_schema_sha256": "04a04c36ca0d1e6042567cb1158ef8d61cd24dbf3c28a63f589869a00cd17884",
+      "model_manifest_sha256": "c24b13d57729fe0149f6174e2b4515771f2b3967bd7da241b30dbb139b772ab9",
+      "fold_updates": [
+        24860,
+        54780
+      ],
+      "elapsed_seconds": 4958.7101373549995
+    },
+    "tune": {
+      "status": "tuning_finished_budget_exceeded",
+      "kernel": "kentookumura/exp050-shared-edge-graph-learning-tune",
+      "kernel_id": 136054720,
+      "kernel_version": 3,
+      "resource": "CPU",
+      "train_receipt_sha256": "4e2b4ecb2b918e04e2bc0cf41896be3c9f315f888aff90dba402edfec9ff058f",
+      "metric_dataset_loading": "tracks_and_scale_only_cpu",
+      "failed_metric_row_guard": true,
+      "live_progress": {
+        "observed_at_utc": "2026-09-27T17:00:00Z",
+        "fold0_completed_valid_trials_observed": 4,
+        "fold0_trial0_inner_score": 0.9527362289947418,
+        "fold0_trial0_costs": [
+          0.0,
+          2.0,
+          1.2
+        ],
+        "provisional_until_receipt": true,
+        "fold0_trial1_inner_score": 0.9502687461460798,
+        "fold0_trial1_costs": [
+          0.3745401188473625,
+          2.8521429192297485,
+          1.1959818254342154
+        ],
+        "fold0_trial2_inner_score": 0.9551234850715683,
+        "fold0_trial2_costs": [
+          0.5986584841970366,
+          0.46805592132730955,
+          -0.5320164389913921
+        ],
+        "fold0_best_trial_observed": 2,
+        "fold0_trial3_inner_score": 0.9512028708010348,
+        "fold0_trial3_costs": [
+          0.05808361216819946,
+          2.5985284373248057,
+          0.8033450352296265
+        ],
+        "fold0_trial4_status": "pruned",
+        "fold0_trial4_failure": "legacy_ilp_nonoptimal_time_limit",
+        "fold0_trial4_video": "44b6_7e557709",
+        "fold0_trial4_ilp_elapsed_seconds": 1302.1,
+        "fold0_trial5_status": "pruned",
+        "fold0_trial5_failure": "legacy_ilp_nonoptimal_time_limit",
+        "fold0_trial5_video": "44b6_7e557709",
+        "fold0_trial5_ilp_elapsed_seconds": 1259.5,
+        "fold0_min_elapsed_seconds_from_study_logs": 15116.057,
+        "fold0_budget_seconds": 14400,
+        "fold0_budget_exceeded_minimum_seconds": 716.057,
+        "fold1_study_created_at_utc": "2026-09-27T13:10:56.804Z",
+        "fold1_completed_valid_trials_observed": 6,
+        "fold1_trial0_inner_score": 0.9655991071066305,
+        "fold1_trial0_costs": [
+          0.0,
+          2.0,
+          1.2
+        ],
+        "fold1_best_trial_observed": 4,
+        "fold1_trial1_inner_score": 0.9592936913183134,
+        "fold1_trial1_costs": [
+          0.11505456638977896,
+          1.8271996178384442,
+          -0.5998271074420352
+        ],
+        "fold1_trial2_inner_score": 0.9636715646612445,
+        "fold1_trial2_costs": [
+          0.24058961996534878,
+          0.9814171674334193,
+          1.577412472845793
+        ],
+        "fold1_trial3_inner_score": 0.9553721791828075,
+        "fold1_trial3_costs": [
+          0.6660902130980257,
+          1.6234866368502114,
+          -0.9129585267269188
+        ],
+        "fold1_trial4_inner_score": 0.9708855870396857,
+        "fold1_trial4_costs": [
+          0.9697115002140642,
+          2.9957539309421573,
+          1.913067542545972
+        ],
+        "fold1_trial5_inner_score": 0.9547654600298789,
+        "fold1_trial5_costs": [
+          0.9988974326116715,
+          0.07223573743289102,
+          0.3382310162267812
+        ]
+      },
+      "completion": {
+        "observed_at_utc": "2026-09-27T17:36:47Z",
+        "kernel_status": "COMPLETE",
+        "receipt_status": "tuning_finished",
+        "receipt_sha256": "94b8207a4f8de2f2b8d81668e77145c88f5027f83f959587312647b87ea9641e",
+        "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+        "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+        "optuna_version": "4.9.0",
+        "elapsed_seconds": 29539.639239769,
+        "folds": {
+          "0": {
+            "fit_embryo": "44b6",
+            "valid_trials": 4,
+            "failed_trials": 2,
+            "selected_trial": 2,
+            "selected_costs": [
+              0.5986584841970366,
+              0.46805592132730955,
+              -0.5320164389913921
+            ],
+            "selected_inner_score": 0.9551234850715683,
+            "elapsed_seconds": 15116.04575759,
+            "budget_seconds": 14400,
+            "budget_exceeded_seconds": 716.04575759,
+            "fold_output_sha256": "0c47cc228e5bcf8703903972a6624b2d973e0547b12857ed2818e9d9671239e1"
+          },
+          "1": {
+            "fit_embryo": "6bba",
+            "valid_trials": 6,
+            "failed_trials": 1,
+            "selected_trial": 4,
+            "selected_costs": [
+              0.9697115002140642,
+              2.9957539309421573,
+              1.913067542545972
+            ],
+            "selected_inner_score": 0.9708855870396857,
+            "elapsed_seconds": 14423.567766593,
+            "budget_seconds": 14400,
+            "budget_exceeded_seconds": 23.567766593,
+            "fold_output_sha256": "56e12eb21b669e15845967a9beeef92118b5f647f52963d07abff7a376ccc9f8"
+          }
+        },
+        "output_verified": true,
+        "inference_gate": "approved_to_continue_with_frozen_costs",
+        "budget_exception_approved_by_user_at_utc": "2026-09-27T21:34:47Z"
+      }
+    },
+    "inference": {
+      "status": "error",
+      "kernel": "kentookumura/exp050-shared-edge-graph-learning-inference",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp050-shared-edge-graph-learning-inference",
+      "resource": "NvidiaTeslaT4",
+      "gpu_quota_remaining_hours_before_push": 15.35,
+      "gpu_quota_refresh_at_utc": "2026-10-03T00:00:00Z",
+      "started_observed_at_utc": "2026-09-27T21:37:09Z",
+      "train_receipt_sha256": "4e2b4ecb2b918e04e2bc0cf41896be3c9f315f888aff90dba402edfec9ff058f",
+      "tune_receipt_sha256": "94b8207a4f8de2f2b8d81668e77145c88f5027f83f959587312647b87ea9641e",
+      "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+      "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+      "outer_videos_expected": 20,
+      "arms_expected": [
+        "exp043",
+        "expanded_old_cost",
+        "expanded_optuna_cost",
+        "expanded_learned_set"
+      ],
+      "official_score_status": "not_measured",
+      "live_progress": {
+        "observed_at_utc": "2026-09-27T23:32:27Z",
+        "completed_outer_videos_with_four_arms": 12,
+        "outer_videos_expected": 20,
+        "completed_by_embryo": {
+          "44b6": 10,
+          "6bba": 2
+        },
+        "partial_stem": "6bba_3abfe10a",
+        "partial_arms_completed": 2,
+        "traceback_observed": false,
+        "official_score_status": "pending",
+        "gpu_quota_remaining_hours": 13.45
+      },
+      "failure": {
+        "observed_at_utc": "2026-09-28T00:03:25Z",
+        "kernel_status": "ERROR",
+        "failed_stem": "6bba_3abfe10a",
+        "failed_arm": "expanded_optuna_cost",
+        "failure_type": "legacy_ilp_nonoptimal_time_limit",
+        "solver_status": "TIMELIMIT",
+        "solver_used": "Scip",
+        "gurobi_license_available": false,
+        "ilp_elapsed_seconds": 1266.9,
+        "ilp_limit_seconds": 1200,
+        "completed_outer_videos_with_four_arms": 12,
+        "failed_video_prior_arms_completed": [
+          "exp043",
+          "expanded_old_cost"
+        ],
+        "published_output_files": 0,
+        "inference_receipt_available": false,
+        "official_metric_available": false,
+        "gpu_quota_remaining_hours_observed": 13.08,
+        "rerun_allowed_automatically": false
+      }
+    },
+    "submission_candidates": {
+      "gnn": {
+        "kernel": "kentookumura/exp050-shared-edge-gnn-submission",
+        "kernel_version": 1,
+        "status": "competition_hidden_rerun_error",
+        "source_sha256": "d364fcc8bde63b5dc042148ddfd1cc5fa7eed1e2cfbe2dfb772b34caf8c564bb",
+        "notebook_sha256": "ee333dd7a0c51386658013a8c7932fd41b154aebb7ef75827ffdd60bc1fe5908",
+        "public_test_submission_sha256": "0da0d4930ac172971b878ed745b9586e4c1135e48676d4e640b3e6038ae8c5a7",
+        "public_lb": null,
+        "competition_submission_ref": 56626093,
+        "receipt_sha256": "36202f45bbb99195a95c7462e2166c1e4bfb683baffa77a8e17f3d760fbcd559",
+        "public_test_rows": 257193,
+        "public_test_videos": [
+          "44b6_0113de3b",
+          "44b6_0b24845f",
+          "6bba_05b6850b",
+          "6bba_05db0fb1"
+        ],
+        "train_receipt_sha256": "4e2b4ecb2b918e04e2bc0cf41896be3c9f315f888aff90dba402edfec9ff058f",
+        "prediction_and_postprocess_seconds": 533.8887061159999,
+        "public_test_capture_seconds": 925.5679584479999,
+        "public_test_ready_at_notebook_seconds": 1794.080529055,
+        "public_test_final_log_at_notebook_seconds": 1807.6034405,
+        "hidden_199_video_linear_runtime_estimate_seconds": 89928.271164875,
+        "hidden_runtime_estimate_basis": "4 public videos scaled linearly to about 199 hidden videos; estimate, not a guarantee",
+        "submission_validation": {
+          "passed": true,
+          "duplicate_ids": 0,
+          "missing": 0,
+          "infinite": 0,
+          "sample_header_matched": true
+        },
+        "competition_submitted_at_utc": "2026-09-28T02:12:13.880000",
+        "competition_submission_status": "COMPLETE",
+        "competition_error_description": "Your notebook hit an unhandled error while rerunning your code. Note that the hidden dataset can be larger/smaller/different than the public dataset",
+        "competition_error_cause": "unknown_without_hidden_rerun_traceback",
+        "hidden_test_compatibility": {
+          "checked_at_utc": "2026-09-28T03:27:25.247316+00:00",
+          "result": "fails_embryo_disjoint_hidden_test_as_written",
+          "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/data",
+          "reason": "Submission source raises RuntimeError for every embryo prefix except 44b6 or 6bba; official hidden test embryos are disjoint from train embryos. The specific hidden-rerun traceback is unavailable."
+        },
+        "v2_parallel_capture_validation": {
+          "kernel_version": 2,
+          "kernel_status": "COMPLETE",
+          "source_sha256": "7edf3ab11b985a8a14f2989fd4f094d0f598d9fcb2933a559bbf8e13e52d37f1",
+          "notebook_sha256": "f80a05d3f2b3a1777bf38aa8abc6c97e27480314cb09d7ece434042c2eacdfea",
+          "package_notebook_sha256": "1ac1514b2e38710318a9f2701416aa4c0125cb6065b02f2bef8db11a2ef55629",
+          "public_test_submission_sha256": "0da0d4930ac172971b878ed745b9586e4c1135e48676d4e640b3e6038ae8c5a7",
+          "receipt_sha256": "965ae18195a19f9917b4eea7a92248a62d41b68d12dfba8f479d31467135d21c",
+          "public_test_rows": 257193,
+          "public_test_videos": [
+            "44b6_0113de3b",
+            "44b6_0b24845f",
+            "6bba_05b6850b",
+            "6bba_05db0fb1"
+          ],
+          "feature_capture_workers": 2,
+          "feature_capture_seconds": 460.0910049099999,
+          "v1_feature_capture_seconds": 925.5679584479999,
+          "prediction_and_postprocess_seconds": 437.08105597799977,
+          "v1_prediction_and_postprocess_seconds": 533.8887061159999,
+          "submission_ready_at_notebook_seconds": 2033.578631996,
+          "v1_submission_ready_at_notebook_seconds": 1794.080529055,
+          "final_log_at_notebook_seconds": 2045.746551665,
+          "submission_validation": {
+            "passed": true,
+            "duplicate_ids": 0,
+            "missing": 0,
+            "infinite": 0,
+            "sample_header_matched": true
+          },
+          "byte_identical_to_v1": true,
+          "competition_submitted": false,
+          "hidden_test_compatibility": "unresolved_embryo_prefix_rejection",
+          "gpu_remaining_hours_after_run": 9.09
+        },
+        "v3_unseen_fold_policy_validation": {
+          "kernel_version": 3,
+          "kernel_status": "COMPLETE",
+          "checked_at_utc": "2026-09-28T10:50:38.953009+00:00",
+          "source_sha256": "e5fa04d7da97b9544642c090204398664e98a03cacc604b0d04917ea8a922449",
+          "notebook_sha256": "dd6b52426f7d26e6db5c5f0bea0341e164a9c1a72606cd73974f34a218261e5a",
+          "package_notebook_sha256": "d864c97893a5970ee07b4106aabd77cbb8b822de96fdb36dce257422aa10e42e",
+          "public_test_submission_sha256": "0da0d4930ac172971b878ed745b9586e4c1135e48676d4e640b3e6038ae8c5a7",
+          "receipt_sha256": "8847cdaa6e8d2d60523435b019b4eec533b809274c917fdfca96350be97ee87f",
+          "config_sha256": "8f41236ffbda2891793ed0acd956905cd994e7054a028351ac52ca144f0770dc",
+          "selection_sha256": "20a67ce13cd208430805b9c6221e1f6e21201b469a3938aae58a33a52e2cdcf3",
+          "train_receipt_sha256": "4e2b4ecb2b918e04e2bc0cf41896be3c9f315f888aff90dba402edfec9ff058f",
+          "public_test_rows": 257193,
+          "public_test_videos": [
+            "44b6_0113de3b",
+            "44b6_0b24845f",
+            "6bba_05b6850b",
+            "6bba_05db0fb1"
+          ],
+          "feature_capture_workers": 2,
+          "feature_capture_seconds": 478.1051762509999,
+          "prediction_and_postprocess_seconds": 466.14291267500016,
+          "submission_ready_at_notebook_seconds": 1883.407673353,
+          "video_evidence": {
+            "44b6_0113de3b": {
+              "fold": 1,
+              "gnn_model_folds": [
+                1
+              ],
+              "candidate_edges": 29044,
+              "nodes": 25961,
+              "edges": 25230,
+              "ilp_seconds": 11.943172403000062,
+              "ilp_optimal": true,
+              "ilp_status": 0,
+              "repair_fallback_used": false
+            },
+            "44b6_0b24845f": {
+              "fold": 1,
+              "gnn_model_folds": [
+                1
+              ],
+              "candidate_edges": 43052,
+              "nodes": 24696,
+              "edges": 23293,
+              "ilp_seconds": 31.015871522999987,
+              "ilp_optimal": true,
+              "ilp_status": 0,
+              "repair_fallback_used": false
+            },
+            "6bba_05b6850b": {
+              "fold": 0,
+              "gnn_model_folds": [
+                0
+              ],
+              "candidate_edges": 9751,
+              "nodes": 6694,
+              "edges": 6478,
+              "ilp_seconds": 1.8816838239999925,
+              "ilp_optimal": true,
+              "ilp_status": 0,
+              "repair_fallback_used": false
+            },
+            "6bba_05db0fb1": {
+              "fold": 0,
+              "gnn_model_folds": [
+                0
+              ],
+              "candidate_edges": 101007,
+              "nodes": 73459,
+              "edges": 71382,
+              "ilp_seconds": 150.04577003600025,
+              "ilp_optimal": true,
+              "ilp_status": 0,
+              "repair_fallback_used": false
+            }
+          },
+          "submission_validation": {
+            "passed": true,
+            "sample_header_matched": true,
+            "duplicate_ids": 0,
+            "missing": 0,
+            "infinite": 0,
+            "video_coverage_matched": true,
+            "graph_endpoints_time_degree_valid": true
+          },
+          "byte_identical_to_v2": true,
+          "unseen_ensemble_unit_tested": true,
+          "unseen_ensemble_kaggle_exercised": false,
+          "hidden_video_count_estimate": 199,
+          "hidden_199_video_linear_capture_plus_prediction_hours": 13.048984006685696,
+          "hidden_199_video_linear_ready_hours": 26.02764770814215,
+          "hidden_runtime_estimate_basis": "4 known-embryo public videos linearly scaled to 199 hidden videos; one-time startup and hidden video variation make this uncertain, while unseen embryos require two GNN model passes",
+          "gpu_remaining_hours_after_run": 8.57,
+          "notebook_hours_limit": 12,
+          "competition_submitted": false,
+          "submission_hold_reason": "public-video extrapolation exceeds 12h notebook limit and 8.57h remaining GPU quota; unseen-embryo ensemble was not run on Kaggle"
+        },
+        "v3_competition_submission": {
+          "submission_ref": 56638386,
+          "kernel": "kentookumura/exp050-shared-edge-gnn-submission",
+          "kernel_version": 3,
+          "script_version_id": 353558041,
+          "submitted_at_utc": "2026-09-28T10:53:03.653Z",
+          "submission_status": "COMPLETE",
+          "public_lb": 0.938,
+          "private_lb": null,
+          "score_observed_at_utc": "2026-09-28T23:47:30.862984+00:00",
+          "public_test_submission_sha256": "0da0d4930ac172971b878ed745b9586e4c1135e48676d4e640b3e6038ae8c5a7",
+          "kaggle_url": "https://www.kaggle.com/code/kentookumura/exp050-shared-edge-gnn-submission?scriptVersionId=353558041",
+          "hidden_unseen_branch_execution": "inferred_from_successful_competition_scoring_not_independently_traced",
+          "submitted_by": "user"
+        }
+      },
+      "optuna": {
+        "kernel": "kentookumura/exp050-optuna-cost-submission",
+        "kernel_version": 4,
+        "status": "competition_scored",
+        "source_sha256": "ccd986491acfc6d8af6eb5168adc9bfead657e0edbd876363558931427fe4e75",
+        "notebook_sha256": "30d6fa8763a4ef9221b15c74e631c2a766afbbb0b2c61f50eae217fe8131e7db",
+        "public_test_submission_sha256": "0bea1f7642c190f59171f6e44e417257e736485a0791a0e7698a674b3ba4cd66",
+        "public_lb": 0.942,
+        "competition_submission_ref": 56658424,
+        "v1_failure": {
+          "kernel_version": 1,
+          "kernel_status": "ERROR",
+          "error": "NameError: name '_audit_pl' is not defined",
+          "failed_stage": "first_legacy_ilp_before_solve",
+          "public_output_files": 0,
+          "competition_submission": false
+        },
+        "v2_failure": {
+          "kernel_version": 2,
+          "kernel_status": "ERROR",
+          "failed_video": "6bba_05db0fb1",
+          "selected_trials": {
+            "fold0": 2,
+            "fold1": 4
+          },
+          "solver": "SCIP after Gurobi license unavailable",
+          "solver_status": "TIMELIMIT",
+          "solve_elapsed_seconds": 1259.0,
+          "time_limit_seconds_per_video": 1200,
+          "public_output_files": 0,
+          "submission_csv_available": false,
+          "receipt_available": false,
+          "competition_submission_ref": null
+        },
+        "hidden_test_compatibility": {
+          "result": "embryo_prefix_guard_removed_in_v3_but_runtime_unproven",
+          "reason": "Unseen embryo IDs are accepted and the shared costs are applied to all videos; the public-test runtime extrapolation exceeds the 12h notebook and remaining GPU budgets."
+        },
+        "local_timeout_incumbent_patch": {
+          "source_sha256": "83fd44510ee15b83294d504aab24a4b15aaf9e6690560ea228883c7760e0499f",
+          "notebook_sha256": "fd6a49514872727e1dd62fededed770ce95c610b7e5f7f1b793d5d9ef4a010b4",
+          "selected_trials": {
+            "fold0": 2,
+            "fold1": 4
+          },
+          "solver_time_limit_seconds": 1200,
+          "test_exp_passed": 15,
+          "check_exp_passed": true,
+          "kaggle_push": false,
+          "competition_submission": false,
+          "hold_reason": "Hidden test embryo-disjointness and approximately training-sized test set require a defined unseen-embryo routing and feasible 12h execution plan."
+        },
+        "midpoint_submission_plan": {
+          "approved_by_user": true,
+          "approved_at_utc": "2026-09-28T04:11:59.684014+00:00",
+          "selected_trials": {
+            "fold0": 2,
+            "fold1": 4
+          },
+          "mix_weights": [
+            0.5,
+            0.5
+          ],
+          "shared_costs": [
+            0.7841849922055504,
+            1.7319049261347335,
+            0.69052555177729
+          ],
+          "all_test_embryos_use_shared_costs": true,
+          "test_exp_passed": 17,
+          "check_exp_passed": true,
+          "kaggle_push": true,
+          "competition_submission": false,
+          "source_sha256": "a296e78c7b09ee06a6ae39909d177fc3ef77194796b3afe9cabf07fef656591f",
+          "notebook_sha256": "9c8aab0f9cd985ef8db42233e2f0d21999915f69ffc7cf53c5324db4bd216069",
+          "kaggle_package_notebook_sha256": "f29ec3c3831593f9d9ef724d0dfd6bb9551beaccf22cab37806b4f366fee3606",
+          "kaggle_package_api_source_bytes": 287182,
+          "kernel_version": 3,
+          "kernel_status": "COMPLETE",
+          "kernel_last_run_time_utc": "2026-09-28T04:22:39.747Z",
+          "public_test_validated": true
+        },
+        "v3_push_attempts": {
+          "first_rejection": "Kaggle HTTP 400: kernel source must be less than 1 megabytes",
+          "resolution": "Set submission_optuna include_experiment_sources=false; package source 287182 bytes; self-contained notebook unchanged",
+          "successful_version": 3
+        },
+        "receipt_sha256": "3fdac55a5c3eabcd8c73f73216ecaebb2bea918c90bedebb368dac7e3f28497a",
+        "public_test_rows": 250610,
+        "public_test_videos": [
+          "44b6_0113de3b",
+          "44b6_0b24845f",
+          "6bba_05b6850b",
+          "6bba_05db0fb1"
+        ],
+        "train_receipt_sha256": "4e2b4ecb2b918e04e2bc0cf41896be3c9f315f888aff90dba402edfec9ff058f",
+        "tune_receipt_sha256": "94b8207a4f8de2f2b8d81668e77145c88f5027f83f959587312647b87ea9641e",
+        "prediction_and_postprocess_seconds": 1442.3575659189999,
+        "public_test_capture_seconds": 487.10030705500003,
+        "public_test_ready_at_notebook_seconds": 2360.529754218,
+        "notebook_runtime_seconds": 2371.417413901,
+        "notebook_runtime_measurement": "Final Kaggle log event timestamp after start; approximate notebook runtime.",
+        "submission_validation": {
+          "passed": true,
+          "rows": 250610,
+          "duplicate_ids": 0,
+          "missing": 0,
+          "infinite": 0,
+          "sample_header_matched": true,
+          "video_coverage_matched": true,
+          "graph_constraints_passed": true
+        },
+        "solver_per_video": {
+          "44b6_0113de3b": {
+            "status": "OPTIMAL",
+            "optimality_proven": true,
+            "seconds": 92.18513218200019,
+            "limit_seconds": 1200.0
+          },
+          "44b6_0b24845f": {
+            "status": "OPTIMAL",
+            "optimality_proven": true,
+            "seconds": 265.44951386899993,
+            "limit_seconds": 1200.0
+          },
+          "6bba_05b6850b": {
+            "status": "OPTIMAL",
+            "optimality_proven": true,
+            "seconds": 13.754976292000038,
+            "limit_seconds": 1200.0
+          },
+          "6bba_05db0fb1": {
+            "status": "OPTIMAL",
+            "optimality_proven": true,
+            "seconds": 1231.252061823,
+            "limit_seconds": 1200.0
+          }
+        },
+        "v3_hidden_test_runtime_risk": {
+          "hidden_video_count_assumption": 199,
+          "public_test_video_count": 4,
+          "linear_capture_estimate_seconds": 48006.09246305699,
+          "linear_submission_ready_estimate_seconds": 158754.1124385125,
+          "notebook_limit_seconds": 43200,
+          "gpu_remaining_hours_at_check": 9.66,
+          "basis": "Linear extrapolation from 4 public videos; hidden duration, density and parallel efficiency may differ. Even capture alone exceeds 12h under this estimate.",
+          "conclusion": "Competition submission held; 12h hidden execution and available GPU quota are not supported by measurements."
+        },
+        "v3_competition_submission": {
+          "submission_ref": 56630788,
+          "kernel": "kentookumura/exp050-optuna-cost-submission",
+          "kernel_version": 3,
+          "script_version_id": 353478993,
+          "submitted_at_utc": "2026-09-28T05:57:04.793Z",
+          "submission_status": "COMPLETE",
+          "public_lb": null,
+          "private_lb": null,
+          "failure_observed_at_utc": "2026-09-28T23:47:30.862984+00:00",
+          "error_description": "Your submission notebook exceeded the allowed runtime. Review the competition's Code Requirements page for the time limits. Note that the hidden dataset can be larger/smaller/different than the public dataset.",
+          "error_scope": "competition_hidden_rerun_notebook_runtime_limit",
+          "exact_failing_video_or_stage": "unknown_without_hidden_run_log",
+          "public_test_submission_sha256": "0bea1f7642c190f59171f6e44e417257e736485a0791a0e7698a674b3ba4cd66",
+          "kaggle_url": "https://www.kaggle.com/code/kentookumura/exp050-optuna-cost-submission?scriptVersionId=353478993",
+          "submitted_by": "user"
+        },
+        "competition_submission_status": "COMPLETE",
+        "competition_error_description": null,
+        "v4_parallel_public_test": {
+          "kernel": "kentookumura/exp050-optuna-cost-submission",
+          "kernel_version": 4,
+          "kernel_status": "COMPLETE",
+          "source_sha256": "ccd986491acfc6d8af6eb5168adc9bfead657e0edbd876363558931427fe4e75",
+          "source_notebook_sha256": "30d6fa8763a4ef9221b15c74e631c2a766afbbb0b2c61f50eae217fe8131e7db",
+          "solver_worker_sha256": "b2f00864781235bcbcb13daa8f302a8d5a314b2e97a0c46410644d07fa0f2193",
+          "package_notebook_sha256": "cba01cc9f3c0c61da8b7ac58460fa491b13d18a926d896f330cb075c2ecff60d",
+          "max_solver_workers": 2,
+          "solver_timeout_seconds_per_video": 1200,
+          "costs_unchanged": true,
+          "postprocess_serial_in_test_video_order": true,
+          "feature_capture_two_gpu_when_available": true,
+          "prepush_checks": {
+            "check_exp": true,
+            "test_exp_passed": 24,
+            "validate_exp": true,
+            "metadata": true,
+            "worker_bootstrap_present": true
+          },
+          "gpu_remaining_hours_before_push": 8.57,
+          "competition_submission_ref": 56658424,
+          "running_observed_at_utc": "2026-09-29T00:33:55Z",
+          "public_test_validation": "PASS",
+          "public_test_submission_sha256": "0bea1f7642c190f59171f6e44e417257e736485a0791a0e7698a674b3ba4cd66",
+          "receipt_sha256": "3fdac55a5c3eabcd8c73f73216ecaebb2bea918c90bedebb368dac7e3f28497a",
+          "rows": 250610,
+          "test_videos": [
+            "44b6_0113de3b",
+            "44b6_0b24845f",
+            "6bba_05b6850b",
+            "6bba_05db0fb1"
+          ],
+          "sample_compatible": true,
+          "graph_constraints_validated": true,
+          "v3_csv_byte_identical": true,
+          "fold_selected_trials": {
+            "0": 2,
+            "1": 4
+          },
+          "shared_costs": [
+            0.7841849922055504,
+            1.7319049261347335,
+            0.6905255517772899
+          ],
+          "train_receipt_sha256": "4e2b4ecb2b918e04e2bc0cf41896be3c9f315f888aff90dba402edfec9ff058f",
+          "tune_receipt_sha256": "94b8207a4f8de2f2b8d81668e77145c88f5027f83f959587312647b87ea9641e",
+          "feature_capture_seconds": 487.10030705500003,
+          "prediction_and_postprocess_seconds": 1442.3575659189999,
+          "submission_ready_at_notebook_seconds": 2360.529754218,
+          "notebook_runtime_seconds": 2371.417413901,
+          "notebook_runtime_measurement": "Last timestamp in downloaded Kaggle notebook log, approximately total runtime.",
+          "solver_per_video": {
+            "44b6_0113de3b": {
+              "status": "OPTIMAL",
+              "optimality_proven": true,
+              "seconds": 92.18513218200019,
+              "limit_seconds": 1200.0
+            },
+            "44b6_0b24845f": {
+              "status": "OPTIMAL",
+              "optimality_proven": true,
+              "seconds": 265.44951386899993,
+              "limit_seconds": 1200.0
+            },
+            "6bba_05b6850b": {
+              "status": "OPTIMAL",
+              "optimality_proven": true,
+              "seconds": 13.754976292000038,
+              "limit_seconds": 1200.0
+            },
+            "6bba_05db0fb1": {
+              "status": "OPTIMAL",
+              "optimality_proven": true,
+              "seconds": 1231.252061823,
+              "limit_seconds": 1200.0
+            }
+          },
+          "gpu_remaining_hours_after_run": 7.91,
+          "hidden_runtime_risk": {
+            "hidden_video_count_assumption": 199,
+            "public_test_video_count": 4,
+            "linear_notebook_estimate_hours": 32.77167120599299,
+            "linear_feature_plus_postprocess_estimate_hours": 26.664035883460137,
+            "notebook_limit_hours": 12,
+            "gpu_remaining_hours_at_check": 7.91,
+            "conclusion_at_public_test_validation": "No measured basis that v4 finishes hidden test within 12h; v3 hidden rerun timed out despite identical public CSV. Competition submission was withheld at this stage, then made separately by the user.",
+            "uncertainty": "Hidden videos may have different lengths, density, and solver difficulty; public scaling is diagnostic, not a guarantee."
+          }
+        },
+        "v4_competition_submission": {
+          "submission_ref": 56658424,
+          "kernel": "kentookumura/exp050-optuna-cost-submission",
+          "kernel_version": 4,
+          "script_version_id": 353730710,
+          "submitted_at_utc": "2026-09-29T01:21:03.607Z",
+          "submission_status": "COMPLETE",
+          "public_lb": 0.942,
+          "private_lb": null,
+          "score_confirmed_at_utc": "2026-09-29T09:49:57Z",
+          "exact_scoring_elapsed_minutes": null,
+          "error_description": null,
+          "public_test_submission_sha256": "0bea1f7642c190f59171f6e44e417257e736485a0791a0e7698a674b3ba4cd66",
+          "kaggle_url": "https://www.kaggle.com/code/kentookumura/exp050-optuna-cost-submission?scriptVersionId=353730710",
+          "submitted_by": "user"
+        }
+      },
+      "exp043": {
+        "kernel": "kentookumura/exp050-exp043-submission",
+        "kernel_version": 1,
+        "status": "existing_submission_scored_reproduction_canceled",
+        "source_sha256": "daf8e7cae89d59bd42bef1ed321d74fe2b5a13d7055e6b00ef9b8485a744c23a",
+        "notebook_sha256": "377d4d7988916b3896a1b67de5a6e619e81e2b8df240d8ffb76bd709488f6499",
+        "public_test_submission_sha256": "3812d2b7a73f47a7ef2b76847ba1f5679100a290a22a13c95c311f5f780814af",
+        "public_lb": 0.95,
+        "competition_submission_ref": 56508119,
+        "previous_submission_reference": {
+          "experiment": "exp043_x138_self_trained_head",
+          "submission_ref": 56508119,
+          "public_lb": 0.95,
+          "public_test_csv_sha256": "3812d2b7a73f47a7ef2b76847ba1f5679100a290a22a13c95c311f5f780814af",
+          "public_test_video_set_matches_gnn": true,
+          "reuse_requires_byte_identical_csv": true
+        },
+        "competition_submission_status": "COMPLETE",
+        "reproduction_v1": {
+          "kernel_version": 1,
+          "kernel_status": "CANCEL_ACKNOWLEDGED",
+          "public_output_files": 0,
+          "reason": "Existing scored exp043 ref 56508119 already supplies the baseline comparison; user stopped unnecessary reproduction."
+        }
+      },
+      "old_cost": {
+        "kernel": "kentookumura/exp050-old-cost-submission",
+        "kernel_version": 1,
+        "status": "competition_hidden_rerun_error",
+        "source_sha256": "15bd6a4b398d097d9006ceae7742cccbee446d8606356c0710cc9647499d237b",
+        "notebook_sha256": "940b678f13ddb4fb6f28699196db55eb50bce25ee93708c4bae67b5ea821c615",
+        "public_test_submission_sha256": "522995f2bc30f4dfea3846a8aeb12079440a9d6b2c7b34777d039d0ae99687b8",
+        "public_lb": null,
+        "competition_submission_ref": 56626727,
+        "receipt_sha256": "3bdac86eeb12c515318c22adef5d7b7e24fd3d6685791d33c8e86ffcf86bf0b7",
+        "public_test_rows": 251988,
+        "public_test_videos": [
+          "44b6_0113de3b",
+          "44b6_0b24845f",
+          "6bba_05b6850b",
+          "6bba_05db0fb1"
+        ],
+        "train_receipt_sha256": "4e2b4ecb2b918e04e2bc0cf41896be3c9f315f888aff90dba402edfec9ff058f",
+        "prediction_and_postprocess_seconds": 776.5689269629997,
+        "selected_costs": [
+          0.0,
+          2.0,
+          1.2
+        ],
+        "solve_seconds_by_video": {
+          "44b6_0113de3b": 41.109672792999845,
+          "44b6_0b24845f": 80.44300844899999,
+          "6bba_05b6850b": 8.342818072999762,
+          "6bba_05db0fb1": 425.52206313800025
+        },
+        "submission_validation": {
+          "passed": true,
+          "duplicate_ids": 0,
+          "missing": 0,
+          "infinite": 0,
+          "sample_header_matched": true,
+          "graph_degree_and_time_valid": true
+        },
+        "competition_submitted_at_utc": "2026-09-28T02:44:12.410000",
+        "competition_submission_status": "COMPLETE",
+        "competition_error_description": "Your notebook hit an unhandled error while rerunning your code. Note that the hidden dataset can be larger/smaller/different than the public dataset",
+        "competition_error_cause": "unknown_without_hidden_rerun_traceback",
+        "hidden_test_compatibility": {
+          "checked_at_utc": "2026-09-28T03:27:25.247316+00:00",
+          "result": "fails_embryo_disjoint_hidden_test_as_written",
+          "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/data",
+          "reason": "Submission source raises RuntimeError for every embryo prefix except 44b6 or 6bba; official hidden test embryos are disjoint from train embryos. The specific hidden-rerun traceback is unavailable."
+        },
+        "v2_unseen_embryo_fix": {
+          "kernel_version": 2,
+          "kernel_status": "COMPLETE",
+          "observed_at_utc": "2026-09-29T04:23:37Z",
+          "source_sha256": "a5cb669a5e740f74826de24d2a26f7f9dbc89b7a6e32d26ff9710a898735470b",
+          "source_notebook_sha256": "e6edbe33442dd25498994a5ce6d22d8c164fa9b539ed96147e30fab745f18d40",
+          "package_notebook_sha256": "58db5b360b445d5d58b76755a460f44a7b7fbc39a07f926790098a984c66112b",
+          "unseen_embryo_unit_test": "passed",
+          "public_output_validation": "passed",
+          "public_test_rows": 251988,
+          "public_test_videos": [
+            "44b6_0113de3b",
+            "44b6_0b24845f",
+            "6bba_05b6850b",
+            "6bba_05db0fb1"
+          ],
+          "public_test_submission_sha256": "522995f2bc30f4dfea3846a8aeb12079440a9d6b2c7b34777d039d0ae99687b8",
+          "receipt_sha256": "8e80f73c29d6d02a90e60f94610380cf38658e87bd51de311cf07cbd6c2bb17e",
+          "byte_identical_to_v1": true,
+          "graph_constraints_valid": true,
+          "selected_costs": [
+            0.0,
+            2.0,
+            1.2
+          ],
+          "optimal_ilp_all_public_videos": true,
+          "solver_seconds_by_video": {
+            "44b6_0113de3b": 43.447002525000016,
+            "44b6_0b24845f": 83.28629981800009,
+            "6bba_05b6850b": 7.895180796999966,
+            "6bba_05db0fb1": 445.863504572
+          },
+          "feature_capture_workers": 2,
+          "feature_capture_seconds": 453.1028192250001,
+          "prediction_and_postprocess_seconds": 806.3991842820001,
+          "notebook_runtime_seconds": 1750.145209155,
+          "hidden_199_video_linear_runtime_estimate_hours": 24.18,
+          "hidden_runtime_estimate_basis": "public 4-video final notebook log time scaled to about 199 hidden videos; not a prediction or upper bound",
+          "competition_submitted": true,
+          "competition_submission_ref": 56662549,
+          "competition_submission_status": "COMPLETE",
+          "competition_submitted_at_utc": "2026-09-29T04:25:16.520000Z",
+          "gpu_quota_remaining_hours_before_push": 7.85,
+          "gpu_quota_remaining_hours_after_run": 6.9,
+          "public_lb": 0.943,
+          "competition_error_description": null,
+          "score_confirmed_at_utc": "2026-09-29T12:06:43.328971+00:00",
+          "scoring_elapsed_minutes": 461.447,
+          "scoring_elapsed_basis": "submission_to_first_complete_confirmation_with_polling_gap",
+          "last_pending_observed_at_utc": "2026-09-29T10:29:01.005651+00:00",
+          "exact_scoring_completed_at_utc": null
+        }
+      }
+    },
+    "latest_scored_candidate": "old_cost_v2",
+    "top_level_public_lb_candidate": "gnn_v3",
+    "user_decision": {
+      "decided_at_utc": "2026-09-29T12:13:38Z",
+      "decision": "completed_and_not_adopted",
+      "basis": "explicit_user_instruction"
+    }
+  },
+  "notes": "Outer 4-arm graph evaluation failed SCIP time limit and has no official 20-video score. User-submitted GNN v3 ref 56638386 scored Public LB 0.938; user-submitted parallel Optuna mean-cost v4 ref 56658424 scored 0.942. The earlier Optuna v3 ref 56630788 exceeded the competition notebook runtime and has no LB. Old-cost v2 ref 56662549 scored Public LB 0.943; earlier GNN v1 and old-cost v1 hidden reruns failed. Existing exp043 ref 56508119 scored 0.950. Top-level public_lb remains the GNN value; candidate scores are recorded separately. On 2026-09-29 the user explicitly closed this experiment as not adopted; status discarded. The incomplete outer evaluation remains a limitation, and the broader hypothesis remains open.",
+  "updated_at": "2026-09-29T12:14:19.282160+00:00"
+}
