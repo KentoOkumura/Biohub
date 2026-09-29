@@ -57,5 +57,6 @@
 | exp048_x138_primary_past_feature_attention | x138_primary_pair_history_attention | exp043_x138_self_trained_head | 破棄 | - | - | - | 2026-09-26 |
 | exp049_x138_edge_selection_diagnostic | public_x138_edge_selection_diagnostic | exp047_x138_edge_candidates | 完了 | - | - | - | 2026-09-26 |
 | exp051_x138_ilp_score_clipping | public_x138_clipped_edge_ilp | exp043_x138_self_trained_head | 破棄 | - | - | - | 2026-09-29 |
+| exp053_x138_postlink_division_score | public_x138_postlink_division_score | exp043_x138_self_trained_head | 完了 | - | 0.953 | - | 2026-09-29 |
 
 <!-- END AUTO EXPERIMENT SUMMARY -->
