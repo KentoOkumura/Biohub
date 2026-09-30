@@ -1,0 +1,131 @@
+{
+  "experiment": "exp052_x138_relink_candidate_scores",
+  "status": "completed",
+  "cv": null,
+  "public_lb": 0.95,
+  "private_lb": 0.919,
+  "metric": null,
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp052-relink-scores-gpu-submit",
+      "kernel_version": 3,
+      "url": "https://www.kaggle.com/code/kentookumura/exp052-relink-scores-gpu-submit",
+      "kernel_source_ids": [],
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": 1067.333389043808,
+      "internet_enabled": false
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": null,
+      "group_count": null,
+      "feature_count": null,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": null,
+      "model_shas": {},
+      "selected_mode": null,
+      "selected_model": null,
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": "480a7f4f1d7066dae1a6cccccf22114834512c3f4a5b2556e80a47398ffd13be"
+    },
+    "submission_validation": {
+      "passed": true,
+      "checked_at": "2026-09-29T05:50:35.828142+00:00",
+      "row_count": 225836,
+      "id_column": "id",
+      "target_columns": [
+        "node_id",
+        "t",
+        "z",
+        "y",
+        "x",
+        "source_id",
+        "target_id"
+      ],
+      "duplicate_id_count": 0,
+      "missing_value_count": 0,
+      "infinite_value_count": 0,
+      "target_statistics": {
+        "node_id": {
+          "min": -1.0,
+          "max": 67801.0,
+          "mean": 12240.717609238562,
+          "std": 18461.360145156363
+        },
+        "t": {
+          "min": -1.0,
+          "max": 99.0,
+          "mean": 24.146274287536087,
+          "std": 31.92864235813748
+        },
+        "z": {
+          "min": -1.0,
+          "max": 63.0,
+          "mean": 15.675950689881153,
+          "std": 20.701106517430674
+        },
+        "y": {
+          "min": -1.0,
+          "max": 253.0,
+          "mean": 62.22350732389876,
+          "std": 78.74830074309362
+        },
+        "x": {
+          "min": -1.0,
+          "max": 254.0,
+          "mean": 64.99264953328965,
+          "std": 82.34368239467452
+        },
+        "source_id": {
+          "min": -1.0,
+          "max": 67801.0,
+          "mean": 11705.450202802032,
+          "std": 18101.156989864634
+        },
+        "target_id": {
+          "min": -1.0,
+          "max": 67801.0,
+          "mean": 11923.956016755521,
+          "std": 18300.286098814304
+        }
+      },
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [],
+    "aborted_runs": [
+      {
+        "kernel_id": "kentookumura/exp052-x138-relink-candidate-scores-diagnostic",
+        "kernel_version": 1,
+        "resource": "NvidiaTeslaT4",
+        "reason": "GPU不使用のユーザー訂正",
+        "kernel_deleted": true,
+        "estimated_gpu_hours_consumed_from_quota": 0.36
+      }
+    ],
+    "exp052_submission": {
+      "test_video_count": 4,
+      "row_count": 225836,
+      "new_scores_considered_total": 47726,
+      "missing_score_reason_unknown_total": 0
+    }
+  },
+  "notes": "GPU診断v1は誤起動後に削除（約0.36 GPU時間消費）。CPU pilotはGPU無効で準備済みだが、Kaggle batch CPU同時実行5件の上限でpush拒否。CPU所要時間と公式scoreは未計測。",
+  "updated_at": "2026-09-30T10:00:11.265505+00:00"
+}

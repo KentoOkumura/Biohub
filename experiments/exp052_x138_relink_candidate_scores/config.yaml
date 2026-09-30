@@ -1,0 +1,131 @@
+experiment:
+  name: exp052_x138_relink_candidate_scores
+  description: 固定trackerのILP前保存得点を再接続の未選択辺にも渡して比較する
+  route: public_x138_relink_candidate_scores
+  created_at: '2026-09-27'
+  notebooks:
+  - diagnostic
+  - inference
+  - cpu_pilot
+  - submission
+lineage:
+  parent: exp043_x138_self_trained_head
+  hypothesis_id: HYP-20260910-09
+  backlog_candidate: x138_relink_candidate_scores
+  diff_summary: ILP解と再追加nodeを固定し、再接続の得点辞書だけに保存済み未選択辺の確率を追加
+source:
+  parent_config: ../exp043_x138_self_trained_head/config.yaml
+  parent_inference: ../exp043_x138_self_trained_head/exp043_x138_self_trained_head_inference.py
+  exp045_config: ../exp045_x138_coordinate_effect_audit/config.yaml
+  head_sha256: 32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc
+  score_cache_source: ../exp047_x138_edge_candidates/exp047_x138_edge_candidates_inference.py
+data:
+  source: competition_train_runtime
+  selection_seed: 42
+  internal_rank_start_per_embryo: 11
+  internal_rank_end_per_embryo: 20
+  evaluation_rank_start_per_embryo: 21
+  evaluation_rank_end_per_embryo: 30
+  expected_embryos:
+  - 44b6
+  - 6bba
+  internal_videos: 20
+  evaluation_videos: 20
+  known_center_match_radius_um: 7.0
+  native_spacing_zyx_um:
+  - 1.625
+  - 0.40625
+  - 0.40625
+model:
+  name: fixed_public_x138_with_exp043_head
+  params:
+    active_variants:
+    - baseline
+    - candidate_scores
+    trainable_models: 0
+    ilp_edge_probability_strictly_greater_than: 0.48
+    score_cache_probability_strictly_greater_than: 1.0e-08
+    missing_score_fallback: 0.0
+    fix_readmitted_nodes_from_baseline: true
+    ilp_timeout_seconds_per_video: 1200
+    ilp_costs: inherited_from_exp043
+    motion_geometry_and_costs: inherited_from_exp043
+    remaining_postprocessing: inherited_from_exp043
+validation:
+  method: paired_video_conditional_on_public_image_model
+  official_metric: combined_score
+  report_by_embryo: true
+  internal_changed_edges_min_per_embryo: 1
+  internal_requires_baseline_graph_match: true
+  notebook_limit_hours: 12
+runtime:
+  cpu_pilot:
+    timeout_seconds_per_video: 1800
+    projection_safety_factor: 1.5
+    max_projected_prediction_seconds: 36000
+  submission:
+    timeout_seconds_per_video: 1800
+    max_parallel_gpu_videos: 2
+  use_amp: true
+  num_workers: 1
+  batch_size: null
+  kaggle:
+    cpu_pilot:
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+    inference:
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+    diagnostic:
+      enable_gpu: false
+      enable_internet: false
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+    submission:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: stable_sha256_video_selection_no_training
+  stochastic_components:
+  - cpu_inference
+  - ilp
+  parallel_rng_policy: sequential_variant_video_execution
+  feature_sha_policy: per_video_score_and_coordinate_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+notes:
+- 公開画像モデルのtrain学習来歴により独立CVとは呼ばない。
+- 内部の各胚11～20位は既に詳細分析済みで、設定選択や未使用評価に使わない。
+- 外側の各胚21～30位は今回の新規評価対象である。
+- ユーザーの訂正によりGPU使用を禁止。各胚21位1動画ずつでCPU得点取得の所要時間を確認中。competition submissionは別途明示承認が必要。
