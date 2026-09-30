@@ -1,0 +1,102 @@
+{
+  "checked_at_utc": "2026-09-30T10:47:11.084729+00:00",
+  "top_solutions": [
+    {
+      "rank": 3,
+      "team": "yu4u",
+      "private_lb": 0.967,
+      "topic_id": 744484,
+      "topic_title": "3rd Place Solution"
+    },
+    {
+      "rank": 5,
+      "team": "Tang",
+      "private_lb": 0.954,
+      "topic_id": 744549,
+      "topic_title": "5th Place: 3D U-Net + Transformer Linker + Multi-stage ILP Tracking"
+    },
+    {
+      "rank": 12,
+      "team": "Corwin",
+      "private_lb": 0.946,
+      "topic_id": 744501,
+      "topic_title": "12th Place Solution"
+    },
+    {
+      "rank": 14,
+      "team": "Vibes & Edges Trade-Off",
+      "private_lb": 0.944,
+      "topic_id": 744486,
+      "topic_title": "14th place solution from Vibes&Edges Trade-Off"
+    },
+    {
+      "rank": 18,
+      "team": "ymg_aq",
+      "private_lb": 0.941,
+      "topic_id": 744531,
+      "topic_title": "18th Place Solution: Lineage Graph Refinement Focused on Cell Divisions  "
+    }
+  ],
+  "our_submissions": [
+    {
+      "experiment": "exp013",
+      "ref": "56199738",
+      "public_lb": 0.944,
+      "private_lb": 0.914
+    },
+    {
+      "experiment": "exp042",
+      "ref": "56569806",
+      "public_lb": 0.953,
+      "private_lb": 0.917
+    },
+    {
+      "experiment": "exp043",
+      "ref": "56508119",
+      "public_lb": 0.95,
+      "private_lb": 0.918
+    },
+    {
+      "experiment": "exp050_gnn",
+      "ref": "56638386",
+      "public_lb": 0.938,
+      "private_lb": 0.922
+    },
+    {
+      "experiment": "exp050_optuna",
+      "ref": "56658424",
+      "public_lb": 0.942,
+      "private_lb": 0.922
+    },
+    {
+      "experiment": "exp050_old_cost",
+      "ref": "56662549",
+      "public_lb": 0.943,
+      "private_lb": 0.922
+    },
+    {
+      "experiment": "exp052",
+      "ref": "56675101",
+      "public_lb": 0.95,
+      "private_lb": 0.919
+    },
+    {
+      "experiment": "exp053",
+      "ref": "56663354",
+      "public_lb": 0.953,
+      "private_lb": 0.916
+    }
+  ],
+  "inferences": {
+    "exp053_minus_exp043": {
+      "public": 0.003,
+      "private": -0.002
+    },
+    "best_private_among_all_scored_submissions": 0.922
+  },
+  "limits": [
+    "Rank order is a snapshot and can change after final audit.",
+    "Full downloaded CSV is the public leaderboard, while get_leaderboard returns current final scores.",
+    "Current report adds API observations; existing experiment metrics and user adoption decisions are unchanged."
+  ]
+}

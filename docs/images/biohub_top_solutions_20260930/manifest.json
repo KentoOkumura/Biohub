@@ -1,0 +1,92 @@
+{
+  "purpose": "standalone teaching visualizations for the archived top-solution report",
+  "no_real_data": true,
+  "no_training_or_inference": true,
+  "unverified_layers": "never filled in; feature stacks are schematic",
+  "figures": [
+    {
+      "rank": 3,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744484",
+      "png": "docs/images/biohub_top_solutions_20260930/03_joint_division.png",
+      "svg": "docs/images/biohub_top_solutions_20260930/03_joint_division.svg",
+      "verified_source_claims": [
+        "5-volume shared division encoder",
+        "matching attention",
+        "joint selection",
+        "affine coordinate refinement"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 5,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744549",
+      "png": "docs/images/biohub_top_solutions_20260930/05_multistage_ilp.png",
+      "svg": "docs/images/biohub_top_solutions_20260930/05_multistage_ilp.svg",
+      "verified_source_claims": [
+        "self/cross attention and separate heads",
+        "four ILP stages",
+        "no new divisions after ILP2",
+        "nine-timepoint line fit"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 6,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744582",
+      "png": "docs/images/biohub_top_solutions_20260930/06_motion_attention.png",
+      "svg": "docs/images/biohub_top_solutions_20260930/06_motion_attention.svg",
+      "verified_source_claims": [
+        "three-frame native input",
+        "velocity and uncertainty",
+        "bidirectional sparse graph attention",
+        "in-graph motion refinement"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 12,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744501",
+      "png": "docs/images/biohub_top_solutions_20260930/12_image_repair.png",
+      "svg": "docs/images/biohub_top_solutions_20260930/12_image_repair.svg",
+      "verified_source_claims": [
+        "single child plus orphan candidates",
+        "two-scale division CNN",
+        "DINOv2 features and image witnesses",
+        "guarded coordinate refinement"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 14,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744486",
+      "png": "docs/images/biohub_top_solutions_20260930/14_dense_displacement.png",
+      "svg": "docs/images/biohub_top_solutions_20260930/14_dense_displacement.svg",
+      "verified_source_claims": [
+        "flow integration separates cells",
+        "daughter-to-parent dense regression",
+        "parent convergence and daughter separation gates",
+        "graph grafting"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 18,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744531",
+      "png": "docs/images/biohub_top_solutions_20260930/18_completed_graph.png",
+      "svg": "docs/images/biohub_top_solutions_20260930/18_completed_graph.svg",
+      "verified_source_claims": [
+        "four-timepoint DivisionCubeNet",
+        "external-only time-direction CatBoost",
+        "ordinary-edge competition",
+        "post-completion graph and motion critic"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    }
+  ]
+}

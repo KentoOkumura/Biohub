@@ -1,0 +1,61 @@
+id,title,authorName,commentCount,votes,postDate,source_page,sort_by
+738833,Cell Tracking In-Person Workshop,,5,13,2026-09-01 21:31:36.602000,1,recent
+714101,How to get started + Competition's Official Discord,,8,27,2026-06-25 16:44:43.592000,1,recent
+716062,Welcome to the Biohub - Cell Tracking During Development Challenge,,6,78,2026-06-30 02:16:18.647000,1,recent
+744562,"213th Place: Two Coordinate Heads, One Better Step",,0,0,2026-09-30 09:53:30.790000,1,recent
+744491,Paired-Orphan Division Rescue for 3D Embryonic Cell Tracking,,1,3,2026-09-30 01:55:29.360000,1,recent
+744549,5th Place: 3D U-Net + Transformer Linker + Multi-stage ILP Tracking,,0,9,2026-09-30 08:41:31.117000,1,recent
+744548,"Public 0.948 → private 0.924: a retrained V1284 head, and why the public board pointed the wrong way",,0,1,2026-09-30 08:25:28.070000,1,recent
+744531,18th Place Solution: Lineage Graph Refinement Focused on Cell Divisions  ,,1,9,2026-09-30 06:39:56.820000,1,recent
+744501,12th Place Solution,,1,8,2026-09-30 03:24:30.180000,1,recent
+744484,3rd Place Solution,,7,73,2026-09-30 00:30:09.793000,1,recent
+744512,"288th / 4,020 (top 7%): what 22 leaderboard probes taught us about this metric",,0,0,2026-09-30 05:14:53.860000,1,recent
+744507,303rd / Bronze: Sub-voxel localization + a learned coordinate head,,0,0,2026-09-30 06:33:11.130000,1,recent
+744498,"The 0.953 stack's ""private"" V1284 head was reproducible from the notebook itself",,1,0,2026-09-30 02:39:29.229000,1,recent
+744506,"303rd / Bronze writeup: sub-voxel localization, a learned coordinate head, and a lot of dead ends",,0,0,2026-09-30 04:53:03.566000,1,recent
+744486,14th place solution from Vibes&Edges Trade-Off,,2,10,2026-09-30 00:50:49.910000,1,recent
+744499, Final selection for Biohub – Track Your Cells — question about tie-breaking,,1,0,2026-09-30 02:42:59.285000,1,recent
+744490,"89th place: division reselection transferred to Private, our Public-picked chass",,0,1,2026-09-30 04:19:24.210000,1,recent
+744485,From-scratch 2.5D ConvNeXt detector + ILP tracker — Private 0.939,,0,0,2026-09-30 00:54:01.457000,1,recent
+744278,If it were possible to allow new entrants join ...and entering ,,2,0,2026-09-29 07:57:05.640000,1,recent
+744357,Farewell and Thanks to the Kaggle community!,,1,15,2026-09-29 14:19:14.478000,1,recent
+744273,What's the probability we'll witness a massive shakeup?,,7,4,2026-09-29 07:39:43.911000,2,recent
+744250,Time of publishing private results,,4,0,2026-09-29 05:06:55.002000,2,recent
+743929,"Public 0.953 to 0.959 in two days: using the board as the instrument, and the re-run time as build time",,6,0,2026-09-27 19:30:19.574000,2,recent
+744093,"⚠️ Don't write float centroids - same graph, 0.954 → 0.946 on the public LB",,0,8,2026-09-28 16:29:09.221000,2,recent
+743006,Beginner question: How do Public/Private splits usually work in biological datasets?,,5,3,2026-09-24 15:54:53.727000,2,recent
+742169,A few question for top 100 people?,,6,3,2026-09-20 13:22:23.864000,2,recent
+732103,[Free Dataset] 18.5 GB of fully-labelled synthetic 3D microscopy — 165k labelled divisions,,25,65,2026-08-01 21:12:10.502000,2,recent
+743765,Question for host,,1,1,2026-09-26 21:20:56.825000,2,recent
+742942,errors in annotated ground truth,,6,7,2026-09-24 09:23:26.765000,2,recent
+742266,"Stuck at 0.947 after ten board tests. What I measured, and one question about the relink stage ",,14,5,2026-09-21 03:39:55.992000,2,recent
+743222,"Eight leaderboard experiments on the public 0.947 stack — all negative, here are the numbers",,0,1,2026-09-25 08:59:22.308000,2,recent
+743146,Winner deliverables when using permitted third-party pretrained weights,,0,-1,2026-09-25 02:32:07.438000,2,recent
+742794,New to Biohub? Fork this CPU cell-tracking baseline + validation toolkit,,0,-2,2026-09-23 13:53:04.969000,2,recent
+742777,Luxar from biohub : 3D Gaussian Splats of Embyro Cells,,0,12,2026-09-23 10:47:17.972000,2,recent
+742702,whats the difference between today and the september 29 deadline,,1,0,2026-09-23 01:03:33.536000,2,recent
+742456,unable to uplift my score from 0.947 anymore,,0,0,2026-09-22 04:28:17.229000,2,recent
+741386,A few questions about external zebrafish data,,4,4,2026-09-14 22:10:13.125000,2,recent
+741651,I foresee some shakeup.,,2,5,2026-09-16 13:36:37.389000,2,recent
+742325,Anyone share the same opinion?,,0,2,2026-09-21 13:42:55.972000,2,recent
+741868,Agents collaborate with Humans - Dashboards are key!,,7,21,2026-09-17 21:50:19.517000,2,recent
+738217,focus3d : one of the best 3d cell segmentation,,50,40,2026-08-30 15:24:33.907000,3,recent
+742131,Any ideas or successful approaches for model blending?,,1,3,2026-09-20 04:21:00.360000,3,recent
+742064, Public 0.947-stack weights were trained on all 199 train videos — any hold-out from train is in-sample (manifest check + an LB counter-example),,0,3,2026-09-19 13:00:01.979000,3,recent
+741749,Model changes don't move the LB above the public plateau — what actually did for you?,,7,5,2026-09-17 06:31:17.691000,3,recent
+735352,Possible big leaderboard shakeup,,12,10,2026-08-15 08:25:14.079000,3,recent
+740145,magic or overfitting?,,12,14,2026-09-08 13:31:27.038000,3,recent
+741446,What is your best solo model?,,1,3,2026-09-15 10:45:12.379000,3,recent
+741242,"Saving ~75 min in the dual-seed + HOCT veto pipeline (same output, less HOCT deadline risk)",,0,0,2026-09-14 04:24:30.653000,3,recent
+740337,Not able to submit my notebook and scoring is failing ,,2,-7,2026-09-09 04:29:13.592000,3,recent
+740573,Division steps are not long steps: base rates from the training labels,,8,1,2026-09-10 03:33:29.586000,3,recent
+739731,can we turn auto research to auo data generator?,,7,8,2026-09-05 19:21:43.157000,3,recent
+739685,Problems with edje connection,,7,5,2026-09-05 13:05:03.739000,3,recent
+740103,Post-Processing Plateau?,,0,0,2026-09-08 09:39:34.177000,3,recent
+739516,I measured my own division_jaccard (0.22). What's yours?,,1,5,2026-09-04 12:23:52.430000,3,recent
+717109,Resource sharing for cell tracking challenge,,4,49,2026-07-01 14:00:25.871000,3,recent
+739915,Why train Unet for more than 100 epochs? Doesn't that lead to overfitting? ,,0,9,2026-09-07 06:47:17.104000,3,recent
+739686,Metric problem,,4,3,2026-09-05 13:05:50.482000,3,recent
+739352,"How are your local CVs like? It feels like a huge gap, atleast for me.",,6,4,2026-09-03 18:36:29.896000,3,recent
+739220,How can i reach a 0.9 score at least?,,11,1,2026-09-03 07:55:55.088000,3,recent
+739570,"Meta Trap, Private LB Shake-ups, and Velocity-Projected Tracking 🚀",,2,3,2026-09-04 17:45:43.778000,3,recent

@@ -1,0 +1,15 @@
+ref,fileName,date,description,status,publicScore,privateScore
+56675101,submission.csv,2026-09-29 12:23:04.197000,exp052 relink candidate scores GPU v3 no time projection,SubmissionStatus.COMPLETE,0.950,0.919
+56663354,submission.csv,2026-09-29 05:02:32.023000,exp053 postlink four-frame division score,SubmissionStatus.COMPLETE,0.953,0.916
+56662549,submission.csv,2026-09-29 04:25:16.520000,exp050 expanded old cost v2 unseen embryo fix,SubmissionStatus.COMPLETE,0.943,0.922
+56662528,submission.csv,2026-09-29 04:23:51.323000,exp052 relink candidate scores GPU v1,SubmissionStatus.COMPLETE,,
+56658424,submission.csv,2026-09-29 01:21:03.607000,,SubmissionStatus.COMPLETE,0.942,0.922
+56638386,submission.csv,2026-09-28 10:53:03.653000,,SubmissionStatus.COMPLETE,0.938,0.922
+56630788,submission.csv,2026-09-28 05:57:04.793000,,SubmissionStatus.COMPLETE,,
+56626727,submission.csv,2026-09-28 02:44:12.410000,exp050 expanded old cost v1,SubmissionStatus.COMPLETE,,
+56626093,submission.csv,2026-09-28 02:12:13.880000,exp050 GNN learned set v1,SubmissionStatus.COMPLETE,,
+56569806,submission.csv,2026-09-26 05:07:44.530000,exp042 public x138 replay inference v2,SubmissionStatus.COMPLETE,0.953,0.917
+56508119,submission.csv,2026-09-24 01:18:41.583000,exp043 self-trained coordinate head x138 inference v2,SubmissionStatus.COMPLETE,0.950,0.918
+56199738,submission.csv,2026-09-13 05:20:43.280000,exp013 public notebook replay v2,SubmissionStatus.COMPLETE,0.944,0.914
+56182729,submission.csv,2026-09-12 09:22:45.757000,exp009 exp006 twofold probability ensemble,SubmissionStatus.COMPLETE,0.693,0.737
+56153451,submission.csv,2026-09-10 23:38:45.267000,exp002 scratch 3ep expandable segments,SubmissionStatus.COMPLETE,0.453,0.538

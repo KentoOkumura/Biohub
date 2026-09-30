@@ -1,0 +1,26 @@
+{
+  "topic": {
+    "id": 744486,
+    "title": "14th place solution from Vibes&Edges Trade-Off",
+    "authorName": "Tom",
+    "commentCount": 2,
+    "votes": 10,
+    "postDate": "2026-09-30T00:50:46.716000"
+  },
+  "comments": [
+    {
+      "id": 3530370,
+      "authorName": "hengck23",
+      "votes": 3,
+      "postDate": "2026-09-30T04:01:44.397000",
+      "content": "<p>Good report! Great work, and congrats to you and your team for achieving a gold medal ! \ud83d\ude00</p>\n<p>i wonder if one day the report from ChatGPT and Claude would be able to tell us the theoretical limit of accuracy and if there is a shakeup before the competition ends. </p>"
+    },
+    {
+      "id": 3530375,
+      "authorName": "Tom",
+      "votes": 1,
+      "postDate": "2026-09-30T04:19:39.713000",
+      "content": "<p>Thanks <a href=\"/hengck23\" target=\"_blank\">@hengck23</a>. Personally, I hope that one day I can stop chasing rankings and focus entirely on building unique solutions to share publicly, like you do. Or ideally, share open solutions while still competing for a top rank.</p>\n<p>One experiment I really want to try is calculating a \"shake-up rate\" for every team on the leaderboard during a competition. Since the exact solutions aren't visible, I can only analyze team ranking trajectories and see how score improvements over time correlate with the public leaderboard split.</p>"
+    }
+  ]
+}
