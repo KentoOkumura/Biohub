@@ -79,7 +79,7 @@
 
 - 禁止する代替実装、proxy、同一OOF上の救済探索: 単なるU-Netの置換をnnU-Net全体と呼ぶ、時間入力を黙って単時点へ縮小する、未知領域へ強い背景損失をかける、評価胚で閾値を選ぶ、正解中心を推論へ渡すこと。
 - 壁打ちで採らなかった案と理由: 領域予測は教師と出力が変わるため[別候補](nnunet_instance_segmentation.md)に分けた。BYU解法の半径・TopK損失・学習量は転用を確定していない。Biohubの疎注釈、密な細胞数、時系列、計算制約の適合確認が先に必要。
-- 既存候補との差: [sparse_det_mask](sparse_det_mask.md)は未知領域の扱い、[subvoxel_offset](x138_coordinate_effect_audit.md#旧座標補正候補からの引き継ぎ)は検出後の座標補正、[direct_center_set](direct_center_set.md)は可変個数の中心集合の直接出力を検証する。本候補はnnU-Netによる中心マップの学習である。
+- 既存候補との差: [sparse_det_mask](sparse_det_mask.md)は未知領域の扱い、[subvoxel_offset](../experiments/exp045_x138_coordinate_effect_audit/requirements.md#旧座標補正候補からの引き継ぎ)は検出後の座標補正、[direct_center_set](direct_center_set.md)は可変個数の中心集合の直接出力を検証する。本候補はnnU-Netによる中心マップの学習である。
 
 ## リスク
 

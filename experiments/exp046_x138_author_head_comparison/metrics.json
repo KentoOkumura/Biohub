@@ -1,0 +1,613 @@
+{
+  "experiment": "exp046_x138_author_head_comparison",
+  "status": "debug_completed",
+  "cv": null,
+  "public_lb": null,
+  "private_lb": null,
+  "metric": "biohub combined score on 20 competition train videos (conditional evaluation)",
+  "evidence": {
+    "kaggle": {
+      "kernel_id": "kentookumura/exp046-x138-author-head-comparison-author-only",
+      "kernel_version": 1,
+      "url": "https://www.kaggle.com/code/kentookumura/exp046-x138-author-head-comparison-author-only",
+      "kernel_source_ids": [],
+      "resource": "NvidiaTeslaT4",
+      "notebook_runtime_seconds": 6794.8124849796295,
+      "internet_enabled": false,
+      "kaggle_kernel_numeric_id": 135904131,
+      "full_execution_status": "COMPLETE",
+      "gpu_quota_remaining_before_full_hours": 44.48,
+      "gpu_quota_remaining_after_full_hours": 40.71,
+      "gpu_quota_refresh_at_utc": "2026-10-03T00:00:00Z",
+      "runtime_gate_pilot_elapsed_seconds": 675.8054504394531,
+      "runtime_gate_estimated_remaining_seconds_with_25pct_margin": 7602.811317443848
+    },
+    "artifacts": {
+      "input_file_sha": null,
+      "cache_file_sha": null,
+      "feature_schema_sha": null,
+      "feature_content_sha": null,
+      "row_count": 20,
+      "group_count": 2,
+      "feature_count": 224,
+      "raw_gzip_sha": null,
+      "decompressed_content_sha": null,
+      "model_manifest_sha": null,
+      "model_count": 2,
+      "model_shas": {
+        "self": "32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc",
+        "author": "625a0d9340f48193f2ec294fc2d81c5bb3c03087eab78ef0ae998a9c4c7da00c"
+      },
+      "selected_mode": "author_only",
+      "selected_model": "author_head",
+      "oof_prediction_sha": null,
+      "test_prediction_content_sha": null,
+      "submission_sha": null
+    },
+    "submission_validation": {
+      "passed": null,
+      "checked_at": null,
+      "row_count": null,
+      "id_column": null,
+      "target_columns": [],
+      "duplicate_id_count": null,
+      "missing_value_count": null,
+      "infinite_value_count": null,
+      "target_statistics": {},
+      "errors": [],
+      "fallback_rows": null,
+      "prediction_min": null,
+      "prediction_max": null,
+      "prediction_mean": null,
+      "prediction_std": null
+    },
+    "cpu_gpu_comparison": {
+      "cv_delta": null,
+      "prediction_diff_abs_mean": null,
+      "prediction_diff_abs_max": null,
+      "prediction_diff_mean": null
+    },
+    "reruns": [
+      {
+        "comparison": "exp045 self pilot vs exp046 self pilot",
+        "videos": 2,
+        "final_graph_files_sha_equal": 42,
+        "official_rows_equal": 2,
+        "score_delta": 0.0
+      },
+      {
+        "comparison": "exp046 author pilot vs exp046 author full",
+        "videos": 2,
+        "final_graph_files_sha_equal": 42,
+        "official_rows_equal": 2,
+        "score_delta": 0.0
+      }
+    ],
+    "pilot": {
+      "kernel_id": "kentookumura/exp046-x138-author-head-comparison-pilot",
+      "kernel_version": 1,
+      "receipt_sha256": "48b3d367a6b1d0caeb456cdd4e29a812d758aef93470271d5d429ba81e3f78db",
+      "notebook_runtime_seconds": 1263.8888874053955,
+      "self_score": 0.9162285480703838,
+      "author_score": 0.9083813086739856,
+      "control_matches_exp045_pilot": true,
+      "control_final_graph_files_sha_equal": 42,
+      "candidate_sha_equal_videos": 2,
+      "official_rows_equal_videos": 2
+    },
+    "comparison": {
+      "control_experiment": "exp045_x138_coordinate_effect_audit",
+      "control_official_receipt_sha256": "9bf85fa3873f41f8d9b587d99bf19c8b98fc47714d3b5702953bdc891cebfc52",
+      "control_official_metric_sha256": "5ae3f99259d00bf744f09819aa5f1cd5e1b6ce87598e18c21c10f17b2da2b07f",
+      "author_receipt_sha256": "de8705eafa94fcf84b019b9210f527f27527b3c177700ea59925820445677f6c",
+      "author_official_metric_sha256": "1c28ceb76639c79a89c2d6f69e961261acacaa925ec6902d49c96b14dfd5431f",
+      "pilot_receipt_sha256": "48b3d367a6b1d0caeb456cdd4e29a812d758aef93470271d5d429ba81e3f78db",
+      "comparison_json_sha256": "2bf13200d867ab961522c1f87b5479cb854e58dd6fceb1d91893410727e0b085",
+      "selected_videos": [
+        "44b6_1d530831",
+        "44b6_2a2eff9f",
+        "44b6_668e0cc7",
+        "44b6_706092f0",
+        "44b6_7a302da0",
+        "44b6_87bba6c4",
+        "44b6_8f9ecab4",
+        "44b6_97725144",
+        "44b6_996155de",
+        "44b6_cf8fed6b",
+        "6bba_07e24132",
+        "6bba_2819ca14",
+        "6bba_474be664",
+        "6bba_57b7cc1e",
+        "6bba_5dfe9ad1",
+        "6bba_67ebd073",
+        "6bba_705ec2c9",
+        "6bba_af149c94",
+        "6bba_d2b9fc0c",
+        "6bba_fc5f39dc"
+      ],
+      "original_detector_candidates_match_control_videos": 20,
+      "fixed_gt_assignment_match_control_videos": 20,
+      "author_output_bytes": 1365342745,
+      "pilot_author_final_graph_files_sha_equal": 42,
+      "pilot_author_official_rows_equal": 2,
+      "overall": {
+        "author": {
+          "adj_edge_jaccard": 0.8821889050658379,
+          "division_fn": 16,
+          "division_fp": 8,
+          "division_jaccard": 0.04,
+          "division_tp": 1,
+          "edge_jaccard": 0.8807324315407457,
+          "n": 20,
+          "n_adj": 20,
+          "node_recall": 0.9759730308410308,
+          "score": 0.8861889050658379
+        },
+        "control": {
+          "adj_edge_jaccard": 0.8863484877662319,
+          "division_fn": 16,
+          "division_fp": 8,
+          "division_jaccard": 0.04,
+          "division_tp": 1,
+          "edge_jaccard": 0.881584387662284,
+          "n": 20,
+          "n_adj": 20,
+          "node_recall": 0.9742754037584886,
+          "score": 0.8903484877662319
+        },
+        "delta": {
+          "adj_edge_jaccard": -0.00415958270039396,
+          "edge_jaccard": -0.000851956121538322,
+          "node_recall": 0.0016976270825421746,
+          "score": -0.00415958270039396
+        }
+      },
+      "by_embryo": {
+        "44b6": {
+          "author": {
+            "adj_edge_jaccard": 0.9195317751030848,
+            "division_fn": 3,
+            "division_fp": 3,
+            "division_jaccard": 0.14285714285714285,
+            "division_tp": 1,
+            "edge_jaccard": 0.904228855721393,
+            "n": 10,
+            "n_adj": 10,
+            "node_recall": 0.9867106061833312,
+            "score": 0.933817489388799
+          },
+          "control": {
+            "adj_edge_jaccard": 0.9216162260172677,
+            "division_fn": 3,
+            "division_fp": 3,
+            "division_jaccard": 0.14285714285714285,
+            "division_tp": 1,
+            "edge_jaccard": 0.901710730948678,
+            "n": 10,
+            "n_adj": 10,
+            "node_recall": 0.9860644647595771,
+            "score": 0.9359019403029819
+          },
+          "delta": {
+            "adj_edge_jaccard": -0.002084450914182856,
+            "edge_jaccard": 0.002518124772714958,
+            "node_recall": 0.0006461414237540763,
+            "score": -0.002084450914182856
+          },
+          "fixed_id_weighted_center_distance_um": {
+            "author": 1.4637890638106263,
+            "control": 1.5558678651203819
+          },
+          "official_edge_counts": {
+            "author": {
+              "edge_fn": 133,
+              "edge_fp": 175,
+              "edge_tp": 2908
+            },
+            "control": {
+              "edge_fn": 142,
+              "edge_fp": 174,
+              "edge_tp": 2899
+            }
+          },
+          "videos_author_better": 4,
+          "fixed_id_stages": {
+            "scored": {
+              "author": {
+                "all_division_nodes_detected": 3,
+                "annotated_parent_contradictions": 0,
+                "both_endpoints_detected": 3024,
+                "known_division_denominator": 4,
+                "known_divisions_selected": 3,
+                "known_edge_denominator": 3041,
+                "known_edges_selected": 3024,
+                "selected_edges": 3024
+              },
+              "control": {
+                "all_division_nodes_detected": 3,
+                "annotated_parent_contradictions": 0,
+                "both_endpoints_detected": 3024,
+                "known_division_denominator": 4,
+                "known_divisions_selected": 3,
+                "known_edge_denominator": 3041,
+                "known_edges_selected": 3024,
+                "selected_edges": 3024
+              }
+            },
+            "candidate": {
+              "author": {
+                "all_division_nodes_detected": 3,
+                "annotated_parent_contradictions": 1,
+                "both_endpoints_detected": 3024,
+                "known_division_denominator": 4,
+                "known_divisions_selected": 1,
+                "known_edge_denominator": 3041,
+                "known_edges_selected": 2877,
+                "selected_edges": 346086
+              },
+              "control": {
+                "all_division_nodes_detected": 3,
+                "annotated_parent_contradictions": 1,
+                "both_endpoints_detected": 3024,
+                "known_division_denominator": 4,
+                "known_divisions_selected": 1,
+                "known_edge_denominator": 3041,
+                "known_edges_selected": 2836,
+                "selected_edges": 318754
+              }
+            },
+            "ilp": {
+              "author": {
+                "all_division_nodes_detected": 3,
+                "annotated_parent_contradictions": 0,
+                "both_endpoints_detected": 3024,
+                "known_division_denominator": 4,
+                "known_divisions_selected": 0,
+                "known_edge_denominator": 3041,
+                "known_edges_selected": 2798,
+                "selected_edges": 315954
+              },
+              "control": {
+                "all_division_nodes_detected": 3,
+                "annotated_parent_contradictions": 0,
+                "both_endpoints_detected": 3024,
+                "known_division_denominator": 4,
+                "known_divisions_selected": 0,
+                "known_edge_denominator": 3041,
+                "known_edges_selected": 2768,
+                "selected_edges": 283947
+              }
+            },
+            "final": {
+              "author": {
+                "all_division_nodes_detected": 3,
+                "annotated_parent_contradictions": 0,
+                "both_endpoints_detected": 3024,
+                "known_division_denominator": 4,
+                "known_divisions_selected": 1,
+                "known_edge_denominator": 3041,
+                "known_edges_selected": 2783,
+                "selected_edges": 311918
+              },
+              "control": {
+                "all_division_nodes_detected": 3,
+                "annotated_parent_contradictions": 0,
+                "both_endpoints_detected": 3024,
+                "known_division_denominator": 4,
+                "known_divisions_selected": 1,
+                "known_edge_denominator": 3041,
+                "known_edges_selected": 2759,
+                "selected_edges": 282528
+              }
+            }
+          }
+        },
+        "6bba": {
+          "author": {
+            "adj_edge_jaccard": 0.8687072402656822,
+            "division_fn": 13,
+            "division_fp": 5,
+            "division_jaccard": 0.0,
+            "division_tp": 0,
+            "edge_jaccard": 0.8722496632240683,
+            "n": 10,
+            "n_adj": 10,
+            "node_recall": 0.9652354554987307,
+            "score": 0.8687072402656822
+          },
+          "control": {
+            "adj_edge_jaccard": 0.8735769425446639,
+            "division_fn": 13,
+            "division_fp": 5,
+            "division_jaccard": 0.0,
+            "division_tp": 0,
+            "edge_jaccard": 0.874296012615454,
+            "n": 10,
+            "n_adj": 10,
+            "node_recall": 0.9624863427574001,
+            "score": 0.8735769425446639
+          },
+          "delta": {
+            "adj_edge_jaccard": -0.004869702278981647,
+            "edge_jaccard": -0.0020463493913857045,
+            "node_recall": 0.002749112741330606,
+            "score": -0.004869702278981647
+          },
+          "fixed_id_weighted_center_distance_um": {
+            "author": 2.027676845848195,
+            "control": 1.739664348086693
+          },
+          "official_edge_counts": {
+            "author": {
+              "edge_fn": 585,
+              "edge_fp": 553,
+              "edge_tp": 7770
+            },
+            "control": {
+              "edge_fn": 593,
+              "edge_fp": 523,
+              "edge_tp": 7762
+            }
+          },
+          "videos_author_better": 5,
+          "fixed_id_stages": {
+            "scored": {
+              "author": {
+                "all_division_nodes_detected": 13,
+                "annotated_parent_contradictions": 0,
+                "both_endpoints_detected": 8147,
+                "known_division_denominator": 13,
+                "known_divisions_selected": 13,
+                "known_edge_denominator": 8355,
+                "known_edges_selected": 8147,
+                "selected_edges": 8147
+              },
+              "control": {
+                "all_division_nodes_detected": 13,
+                "annotated_parent_contradictions": 0,
+                "both_endpoints_detected": 8147,
+                "known_division_denominator": 13,
+                "known_divisions_selected": 13,
+                "known_edge_denominator": 8355,
+                "known_edges_selected": 8147,
+                "selected_edges": 8147
+              }
+            },
+            "candidate": {
+              "author": {
+                "all_division_nodes_detected": 13,
+                "annotated_parent_contradictions": 3,
+                "both_endpoints_detected": 8147,
+                "known_division_denominator": 13,
+                "known_divisions_selected": 3,
+                "known_edge_denominator": 8355,
+                "known_edges_selected": 7665,
+                "selected_edges": 240965
+              },
+              "control": {
+                "all_division_nodes_detected": 13,
+                "annotated_parent_contradictions": 3,
+                "both_endpoints_detected": 8147,
+                "known_division_denominator": 13,
+                "known_divisions_selected": 3,
+                "known_edge_denominator": 8355,
+                "known_edges_selected": 7612,
+                "selected_edges": 229141
+              }
+            },
+            "ilp": {
+              "author": {
+                "all_division_nodes_detected": 13,
+                "annotated_parent_contradictions": 2,
+                "both_endpoints_detected": 8147,
+                "known_division_denominator": 13,
+                "known_divisions_selected": 0,
+                "known_edge_denominator": 8355,
+                "known_edges_selected": 7457,
+                "selected_edges": 214888
+              },
+              "control": {
+                "all_division_nodes_detected": 13,
+                "annotated_parent_contradictions": 2,
+                "both_endpoints_detected": 8147,
+                "known_division_denominator": 13,
+                "known_divisions_selected": 0,
+                "known_edge_denominator": 8355,
+                "known_edges_selected": 7385,
+                "selected_edges": 202024
+              }
+            },
+            "final": {
+              "author": {
+                "all_division_nodes_detected": 13,
+                "annotated_parent_contradictions": 4,
+                "both_endpoints_detected": 8147,
+                "known_division_denominator": 13,
+                "known_divisions_selected": 0,
+                "known_edge_denominator": 8355,
+                "known_edges_selected": 7385,
+                "selected_edges": 214466
+              },
+              "control": {
+                "all_division_nodes_detected": 13,
+                "annotated_parent_contradictions": 4,
+                "both_endpoints_detected": 8147,
+                "known_division_denominator": 13,
+                "known_divisions_selected": 0,
+                "known_edge_denominator": 8355,
+                "known_edges_selected": 7333,
+                "selected_edges": 202220
+              }
+            }
+          }
+        }
+      },
+      "by_video": {
+        "44b6_1d530831": {
+          "embryo": "44b6",
+          "control_score": 0.8207916056252107,
+          "author_score": 0.8457428740136347,
+          "score_delta": 0.024951268388423986,
+          "control_center_distance_um": 2.030442271478085,
+          "author_center_distance_um": 1.8578541756735276
+        },
+        "44b6_2a2eff9f": {
+          "embryo": "44b6",
+          "control_score": 0.8868249214048572,
+          "author_score": 0.8713007131147186,
+          "score_delta": -0.015524208290138675,
+          "control_center_distance_um": 1.916479023459826,
+          "author_center_distance_um": 1.6806995347758567
+        },
+        "44b6_668e0cc7": {
+          "embryo": "44b6",
+          "control_score": 0.966917015166024,
+          "author_score": 0.9526909065109018,
+          "score_delta": -0.014226108655122194,
+          "control_center_distance_um": 1.2188704667848875,
+          "author_center_distance_um": 1.1795111224188732
+        },
+        "44b6_706092f0": {
+          "embryo": "44b6",
+          "control_score": 0.8445435977702732,
+          "author_score": 0.899750795478586,
+          "score_delta": 0.05520719770831284,
+          "control_center_distance_um": 2.2514287431799005,
+          "author_center_distance_um": 2.239907780775368
+        },
+        "44b6_7a302da0": {
+          "embryo": "44b6",
+          "control_score": 0.9701307532552678,
+          "author_score": 0.9622479853331337,
+          "score_delta": -0.007882767922134049,
+          "control_center_distance_um": 1.734890545098317,
+          "author_center_distance_um": 1.5392195757418685
+        },
+        "44b6_87bba6c4": {
+          "embryo": "44b6",
+          "control_score": 0.6004013949185112,
+          "author_score": 0.5538099304913054,
+          "score_delta": -0.04659146442720574,
+          "control_center_distance_um": 2.4627232689891767,
+          "author_center_distance_um": 2.7759117409946144
+        },
+        "44b6_8f9ecab4": {
+          "embryo": "44b6",
+          "control_score": 1.0102418325565314,
+          "author_score": 1.0231912684579447,
+          "score_delta": 0.012949435901413286,
+          "control_center_distance_um": 1.485056123183577,
+          "author_center_distance_um": 1.3239328608433432
+        },
+        "44b6_97725144": {
+          "embryo": "44b6",
+          "control_score": 0.9715981439033935,
+          "author_score": 0.9928922787046005,
+          "score_delta": 0.02129413480120701,
+          "control_center_distance_um": 1.4478334873736378,
+          "author_center_distance_um": 1.3070158582288975
+        },
+        "44b6_996155de": {
+          "embryo": "44b6",
+          "control_score": 1.0628850864775463,
+          "author_score": 1.0562074262577754,
+          "score_delta": -0.006677660219770898,
+          "control_center_distance_um": 1.1589035375578796,
+          "author_center_distance_um": 1.1502444657378312
+        },
+        "44b6_cf8fed6b": {
+          "embryo": "44b6",
+          "control_score": 0.9016990782998667,
+          "author_score": 0.8943066157469872,
+          "score_delta": -0.0073924625528795085,
+          "control_center_distance_um": 1.0133520925995805,
+          "author_center_distance_um": 0.9551054840563319
+        },
+        "6bba_07e24132": {
+          "embryo": "6bba",
+          "control_score": 0.8387625373401953,
+          "author_score": 0.8296645353240152,
+          "score_delta": -0.009098002016180162,
+          "control_center_distance_um": 1.8773301961571014,
+          "author_center_distance_um": 1.8718346866439548
+        },
+        "6bba_2819ca14": {
+          "embryo": "6bba",
+          "control_score": 0.9638942734172226,
+          "author_score": 0.9594125909560021,
+          "score_delta": -0.004481682461220493,
+          "control_center_distance_um": 1.518775048699468,
+          "author_center_distance_um": 1.9060297392254937
+        },
+        "6bba_474be664": {
+          "embryo": "6bba",
+          "control_score": 0.7940684062967815,
+          "author_score": 0.7869310905932154,
+          "score_delta": -0.007137315703566127,
+          "control_center_distance_um": 2.3740199610611508,
+          "author_center_distance_um": 2.5765510660870348
+        },
+        "6bba_57b7cc1e": {
+          "embryo": "6bba",
+          "control_score": 0.6946800903713725,
+          "author_score": 0.6597282232905556,
+          "score_delta": -0.03495186708081688,
+          "control_center_distance_um": 2.443654389697704,
+          "author_center_distance_um": 2.7505540115524036
+        },
+        "6bba_5dfe9ad1": {
+          "embryo": "6bba",
+          "control_score": 0.9424425971052666,
+          "author_score": 0.9512443177406196,
+          "score_delta": 0.008801720635353005,
+          "control_center_distance_um": 1.3799515890414777,
+          "author_center_distance_um": 1.6225516945386966
+        },
+        "6bba_67ebd073": {
+          "embryo": "6bba",
+          "control_score": 0.7538751229384573,
+          "author_score": 0.7743967600794697,
+          "score_delta": 0.020521637141012405,
+          "control_center_distance_um": 2.513769249548626,
+          "author_center_distance_um": 2.6902347900891512
+        },
+        "6bba_705ec2c9": {
+          "embryo": "6bba",
+          "control_score": 0.8897858355566335,
+          "author_score": 0.9081076923076923,
+          "score_delta": 0.018321856751058796,
+          "control_center_distance_um": 2.0389690435936316,
+          "author_center_distance_um": 2.2063854624925425
+        },
+        "6bba_af149c94": {
+          "embryo": "6bba",
+          "control_score": 0.9482922488249983,
+          "author_score": 0.9540985702318416,
+          "score_delta": 0.00580632140684334,
+          "control_center_distance_um": 1.3760771366819706,
+          "author_center_distance_um": 1.7162600268406674
+        },
+        "6bba_d2b9fc0c": {
+          "embryo": "6bba",
+          "control_score": 0.994558740050658,
+          "author_score": 0.9956841829103271,
+          "score_delta": 0.0011254428596690902,
+          "control_center_distance_um": 1.136926462447169,
+          "author_center_distance_um": 1.658072140449605
+        },
+        "6bba_fc5f39dc": {
+          "embryo": "6bba",
+          "control_score": 0.920373112302622,
+          "author_score": 0.920353412176154,
+          "score_delta": -1.9700126468014112e-05,
+          "control_center_distance_um": 1.5991786725659372,
+          "author_center_distance_um": 1.6658439830191083
+        }
+      },
+      "author_output_manifest_file_count": 3305,
+      "retrieved_output_files_sha_verified": 4
+    }
+  },
+  "notes": "Author head had lower conditional combined score on both embryos (overall 0.886189 vs saved self-head 0.890348). Independent CV and Public LB are unmeasured. Adoption and experiment completion await user judgment; no competition submission was made.",
+  "updated_at": "2026-09-26T03:16:36Z"
+}

@@ -1,0 +1,128 @@
+experiment:
+  name: exp046_x138_author_head_comparison
+  description: exp043自前座標headとx138作者headを固定推論条件で比較する
+  route: public_x138_coordinate_head_comparison
+  created_at: '2026-09-25'
+  notebooks:
+  - pilot
+  - inference
+  - author_only
+lineage:
+  parent: exp043_x138_self_trained_head
+  hypothesis_id: HYP-20260910-02
+  backlog_candidate: x138_author_head_comparison
+  diff_summary: 座標headのstate_dictとmean・scaleだけを作者版へ交換し、同じ20動画の公式graphと段階別診断を比較する
+source:
+  parent_config: ../exp043_x138_self_trained_head/config.yaml
+  parent_inference: ../exp043_x138_self_trained_head/exp043_x138_self_trained_head_inference.py
+  public_evaluator_sha256: 614813cc51c3581c6ccda4bb20725a19da8ecac4a27620654bfca58319cffa3c
+  self_head_dataset: kentookumura/exp043-self-trained-coordinate-head
+  self_head_sha256: 32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc
+  author_head_dataset: anvithpothula/biohub-v1284-head-s075
+  author_head_sha256: 625a0d9340f48193f2ec294fc2d81c5bb3c03087eab78ef0ae998a9c4c7da00c
+  author_head_dataset_id: 12103746
+  author_head_version_source_id: 19822532
+  comparison_control: exp045_x138_coordinate_effect_audit
+  exp045_control_official_receipt_sha256: 9bf85fa3873f41f8d9b587d99bf19c8b98fc47714d3b5702953bdc891cebfc52
+  exp045_control_official_kernel: kentookumura/exp045-x138-coordinate-effect-audit-official
+data:
+  source: competition_train_runtime
+  train_zarr: train/*.zarr
+  train_geff: train/*.geff
+  selection_seed: 42
+  selected_rank_start_per_embryo: 11
+  selected_rank_end_per_embryo: 20
+  excluded_training_rank_end_per_embryo: 10
+  expected_embryos:
+  - 44b6
+  - 6bba
+  expected_videos: 20
+  native_spacing_zyx_um:
+  - 1.625
+  - 0.40625
+  - 0.40625
+  feature_grid_spacing_zyx_um:
+  - 1.625
+  - 1.625
+  - 1.625
+model:
+  name: fixed_public_x138_paired_coordinate_heads
+  params:
+    active_arms:
+    - self
+    - author
+    trainable_models: 0
+    matching_radius_um: 7.0
+    score_capture_threshold: 1.0e-08
+    full_run_arms:
+    - author
+validation:
+  method: paired_video_author_vs_self_conditional
+  official_metric: combined_score
+  report_by_embryo: true
+  conditional_on_public_image_model_training: true
+  official_evaluator_max_distance_um: 7.0
+  pilot_videos_per_embryo: 1
+  require_all_videos: true
+  author_head_training_videos_known: false
+runtime:
+  use_amp: true
+  num_workers: 1
+  batch_size: null
+  max_notebook_hours: 12
+  weekly_gpu_hours_limit: 45
+  kaggle:
+    pilot:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      - anvithpothula/biohub-v1284-head-s075
+    inference:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      - anvithpothula/biohub-v1284-head-s075
+    author_only:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+      - anvithpothula/biohub-v1284-head-s075
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: stable_sha256_video_selection_no_training
+  stochastic_components:
+  - cuda_inference
+  - ilp
+  parallel_rng_policy: sequential_arm_video_execution
+  feature_sha_policy: per_arm_sample_content_sha
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: false
+    test_prediction_content_sha: false
+    submission_sha: false
+notes:
+- 自前headの学習20動画を除外する。作者headの学習動画は不明で、独立CVとは呼ばない。
+- 予測へGEFFを渡さず、同一候補IDの診断と各最終graphの公式評価を区別する。
+- 新規学習、重み平均、閾値探索、competition submissionは行わない。

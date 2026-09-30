@@ -72,3 +72,17 @@
 ## 2026-09-24 完了判断
 
 - ユーザーがexp043の完了を明示した。採用済みの座標補正headを組み込んだx138推論について、実験statusを`completed`へ更新した。未測定のトラッカー学習評価とPrivate LBは、完了判断によって測定済みとは扱わない。
+
+## 2026-09-26 再現性記録の監査
+
+- `docs/06_reproducibility.md`と`kaggle-review-exp`の再現性ガードに照らしてexp043を再確認した。学習の2実行は成果物SHAが一致する一方、推論のcleanな実行は1回で、hidden testのNotebook出力と所要時間は取得していない。公開x138から継承した時間依存分岐もあるため、`deterministic_anchor: false`を維持し、`result.md`にこの提出の再現性の範囲を追記した。採用・完了statusと既存スコアは変更しない。
+- 2026-09-26: 提出ref `56508119`のsubmit時刻から初回COMPLETE確認まで6時間25分36秒。hidden実行が提出後に始まるなら、7.5時間の後処理縮小条件は時間的に成立しない。公開4動画はILP最大66.8秒、`repair_fallback=0`、`deadline_degraded=0`。hidden testのILP動画別ログは未取得なので、1200秒上限への到達は未確認。
+
+## 2026-09-26 推論の再現性確認
+
+- Kaggleから採点済み推論V2のNotebookをpullし、現在の再実行用packageと比較した。bootstrapを除く予測用14 code cellはバイト一致し、連結SHA256は`664074ab90d90e22f75340a336f77ce02df179b0c13e60a58d0bc56827b26a7b`。bootstrapは実験記録の更新で差がある。
+- 推論V3 push前のKaggle GPU quotaは38.80/45.00時間、次の更新は2026-10-03 09:00 JST。private kernelのmetadataはGPU=true、TPU=false、T4、internet=false、公開3 datasetと自前head datasetを確認。既存V2公開testは約20分で、再実行に十分。作者版exp042 V2と並行するため、実測経過と時間分岐も照合する。
+- `make push-kaggle-infer EXP=exp043_x138_self_trained_head`はKaggleの`Maximum batch GPU session count of 2 reached`を返し、V3は作成されなかった。並行実行を避け、exp042 V2完了後に再試行する。既存sessionの停止は行わない。
+- exp042 V2完了後の再試行前にGPU quota 38.31/45.00時間を再確認。exp043 inferenceは引き続きCOMPLETE（V2）で、直前の上限エラーによりV3は作成されていない。
+- `make push-kaggle-infer EXP=exp043_x138_self_trained_head`を再試行し、private kernel `kentookumura/exp043-x138-self-trained-head-inference` V3のpushに成功。competition submissionは行っていない。
+- 推論V3はKaggleでCOMPLETE。4動画のILPは14.8、22.5、6.3、62.4秒で、`repair_fallback=0`、`deadline_degraded=0`。`make kaggle-output KERNEL=kentookumura/exp043-x138-self-trained-head-inference/3 OUT=experiments/exp043_x138_self_trained_head/artifacts/inference_v3`で取得したCSVはV2とbyte-identical（SHA `3812d2b7a73f47a7ef2b76847ba1f5679100a290a22a13c95c311f5f780814af`）。両版のgraph topology SHA `27e47bb6cc4d4142406b961d4385c546fff9e55cb0729040178459ba402bcbc2`、時間値を除いた動画別run統計も一致。採点済みV2のPublic LB 0.950は維持し、V3のcompetition submissionは行っていない。

@@ -42,7 +42,17 @@
           "failure": "retention diagnostics included train capture movies",
           "checkpoint_recovered": true
         }
-      ]
+      ],
+      "inference_rerun_execution": {
+        "kernel_id": "kentookumura/exp043-x138-self-trained-head-inference",
+        "kernel_version": 3,
+        "status": "KernelWorkerStatus.COMPLETE",
+        "head_sha256": "32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc",
+        "public_test_rows": 225875,
+        "submission_sha256": "3812d2b7a73f47a7ef2b76847ba1f5679100a290a22a13c95c311f5f780814af",
+        "graph_topology_sha256": "27e47bb6cc4d4142406b961d4385c546fff9e55cb0729040178459ba402bcbc2",
+        "max_ilp_seconds": 62.4
+      }
     },
     "artifacts": {
       "input_file_sha": "32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc",
@@ -155,6 +165,19 @@
         "oof_prediction_sha256_equal": true,
         "checkpoint_sha256_equal": true,
         "checkpoint_sha256": "32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc"
+      },
+      {
+        "kernel_version": 3,
+        "feature_content_sha": null,
+        "test_prediction_content_sha": "3812d2b7a73f47a7ef2b76847ba1f5679100a290a22a13c95c311f5f780814af",
+        "submission_sha": "3812d2b7a73f47a7ef2b76847ba1f5679100a290a22a13c95c311f5f780814af",
+        "reference_submission_sha": "3812d2b7a73f47a7ef2b76847ba1f5679100a290a22a13c95c311f5f780814af",
+        "byte_identical_to_reference": true,
+        "difference_notes": null,
+        "graph_topology_sha": "27e47bb6cc4d4142406b961d4385c546fff9e55cb0729040178459ba402bcbc2",
+        "non_time_run_stats_equal": true,
+        "repair_fallback_count": 0,
+        "deadline_degraded_count": 0
       }
     ],
     "coordinate_validation": {

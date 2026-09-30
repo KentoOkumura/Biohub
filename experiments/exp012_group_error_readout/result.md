@@ -40,4 +40,4 @@ exp006 の改善は全動画で一様ではなく、6bba、低輝度、低候補
 
 ## 次
 
-[`oracle_stage_limits`](../../backlog/oracle_stage_limits.md)へ、悪化 16 件を exp012 の条件別に段階分解する診断を引き継ぐ。exp012 自体の追加実行は予定しない。
+[`exp015_oracle_stage_limits`](../exp015_oracle_stage_limits/)へ、悪化 16 件を exp012 の条件別に段階分解する診断を引き継いだ。exp012 自体の追加実行は予定しない。

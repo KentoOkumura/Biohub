@@ -1,0 +1,7 @@
+extend = "../../pyproject.toml"
+extend-exclude = [
+    # The public x138 implementation is copied into the executable notebook.
+    "exp046_x138_author_head_comparison_inference.py",
+    "exp046_x138_author_head_comparison_pilot.py",
+    "exp046_x138_author_head_comparison_author_only.py",
+]

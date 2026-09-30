@@ -1,4 +1,60 @@
-# x138_author_head_comparison
+# exp046_x138_author_head_comparison 要件と実装方法
+
+## 実験化の入口・引き継ぎ・承認
+
+- 2026-09-25の「x138_author_head_comparisonを実装してください」を実験化と実装の承認として扱う。competition submissionの承認は含まない。
+- 移行元候補は設計可能で、未決事項はなかった。親となる予測構成はexp043。exp045の診断実装を比較処理の参照元にする。
+- 上位仮説はHYP-20260910-02。作者headと自前headの同条件比較だけでは位置と接続の共同学習やhidden testでの優劣を判断できない。
+- 補正前の候補ID、動画、公開画像モデル、tracker、DeepCenter、入力窓、融合、ILP、再接続と修復を固定する。各headのstate_dictと、そのcheckpoint固有のmean・scaleを一体で切り替える。
+
+## 手法契約
+
+- input: exp043の自前headに未使用の両胚各10動画、公開固定モデル、2個の検証済みhead checkpoint。GEFFは予測後の診断と公式評価にだけ使う。
+- target / objective: 追加学習なし。固定224次元特徴から各headの3軸位置補正を求め、同じ入力に対する最終graphの差を測る。
+- output: 同一候補IDの補正前後位置、補間特徴、接続得点、各段階のgraph、動画・胚別・全体の公式scoreと成分、SHAと所要時間。
+- loss: なし。両checkpointを再学習せず、正規化統計を再推定しない。
+- decode: 公開x138とexp043の224→32→3、SiLU、2 µm未満の移動制限、clip、三線形補間、双方向融合、ILPと後処理を固定する。
+- context unit: headは検出点、接続診断は隣接2フレーム、教師対応は同一フレーム、最終評価は動画。
+- 実装区分はfaithful。作者の公開headを元の構造と補正処理で読み、比較に必要な診断だけを加える。この区分はリポジトリ内の管理用語。
+- 変更classはmechanism。予測される補正量と補間位置を変えるcheckpoint交換であり、パラメータ探索は行わない。
+
+## 実装方法
+
+- 同一Notebook内で各headを別の予測プロセスで起動し、プロセス内のhead cacheが条件間で共有されないようにする。
+- 両checkpointはSHA、state_dict形状、有限値、mean・scale形状とscaleの正値を確認する。作者headは公開Dataset版の固定SHAを使う。
+- exp043の学習20動画をmanifestで確認して除き、SHA256(42:動画名)順位の両胚11〜20位をGEFFを読む前に保存する。両条件で元検出候補の座標・ID・順序、動画集合、入力設定を照合する。
+- 予備確認は両胚各1動画の両条件。補正前候補からの移動量、有限値、特徴補間、全graphの公式評価、計算時間・容量を確認する。整合と12時間制限を満たす場合に残り18動画へ進む。隣接pairだけの改善はgraph進行条件にしない。
+- 固定IDの7 µm最小費用一対一対応は補正前候補で一度作る。各条件の同一IDの中心距離、既知edge、2娘、誤接続を比較する。公式評価器は最終出力の位置から条件ごとに独立対応する。
+- exp045は20動画の自前head側の最終graph、公式評価、固定ID診断を保存済み。exp046の両head予備確認で自前headの動画、元候補、固定重み、全設定と公式評価をexp045の予備確認に照合する。一致を確認できれば全件はauthor_only Notebookで作者headだけを推論し、exp045の保存済み自前headを対照とする。
+- author_onlyでも元候補の動画・ID・座標と2 µmの移動制限、各段階の生成物SHA、20動画の公式評価器を検証する。両条件の全件差は同じ20動画を確認した後に保存済みexp045の公式行・固定ID診断と結合する。
+- 条件不一致または対照の必要な生成物不足があれば、既に用意した2条件のinference Notebookで自前headを再実行する。自動的に不一致の結果を結合しない。
+
+## 探索幅とpivot判定
+
+2条件・設定1組・新規学習0で固定する。両胚の公式scoreと再実行差を見て仮説を判断し、精度不改善でも重み平均、移動制限、閾値探索へ切り替えない。
+
+## 再現性・リスク
+
+動画選択、headと公開部品のSHA、補正前候補IDと各出力SHAを保存する。CUDAとILPの完全決定性は仮定しない。作者headの学習動画は不明で、公開画像モデルはtrain画像を学習済み。対照の再実行差、GPU費用、1回12時間制限を確認し、条件付き評価として解釈する。
+
+## 判断履歴
+
+- 2026-09-25: ユーザーが本候補の実装を依頼し、exp046へ移行した。提出の承認はない。
+- 2026-09-25: exp045の診断処理を参照しつつ、比較の親は採用済みexp043とした。両headは同じコードの別プロセスで実行する。
+
+## 受け入れ基準
+
+- [ ] 両headのSHA・構造・正規化統計と固定公開部品を検証する。
+- [ ] 両胚1動画ずつの予備確認で候補ID、移動量、特徴、公式評価、費用を確認する。
+- [ ] 両胚各10動画の両条件で最終graph、公式scoreと成分、段階別診断、生成物SHAを記録する。
+- [ ] 精度の支持は両胚のcombined score改善と再実行差で判定し、採否・完了はユーザー判断へ渡す。Public LBは未提出なら未測定とする。
+- [ ] competition submissionは行わない。
+
+## 候補から移行した根拠と判断履歴
+
+以下は移行時点の候補本文。状態と「実験化後」の記述は履歴であり、上記の承認・実装方針を正とする。
+
+## 移行した候補契約
 
 - 候補名: `x138_author_head_comparison`
 - 状態: `設計可能・実験化未承認`
@@ -8,7 +64,7 @@
 - 最終更新日: 2026-09-25
 - 依頼原文: 「exp043のトラッカー・後処理を固定して座標補正重みだけを交換する比較」を選択して「これのバックログを作成してください」。
 - 期待する成果: 採用済みexp043の自前座標補正重みと、取得したx138作者の重みを同条件で比較し、中心位置、接続・分裂、最終公式指標への差を特定する。Public LB 0.950と作者の0.953の差を、比較前からhead単独の効果とは扱わない。
-- 親実験 / 比較対象: [exp043](../experiments/exp043_x138_self_trained_head/requirements.md)の採用済み推論。評価動画・段階別診断は進行中のexp045と揃え、同実験の自前head適用側を条件一致時に再利用する。
+- 親実験 / 比較対象: [exp043](../exp043_x138_self_trained_head/requirements.md)の採用済み推論。評価動画・段階別診断は進行中のexp045と揃え、同実験の自前head適用側を条件一致時に再利用する。
 - 優先度: P2
 - 優先度の理由: 作者重みは取得済みで比較条件を定義できる。進行中のexp045で作る自前headの対照と段階別診断を先に確認し、同じ20動画を使って追加計算を抑える。P1の接続候補保持・検出回収の優先度と進行中実験は変更しない。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: 「検証中の仮説」の`HYP-20260910-02`、未着手バックログの本候補。
@@ -16,7 +72,7 @@
 ## 観測事実と根拠
 
 - 実測済みの事実: exp043は自前の座標補正headを使用してPublic LB 0.950、submission ref `56508119`で採用済み。x138のBest Public Scoreは0.953。9月25日の調査で作者headのファイル取得に成功し、Datasetはpublic・V1、224入力→32中間→3出力の7,299パラメータ、checkpointの`state_dict`・`mean`・`scale`を確認した。両者の差をheadだけで切り分けた公式評価・提出はまだない。
-- 根拠ファイル / 一次資料: [exp043結果](../experiments/exp043_x138_self_trained_head/result.md)、[metrics](../experiments/exp043_x138_self_trained_head/metrics.json)、[config](../experiments/exp043_x138_self_trained_head/config.yaml)、[9月25日調査](../docs/surveys/biohub-public-notebooks-followup_20260925.md)、[checkpoint検査](../studies/biohub_public_notebooks_20260925/v1284_checkpoint_inspection.json)、[Dataset版・公開状態](../studies/biohub_public_notebooks_20260925/v1284_dataset_version.json)、[作者Dataset](https://www.kaggle.com/datasets/anvithpothula/biohub-v1284-head-s075)。
+- 根拠ファイル / 一次資料: [exp043結果](../exp043_x138_self_trained_head/result.md)、[metrics](../exp043_x138_self_trained_head/metrics.json)、[config](../exp043_x138_self_trained_head/config.yaml)、[9月25日調査](../../docs/surveys/biohub-public-notebooks-followup_20260925.md)、[checkpoint検査](../../studies/biohub_public_notebooks_20260925/v1284_checkpoint_inspection.json)、[Dataset版・公開状態](../../studies/biohub_public_notebooks_20260925/v1284_dataset_version.json)、[作者Dataset](https://www.kaggle.com/datasets/anvithpothula/biohub-v1284-head-s075)。
 - 利用する保存済み生成物とSHA: 自前headは`kentookumura/exp043-self-trained-coordinate-head`の最終checkpoint、SHA256 `32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc`。作者headはGit対象外のローカルファイル `data/external/biohub-v1284-head-s075/v1284_head.pt`、33,913 bytes、SHA256 `625a0d9340f48193f2ec294fc2d81c5bb3c03087eab78ef0ae998a9c4c7da00c`。Dataset ID `12103746`、公開Notebookのversion source ID `19822532`。重みはGitへ追加しない。exp045の対照生成物・動画manifestのSHAは生成後に確認する依存事項である。
 - 仮定: Assumption: 同じ構造と入力特徴の作者headはexp043の推論処理へ適用できる。schemaとテンソルの有限性は検査済みだが、Kaggleでの読み込み・数値一致・精度向上は未確認。作者headの正確な学習動画・分割・損失は不明。
 
@@ -43,7 +99,7 @@
 
 - 変更するもの: 座標補正checkpointの一式（`state_dict`と、それに対応する`mean`・`scale`）、読み込みパス・期待SHA。2条件でプロセス内のhead cacheを分離し、前の条件の重みを再利用しない。
 - 固定するもの: 公開検出器・画像encoder・primary/secondary tracker・DeepCenterの重みと正規化、入力動画・画像窓・前処理・補正前の候補ID/座標/検出得点、headの構造と特徴作成、全閾値、融合・ILP・後処理、評価器。head交換によって補正後の座標・特徴・接続得点・最終graphが変わることは測定対象であり、同一へ強制しない。
-- 再利用するコード / config / 生成物: [exp043推論source](../experiments/exp043_x138_self_trained_head/exp043_x138_self_trained_head_inference.py)、[設定](../experiments/exp043_x138_self_trained_head/config.yaml)、exp045の動画選択・固定ID・段階別診断・公式評価。exp045の自前head側を再利用するときは、動画名・source・全重み・入力窓・設定・出力SHAを照合し、条件不一致なら本比較内で対照を再実行する。
+- 再利用するコード / config / 生成物: [exp043推論source](../exp043_x138_self_trained_head/exp043_x138_self_trained_head_inference.py)、[設定](../exp043_x138_self_trained_head/config.yaml)、exp045の動画選択・固定ID・段階別診断・公式評価。exp045の自前head側を再利用するときは、動画名・source・全重み・入力窓・設定・出力SHAを照合し、条件不一致なら本比較内で対照を再実行する。
 - 新しく作るもの: 実験化後に、checkpoint切替設定、比較用manifest、2条件の評価表、作者headによる推論と段階別生成物。バックログ追加時には作成しない。
 
 ## 最小の反証可能な検証

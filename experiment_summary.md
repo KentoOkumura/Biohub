@@ -52,7 +52,9 @@
 | exp041_past_feature_cross_attention | frozen_feature_past_feature_cross_attention | exp016_frozen_image_encoder | デバッグ完了 | - | - | - | 2026-09-23 |
 | exp042_public_x138_replay | public_x138_replay | exp013_public_notebook_replay | 完了 | - | 0.953 | - | 2026-09-26 |
 | exp043_x138_self_trained_head | public_x138_self_trained_coordinate_head | exp042_public_x138_replay | 完了 | - | 0.95 | - | 2026-09-24 |
+| exp044_x138_past_candidate_knn_attention | x138_primary_tracker_past_candidate_attention | exp043_x138_self_trained_head | デバッグ完了 | - | - | - | 2026-09-25 |
 | exp045_x138_coordinate_effect_audit | public_x138_coordinate_effect_audit | exp043_x138_self_trained_head | 完了 | - | - | - | 2026-09-26 |
+| exp046_x138_author_head_comparison | public_x138_coordinate_head_comparison | exp043_x138_self_trained_head | デバッグ完了 | - | - | - | 2026-09-26 |
 | exp047_x138_edge_candidates | public_x138_edge_candidate_expansion | exp043_x138_self_trained_head | 完了 | - | - | - | 2026-09-26 |
 | exp048_x138_primary_past_feature_attention | x138_primary_pair_history_attention | exp043_x138_self_trained_head | 破棄 | - | - | - | 2026-09-26 |
 | exp049_x138_edge_selection_diagnostic | public_x138_edge_selection_diagnostic | exp047_x138_edge_candidates | 完了 | - | - | - | 2026-09-26 |

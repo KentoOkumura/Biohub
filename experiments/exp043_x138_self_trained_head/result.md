@@ -9,7 +9,7 @@
 - 設定と入力版: [config.yaml](config.yaml)
 - 数値、SHA、実行status: [metrics.json](metrics.json)
 - 実行と失敗復旧の経過: [SESSION_NOTES.md](SESSION_NOTES.md)
-- train version 2の[動画別検証](artifacts/train_v2/coordinate_validation.json)、[head manifest](artifacts/train_v2/self_trained_head_manifest.json)、[学習receipt](artifacts/train_v2/self_trained_head_train_receipt.json)、推論version 2の[receipt](artifacts/inference_v2/self_trained_x138_receipt.json)、[run stats](artifacts/inference_v2/run_stats.csv)
+- train version 2の[動画別検証](artifacts/train_v2/coordinate_validation.json)、[head manifest](artifacts/train_v2/self_trained_head_manifest.json)、[学習receipt](artifacts/train_v2/self_trained_head_train_receipt.json)、推論version 2の[receipt](artifacts/inference_v2/self_trained_x138_receipt.json)、[run stats](artifacts/inference_v2/run_stats.csv)、再実行version 3の[receipt](artifacts/inference_v3/self_trained_x138_receipt.json)
 
 ## 実行証拠
 
@@ -30,7 +30,9 @@ train Notebook version 1はhead学習と公開test CSV生成後、train動画の
 
 提出ref `56508119`のPublic LB 0.950は、過去の[exp013](../exp013_public_notebook_replay/result.md)の0.944より0.006高い。ただし推論構成全体が異なり、自前headだけの寄与を切り分ける対照提出はない。採点監視開始から初回の完了確認までは384分で、Notebook自体の実行時間は取得できていない。
 
-既知中心との位置誤差は両胚で平均改善したが、公開画像モデルはtrain集合を学習に使っている。この動画分割はheadに対する条件付き評価であり、画像モデルを含む独立した交差検証ではない。中心距離の改善だけから、接続・分裂を含む公式スコアの改善は判断できない。公開testの4動画も公式のhidden test性能を示さない。作者の重みと学習条件は未取得なので、作者の0.953を再現したとは扱わない。
+再現性については、[再現性ガード](../../docs/06_reproducibility.md)に従い、この提出を決定的な提出基準とは扱わない。[config.yaml](config.yaml)の`reproducibility.deterministic_anchor`は`false`である。学習側は2回の実行で特徴・評価・checkpointのSHAが一致した。公開test推論もV2・V3のcleanな2回でCSV SHA、graph topology、時間値を除いた動画別統計が一致した。ただしcompetition submission時のhidden test出力とNotebook実行時間は取得していない。継承した公開x138コードには、動画ごとのILP時間上限と、Notebook経過時間による後処理縮小・修復失敗時の代替出力がある。提出時刻10:18:41 JSTから初回の採点完了確認16:44:18 JSTまでは6時間25分36秒なので、提出後に始まるhidden実行で7.5時間の後処理縮小に達したとは考えられない。ただし動画ごとのILP 1200秒上限については、hidden testの動画別ログがなく到達の有無は未確認である。Public LB 0.950はref `56508119`の観測値として使い、同一条件での再提出やhead単独のLB差を保証する値とは解釈しない。
+
+既知中心との位置誤差は両胚で平均改善したが、公開画像モデルはtrain集合を学習に使っている。この動画分割はheadに対する条件付き評価であり、画像モデルを含む独立した交差検証ではない。中心距離の改善だけから、接続・分裂を含む公式スコアの改善は判断できない。公開testの4動画も公式のhidden test性能を示さない。作者の重みは別実験で取得したが、学習条件は未確認であり、本実験の自前headで作者の0.953を再現したとは扱わない。
 
 ## 今後の実験との比較
 

@@ -8,7 +8,7 @@ exp005・exp006 の固定した胚 holdout 予測を、胚・画像輝度・候�
 
 - 作業内容: ユーザー判断により exp012 を `completed` として閉じる。
 - ブロック要因: なし。
-- 次: [`oracle_stage_limits`](../../backlog/oracle_stage_limits.md)へ悪化 16 件の条件別・段階別診断を引き継ぐ。
+- 次: [`exp015_oracle_stage_limits`](../exp015_oracle_stage_limits/)へ悪化 16 件の条件別・段階別診断を引き継ぎ済み。
 
 ## GPU 学習コスト確認
 

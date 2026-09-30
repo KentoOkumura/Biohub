@@ -57,7 +57,7 @@ exp043は整数線形計画法（ILP）の後に近傍移動を使って接続�
 | 元の範囲 | 整理後 | 理由・保持したもの |
 | --- | --- | --- |
 | `contrastive_feature_audit` | [contrastive_parent_childの事前診断](../../backlog/contrastive_parent_child.md#統合した教師資格と固定特徴の診断)へ統合 | 教師の正負・未知・重複、距離／生特徴／小型モデルの3条件、娘同士を競わせない制約、停止条件、probeの未決事項を保存。診断を別実験にする依存を除いた |
-| `subvoxel_offset` | [座標・接続診断](../../backlog/x138_coordinate_effect_audit.md#旧座標補正候補からの引き継ぎ)へ残課題を統合 | 固定特徴・3軸Huber損失・補正位置の補間はexp043で実装済み。補正有無だけの接続・分裂・近接点衝突・最終出力の比較を残す。直接承認exp043のlineage N/Aを過去の移行に書き換えない |
+| `subvoxel_offset` | [座標・接続診断](../../experiments/exp045_x138_coordinate_effect_audit/requirements.md#旧座標補正候補からの引き継ぎ)へ残課題を統合 | 固定特徴・3軸Huber損失・補正位置の補間はexp043で実装済み。補正有無だけの接続・分裂・近接点衝突・最終出力の比較を残す。直接承認exp043のlineage N/Aを過去の移行に書き換えない |
 | `x138_local_graph_choice`に含まれた位置拡張 | [位置固定の局所graph選択](../../backlog/x138_local_graph_choice.md)と既存[joint_position_edges](../../backlog/joint_position_edges.md#x138の元位置と補正位置を使う比較の引き継ぎ)へ分割 | 前者は接続の選択、後者は位置と接続の共同選択。同一IDの位置排他、入出力edge間の位置共有、特徴再取得と再採点を後者へ移し、混在した初回比較を解消。後者はP4のまま |
 
 別の比較を一つにするだけの統合は避けた。具体的には次を維持する。
@@ -90,7 +90,7 @@ exp043は整数線形計画法（ILP）の後に近傍移動を使って接続�
 
 | 候補 | 旧→新 | 理由 |
 | --- | --- | --- |
-| [`x138_coordinate_effect_audit`](../../backlog/x138_coordinate_effect_audit.md) | P1→P1 | 最初の改善実験に共通する診断。座標補正だけの効果と、採点から最終接続まで改善が残る段階を先に確認する。 |
+| [`x138_coordinate_effect_audit`](../../experiments/exp045_x138_coordinate_effect_audit/requirements.md) | P1→P1 | 最初の改善実験に共通する診断。座標補正だけの効果と、採点から最終接続まで改善が残る段階を先に確認する。 |
 | [`x138_edge_candidates`](../../backlog/x138_edge_candidates.md) | P1→P1 | 新しいtrackerを学習せず、固定得点の枝刈りで失う接続・両娘を保持する比較を先に扱う。後処理後の残存まで測る。 |
 | [`x138_detection_recovery`](../../backlog/x138_detection_recovery.md) | P1→P1 | 現行exp043で実際に働く回収処理の採否・接続を変える。通常の高得点点への特徴追加より、出力へ作用する箇所と比較対象が明確。 |
 | [`neighbor_dynamics`](../../backlog/neighbor_dynamics.md) | P1→P2 | P1の診断の後。再接続に直接使う得点を学ぶ点は残すが、exp035の自己速度とexp043既存の近傍移動ルールを上回る証拠はまだない。GNNという構造名だけで上位にしない。 |

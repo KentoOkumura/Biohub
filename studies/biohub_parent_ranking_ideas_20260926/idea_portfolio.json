@@ -1,0 +1,611 @@
+{
+  "schema_version": "2",
+  "task_summary": "既知の親接続が候補にあるのに別親の得点が高い問題への改善案。228/360はexp049で追加した既知辺のうち通常ILPで失われた部分集合の数で、全接続の誤り率ではない。",
+  "evidence_cutoff": "2026-09-26; exp050の設計・実装・pilot送信記録まで。exp050の改善結果は未取得。",
+  "allowed_sources": [
+    "experiments/exp049_x138_edge_selection_diagnostic/result.md",
+    "experiments/exp050_shared_edge_graph_learning/requirements.md",
+    "experiments/exp050_shared_edge_graph_learning/shared_edge_core.py",
+    "experiments/exp048_x138_primary_past_feature_attention/result.md",
+    "experiments/exp041_past_feature_cross_attention/result.md",
+    "backlog/neighbor_dynamics.md",
+    "backlog/contrastive_parent_child.md",
+    "experiments/exp047_x138_edge_candidates/exp047_x138_edge_candidates_inference.py",
+    "backlog/KAGGLE_DIRECTION.md",
+    "docs/02_metric.md",
+    "docs/04_data.md",
+    "experiment_summary.md",
+    "SUBMISSIONS.md",
+    "https://docs.pytorch.org/docs/2.14/generated/torch.nn.MarginRankingLoss.html"
+  ],
+  "assumptions": [
+    "Assumption: 固定公開特徴に、親候補を識別する未利用の情報が残る可能性がある。未実証。",
+    "Assumption: 動画全時点を使えるオフライン推論の範囲で前後画像を利用できる。動画末尾・欠測の扱いが必要。",
+    "Assumption: 公開2モデルの個別得点には相補性があるかもしれない。現在のcache保存と相補性は未確認。"
+  ],
+  "task_card": {
+    "target": "画像から細胞の中心と親子接続・分裂を出力する。今回の変更対象は固定候補の親選択。",
+    "metric": "公式combined scoreは接続・分裂を評価。親順位は診断指標。",
+    "known_at_inference": "動画画像、固定公開検出・画像特徴・座標補正・接続得点。",
+    "unknown_at_inference": "正解系譜、正解親、正解分裂数、未注釈の真の負例。",
+    "dependency_unit": "娘の複数親候補、母の娘集合、隣接時点と動画内の競合。",
+    "discarded_information": "融合前の個別得点・不一致、点特徴の外の局所画像情報、親選択前の複数経路。",
+    "domain_invariants": "娘の親最大1・母の娘最大2、時間順序、物理座標の異方性、候補ID一貫性。",
+    "hidden_shift": "胚、細胞密度、画像品質、分裂率、境界、動画長、候補数、計算時間。"
+  },
+  "task_first_ideas": [
+    {
+      "input": "固定候補の娘と親集合",
+      "target_output_decode": "既知親→候補内ランキング→ILP",
+      "uses_current_candidates": true
+    },
+    {
+      "input": "固定候補の母と娘集合",
+      "target_output_decode": "既知部分集合→1娘/2娘集合得点→集合ILP",
+      "uses_current_candidates": true
+    },
+    {
+      "input": "同動画の周囲の予測軌跡",
+      "target_output_decode": "既知親→局所移動からの残差による得点→親選択",
+      "uses_current_candidates": true
+    },
+    {
+      "input": "画像全体の前後フレーム、現在の点候補を使わない",
+      "target_output_decode": "ラベル不要の局所画像位置合わせ→移動場→画像由来軌跡を構築",
+      "uses_current_candidates": false,
+      "decision": "新しい軌跡生成まで広げる原案は現方針・費用が未成立。観測として使う範囲をI08へ絞る。"
+    },
+    {
+      "input": "raw画像列、現在の点予測を使わない",
+      "target_output_decode": "疎な正解系譜→中心と親子経路を直接出力→経路集合の整合選択",
+      "uses_current_candidates": false,
+      "decision": "検出器の再学習を要する原案は固定方針と両立せず棄却。"
+    },
+    {
+      "input": "同じ候補IDの複数採点結果",
+      "target_output_decode": "既知親→不一致に応じた得点融合→ILP",
+      "uses_current_candidates": true
+    }
+  ],
+  "opportunity_probes": {
+    "same_entity": "近傍の予測移動を参照へ転用するI03。対象・競合自身の除外と参照不足時fallbackが必要。",
+    "imperfect_intermediate": "I07で実誤入力の内部分割収集→誤条件生成→事前学習→実予測調整を接続。履歴誤りの証拠なしに履歴モデル再開とはしない。",
+    "invariance": "並進・軸変換では時刻・系譜と物理座標を整合。空間変形した座標と古い画像特徴の混用は不正。raw変形なら固定特徴を再抽出する。",
+    "validation_compute_pass": [
+      "親順位逆転を候補外・ILP・後処理と交差集計（I10）",
+      "胚別・密度・境界・分裂別に性能を確認し、学習側だけで設定選択",
+      "小領域の候補graph再採点をcacheして探索費用を測る。局所解と全graphの等価性は仮定しない",
+      "候補/費用/後処理を固定して機構を比較し、難例の救済と容易例の改悪を併記"
+    ]
+  },
+  "closure_ledger": [
+    {
+      "evidence_id": "E49",
+      "closed_instantiation": "候補を増やすだけで最終graphが改善するというこの設定の仮説",
+      "not_closed": "得点学習、情報追加、費用変更",
+      "reason": "拡張で既知接続保持が増えても両胚の公式scoreは低下。228件は得点順位逆転を伴う。tuple=(公開得点,追加辺,候補,既存ILP,条件付き20動画,Kaggle)。"
+    },
+    {
+      "evidence_id": "E48",
+      "closed_instantiation": "直前1時点8候補をpair MLP内部attentionで共同学習する今回の設定",
+      "not_closed": "周囲の移動参照、短経路採点、得点融合",
+      "reason": "両胚のpair評価で改善未達。tuple=(過去候補特徴,内部attention,feature,primary共同学習,条件付き20動画,3epoch)。全graph効果は未測定。"
+    },
+    {
+      "evidence_id": "E50",
+      "closed_instantiation": "親比較損失・母娘集合・GNNを未実装の新案として提案すること",
+      "not_closed": "既存実験の結果を見た情報追加・別構造学習",
+      "reason": "親marginと集合得点は既に契約・コードに存在。効果は未測定であり手法失敗ではない。"
+    }
+  ],
+  "evidence": {
+    "E49": "experiments/exp049_x138_edge_selection_diagnostic/result.md",
+    "E50": "experiments/exp050_shared_edge_graph_learning/requirements.md",
+    "C50": "experiments/exp050_shared_edge_graph_learning/shared_edge_core.py",
+    "E48": "experiments/exp048_x138_primary_past_feature_attention/result.md",
+    "E41": "experiments/exp041_past_feature_cross_attention/result.md",
+    "NB": "backlog/neighbor_dynamics.md",
+    "CP": "backlog/contrastive_parent_child.md",
+    "C47": "experiments/exp047_x138_edge_candidates/exp047_x138_edge_candidates_inference.py",
+    "DIR": "backlog/KAGGLE_DIRECTION.md"
+  },
+  "idea_cards": [
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "not applicable: 合成誤入力を作らず保存済み実予測の親順位逆転を評価する。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "未実測。Kaggleのみ、週GPU45時間以内、課金なし、提出推論12時間以内。小規模実測と既存cacheの有無で総予算を決める。",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I01",
+      "title": "既知の正しい親と競合親を直接比較する（exp050実装済み）",
+      "mechanism_family": "representation",
+      "origin_pass": "task_first",
+      "novelty_level": "representation_change",
+      "hypothesis": "同じ娘の正しい親を競合親より高得点にする教師により、候補内の親順位逆転を減らせる。",
+      "changed_mechanism": "娘ごとの競合を明示した順位損失と、母の1娘・2娘で共有する接続得点。",
+      "input_target_decode": "固定特徴・物理変位・公開得点→既知親vs競合親のsoftplus順位損失と部分集合損失→共有edge確率・2娘費用→集合ILP。",
+      "nearest_prior_attempt": "exp050",
+      "exact_difference": "独立案の生成後に照合したところexp050へ既に実装されている。新規実験案として重複登録せず、その結果を最初に確認する。",
+      "counterevidence": "教師対応の誤りや入力の識別力不足は順位損失だけで直らない。",
+      "cheap_test": "exp050の学習記録で既知親順位、競合との得点差、候補内分母、元から正しかった親の改悪を胚別に確認。",
+      "kill_criterion": "教師対応破綻・非有限値は停止。未使用側で順位・最終scoreが改善しなければ、この構成の有効性を支持しない。",
+      "coverage_test": "既知親の検出対応と候補内保持率を数える。",
+      "selectability_test": "同一候補内の親1位正答率と、その後のILP・後処理での保持を別に測る。",
+      "evidence_ids": [
+        "E49",
+        "E50",
+        "C50"
+      ]
+    },
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "not applicable: 合成誤入力を作らず保存済み実予測の親順位逆転を評価する。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "未実測。Kaggleのみ、週GPU45時間以内、課金なし、提出推論12時間以内。小規模実測と既存cacheの有無で総予算を決める。",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I02",
+      "title": "既知教師に整合する接続全体と誤った接続全体を比較して学ぶ",
+      "mechanism_family": "representation",
+      "origin_pass": "cross_pollination",
+      "novelty_level": "representation_change",
+      "hypothesis": "独立した親順位では残る競合を、同時に選ぶ接続構造を損失に含めることで修正できる。",
+      "changed_mechanism": "個別edgeの比較から、既知教師に整合する最良構造と違反する構造の得点差へ変える。",
+      "input_target_decode": "隣接2時点の候補graph→既知親だけに誤りを定義した構造化損失→局所構造得点→同じ制約のILP。",
+      "nearest_prior_attempt": "exp050の母別部分損失・親順位損失",
+      "exact_difference": "exp050契約で未採用の競合graph損失を別案として扱う。GNN構造名を変えるだけではない。",
+      "counterevidence": "教師が疎く、未知部分の補完が正しいとは限らない。学習中solver呼出し費用が大きい。",
+      "cheap_test": "学習側の競合小領域で教師整合解が実行可能か、誤構造との得点差を学べるか確認。",
+      "kill_criterion": "単純な順位学習を上回らずsolver費用だけ増える、または未知辺に誤り罰則を入れる設計なら不採用。",
+      "coverage_test": "正しい局所構造が候補・制約内に実現可能か診断する。",
+      "selectability_test": "GT制約なしで選んだ構造の既知親一致と全graph効果を測る。",
+      "evidence_ids": [
+        "E49",
+        "E50"
+      ]
+    },
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "not applicable: 合成誤入力を作らず保存済み実予測の親順位逆転を評価する。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "未実測。Kaggleのみ、週GPU45時間以内、課金なし、提出推論12時間以内。小規模実測と既存cacheの有無で総予算を決める。",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I03",
+      "title": "同動画の周囲の移動を参照して親候補を再評価する",
+      "mechanism_family": "information",
+      "origin_pass": "task_first",
+      "novelty_level": "role_change",
+      "hypothesis": "見た目が似た親候補でも、周囲の組織移動から外れる接続を識別できる。",
+      "changed_mechanism": "近傍の予測移動を対象edgeの移動残差と信頼度を作る参照として使う。",
+      "input_target_decode": "対象以外の短い予測軌跡・近傍座標→参照移動を推定、既知親順位損失→参照残差を使う接続補正→ILPまたは再接続へ渡す。",
+      "nearest_prior_attempt": "neighbor_dynamics、exp050",
+      "exact_difference": "既存候補と重複する機構。exp050の隣接点特徴の平均集約に対し、時間方向の近傍移動参照を明示する。ILP前へ使う場合は既存再接続案との差分を別途定義する。",
+      "counterevidence": "誤った近傍接続による自己支持、分裂の非平行移動、参照不足に弱い。",
+      "cheap_test": "同動画参照・シャッフル参照・参照なしの予測差と、親順位逆転の救済/改悪を保存候補で確認する。",
+      "kill_criterion": "別動画参照でも同じ、自己接続を除くと効果が消える、参照が誤る場面で悪化が上回る場合は支持しない。",
+      "coverage_test": "対象と競合候補を除いて参照を作れる率と、境界・密集・分裂別の支持数を測る。",
+      "selectability_test": "予測参照だけで正しい親が競合親より上位になるかを評価し、正解参照の上限と分ける。",
+      "evidence_ids": [
+        "E49",
+        "NB",
+        "E50"
+      ]
+    },
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "not applicable: 合成誤入力を作らず保存済み実予測の親順位逆転を評価する。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "未実測。Kaggleのみ、週GPU45時間以内、課金なし、提出推論12時間以内。小規模実測と既存cacheの有無で総予算を決める。",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I04",
+      "title": "親の過去と娘の未来を短い経路として採点する",
+      "mechanism_family": "representation",
+      "origin_pass": "evidence_inversion",
+      "novelty_level": "representation_change",
+      "hypothesis": "2時点だけで曖昧な親を、前後の観測の連続性から識別できる。",
+      "changed_mechanism": "過去特徴をattentionへ足す処理から、複数の短経路を残して全体を採点する処理へ変える。",
+      "input_target_decode": "固定候補と前後の画像特徴・座標→既知接続に整合する経路への部分教師損失→短経路得点→整合する接続へ復号。",
+      "nearest_prior_attempt": "exp041、exp048",
+      "exact_difference": "前後履歴を単一の誤予測へ確定せず経路候補として残す。単なる過去attentionの再実行とは区別。",
+      "counterevidence": "履歴候補の欠落、分裂前後の特徴変化、組合せ増大。過去attentionは既に改善未達。",
+      "cheap_test": "同一の2時点候補で、GTを使わない前後経路を追加した親順位と末尾・分裂別の結果を確認。",
+      "kill_criterion": "正解履歴でだけ改善する、境界や分裂を悪化させる、追加経路が予算を超える場合は支持しない。",
+      "coverage_test": "真の親子を含む前後の経路候補の保持率を観測可能な範囲で測る。",
+      "selectability_test": "予測経路だけを入力した親選択と、全graphに残る効果を測る。",
+      "evidence_ids": [
+        "E41",
+        "E48",
+        "E50"
+      ]
+    },
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "not applicable: 合成誤入力を作らず保存済み実予測の親順位逆転を評価する。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "未実測。Kaggleのみ、週GPU45時間以内、課金なし、提出推論12時間以内。小規模実測と既存cacheの有無で総予算を決める。",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I05",
+      "title": "公開2モデルの得点を融合前に保持して条件付きで組み合わせる",
+      "mechanism_family": "fusion_uncertainty",
+      "origin_pass": "cross_pollination",
+      "novelty_level": "role_change",
+      "hypothesis": "融合後には低得点になった正しい辺を、個別モデルの不一致と局所情報で識別できる。",
+      "changed_mechanism": "固定の得点融合から、候補IDを揃えた複数得点の条件付き融合へ変える。",
+      "input_target_decode": "primary/secondary個別得点・得点差・局所密度・固定特徴→既知親の候補内分類/順位損失→モデル重みと親得点→候補を保ったままILP。",
+      "nearest_prior_attempt": "exp043/exp047の公開複数モデル融合、exp050",
+      "exact_difference": "融合済み確率だけでなく融合前の得点と不一致を入力する。既存cacheに個別得点があるかは未確認で、必要なら固定推論時に追加captureする。",
+      "counterevidence": "両モデルの誤りが同じなら救済余地がない。候補集合にない辺は融合だけでは回収できない。",
+      "cheap_test": "個別モデル・既存融合・固定平均・条件付き融合を同じ親候補で比較。まず片方だけが正解する例を数える。",
+      "kill_criterion": "モデル間に相補性がない、または正解を見ずに使い分けると利得を失うなら支持しない。",
+      "coverage_test": "候補内保持率と『片方なら正解』の割合を別々に測る。",
+      "selectability_test": "GTなしの融合が公開融合より親順位と最終scoreを改善するか測る。oracle選択は改善証拠にしない。",
+      "evidence_ids": [
+        "E49",
+        "C47",
+        "E50"
+      ]
+    },
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "not applicable: 合成誤入力を作らず保存済み実予測の親順位逆転を評価する。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "未実測。Kaggleのみ、週GPU45時間以内、課金なし、提出推論12時間以内。小規模実測と既存cacheの有無で総予算を決める。",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I06",
+      "title": "異なる親割当てを含む局所graphを残して選ぶ",
+      "mechanism_family": "candidate_generation",
+      "origin_pass": "evidence_inversion",
+      "novelty_level": "representation_change",
+      "hypothesis": "1本ずつの接続得点で誤る競合を、複数の合法な局所graphの比較で回収できる。",
+      "changed_mechanism": "最初のILP解で確定せず、異なる親割当て・分裂判断を持つ候補を生成する。",
+      "input_target_decode": "固定候補・得点→別の親選択を課した合法解を少数生成→既知教師でgraph順位学習→GTなしに1解を選び境界整合を保つ。",
+      "nearest_prior_attempt": "x138_local_graph_choice、exp049正解固定診断",
+      "exact_difference": "正解固定は診断のみ。推論では正解なしで別候補を生成し、画像・運動に基づいて選ぶ。",
+      "counterevidence": "候補に正解を含められても選べるとは限らず、生成費用と境界競合が残る。",
+      "cheap_test": "短い競合領域で候補graphの多様性と、同数候補における実際の選択を確認。",
+      "kill_criterion": "上限が増えない、実選択が旧解を上回らない、境界修復に依存するなら支持しない。",
+      "coverage_test": "生成候補に正しい既知接続を含む率を算出。",
+      "selectability_test": "GTなし選択で回収できた割合を上限と分ける。",
+      "evidence_ids": [
+        "E49",
+        "E50"
+      ]
+    },
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "学習側内分割で測った得点順位逆転、過信、参照の連続した取り違えと欠測を条件付きで再現。教師・真の系譜は変えない。誤り分布は未測定。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "未実測。Kaggleのみ、週GPU45時間以内、課金なし、提出推論12時間以内。小規模実測と既存cacheの有無で総予算を決める。",
+      "is_parameter_only": false,
+      "confidence": "C",
+      "id": "I07",
+      "title": "実測した誤参照を再現して再採点器を学習する",
+      "mechanism_family": "data_generation",
+      "origin_pass": "cross_pollination",
+      "novelty_level": "role_change",
+      "hypothesis": "誤った親に過信した得点・近傍参照への依存を、実誤りに似せた入力で学ぶことで減らせる。",
+      "changed_mechanism": "正しい中間入力のみの学習から、学習側内分割で実測した誤入力の生成・事前学習・実予測での調整へ変える。",
+      "input_target_decode": "学習側内分割の固定予測・注釈→得点順位逆転/参照誤りの条件と連続性を推定→教師を保った誤条件で補正器を事前学習→実予測で調整→通常予測だけで再採点。",
+      "nearest_prior_attempt": "x138_history_error_training、exp050",
+      "exact_difference": "exp049のILP脱落だけを履歴誤入力の根拠にしない。得点または参照のどの誤りを直すか、学習内予測で実測できた場合の後続案。",
+      "counterevidence": "人工誤りが実誤りと違う、公開予測をコピーする、正しい入力まで破壊する可能性。",
+      "cheap_test": "実誤入力を使う補正器のみ、一様な誤入力、実測に沿う誤入力からの事前学習を同じ学習量で比較。",
+      "kill_criterion": "実際の順位逆転へ改善が転移しない、正しかった接続を多く壊す、評価胚の正解で誤り分布を作る設計なら不採用。",
+      "coverage_test": "実誤入力と合成誤入力の密度・得点差・連続誤り・欠測分布の重なりを測る。",
+      "selectability_test": "評価側の予測入力だけで改善し、正解中間入力を必要としないことを確認。",
+      "evidence_ids": [
+        "E49",
+        "E48",
+        "E50"
+      ]
+    },
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "not applicable: 合成誤入力を作らず保存済み実予測の親順位逆転を評価する。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "未実測。Kaggleのみ、週GPU45時間以内、課金なし、提出推論12時間以内。小規模実測と既存cacheの有無で総予算を決める。",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I08",
+      "title": "画像の局所位置合わせを親候補の追加証拠にする",
+      "mechanism_family": "information",
+      "origin_pass": "task_first",
+      "novelty_level": "role_change",
+      "hypothesis": "固定点特徴が近い親を区別できないとき、画像の局所変形と一致度が別の手掛かりになる。",
+      "changed_mechanism": "画像を点特徴の抽出だけでなく、候補の変位を評価する観測として利用する。",
+      "input_target_decode": "前後の局所画像→ラベル不要の局所位置合わせと一致度、既知親順位教師→候補別補正得点→既存候補をILPで選ぶ。",
+      "nearest_prior_attempt": "exp050の固定点特徴",
+      "exact_difference": "検出器の重みを更新せず、点特徴の外の画像一致を候補得点に加える。",
+      "counterevidence": "蛍光変動、核分裂、z異方性、局所最適、追加I/O費用に弱い。",
+      "cheap_test": "確定した親と競合親に同じ計算予算で位置合わせを行い、一致度で順位を分けられるか確認。",
+      "kill_criterion": "正解画像への位置合わせでしか働かない、分裂を一律に拒否、費用過大なら支持しない。",
+      "coverage_test": "画像cropが十分含まれる率と、変位探索範囲内の既知親割合を確認。",
+      "selectability_test": "正解なし位置合わせの一致度が候補親の識別に効くかを比較。",
+      "evidence_ids": [
+        "E49",
+        "DIR"
+      ]
+    },
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "not applicable: 合成誤入力を作らず保存済み実予測の親順位逆転を評価する。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "未実測。Kaggleのみ、週GPU45時間以内、課金なし、提出推論12時間以内。小規模実測と既存cacheの有無で総予算を決める。",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I09",
+      "title": "最も紛らわしい親候補の学習を増やす",
+      "mechanism_family": "other",
+      "origin_pass": "evidence_inversion",
+      "novelty_level": "incremental",
+      "hypothesis": "現行学習で難しい娘への寄与が小さい場合、誤った上位親を含む例を多く学習すると順位逆転が減る。",
+      "changed_mechanism": "モデル入力は維持し、学習側の実予測に基づいて難しい娘・動画のsamplingを変える。",
+      "input_target_decode": "固定候補・得点・確かな教師→学習側の親順位逆転でsampling→既存順位損失→同じILP。",
+      "nearest_prior_attempt": "exp050の全競合親の順位損失",
+      "exact_difference": "既に娘当たり上位3親を比較するため、負例選択だけの新規性は小さい。確率飽和・難例不足の診断が先行条件。",
+      "counterevidence": "誤教師を多く学習する危険。学習予測だけで難例を選ぶと容易に偏る。",
+      "cheap_test": "難例/容易例別の学習推移と勾配を確認し、同じ学習量でsamplingだけ比較。",
+      "kill_criterion": "既に難例を十分学習している、曖昧対応が難例の大半、通常例の悪化が上回るなら支持しない。",
+      "coverage_test": "教師対応が確かな順位逆転例を何件追加samplingできるか確認。",
+      "selectability_test": "未使用側で元の失敗を救い、元の正解を壊した数も併記する。",
+      "evidence_ids": [
+        "E49",
+        "C50",
+        "CP"
+      ]
+    },
+    {
+      "roles": [
+        "feature",
+        "target",
+        "candidate"
+      ],
+      "information_sources": [
+        "固定公開モデルの予測座標・画像特徴",
+        "公式GEFFの既知親子（学習と評価のみ）"
+      ],
+      "deployment_error_simulated": "not applicable: 合成誤入力を作らず保存済み実予測の親順位逆転を評価する。",
+      "preserved_invariants": [
+        "娘の親は最大1、母の娘は最大2",
+        "検出器・画像特徴抽出器・座標headの重みを固定",
+        "未知の接続を真の負例にしない。重複検出・曖昧な教師対応を別扱いする"
+      ],
+      "full_test": "Kaggleで同じ評価動画・候補・固定後処理を用い、両胚の全graph公式combined scoreとdivision Jaccardを比較。公開重みの学習来歴があるため条件付き評価。",
+      "reopen_criterion": "どの入力・教師・得点表現が不足したかを示す新証拠が得られた場合に限り、その変更を分離して再検討する。",
+      "hidden_inference_contract": "推論動画の画像と固定公開モデル予測のみを入力する。正解親・正解履歴・分裂数・胚ID由来の正解情報を入力しない。候補上限、境界、欠測時の処理を定義する。",
+      "compute_estimate": "候補IDと得点が保存済みならCPU集計。追加の画像推論が必要かはcache schema次第。所要時間は未実測。",
+      "is_parameter_only": false,
+      "confidence": "B",
+      "id": "I10",
+      "title": "親順位とILP後の救済・脱落を同じ対象で比較する",
+      "mechanism_family": "validation",
+      "origin_pass": "task_first",
+      "novelty_level": "role_change",
+      "hypothesis": "順位学習の改善が最終graphへ届くかを同じ候補IDで追うと、次に変えるべき処理を絞れる。",
+      "changed_mechanism": "閾値通過数だけの評価から、親順位と段階別保持を組み合わせた評価へ変える。",
+      "input_target_decode": "同一動画の予測候補・確かな既知親対応→順位/選択段階の集計→胚別の救済・改悪表→次の比較を選ぶ。",
+      "nearest_prior_attempt": "exp049段階別診断、exp050の既知親順位記録",
+      "exact_difference": "追加した既知接続だけでなく全観測可能な既知親について、rank改善、ILPで救済、後処理で変更を交差集計する。",
+      "counterevidence": "部分注釈・対応誤りにより真の全誤接続率は出せない。改善上限と公式精度を混同できない。",
+      "cheap_test": "保存済み予測から候補外、親1位誤り、ILP後誤り、後処理後誤りを同じ分母で集計。",
+      "kill_criterion": "段階のIDが一致しない、分母が異なる、重複集計がある場合は比較を無効とする。",
+      "coverage_test": "教師対応・候補内保持・モデル個別得点の有無を明示する。",
+      "selectability_test": "順位を直した事例が最終graphに残る率と、元の正解を壊した数を区別する。",
+      "evidence_ids": [
+        "E49",
+        "E50",
+        "C50"
+      ]
+    }
+  ],
+  "portfolio": [
+    {
+      "idea_id": "I01",
+      "slot": "safe",
+      "why": "問題へ直接対応し、既にexp050で検証中。新規案を重複実装しない。"
+    },
+    {
+      "idea_id": "I03",
+      "slot": "orthogonal",
+      "why": "見た目以外の同動画の運動を参照として加える。"
+    },
+    {
+      "idea_id": "I05",
+      "slot": "exploration",
+      "why": "個別モデルの相補性があれば、融合前の情報から修正できる。"
+    },
+    {
+      "idea_id": "I07",
+      "slot": "exploration",
+      "why": "誤った条件入力への頑健性を狙う。誤り分布と追加予算が成立した場合の後続。"
+    },
+    {
+      "idea_id": "I10",
+      "slot": "safe",
+      "why": "既存exp050の結果を使って、得点の学習不足か入力不足か後段の問題かを区別する。"
+    }
+  ],
+  "rejected": [
+    {
+      "idea": "接続確率への一律な正の倍率・単調変換だけで親順位を逆転させる",
+      "failed_gate": "全親へ同じ単調変換を使っても局所順位は変わらない。全graph選択が変わる可能性とは区別。",
+      "reopen_condition": "費用の相対関係を検証する既存Optuna対照として扱う。"
+    },
+    {
+      "idea": "全ての未注釈辺をhard negativeにする",
+      "failed_gate": "部分注釈の未知を誤りと断定する。",
+      "reopen_condition": "確かな既知親と異なる細胞だと確認できる競合だけに限定。"
+    },
+    {
+      "idea": "別系譜の座標を平行移動して古い画像特徴をそのまま混合する",
+      "failed_gate": "固定特徴の空間contextと合成密度が不整合となり人工的な近道を作る。",
+      "reopen_condition": "raw画像から整合した合成を作り固定特徴を再抽出し、実画像への転移を確認する。"
+    },
+    {
+      "idea": "新しい画像検出器・直接軌跡モデルの再学習",
+      "failed_gate": "現行の公開検出器固定方針と予算に反する。",
+      "reopen_condition": "ユーザーが学習方針変更を承認し、必要な教師と予算が成立する。"
+    },
+    {
+      "idea": "exp050結果前に難例sampling・logit損失・履歴attentionを一斉追加",
+      "failed_gate": "既存親比較との違いを測れず、過去の失敗を識別する証拠も不足。",
+      "reopen_condition": "既存実験で残る学習不足/情報不足の具体的な証拠を示し、変更を個別比較。"
+    }
+  ],
+  "missing_inputs": [
+    "exp050のKaggle pilot・本学習・外側graphの結果",
+    "primary/secondaryの辺別個別得点cacheの有無と誤り相補性",
+    "228例のうち教師対応が曖昧な例、分裂・密集・移動条件別の内訳",
+    "新規案の計算時間と現在のGPU残量",
+    "実誤参照分布と合成誤りの一致"
+  ],
+  "adversarial_review": [
+    "親比較自体はexp050と重複。全競合親は最大3で、難例選択だけの余地は過大評価しない。",
+    "既知親と対応が確かな別細胞のみを排他負例とする。重複検出を一律に別親の誤りとしない。",
+    "参照作成から対象と競合を除外し、自己支持と参照欠落を確認する。",
+    "個別モデルの不一致とGTなし融合の有効性を別々に検証する。",
+    "実誤りの収集は学習側内分割のみ。外側正解を合成規則へ使わない。",
+    "順位誤りでもILPが救う例があるため、段階別失敗数を単純加算しない。"
+  ],
+  "workflow_notes": "独立3agentはtask cardだけでrepresentation・information・candidate/uncertainty案を生成。rootは既存実装との照合とvalidation/compute案を担当。別roleで反証。予備診断は同一実験の記録とし、ユーザーの一続きの全graph評価方針を新たな精度gateで上書きしない。バックログ・進行中実験の変更はしない。"
+}

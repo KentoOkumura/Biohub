@@ -1,0 +1,142 @@
+experiment:
+  name: exp044_x138_past_candidate_knn_attention
+  description: exp043 inputs with a trainable public primary tracker and K=8 past-candidate attention
+  route: x138_primary_tracker_past_candidate_attention
+  created_at: '2026-09-24'
+  notebooks:
+  - train
+lineage:
+  parent: exp043_x138_self_trained_head
+  hypothesis_id: N/A
+  backlog_candidate: N/A
+  diff_summary: Preserve exp043 detection, self-trained coordinate head, image features and logit fusion; train primary tracker plus K=8 attention.
+source:
+  reference_kernel: anvithpothula/biohub-x138
+  reference_notebook_sha256: 6b655e39bbfd2d3d6c762badea69847d3f00f5b548f385cb01b07ee2600fde6d
+  reference_path: ../../docs/notebooks/biohub-cell-tracking-during-development/anvithpothula__biohub-x138/biohub-x138.ipynb
+  exp043_inference_sha256: 8b795f7845af624dd0739c4592f6cbd345d7fa8f136dd63383f123c600efdc4d
+data:
+  source: competition_train_runtime
+  train_zarr: train/*.zarr
+  train_geff: train/*.geff
+  selection_seed: 42
+  videos_per_embryo: 10
+  expected_embryos:
+  - 44b6
+  - 6bba
+  candidate_match_radius_um: 7.0
+  native_spacing_zyx_um:
+  - 1.625
+  - 0.40625
+  - 0.40625
+  feature_grid_spacing_zyx_um:
+  - 1.625
+  - 1.625
+  - 1.625
+  feature_width: 224
+  public_artifacts:
+  - pilkwang/biohub-tracking-support-pack-50ep-v1
+  - pilkwang/biohub-temporal-unet3d-seed314159-v1
+  - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+model:
+  name: primary_SimpleNodeTransformer_plus_past_candidate_attention
+  trainable_components:
+  - primary_SimpleNodeTransformer
+  - past_candidate_attention_branch
+  frozen_components:
+  - primary_TemporalUNet3D
+  - primary_detection_head
+  - secondary_TemporalUNet3D
+  - secondary_SimpleNodeTransformer
+  - self_trained_coordinate_head
+  - DeepCenter
+  - x138_graph_postprocessing
+  primary_checkpoint_sha256: 12f6881ee3620a831697ca098ff8f48e687a24225f4e048b538deec3562fe771
+  coordinate_head_sha256: 32d6c62f738c3dfe4862e3df5272850312e81b622e57d9ba45209ebb382824dc
+  primary_params:
+    feat_dim: 64
+    hidden_dim: 128
+    n_heads: 4
+    n_blocks: 4
+    dropout: 0.3
+    pair_chunk_size: 32
+  attention:
+    max_past_candidates: 8
+    feature_dim: 13
+    hidden_dim: 32
+    source_chunk_size: 32
+    target_chunk_size: 32
+    past_candidate_chunk_size: 8
+    gradient_checkpointing: true
+    vector_scale_um: 5.0
+    cosine_epsilon: 1.0e-08
+    expected_added_parameter_count: 1570
+  training:
+    seed: 20260924
+    epochs: 3
+    learning_rate: 0.0001
+    weight_decay: 0.0001
+    focal_gamma: 2.0
+    gradient_clip_norm: 1.0
+    internal_validation_videos_per_embryo: 2
+    budget_minutes: 240
+  fusion:
+    bidirectional_weight: 0.15
+    secondary_edge_weight: 0.15
+    secondary_link_mode: low_margin_consensus
+    secondary_low_margin_max: 0.35
+    secondary_mix_temperature: 1.0
+overrides:
+  project_defaults:
+  - validation.metric
+validation:
+  method: leave_one_embryo_out_pair_windows
+  baseline: frozen_exp043_x138_pair_logits_on_same_capture
+  report_by_embryo: true
+  conditional_on_public_image_model_training: true
+  metric: known_edge_recall_and_active_pair_errors
+  candidate_retention_minimum: 0.99
+  baseline_logit_max_abs_error: 0.0001
+  edge_probability_threshold: 0.48
+  graph_progression: require_both_embryos_no_worse_on_known_edge_recall_and_active_pair_errors
+  evaluate_full_x138_on_public_test: false
+runtime:
+  use_amp: false
+  num_workers: 0
+  batch_size: 1
+  capture_budget_minutes: 180
+  pilot_video_count: 2
+  kaggle:
+    train:
+      enable_gpu: true
+      enable_internet: false
+      machine_shape: NvidiaTeslaT4
+      include_experiment_sources: true
+      dataset_sources:
+      - pilkwang/biohub-tracking-support-pack-50ep-v1
+      - pilkwang/biohub-temporal-unet3d-seed314159-v1
+      - pilkwang/biohub-deepcenter-unet3d-center-prior-v1
+      - kentookumura/exp043-self-trained-coordinate-head
+reproducibility:
+  deterministic_anchor: false
+  seed_policy: stable_sha256_video_selection_and_fixed_tracker_training_seed
+  stochastic_components:
+  - torch_training_order
+  - cuda_inference
+  - ilp
+  parallel_rng_policy: deterministic_video_partition_no_shared_rng
+  feature_sha_policy: captured_float32_arrays_per_pair
+  record:
+    kernel_version: true
+    input_sha: true
+    feature_schema_sha: true
+    feature_content_sha: true
+    model_manifest_sha: true
+    oof_prediction_sha: true
+    test_prediction_content_sha: true
+    submission_sha: true
+notes:
+- x138作者の追加checkpointは未取得。作者のscoreや重みの再現を主張しない。
+- 予測候補に対応しない疎なGEFF注釈は負例にしない。
+- 以前のexp038のcacheと評価値を対照に使わない。exp043からの同一cacheで対照を再測定する。
+- ユーザーは週次quotaリセット後のKaggle学習を指定。competition submissionは別途明示承認が必要。

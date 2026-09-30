@@ -73,7 +73,7 @@
 ## 実行しないこと
 
 - 禁止する代替実装、proxy、同一OOF上の救済探索: ILP出力を生物学的正解にした模倣学習、未知辺の一律負例化、画像側再学習、単なるILP費用倍率探索、既存ILPが全選択を行う構成を置換と呼ぶこと。
-- 壁打ちで採らなかった案と理由: [shared_edge_graph_learning](shared_edge_graph_learning.md)はILPを保持する得点学習。[final_graph_edit](final_graph_edit.md)は完成graphの局所修正。候補生成の変更は[x138_edge_candidates](x138_edge_candidates.md)へ分離する。
+- 壁打ちで採らなかった案と理由: [shared_edge_graph_learning](../experiments/exp050_shared_edge_graph_learning/requirements.md)はILPを保持する得点学習。[final_graph_edit](final_graph_edit.md)は完成graphの局所修正。候補生成の変更は[x138_edge_candidates](x138_edge_candidates.md)へ分離する。
 
 ## リスク
 

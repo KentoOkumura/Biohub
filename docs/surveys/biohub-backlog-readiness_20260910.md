@@ -190,7 +190,7 @@ exp002のfull training所要時間の既存予測は約10.10hだが、これはs
 
 <a id="subvoxel_offset"></a>
 
-**[subvoxel_offset](../../backlog/x138_coordinate_effect_audit.md#旧座標補正候補からの引き継ぎ)** — voxel未満の中心位置を補正
+**[subvoxel_offset](../../experiments/exp045_x138_coordinate_effect_audit/requirements.md#旧座標補正候補からの引き継ぎ)** — voxel未満の中心位置を補正
 
 - 確認結果: 現行は整数格子の極大位置と座標の整数切り捨てを使う。間引き後の格子幅は全軸1.625µm。
 - 最初の比較案: まず局所画像特徴から3軸の位置差を回帰し、既知中心へのHuber損失で学習する。特徴抽出は三線形補間にして検出と接続器を固定する。

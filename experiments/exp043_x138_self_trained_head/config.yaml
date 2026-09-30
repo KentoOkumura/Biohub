@@ -104,6 +104,6 @@ reproducibility:
     submission_sha: true
 
 notes:
-  - "x138作者の追加checkpointは未取得。作者のscoreや重みの再現を主張しない。"
+  - "x138作者の追加checkpointは別実験で取得した。本実験は自前headを使用し、作者のscoreや重みの再現を主張しない。"
   - "予測候補に対応しない疎なGEFF注釈は負例にしない。"
   - "Kaggle Notebookの実行は承認済み。competition submissionは別途明示承認が必要。"

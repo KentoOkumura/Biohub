@@ -13,7 +13,7 @@
 - 優先度: P4
 - 優先度の理由: 履歴の有効性が未確認の段階で、合成誤履歴と微調整を先に増やさない。exp041の未達だけから誤履歴が原因とは断定できない。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: [検証中の仮説と未着手バックログ](KAGGLE_DIRECTION.md#検証中の仮説)
-- 先行条件 / 依存: [新入力での対照](x138_coordinate_effect_audit.md)、学習側動画の予測履歴と既知正解、履歴入力trackerの固定契約。[neighbor_dynamics](neighbor_dynamics.md)等を使う場合も成功を必須とせず、入力・出力・損失を先に一意にする。
+- 先行条件 / 依存: [新入力での対照](../experiments/exp045_x138_coordinate_effect_audit/requirements.md)、学習側動画の予測履歴と既知正解、履歴入力trackerの固定契約。[neighbor_dynamics](neighbor_dynamics.md)等を使う場合も成功を必須とせず、入力・出力・損失を先に一意にする。
 
 ## 2026-09-24の再評価
 

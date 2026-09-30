@@ -64,7 +64,7 @@ exp013で固定した旧0.946 sourceではprimaryの対応用画像特徴だけ�
 
 x138には、作者が `V1284` と呼ぶ座標補正用のモデルが追加されている。検出した点の中心と周囲6点の固定画像特徴から224次元の入力を作り、`Linear(224,32) → SiLU → Linear(32,3)` で3軸の座標補正量を予測する。補正量は物理距離2 µm未満に制限し、補正後の座標をトラッカーへ渡す。同時に特徴取得を3次元の線形補間へ置き換えているため、接続予測に使う座標と画像特徴の両方が変わる。既存トラッカーの構造と重みが同じでも、その出力を同じとは扱えない。
 
-読み込む重みは `biohub-v1284-head-s075/v1284_head.pt`。コードは `V1284_MODE='candidate'` を指定し、保存済み公開ログにも有効化と補間コード実行の記録がある。モデル重み自体のSHAと学習コードは今回未取得。20 train動画の4,136対応点で学習したという来歴は作者のコードコメントによる説明であり、独立検証した事実ではない。座標補正単独のLB寄与も未確認である。
+読み込む重みは `biohub-v1284-head-s075/v1284_head.pt`。コードは `V1284_MODE='candidate'` を指定し、保存済み公開ログにも有効化と補間コード実行の記録がある。モデル重み自体のSHAと学習コードは今回未取得。追記: 公開実行の生metadataから入力dataset `anvithpothula/biohub-v1284-head-s075` とDataset Version ID `19822532` を確認したが、取得APIは403で重み本体を取得できていない。[入力metadataの保存記録](../../studies/biohub_public_notebooks_20260923/x138_v1284_attachment.json)を参照。20 train動画の4,136対応点で学習したという来歴は作者のコードコメントによる説明であり、独立検証した事実ではない。座標補正単独のLB寄与も未確認である。
 
 証拠: [Notebookから静的抽出した補正モジュール](../../studies/biohub_public_notebooks_20260923/x138_v1284_coordinate_refinement.py)、[組み込みコード](../../studies/biohub_public_notebooks_20260923/anvithpothula__biohub-x138.code.py)、[公開実行ログ](../../studies/biohub_public_notebooks_20260923/x138_run.log)。
 
@@ -131,7 +131,7 @@ Geometric Fusion V3では独自 `PROXY_SCORE` が0.9490 → 0.9530、adjusted ed
 
 今後比較するなら、まずx138全体の再現を確認し、学習済み座標補正、近傍移動量、未使用点の回収、低得点候補での欠落補完を個別に外して寄与を測る価値がある。公開detectorの重みは固定できるが、座標補正を含める場合は追加モデルの使用を明示する。
 
-ただし低得点候補の回収には、従来の高閾値候補だけのcacheでは不足する。補正後の座標で取得する特徴とsecondaryの対応特徴TTAも旧cacheと同じ特徴定義ではない。既存実験の入力を黙って差し替えず、追加モデル・候補・特徴・復号の変更を実験契約で明示する必要がある。調査後の2026-09-23、ユーザー依頼で[`public_x138_replay`](../../backlog/public_x138_replay.md)と[`public_x138_tracker_comparison`](../../backlog/public_x138_tracker_comparison.md)を`HYP-20260910-12`へ追加した。前者は座標補正モデルを含む全体再現、後者は同構成での公開/exp016 tracker重みの比較であり、追加学習は含めない。実験化・実装・実行・提出は行っていない。
+ただし低得点候補の回収には、従来の高閾値候補だけのcacheでは不足する。補正後の座標で取得する特徴とsecondaryの対応特徴TTAも旧cacheと同じ特徴定義ではない。既存実験の入力を黙って差し替えず、追加モデル・候補・特徴・復号の変更を実験契約で明示する必要がある。調査後の2026-09-23、ユーザー依頼で全体再現と公開/exp016 tracker重みの比較を`HYP-20260910-12`の候補にした。全体再現は[`exp042_public_x138_replay`](../../experiments/exp042_public_x138_replay/)へ実験化してNotebookを実装した。追加重み未取得のため実行・提出は行っていない。重み比較は[`public_x138_tracker_comparison`](../../backlog/public_x138_tracker_comparison.md)として未着手で、追加学習は含めない。
 
 ## 関連ファイル
 

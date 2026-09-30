@@ -60,7 +60,7 @@
 - 仮説が正しい場合に期待する観測: 本候補の変更だけで期待する誤りが減り、同じ候補数・学習量・時間など必要な対照を揃えた公式指標へ改善が残ること。改善の判定方針は調査レポートのD3で選ぶ。測定前に改善幅や誤差幅を推定せず、両方向の差と費用を記録する。
 - 仮説を棄却する観測: 位置誤差だけ減って対応が悪化する、別細胞間の平均が増える、または正解位置を与えてもedge改善余地がない。
 - この候補だけで上位仮説を判断できるか: いいえ
-- 上位仮説の判断に残る検証: 位置誤差が接続を制限する度合い、分布の校正、近接細胞の混同。別候補 [`subvoxel_offset`](x138_coordinate_effect_audit.md#旧座標補正候補からの引き継ぎ)、[`image_label_centers`](image_label_centers.md)、[`anisotropic_position`](anisotropic_position.md)、[`match_radius_point`](match_radius_point.md) の検証が残る。
+- 上位仮説の判断に残る検証: 位置誤差が接続を制限する度合い、分布の校正、近接細胞の混同。別候補 [`subvoxel_offset`](../experiments/exp045_x138_coordinate_effect_audit/requirements.md#旧座標補正候補からの引き継ぎ)、[`image_label_centers`](image_label_centers.md)、[`anisotropic_position`](anisotropic_position.md)、[`match_radius_point`](match_radius_point.md) の検証が残る。
 
 ## 入力・予測対象・出力・推論方法
 
