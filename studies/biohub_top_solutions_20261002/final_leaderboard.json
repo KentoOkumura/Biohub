@@ -1,0 +1,3608 @@
+{
+  "checked_at_utc": "2026-10-02T11:53:20.749286+00:00",
+  "pages": 3,
+  "has_more": true,
+  "scope": "current final leaderboard returned by get_leaderboard",
+  "rows": [
+    {
+      "teamId": 16454292,
+      "teamName": "Sergio Alvarez",
+      "submissionDate": "2026-09-29T13:09:52.380Z",
+      "score": "0.97759"
+    },
+    {
+      "teamId": 16531860,
+      "teamName": "Soheil Ayati",
+      "submissionDate": "2026-09-29T01:38:15.053Z",
+      "score": "0.97041"
+    },
+    {
+      "teamId": 16454395,
+      "teamName": "yu4u",
+      "submissionDate": "2026-09-29T10:26:17.466Z",
+      "score": "0.96714"
+    },
+    {
+      "teamId": 16494792,
+      "teamName": "Barry",
+      "submissionDate": "2026-09-29T10:56:37.343Z",
+      "score": "0.96234"
+    },
+    {
+      "teamId": 16455316,
+      "teamName": "Tang",
+      "submissionDate": "2026-09-29T10:06:57.410Z",
+      "score": "0.95462"
+    },
+    {
+      "teamId": 16459411,
+      "teamName": "Cyrus",
+      "submissionDate": "2026-09-29T11:28:22.396Z",
+      "score": "0.95398"
+    },
+    {
+      "teamId": 16512330,
+      "teamName": "tatsutaka",
+      "submissionDate": "2026-09-29T12:03:29.643Z",
+      "score": "0.95273"
+    },
+    {
+      "teamId": 16462662,
+      "teamName": "Amin",
+      "submissionDate": "2026-09-29T04:40:30.776Z",
+      "score": "0.95190"
+    },
+    {
+      "teamId": 16533694,
+      "teamName": "yuto083",
+      "submissionDate": "2026-09-29T08:22:35.263Z",
+      "score": "0.94981"
+    },
+    {
+      "teamId": 16883059,
+      "teamName": "Kaggle Agent",
+      "submissionDate": "2026-09-29T15:39:14.620Z",
+      "score": "0.94884"
+    },
+    {
+      "teamId": 16789498,
+      "teamName": "tanbo",
+      "submissionDate": "2026-09-29T17:43:19.496Z",
+      "score": "0.94743"
+    },
+    {
+      "teamId": 16679305,
+      "teamName": "Corwin",
+      "submissionDate": "2026-09-29T10:30:14.806Z",
+      "score": "0.94664"
+    },
+    {
+      "teamId": 16719036,
+      "teamName": "The Boys",
+      "submissionDate": "2026-09-29T14:41:57.713Z",
+      "score": "0.94556"
+    },
+    {
+      "teamId": 16454235,
+      "teamName": "Vibes & Edges Trade-Off",
+      "submissionDate": "2026-09-29T09:43:40.253Z",
+      "score": "0.94493"
+    },
+    {
+      "teamId": 16750423,
+      "teamName": "Yapay Hücre",
+      "submissionDate": "2026-09-29T12:07:28.183Z",
+      "score": "0.94435"
+    },
+    {
+      "teamId": 16691780,
+      "teamName": "r3takahashi",
+      "submissionDate": "2026-09-29T18:15:37.646Z",
+      "score": "0.94340"
+    },
+    {
+      "teamId": 16730252,
+      "teamName": "ibyyue",
+      "submissionDate": "2026-09-29T15:57:07.046Z",
+      "score": "0.94235"
+    },
+    {
+      "teamId": 16893781,
+      "teamName": "ymg_aq",
+      "submissionDate": "2026-09-29T00:01:46.756Z",
+      "score": "0.94188"
+    },
+    {
+      "teamId": 16535813,
+      "teamName": "slime",
+      "submissionDate": "2026-09-29T16:36:07.550Z",
+      "score": "0.94112"
+    },
+    {
+      "teamId": 16707238,
+      "teamName": "Yurinchi",
+      "submissionDate": "2026-09-29T13:21:40.433Z",
+      "score": "0.94085"
+    },
+    {
+      "teamId": 16456484,
+      "teamName": "Lime1123",
+      "submissionDate": "2026-09-29T11:59:58.180Z",
+      "score": "0.94000"
+    },
+    {
+      "teamId": 16858988,
+      "teamName": "3D Research",
+      "submissionDate": "2026-09-29T07:24:02.456Z",
+      "score": "0.93944"
+    },
+    {
+      "teamId": 16564752,
+      "teamName": "taiseiu",
+      "submissionDate": "2026-09-29T10:05:53.803Z",
+      "score": "0.93939"
+    },
+    {
+      "teamId": 16889402,
+      "teamName": "0.948+ pls",
+      "submissionDate": "2026-09-29T13:31:37.600Z",
+      "score": "0.93925"
+    },
+    {
+      "teamId": 16474152,
+      "teamName": "zhuo wamg + AibePC",
+      "submissionDate": "2026-09-29T04:03:02.043Z",
+      "score": "0.93900"
+    },
+    {
+      "teamId": 16889016,
+      "teamName": "Astra Team",
+      "submissionDate": "2026-09-29T07:07:47.530Z",
+      "score": "0.93878"
+    },
+    {
+      "teamId": 16889354,
+      "teamName": "Biooooohub",
+      "submissionDate": "2026-09-29T13:44:35.890Z",
+      "score": "0.93872"
+    },
+    {
+      "teamId": 16884848,
+      "teamName": "skyleads",
+      "submissionDate": "2026-09-29T18:05:03.326Z",
+      "score": "0.93871"
+    },
+    {
+      "teamId": 16459339,
+      "teamName": "Kzk Knmt",
+      "submissionDate": "2026-09-29T16:15:51.346Z",
+      "score": "0.93869"
+    },
+    {
+      "teamId": 16860095,
+      "teamName": "UNETPLUS",
+      "submissionDate": "2026-09-29T13:36:26.010Z",
+      "score": "0.93867"
+    },
+    {
+      "teamId": 16907051,
+      "teamName": "Burhan Ul Tayyab",
+      "submissionDate": "2026-09-28T15:27:36.480Z",
+      "score": "0.93864"
+    },
+    {
+      "teamId": 16857776,
+      "teamName": "Tracking Experts",
+      "submissionDate": "2026-09-29T07:22:20.516Z",
+      "score": "0.93859"
+    },
+    {
+      "teamId": 16675792,
+      "teamName": "unicellular",
+      "submissionDate": "2026-09-29T09:39:09.750Z",
+      "score": "0.93765"
+    },
+    {
+      "teamId": 16893229,
+      "teamName": "Kayla L.",
+      "submissionDate": "2026-09-29T15:53:02.103Z",
+      "score": "0.93764"
+    },
+    {
+      "teamId": 16943822,
+      "teamName": "Noah Öksüz",
+      "submissionDate": "2026-09-28T08:59:11.053Z",
+      "score": "0.93764"
+    },
+    {
+      "teamId": 16847212,
+      "teamName": "Gabriel",
+      "submissionDate": "2026-09-29T12:47:52.666Z",
+      "score": "0.93750"
+    },
+    {
+      "teamId": 16461729,
+      "teamName": "tc-al",
+      "submissionDate": "2026-09-28T22:42:19.583Z",
+      "score": "0.93714"
+    },
+    {
+      "teamId": 16454933,
+      "teamName": "打倒🥉銅メダルくれbot",
+      "submissionDate": "2026-09-29T08:17:57.870Z",
+      "score": "0.93711"
+    },
+    {
+      "teamId": 16673305,
+      "teamName": "Samuel Sundararaman ",
+      "submissionDate": "2026-09-29T08:14:42.100Z",
+      "score": "0.93664"
+    },
+    {
+      "teamId": 16600445,
+      "teamName": "goh",
+      "submissionDate": "2026-09-28T12:14:33.443Z",
+      "score": "0.93630"
+    },
+    {
+      "teamId": 16505038,
+      "teamName": "datnt114",
+      "submissionDate": "2026-09-27T02:36:55.816Z",
+      "score": "0.93621"
+    },
+    {
+      "teamId": 16554628,
+      "teamName": "[RU] Kirill Makhankov",
+      "submissionDate": "2026-09-29T12:50:24.753Z",
+      "score": "0.93570"
+    },
+    {
+      "teamId": 16892218,
+      "teamName": "DrFranklinH",
+      "submissionDate": "2026-09-29T11:37:28.910Z",
+      "score": "0.93568"
+    },
+    {
+      "teamId": 16602673,
+      "teamName": "Egor Trushin",
+      "submissionDate": "2026-09-07T05:10:25.826Z",
+      "score": "0.93553"
+    },
+    {
+      "teamId": 16738619,
+      "teamName": "Shoko",
+      "submissionDate": "2026-09-29T00:03:09.820Z",
+      "score": "0.93542"
+    },
+    {
+      "teamId": 16776896,
+      "teamName": "Thirst",
+      "submissionDate": "2026-09-29T09:06:05.440Z",
+      "score": "0.93540"
+    },
+    {
+      "teamId": 16453453,
+      "teamName": "OzanM.",
+      "submissionDate": "2026-09-29T11:31:59.170Z",
+      "score": "0.93534"
+    },
+    {
+      "teamId": 16712536,
+      "teamName": "Yizhou",
+      "submissionDate": "2026-09-29T00:01:07.583Z",
+      "score": "0.93507"
+    },
+    {
+      "teamId": 16943367,
+      "teamName": "Yaroslav",
+      "submissionDate": "2026-09-29T15:35:13.326Z",
+      "score": "0.93498"
+    },
+    {
+      "teamId": 16758580,
+      "teamName": "MTADA",
+      "submissionDate": "2026-09-29T13:46:42.353Z",
+      "score": "0.93496"
+    },
+    {
+      "teamId": 16552030,
+      "teamName": "Ryo Hasegawa",
+      "submissionDate": "2026-09-29T08:14:31.296Z",
+      "score": "0.93486"
+    },
+    {
+      "teamId": 16800114,
+      "teamName": "Syed Asad Ali",
+      "submissionDate": "2026-09-29T13:26:17.633Z",
+      "score": "0.93485"
+    },
+    {
+      "teamId": 16601893,
+      "teamName": "Rasheed Khoshnaw",
+      "submissionDate": "2026-09-29T10:41:35.903Z",
+      "score": "0.93462"
+    },
+    {
+      "teamId": 16610773,
+      "teamName": "Choruru",
+      "submissionDate": "2026-09-29T15:14:38.393Z",
+      "score": "0.93431"
+    },
+    {
+      "teamId": 16455771,
+      "teamName": "!!!!!",
+      "submissionDate": "2026-09-26T05:15:43.150Z",
+      "score": "0.93416"
+    },
+    {
+      "teamId": 16726750,
+      "teamName": "programmers",
+      "submissionDate": "2026-09-29T15:47:10.920Z",
+      "score": "0.93406"
+    },
+    {
+      "teamId": 16779186,
+      "teamName": "Quantizr",
+      "submissionDate": "2026-09-29T10:17:12.240Z",
+      "score": "0.93396"
+    },
+    {
+      "teamId": 16744536,
+      "teamName": "Sam Barnett",
+      "submissionDate": "2026-09-29T08:43:05.973Z",
+      "score": "0.93383"
+    },
+    {
+      "teamId": 16619505,
+      "teamName": "Vedran Hrabar",
+      "submissionDate": "2026-09-26T00:59:47.006Z",
+      "score": "0.93344"
+    },
+    {
+      "teamId": 16459877,
+      "teamName": "laughingman",
+      "submissionDate": "2026-09-29T17:24:20.373Z",
+      "score": "0.93326"
+    },
+    {
+      "teamId": 16718308,
+      "teamName": "Artalmaz31",
+      "submissionDate": "2026-09-29T12:13:54.370Z",
+      "score": "0.93312"
+    },
+    {
+      "teamId": 16655121,
+      "teamName": "Roronoa Zoro",
+      "submissionDate": "2026-09-29T18:16:06.633Z",
+      "score": "0.93310"
+    },
+    {
+      "teamId": 16942268,
+      "teamName": "tmgf",
+      "submissionDate": "2026-09-29T11:26:50.283Z",
+      "score": "0.93305"
+    },
+    {
+      "teamId": 16807963,
+      "teamName": "Saravanan Jaichandaran",
+      "submissionDate": "2026-09-27T12:05:35.906Z",
+      "score": "0.93277"
+    },
+    {
+      "teamId": 16461350,
+      "teamName": "TWEAK",
+      "submissionDate": "2026-09-29T08:41:20.156Z",
+      "score": "0.93255"
+    },
+    {
+      "teamId": 16455935,
+      "teamName": "mige551",
+      "submissionDate": "2026-09-29T09:06:56.383Z",
+      "score": "0.93237"
+    },
+    {
+      "teamId": 16667430,
+      "teamName": "🥉銅メダルくれbot ＆ 後輩",
+      "submissionDate": "2026-09-29T09:00:08.970Z",
+      "score": "0.93206"
+    },
+    {
+      "teamId": 16936164,
+      "teamName": "Antoniu Gugu",
+      "submissionDate": "2026-09-29T05:36:34.673Z",
+      "score": "0.93206"
+    },
+    {
+      "teamId": 16454687,
+      "teamName": "Vivek Sanker",
+      "submissionDate": "2026-09-29T09:45:29.496Z",
+      "score": "0.93199"
+    },
+    {
+      "teamId": 16703128,
+      "teamName": "Teddy Tennant",
+      "submissionDate": "2026-09-28T07:43:53.523Z",
+      "score": "0.93182"
+    },
+    {
+      "teamId": 16854211,
+      "teamName": "Guest21222",
+      "submissionDate": "2026-09-29T00:06:14.133Z",
+      "score": "0.93171"
+    },
+    {
+      "teamId": 16848330,
+      "teamName": "Daikon99",
+      "submissionDate": "2026-09-29T13:05:58.580Z",
+      "score": "0.93166"
+    },
+    {
+      "teamId": 16484483,
+      "teamName": "horaz0",
+      "submissionDate": "2026-09-29T10:00:04.160Z",
+      "score": "0.93121"
+    },
+    {
+      "teamId": 16557044,
+      "teamName": "que la cuenten como quieran",
+      "submissionDate": "2026-09-29T12:08:41.933Z",
+      "score": "0.93117"
+    },
+    {
+      "teamId": 16937825,
+      "teamName": "Teju Olarewaju",
+      "submissionDate": "2026-09-29T16:04:55.616Z",
+      "score": "0.93069"
+    },
+    {
+      "teamId": 16809138,
+      "teamName": "Boris Matsakov",
+      "submissionDate": "2026-09-29T00:01:15.710Z",
+      "score": "0.93051"
+    },
+    {
+      "teamId": 16454342,
+      "teamName": "Sinan Calisir",
+      "submissionDate": "2026-09-29T09:12:36.806Z",
+      "score": "0.93021"
+    },
+    {
+      "teamId": 16486532,
+      "teamName": "enddl22",
+      "submissionDate": "2026-09-29T13:22:43.810Z",
+      "score": "0.93013"
+    },
+    {
+      "teamId": 16508219,
+      "teamName": "Biomed Foresight",
+      "submissionDate": "2026-09-29T12:18:20.826Z",
+      "score": "0.93005"
+    },
+    {
+      "teamId": 16734265,
+      "teamName": "Takumu Hata",
+      "submissionDate": "2026-09-29T10:26:47.470Z",
+      "score": "0.93003"
+    },
+    {
+      "teamId": 16863417,
+      "teamName": "rode1234",
+      "submissionDate": "2026-09-29T07:39:13.130Z",
+      "score": "0.92993"
+    },
+    {
+      "teamId": 16683029,
+      "teamName": "oreomori",
+      "submissionDate": "2026-09-29T10:56:51.800Z",
+      "score": "0.92975"
+    },
+    {
+      "teamId": 16458101,
+      "teamName": "Knight of Favonius",
+      "submissionDate": "2026-09-29T11:05:15.470Z",
+      "score": "0.92965"
+    },
+    {
+      "teamId": 16509481,
+      "teamName": "tobhull",
+      "submissionDate": "2026-09-28T21:47:21.336Z",
+      "score": "0.92923"
+    },
+    {
+      "teamId": 16549666,
+      "teamName": "Makoto Nagatomo",
+      "submissionDate": "2026-09-29T11:38:49.976Z",
+      "score": "0.92921"
+    },
+    {
+      "teamId": 16563421,
+      "teamName": "NorthStar",
+      "submissionDate": "2026-09-29T11:52:25.450Z",
+      "score": "0.92918"
+    },
+    {
+      "teamId": 16575814,
+      "teamName": "Umesh Arampath",
+      "submissionDate": "2026-09-20T15:15:59.250Z",
+      "score": "0.92888"
+    },
+    {
+      "teamId": 16457247,
+      "teamName": "Timmy Juicehouse",
+      "submissionDate": "2026-09-29T11:56:28.026Z",
+      "score": "0.92877"
+    },
+    {
+      "teamId": 16557477,
+      "teamName": "Takahiro Katsumata (tkatsuma)",
+      "submissionDate": "2026-09-29T00:03:08.636Z",
+      "score": "0.92874"
+    },
+    {
+      "teamId": 16698595,
+      "teamName": "Kito",
+      "submissionDate": "2026-09-29T09:48:04.956Z",
+      "score": "0.92869"
+    },
+    {
+      "teamId": 16933287,
+      "teamName": "umizora",
+      "submissionDate": "2026-09-29T14:52:58.133Z",
+      "score": "0.92865"
+    },
+    {
+      "teamId": 16728526,
+      "teamName": "tedo",
+      "submissionDate": "2026-09-29T03:55:13.450Z",
+      "score": "0.92861"
+    },
+    {
+      "teamId": 16931466,
+      "teamName": "RyotaroAbe",
+      "submissionDate": "2026-09-29T14:45:22.680Z",
+      "score": "0.92857"
+    },
+    {
+      "teamId": 16756161,
+      "teamName": "Jeff Horon",
+      "submissionDate": "2026-09-29T00:24:59.660Z",
+      "score": "0.92854"
+    },
+    {
+      "teamId": 16685695,
+      "teamName": "Adeptus Overfiticus",
+      "submissionDate": "2026-09-29T19:20:43.803Z",
+      "score": "0.92853"
+    },
+    {
+      "teamId": 16462523,
+      "teamName": "hikarimaru",
+      "submissionDate": "2026-09-29T03:03:03.576Z",
+      "score": "0.92851"
+    },
+    {
+      "teamId": 16812172,
+      "teamName": "Xie Zejian",
+      "submissionDate": "2026-09-29T08:11:20.253Z",
+      "score": "0.92832"
+    },
+    {
+      "teamId": 16663746,
+      "teamName": "Vyas",
+      "submissionDate": "2026-09-29T14:49:57.506Z",
+      "score": "0.92829"
+    },
+    {
+      "teamId": 16497717,
+      "teamName": "kkunizaw",
+      "submissionDate": "2026-09-29T00:01:12.500Z",
+      "score": "0.92825"
+    },
+    {
+      "teamId": 16468866,
+      "teamName": "Filip Strzałka",
+      "submissionDate": "2026-09-29T11:25:16.720Z",
+      "score": "0.92822"
+    },
+    {
+      "teamId": 16611347,
+      "teamName": "MustafaA",
+      "submissionDate": "2026-09-29T14:46:59.630Z",
+      "score": "0.92810"
+    },
+    {
+      "teamId": 16472193,
+      "teamName": "LIN mimosa",
+      "submissionDate": "2026-09-29T14:33:40.906Z",
+      "score": "0.92805"
+    },
+    {
+      "teamId": 16555250,
+      "teamName": "syouya tobita",
+      "submissionDate": "2026-09-29T11:41:57.380Z",
+      "score": "0.92790"
+    },
+    {
+      "teamId": 16792456,
+      "teamName": "Timass",
+      "submissionDate": "2026-09-27T20:48:42.876Z",
+      "score": "0.92786"
+    },
+    {
+      "teamId": 16933482,
+      "teamName": "D Chakraborty",
+      "submissionDate": "2026-09-29T10:41:38.256Z",
+      "score": "0.92775"
+    },
+    {
+      "teamId": 16459168,
+      "teamName": "yarosladovkin",
+      "submissionDate": "2026-09-28T17:45:05.890Z",
+      "score": "0.92769"
+    },
+    {
+      "teamId": 16466353,
+      "teamName": "Zhu Chen 96",
+      "submissionDate": "2026-09-29T12:29:21.230Z",
+      "score": "0.92766"
+    },
+    {
+      "teamId": 16876164,
+      "teamName": "Kirill Labzin",
+      "submissionDate": "2026-09-29T12:58:07.456Z",
+      "score": "0.92764"
+    },
+    {
+      "teamId": 16588726,
+      "teamName": "kusui26",
+      "submissionDate": "2026-09-29T09:19:08.303Z",
+      "score": "0.92761"
+    },
+    {
+      "teamId": 16879611,
+      "teamName": "npan",
+      "submissionDate": "2026-09-29T15:52:12.593Z",
+      "score": "0.92760"
+    },
+    {
+      "teamId": 16918262,
+      "teamName": "Ascent",
+      "submissionDate": "2026-09-29T10:11:42.273Z",
+      "score": "0.92755"
+    },
+    {
+      "teamId": 16696904,
+      "teamName": "Makotu",
+      "submissionDate": "2026-09-29T17:23:04.743Z",
+      "score": "0.92744"
+    },
+    {
+      "teamId": 16491499,
+      "teamName": "AyPy",
+      "submissionDate": "2026-09-29T15:42:48.943Z",
+      "score": "0.92739"
+    },
+    {
+      "teamId": 16593137,
+      "teamName": "SAMIUL ISLAM",
+      "submissionDate": "2026-09-29T15:12:24.750Z",
+      "score": "0.92735"
+    },
+    {
+      "teamId": 16533594,
+      "teamName": "Fayner Costa",
+      "submissionDate": "2026-09-29T01:54:45.016Z",
+      "score": "0.92727"
+    },
+    {
+      "teamId": 16928361,
+      "teamName": "Agnes",
+      "submissionDate": "2026-09-29T15:00:06.823Z",
+      "score": "0.92712"
+    },
+    {
+      "teamId": 16932184,
+      "teamName": "Anurag Bihani",
+      "submissionDate": "2026-09-27T21:16:41.603Z",
+      "score": "0.92712"
+    },
+    {
+      "teamId": 16823035,
+      "teamName": "めめっち",
+      "submissionDate": "2026-09-29T08:56:54.460Z",
+      "score": "0.92710"
+    },
+    {
+      "teamId": 16460638,
+      "teamName": "Mark Cooper",
+      "submissionDate": "2026-09-29T07:56:08.173Z",
+      "score": "0.92705"
+    },
+    {
+      "teamId": 16758945,
+      "teamName": "Miz",
+      "submissionDate": "2026-09-29T00:01:16.923Z",
+      "score": "0.92703"
+    },
+    {
+      "teamId": 16845369,
+      "teamName": "Satwik",
+      "submissionDate": "2026-09-29T13:35:41.600Z",
+      "score": "0.92697"
+    },
+    {
+      "teamId": 16671090,
+      "teamName": "tomohito shimura",
+      "submissionDate": "2026-09-29T13:42:02.106Z",
+      "score": "0.92696"
+    },
+    {
+      "teamId": 16805586,
+      "teamName": "Jivansh",
+      "submissionDate": "2026-09-27T19:30:41.423Z",
+      "score": "0.92689"
+    },
+    {
+      "teamId": 16670748,
+      "teamName": "To The Moon",
+      "submissionDate": "2026-09-29T07:47:43.830Z",
+      "score": "0.92684"
+    },
+    {
+      "teamId": 16482471,
+      "teamName": "Pawan Rama Mali",
+      "submissionDate": "2026-09-29T02:22:34.453Z",
+      "score": "0.92669"
+    },
+    {
+      "teamId": 16674414,
+      "teamName": "Ispagiytiy",
+      "submissionDate": "2026-09-29T11:50:43.070Z",
+      "score": "0.92654"
+    },
+    {
+      "teamId": 16594300,
+      "teamName": "Brothers",
+      "submissionDate": "2026-09-29T00:05:40.563Z",
+      "score": "0.92653"
+    },
+    {
+      "teamId": 16810314,
+      "teamName": "AnyContext",
+      "submissionDate": "2026-09-29T08:00:53.286Z",
+      "score": "0.92652"
+    },
+    {
+      "teamId": 16734921,
+      "teamName": "SoichiOzaki",
+      "submissionDate": "2026-09-29T09:58:26.356Z",
+      "score": "0.92649"
+    },
+    {
+      "teamId": 16734955,
+      "teamName": "Jongwon",
+      "submissionDate": "2026-09-29T00:05:11.936Z",
+      "score": "0.92649"
+    },
+    {
+      "teamId": 16866534,
+      "teamName": "d1amp0",
+      "submissionDate": "2026-09-28T19:58:33.480Z",
+      "score": "0.92645"
+    },
+    {
+      "teamId": 16473819,
+      "teamName": "iota",
+      "submissionDate": "2026-09-20T15:18:11.963Z",
+      "score": "0.92645"
+    },
+    {
+      "teamId": 16875931,
+      "teamName": "我需要一份实习",
+      "submissionDate": "2026-09-29T10:36:31.733Z",
+      "score": "0.92636"
+    },
+    {
+      "teamId": 16737780,
+      "teamName": "wally0593",
+      "submissionDate": "2026-09-29T09:24:07.360Z",
+      "score": "0.92633"
+    },
+    {
+      "teamId": 16743228,
+      "teamName": "yoshino",
+      "submissionDate": "2026-09-29T15:39:06.200Z",
+      "score": "0.92628"
+    },
+    {
+      "teamId": 16739885,
+      "teamName": "James Y",
+      "submissionDate": "2026-09-28T04:41:36.883Z",
+      "score": "0.92610"
+    },
+    {
+      "teamId": 16931222,
+      "teamName": "BIODIFF007",
+      "submissionDate": "2026-09-29T16:38:47.456Z",
+      "score": "0.92607"
+    },
+    {
+      "teamId": 16453676,
+      "teamName": "vladikmegakid",
+      "submissionDate": "2026-09-29T11:08:31.590Z",
+      "score": "0.92601"
+    },
+    {
+      "teamId": 16867825,
+      "teamName": "Oleksandr Parfionov",
+      "submissionDate": "2026-09-29T00:02:01.560Z",
+      "score": "0.92599"
+    },
+    {
+      "teamId": 16772401,
+      "teamName": "ikevayansky",
+      "submissionDate": "2026-09-29T16:02:52.973Z",
+      "score": "0.92598"
+    },
+    {
+      "teamId": 16495010,
+      "teamName": "winstonton",
+      "submissionDate": "2026-09-29T00:03:56.993Z",
+      "score": "0.92590"
+    },
+    {
+      "teamId": 16855245,
+      "teamName": "BorisV",
+      "submissionDate": "2026-09-29T03:48:49.826Z",
+      "score": "0.92587"
+    },
+    {
+      "teamId": 16458589,
+      "teamName": "xanderr",
+      "submissionDate": "2026-09-29T00:06:22.243Z",
+      "score": "0.92580"
+    },
+    {
+      "teamId": 16805786,
+      "teamName": "Mthem77",
+      "submissionDate": "2026-09-29T09:34:31.840Z",
+      "score": "0.92575"
+    },
+    {
+      "teamId": 16487273,
+      "teamName": "Tagir Analyzes",
+      "submissionDate": "2026-09-26T20:54:50.100Z",
+      "score": "0.92560"
+    },
+    {
+      "teamId": 16458214,
+      "teamName": "natsu",
+      "submissionDate": "2026-09-29T00:40:01.060Z",
+      "score": "0.92559"
+    },
+    {
+      "teamId": 16887065,
+      "teamName": "Asan Ashirov",
+      "submissionDate": "2026-09-29T01:11:00.816Z",
+      "score": "0.92544"
+    },
+    {
+      "teamId": 16550333,
+      "teamName": "Amir & Bita",
+      "submissionDate": "2026-09-25T19:05:20.113Z",
+      "score": "0.92543"
+    },
+    {
+      "teamId": 16717530,
+      "teamName": "Thomas Greissler",
+      "submissionDate": "2026-09-29T11:19:08.300Z",
+      "score": "0.92539"
+    },
+    {
+      "teamId": 16467705,
+      "teamName": "itsuki-data",
+      "submissionDate": "2026-09-29T00:02:24.466Z",
+      "score": "0.92537"
+    },
+    {
+      "teamId": 16460299,
+      "teamName": "X.franfran.X",
+      "submissionDate": "2026-09-29T09:57:43.633Z",
+      "score": "0.92524"
+    },
+    {
+      "teamId": 16846667,
+      "teamName": "len8487",
+      "submissionDate": "2026-09-29T10:23:35.740Z",
+      "score": "0.92521"
+    },
+    {
+      "teamId": 16545035,
+      "teamName": "Zyy7390",
+      "submissionDate": "2026-09-28T12:49:39.623Z",
+      "score": "0.92508"
+    },
+    {
+      "teamId": 16846037,
+      "teamName": "cheng ren01",
+      "submissionDate": "2026-09-29T04:59:30.956Z",
+      "score": "0.92504"
+    },
+    {
+      "teamId": 16843878,
+      "teamName": "T1",
+      "submissionDate": "2026-09-29T01:18:02.233Z",
+      "score": "0.92504"
+    },
+    {
+      "teamId": 16744216,
+      "teamName": "Samuel",
+      "submissionDate": "2026-09-29T23:55:12.316Z",
+      "score": "0.92494"
+    },
+    {
+      "teamId": 16455793,
+      "teamName": "YinboLiu",
+      "submissionDate": "2026-09-24T02:19:16.440Z",
+      "score": "0.92491"
+    },
+    {
+      "teamId": 16803317,
+      "teamName": "tyffee",
+      "submissionDate": "2026-09-29T00:53:00.353Z",
+      "score": "0.92484"
+    },
+    {
+      "teamId": 16792722,
+      "teamName": "NP",
+      "submissionDate": "2026-09-27T14:16:38.660Z",
+      "score": "0.92482"
+    },
+    {
+      "teamId": 16914798,
+      "teamName": "vlavlalva",
+      "submissionDate": "2026-09-25T09:44:47.310Z",
+      "score": "0.92474"
+    },
+    {
+      "teamId": 16846788,
+      "teamName": "Luck^2",
+      "submissionDate": "2026-09-25T06:26:44.840Z",
+      "score": "0.92471"
+    },
+    {
+      "teamId": 16738423,
+      "teamName": "Vodolay",
+      "submissionDate": "2026-09-29T12:06:44.406Z",
+      "score": "0.92463"
+    },
+    {
+      "teamId": 16671210,
+      "teamName": "nonca",
+      "submissionDate": "2026-09-28T11:07:07.583Z",
+      "score": "0.92463"
+    },
+    {
+      "teamId": 16644688,
+      "teamName": "Takuya Nagata",
+      "submissionDate": "2026-09-29T07:10:28.573Z",
+      "score": "0.92462"
+    },
+    {
+      "teamId": 16925869,
+      "teamName": "Rio",
+      "submissionDate": "2026-09-29T08:44:40.260Z",
+      "score": "0.92461"
+    },
+    {
+      "teamId": 16728523,
+      "teamName": "aca-ta",
+      "submissionDate": "2026-09-29T13:45:26.636Z",
+      "score": "0.92459"
+    },
+    {
+      "teamId": 16839023,
+      "teamName": "Ad Space available",
+      "submissionDate": "2026-09-29T10:44:44.863Z",
+      "score": "0.92456"
+    },
+    {
+      "teamId": 16672399,
+      "teamName": "Tiger bonbon",
+      "submissionDate": "2026-09-29T14:13:51.086Z",
+      "score": "0.92455"
+    },
+    {
+      "teamId": 16639783,
+      "teamName": "RJ Choco.py",
+      "submissionDate": "2026-09-29T06:18:41.963Z",
+      "score": "0.92448"
+    },
+    {
+      "teamId": 16539147,
+      "teamName": "atrei_des",
+      "submissionDate": "2026-09-21T07:56:06.576Z",
+      "score": "0.92442"
+    },
+    {
+      "teamId": 16784546,
+      "teamName": "Micchi’s token thieves",
+      "submissionDate": "2026-09-29T15:56:46.596Z",
+      "score": "0.92433"
+    },
+    {
+      "teamId": 16667924,
+      "teamName": "Mega Shake UP",
+      "submissionDate": "2026-09-29T15:56:50.600Z",
+      "score": "0.92433"
+    },
+    {
+      "teamId": 16453977,
+      "teamName": "Yunus Gümüşsoy",
+      "submissionDate": "2026-09-29T16:35:03.523Z",
+      "score": "0.92431"
+    },
+    {
+      "teamId": 16805468,
+      "teamName": "KuziJA",
+      "submissionDate": "2026-09-29T00:02:45.626Z",
+      "score": "0.92425"
+    },
+    {
+      "teamId": 16588537,
+      "teamName": "Civitasmass",
+      "submissionDate": "2026-09-29T00:00:41.376Z",
+      "score": "0.92421"
+    },
+    {
+      "teamId": 16717367,
+      "teamName": "Raikou's fanclub",
+      "submissionDate": "2026-09-29T12:42:50.083Z",
+      "score": "0.92416"
+    },
+    {
+      "teamId": 16714204,
+      "teamName": "andrei6184",
+      "submissionDate": "2026-09-29T11:07:57.076Z",
+      "score": "0.92410"
+    },
+    {
+      "teamId": 16561311,
+      "teamName": "Amir Ghazi",
+      "submissionDate": "2026-09-29T16:52:51.036Z",
+      "score": "0.92410"
+    },
+    {
+      "teamId": 16624018,
+      "teamName": "Skynet",
+      "submissionDate": "2026-09-29T14:30:49.243Z",
+      "score": "0.92405"
+    },
+    {
+      "teamId": 16663122,
+      "teamName": "Primes",
+      "submissionDate": "2026-09-26T05:57:05.203Z",
+      "score": "0.92404"
+    },
+    {
+      "teamId": 16927940,
+      "teamName": "Ryota Kawamura",
+      "submissionDate": "2026-09-29T04:36:54.766Z",
+      "score": "0.92404"
+    },
+    {
+      "teamId": 16739029,
+      "teamName": "sleter",
+      "submissionDate": "2026-09-29T00:07:07.000Z",
+      "score": "0.92400"
+    },
+    {
+      "teamId": 16492928,
+      "teamName": "zorac",
+      "submissionDate": "2026-09-27T16:26:56.673Z",
+      "score": "0.92395"
+    },
+    {
+      "teamId": 16602564,
+      "teamName": "VSG",
+      "submissionDate": "2026-09-29T00:07:05.320Z",
+      "score": "0.92395"
+    },
+    {
+      "teamId": 16454661,
+      "teamName": "Matt Goldfield",
+      "submissionDate": "2026-09-29T01:11:25.833Z",
+      "score": "0.92393"
+    },
+    {
+      "teamId": 16610265,
+      "teamName": "Kyuhwan Cho",
+      "submissionDate": "2026-09-29T13:53:20.840Z",
+      "score": "0.92378"
+    },
+    {
+      "teamId": 16853440,
+      "teamName": "Subramanya N",
+      "submissionDate": "2026-09-29T03:25:25.560Z",
+      "score": "0.92378"
+    },
+    {
+      "teamId": 16511965,
+      "teamName": "Changye Li",
+      "submissionDate": "2026-08-15T01:35:20.596Z",
+      "score": "0.92366"
+    },
+    {
+      "teamId": 16497959,
+      "teamName": "Siddhant Rajhans",
+      "submissionDate": "2026-09-29T08:37:31.080Z",
+      "score": "0.92366"
+    },
+    {
+      "teamId": 16604283,
+      "teamName": "hikaggler",
+      "submissionDate": "2026-09-29T07:35:36.733Z",
+      "score": "0.92356"
+    },
+    {
+      "teamId": 16458361,
+      "teamName": "Komil Parmar",
+      "submissionDate": "2026-09-27T00:03:16.146Z",
+      "score": "0.92353"
+    },
+    {
+      "teamId": 16508104,
+      "teamName": "sixue yang",
+      "submissionDate": "2026-09-28T09:05:12.393Z",
+      "score": "0.92352"
+    },
+    {
+      "teamId": 16810288,
+      "teamName": "maco-macoo",
+      "submissionDate": "2026-09-29T07:23:43.870Z",
+      "score": "0.92350"
+    },
+    {
+      "teamId": 16461589,
+      "teamName": "Pai",
+      "submissionDate": "2026-09-29T16:51:29.180Z",
+      "score": "0.92346"
+    },
+    {
+      "teamId": 16826101,
+      "teamName": "Isabella Wang",
+      "submissionDate": "2026-09-29T07:19:31.116Z",
+      "score": "0.92343"
+    },
+    {
+      "teamId": 16715609,
+      "teamName": "ji-ma",
+      "submissionDate": "2026-09-28T12:30:49.296Z",
+      "score": "0.92341"
+    },
+    {
+      "teamId": 16693040,
+      "teamName": "Carl Makt",
+      "submissionDate": "2026-09-28T03:25:24.170Z",
+      "score": "0.92335"
+    },
+    {
+      "teamId": 16887410,
+      "teamName": "あかつき",
+      "submissionDate": "2026-09-29T12:55:15.370Z",
+      "score": "0.92333"
+    },
+    {
+      "teamId": 16844234,
+      "teamName": "y3uanm",
+      "submissionDate": "2026-09-26T14:51:24.240Z",
+      "score": "0.92332"
+    },
+    {
+      "teamId": 16499610,
+      "teamName": "Jimmer",
+      "submissionDate": "2026-09-29T16:20:06.176Z",
+      "score": "0.92330"
+    },
+    {
+      "teamId": 16756059,
+      "teamName": "Thomas",
+      "submissionDate": "2026-09-29T00:03:24.953Z",
+      "score": "0.92326"
+    },
+    {
+      "teamId": 16798008,
+      "teamName": "Dragibus",
+      "submissionDate": "2026-09-29T12:54:00.056Z",
+      "score": "0.92324"
+    },
+    {
+      "teamId": 16829814,
+      "teamName": "mrmldjr",
+      "submissionDate": "2026-09-29T00:05:32.200Z",
+      "score": "0.92316"
+    },
+    {
+      "teamId": 16463001,
+      "teamName": "Albert | Zhiye | Hannah",
+      "submissionDate": "2026-09-29T14:26:31.906Z",
+      "score": "0.92313"
+    },
+    {
+      "teamId": 16454955,
+      "teamName": "RicardoLópez",
+      "submissionDate": "2026-09-29T14:39:36.683Z",
+      "score": "0.92311"
+    },
+    {
+      "teamId": 16775607,
+      "teamName": "Boopathi Raja",
+      "submissionDate": "2026-09-29T15:44:30.050Z",
+      "score": "0.92309"
+    },
+    {
+      "teamId": 16592841,
+      "teamName": "Sung Heo",
+      "submissionDate": "2026-09-28T17:25:29.616Z",
+      "score": "0.92308"
+    },
+    {
+      "teamId": 16857172,
+      "teamName": "Ivo Georgiev",
+      "submissionDate": "2026-09-29T04:20:15.376Z",
+      "score": "0.92307"
+    },
+    {
+      "teamId": 16454016,
+      "teamName": "S.Aoki",
+      "submissionDate": "2026-09-29T00:00:52.256Z",
+      "score": "0.92300"
+    },
+    {
+      "teamId": 16710283,
+      "teamName": "Maaax",
+      "submissionDate": "2026-09-29T00:00:14.200Z",
+      "score": "0.92299"
+    },
+    {
+      "teamId": 16568564,
+      "teamName": "t-enstar",
+      "submissionDate": "2026-09-29T14:46:17.680Z",
+      "score": "0.92290"
+    },
+    {
+      "teamId": 16799729,
+      "teamName": "yeming151",
+      "submissionDate": "2026-09-29T07:11:17.316Z",
+      "score": "0.92290"
+    },
+    {
+      "teamId": 16489438,
+      "teamName": "Alfonso Sánchez",
+      "submissionDate": "2026-09-29T07:34:57.763Z",
+      "score": "0.92287"
+    },
+    {
+      "teamId": 16897002,
+      "teamName": "atsukiwi",
+      "submissionDate": "2026-09-29T13:05:48.126Z",
+      "score": "0.92286"
+    },
+    {
+      "teamId": 16484369,
+      "teamName": "Médéric Hurier (Fmind)",
+      "submissionDate": "2026-09-29T08:51:37.700Z",
+      "score": "0.92286"
+    },
+    {
+      "teamId": 16459596,
+      "teamName": "Fernando Couto",
+      "submissionDate": "2026-09-29T01:07:59.333Z",
+      "score": "0.92285"
+    },
+    {
+      "teamId": 16712868,
+      "teamName": "kishizaki-sci",
+      "submissionDate": "2026-09-28T12:56:11.896Z",
+      "score": "0.92281"
+    },
+    {
+      "teamId": 16823651,
+      "teamName": "Happy New Semester",
+      "submissionDate": "2026-09-29T06:02:47.506Z",
+      "score": "0.92278"
+    },
+    {
+      "teamId": 16864798,
+      "teamName": "Ashutosh Pal1",
+      "submissionDate": "2026-09-28T12:56:24.426Z",
+      "score": "0.92275"
+    },
+    {
+      "teamId": 16460366,
+      "teamName": "Arunava Nag",
+      "submissionDate": "2026-09-29T10:56:04.880Z",
+      "score": "0.92275"
+    },
+    {
+      "teamId": 16858809,
+      "teamName": "Takashi Yamada",
+      "submissionDate": "2026-09-29T14:28:14.226Z",
+      "score": "0.92271"
+    },
+    {
+      "teamId": 16645752,
+      "teamName": "ZEE",
+      "submissionDate": "2026-09-29T16:16:03.113Z",
+      "score": "0.92271"
+    },
+    {
+      "teamId": 16737435,
+      "teamName": "Vaibhav Nakrani",
+      "submissionDate": "2026-09-28T08:47:58.020Z",
+      "score": "0.92270"
+    },
+    {
+      "teamId": 16455775,
+      "teamName": "Hack2Publish",
+      "submissionDate": "2026-09-29T14:03:24.606Z",
+      "score": "0.92268"
+    },
+    {
+      "teamId": 16685275,
+      "teamName": "CurveCowboy",
+      "submissionDate": "2026-09-28T22:42:40.626Z",
+      "score": "0.92268"
+    },
+    {
+      "teamId": 16475949,
+      "teamName": "Naladweppo",
+      "submissionDate": "2026-09-27T20:30:19.330Z",
+      "score": "0.92267"
+    },
+    {
+      "teamId": 16796493,
+      "teamName": "T-Hans7",
+      "submissionDate": "2026-09-27T10:05:55.153Z",
+      "score": "0.92267"
+    },
+    {
+      "teamId": 16462639,
+      "teamName": "José Freitas",
+      "submissionDate": "2026-09-29T01:53:06.163Z",
+      "score": "0.92265"
+    },
+    {
+      "teamId": 16574121,
+      "teamName": "Igor V",
+      "submissionDate": "2026-09-29T06:14:41.780Z",
+      "score": "0.92264"
+    },
+    {
+      "teamId": 16455457,
+      "teamName": "Ragunath Ravi",
+      "submissionDate": "2026-09-17T12:48:53.196Z",
+      "score": "0.92262"
+    },
+    {
+      "teamId": 16907622,
+      "teamName": "God111",
+      "submissionDate": "2026-09-26T09:28:54.480Z",
+      "score": "0.92260"
+    },
+    {
+      "teamId": 16772562,
+      "teamName": "Ojaswy",
+      "submissionDate": "2026-09-29T05:16:59.726Z",
+      "score": "0.92258"
+    },
+    {
+      "teamId": 16723944,
+      "teamName": "ETHAN KOH",
+      "submissionDate": "2026-09-28T04:32:39.060Z",
+      "score": "0.92256"
+    },
+    {
+      "teamId": 16927822,
+      "teamName": "William Zhao",
+      "submissionDate": "2026-09-29T07:17:03.446Z",
+      "score": "0.92254"
+    },
+    {
+      "teamId": 16798282,
+      "teamName": "John Taylor (AI)",
+      "submissionDate": "2026-09-29T11:36:04.190Z",
+      "score": "0.92252"
+    },
+    {
+      "teamId": 16618295,
+      "teamName": "Jiman Kwon",
+      "submissionDate": "2026-09-29T15:21:07.103Z",
+      "score": "0.92251"
+    },
+    {
+      "teamId": 16818314,
+      "teamName": "haonan zhengh",
+      "submissionDate": "2026-09-27T07:47:22.266Z",
+      "score": "0.92249"
+    },
+    {
+      "teamId": 16702097,
+      "teamName": "Anh-Vu Mai-Nguyen",
+      "submissionDate": "2026-09-29T08:19:06.446Z",
+      "score": "0.92249"
+    },
+    {
+      "teamId": 16701015,
+      "teamName": "Yahalom",
+      "submissionDate": "2026-09-29T12:15:43.900Z",
+      "score": "0.92249"
+    },
+    {
+      "teamId": 16832772,
+      "teamName": "LIH.YUN",
+      "submissionDate": "2026-09-29T06:40:02.253Z",
+      "score": "0.92246"
+    },
+    {
+      "teamId": 16470905,
+      "teamName": "Going down in 3, 2, 1…",
+      "submissionDate": "2026-09-29T06:51:00.600Z",
+      "score": "0.92246"
+    },
+    {
+      "teamId": 16497562,
+      "teamName": "Matthew Huang",
+      "submissionDate": "2026-09-12T20:09:25.766Z",
+      "score": "0.92245"
+    },
+    {
+      "teamId": 16676329,
+      "teamName": "Soham",
+      "submissionDate": "2026-09-24T16:33:10.426Z",
+      "score": "0.92241"
+    },
+    {
+      "teamId": 16906802,
+      "teamName": "BobtheBot369",
+      "submissionDate": "2026-09-29T23:56:01.610Z",
+      "score": "0.92241"
+    },
+    {
+      "teamId": 16847219,
+      "teamName": "David Fridshtand",
+      "submissionDate": "2026-09-26T10:11:45.430Z",
+      "score": "0.92241"
+    },
+    {
+      "teamId": 16576548,
+      "teamName": "shubham kumar #2",
+      "submissionDate": "2026-09-18T19:06:13.403Z",
+      "score": "0.92237"
+    },
+    {
+      "teamId": 16931529,
+      "teamName": "Asterios Terzis",
+      "submissionDate": "2026-09-29T15:10:22.833Z",
+      "score": "0.92236"
+    },
+    {
+      "teamId": 16575737,
+      "teamName": "Bioinformatics is not solution",
+      "submissionDate": "2026-09-26T02:37:29.266Z",
+      "score": "0.92235"
+    },
+    {
+      "teamId": 16468791,
+      "teamName": "Pathik Patel",
+      "submissionDate": "2026-09-29T13:55:30.893Z",
+      "score": "0.92226"
+    },
+    {
+      "teamId": 16710230,
+      "teamName": "Deep Thought",
+      "submissionDate": "2026-09-28T16:11:00.200Z",
+      "score": "0.92224"
+    },
+    {
+      "teamId": 16846938,
+      "teamName": "David Wang",
+      "submissionDate": "2026-09-29T02:05:35.003Z",
+      "score": "0.92224"
+    },
+    {
+      "teamId": 16897440,
+      "teamName": "Boris Bezmenov",
+      "submissionDate": "2026-09-24T20:15:25.146Z",
+      "score": "0.92219"
+    },
+    {
+      "teamId": 16913880,
+      "teamName": "Siu Beom",
+      "submissionDate": "2026-09-22T10:43:37.680Z",
+      "score": "0.92217"
+    },
+    {
+      "teamId": 16876917,
+      "teamName": "Mathemortician",
+      "submissionDate": "2026-09-29T16:59:19.356Z",
+      "score": "0.92213"
+    },
+    {
+      "teamId": 16577431,
+      "teamName": "mi6",
+      "submissionDate": "2026-09-29T11:47:57.866Z",
+      "score": "0.92211"
+    },
+    {
+      "teamId": 16481288,
+      "teamName": "TakamaruEX",
+      "submissionDate": "2026-09-29T00:02:57.486Z",
+      "score": "0.92206"
+    },
+    {
+      "teamId": 16480462,
+      "teamName": "maesaer",
+      "submissionDate": "2026-09-29T08:17:16.953Z",
+      "score": "0.92202"
+    },
+    {
+      "teamId": 16479761,
+      "teamName": "codebeforework",
+      "submissionDate": "2026-09-29T00:13:07.836Z",
+      "score": "0.92192"
+    },
+    {
+      "teamId": 16566626,
+      "teamName": "Jiahui Qu",
+      "submissionDate": "2026-09-29T12:16:13.810Z",
+      "score": "0.92187"
+    },
+    {
+      "teamId": 16455128,
+      "teamName": "Go Go Go",
+      "submissionDate": "2026-09-29T04:57:52.953Z",
+      "score": "0.92184"
+    },
+    {
+      "teamId": 16458268,
+      "teamName": "PavelLiashkov",
+      "submissionDate": "2026-09-29T00:03:51.283Z",
+      "score": "0.92178"
+    },
+    {
+      "teamId": 16492986,
+      "teamName": "jaysefh26",
+      "submissionDate": "2026-09-29T06:20:00.976Z",
+      "score": "0.92177"
+    },
+    {
+      "teamId": 16877715,
+      "teamName": "Nicholas Chan",
+      "submissionDate": "2026-09-27T04:02:16.826Z",
+      "score": "0.92177"
+    },
+    {
+      "teamId": 16456961,
+      "teamName": "minghao mei",
+      "submissionDate": "2026-09-29T01:26:08.213Z",
+      "score": "0.92176"
+    },
+    {
+      "teamId": 16885171,
+      "teamName": "thisray",
+      "submissionDate": "2026-09-29T00:01:14.093Z",
+      "score": "0.92175"
+    },
+    {
+      "teamId": 16506749,
+      "teamName": "От обезьяны к LLM",
+      "submissionDate": "2026-09-28T11:16:00.590Z",
+      "score": "0.92171"
+    },
+    {
+      "teamId": 16460608,
+      "teamName": "webmaking",
+      "submissionDate": "2026-09-29T08:29:15.050Z",
+      "score": "0.92169"
+    },
+    {
+      "teamId": 16870239,
+      "teamName": "Iason Malkotsis",
+      "submissionDate": "2026-09-20T23:14:55.980Z",
+      "score": "0.92169"
+    },
+    {
+      "teamId": 16768238,
+      "teamName": "cesare",
+      "submissionDate": "2026-09-29T00:09:14.923Z",
+      "score": "0.92169"
+    },
+    {
+      "teamId": 16817845,
+      "teamName": "Vijay Mariappan",
+      "submissionDate": "2026-09-29T08:03:39.890Z",
+      "score": "0.92168"
+    },
+    {
+      "teamId": 16809422,
+      "teamName": "Fanch",
+      "submissionDate": "2026-09-29T11:48:11.093Z",
+      "score": "0.92163"
+    },
+    {
+      "teamId": 16493652,
+      "teamName": "InSociEUP",
+      "submissionDate": "2026-09-27T14:56:41.750Z",
+      "score": "0.92162"
+    },
+    {
+      "teamId": 16926713,
+      "teamName": "Abdur Rahim",
+      "submissionDate": "2026-09-29T03:19:56.926Z",
+      "score": "0.92162"
+    },
+    {
+      "teamId": 16483635,
+      "teamName": "pwxc00",
+      "submissionDate": "2026-09-29T15:31:57.710Z",
+      "score": "0.92159"
+    },
+    {
+      "teamId": 16585597,
+      "teamName": "Sophie555",
+      "submissionDate": "2026-09-29T14:40:20.830Z",
+      "score": "0.92157"
+    },
+    {
+      "teamId": 16533430,
+      "teamName": "Bio-Pirates",
+      "submissionDate": "2026-09-29T11:11:48.660Z",
+      "score": "0.92157"
+    },
+    {
+      "teamId": 16854724,
+      "teamName": "kostopr4v",
+      "submissionDate": "2026-09-29T14:55:27.360Z",
+      "score": "0.92151"
+    },
+    {
+      "teamId": 16943742,
+      "teamName": "Reuben Ernser",
+      "submissionDate": "2026-09-25T23:21:14.993Z",
+      "score": "0.92150"
+    },
+    {
+      "teamId": 16643661,
+      "teamName": "Tim",
+      "submissionDate": "2026-09-14T00:36:14.430Z",
+      "score": "0.92148"
+    },
+    {
+      "teamId": 16470019,
+      "teamName": "Madhur Shyam Maurya",
+      "submissionDate": "2026-09-28T17:42:02.336Z",
+      "score": "0.92145"
+    },
+    {
+      "teamId": 16533366,
+      "teamName": "RFeng12",
+      "submissionDate": "2026-09-29T02:13:19.113Z",
+      "score": "0.92144"
+    },
+    {
+      "teamId": 16924467,
+      "teamName": "Astra",
+      "submissionDate": "2026-09-29T08:52:53.050Z",
+      "score": "0.92143"
+    },
+    {
+      "teamId": 16798741,
+      "teamName": "불",
+      "submissionDate": "2026-09-28T15:19:28.333Z",
+      "score": "0.92143"
+    },
+    {
+      "teamId": 16857821,
+      "teamName": "hubhub",
+      "submissionDate": "2026-09-29T09:20:30.573Z",
+      "score": "0.92138"
+    },
+    {
+      "teamId": 16454055,
+      "teamName": "MOHAMMADJAFAR ZAMANI",
+      "submissionDate": "2026-09-28T19:40:17.693Z",
+      "score": "0.92138"
+    },
+    {
+      "teamId": 16512476,
+      "teamName": "QYQ1693",
+      "submissionDate": "2026-09-29T13:16:42.863Z",
+      "score": "0.92133"
+    },
+    {
+      "teamId": 16610471,
+      "teamName": "The Originals",
+      "submissionDate": "2026-09-29T14:52:47.550Z",
+      "score": "0.92133"
+    },
+    {
+      "teamId": 16531133,
+      "teamName": "Praxel",
+      "submissionDate": "2026-09-29T09:01:23.363Z",
+      "score": "0.92132"
+    },
+    {
+      "teamId": 16827214,
+      "teamName": "Gaiar Baimuratov",
+      "submissionDate": "2026-09-29T12:18:36.250Z",
+      "score": "0.92125"
+    },
+    {
+      "teamId": 16605065,
+      "teamName": "Lê Quang Cảnh",
+      "submissionDate": "2026-09-20T22:52:33.740Z",
+      "score": "0.92120"
+    },
+    {
+      "teamId": 16876492,
+      "teamName": "Adam",
+      "submissionDate": "2026-09-29T16:26:17.620Z",
+      "score": "0.92120"
+    },
+    {
+      "teamId": 16705950,
+      "teamName": "hana87hana",
+      "submissionDate": "2026-09-29T02:22:08.273Z",
+      "score": "0.92119"
+    },
+    {
+      "teamId": 16766098,
+      "teamName": "Sanket Nandkumar Patil ",
+      "submissionDate": "2026-09-29T05:56:50.420Z",
+      "score": "0.92118"
+    },
+    {
+      "teamId": 16778653,
+      "teamName": "Nabil Hanif",
+      "submissionDate": "2026-09-27T09:52:49.126Z",
+      "score": "0.92116"
+    },
+    {
+      "teamId": 16455247,
+      "teamName": "MAIDANG",
+      "submissionDate": "2026-09-29T06:25:25.376Z",
+      "score": "0.92111"
+    },
+    {
+      "teamId": 16794876,
+      "teamName": "Manish",
+      "submissionDate": "2026-09-29T11:08:37.993Z",
+      "score": "0.92111"
+    },
+    {
+      "teamId": 16941983,
+      "teamName": "Kurokawa #2",
+      "submissionDate": "2026-09-28T06:29:41.733Z",
+      "score": "0.92105"
+    },
+    {
+      "teamId": 16454626,
+      "teamName": "Suuuiiii4",
+      "submissionDate": "2026-09-29T01:00:57.786Z",
+      "score": "0.92101"
+    },
+    {
+      "teamId": 16935723,
+      "teamName": "Golubev Alexander",
+      "submissionDate": "2026-09-29T08:03:13.213Z",
+      "score": "0.92101"
+    },
+    {
+      "teamId": 16707369,
+      "teamName": "辛弃疾lhx",
+      "submissionDate": "2026-09-25T08:33:03.880Z",
+      "score": "0.92101"
+    },
+    {
+      "teamId": 16453475,
+      "teamName": "MH",
+      "submissionDate": "2026-09-28T12:06:45.483Z",
+      "score": "0.92095"
+    },
+    {
+      "teamId": 16795364,
+      "teamName": "xinwang",
+      "submissionDate": "2026-09-29T07:02:10.830Z",
+      "score": "0.92095"
+    },
+    {
+      "teamId": 16933058,
+      "teamName": "mmtyeu",
+      "submissionDate": "2026-09-27T02:44:07.893Z",
+      "score": "0.92090"
+    },
+    {
+      "teamId": 16774680,
+      "teamName": "rogerrogerroger3r",
+      "submissionDate": "2026-09-29T10:33:19.596Z",
+      "score": "0.92090"
+    },
+    {
+      "teamId": 16806178,
+      "teamName": "Surya Bhattiprol",
+      "submissionDate": "2026-09-28T16:00:08.156Z",
+      "score": "0.92088"
+    },
+    {
+      "teamId": 16633299,
+      "teamName": "Abdelghani Charouiti",
+      "submissionDate": "2026-09-29T23:17:10.820Z",
+      "score": "0.92087"
+    },
+    {
+      "teamId": 16545373,
+      "teamName": "HIVE",
+      "submissionDate": "2026-09-29T04:22:52.060Z",
+      "score": "0.92086"
+    },
+    {
+      "teamId": 16909067,
+      "teamName": "команда Андрея Гайдуляна",
+      "submissionDate": "2026-09-29T07:01:42.330Z",
+      "score": "0.92086"
+    },
+    {
+      "teamId": 16584145,
+      "teamName": "Kai Gowers",
+      "submissionDate": "2026-09-29T15:44:13.883Z",
+      "score": "0.92086"
+    },
+    {
+      "teamId": 16645330,
+      "teamName": "easonyanyan",
+      "submissionDate": "2026-09-29T07:20:28.383Z",
+      "score": "0.92086"
+    },
+    {
+      "teamId": 16777668,
+      "teamName": "pycon2026",
+      "submissionDate": "2026-09-29T11:50:11.183Z",
+      "score": "0.92085"
+    },
+    {
+      "teamId": 16541909,
+      "teamName": "Ryu Sonoda",
+      "submissionDate": "2026-09-27T00:05:43.280Z",
+      "score": "0.92083"
+    },
+    {
+      "teamId": 16941276,
+      "teamName": "snappi",
+      "submissionDate": "2026-09-25T12:08:34.956Z",
+      "score": "0.92082"
+    },
+    {
+      "teamId": 16701734,
+      "teamName": "Kirderf",
+      "submissionDate": "2026-09-29T08:37:00.166Z",
+      "score": "0.92081"
+    },
+    {
+      "teamId": 16590155,
+      "teamName": "Yam",
+      "submissionDate": "2026-09-29T05:36:55.903Z",
+      "score": "0.92079"
+    },
+    {
+      "teamId": 16882040,
+      "teamName": "Thomas Deng",
+      "submissionDate": "2026-09-29T05:15:11.810Z",
+      "score": "0.92078"
+    },
+    {
+      "teamId": 16739637,
+      "teamName": "JaZzZy",
+      "submissionDate": "2026-09-29T13:03:20.103Z",
+      "score": "0.92078"
+    },
+    {
+      "teamId": 16455295,
+      "teamName": "Na Ve Ba",
+      "submissionDate": "2026-09-29T11:23:22.013Z",
+      "score": "0.92078"
+    },
+    {
+      "teamId": 16922957,
+      "teamName": "Aditya Goyal",
+      "submissionDate": "2026-09-26T20:10:10.943Z",
+      "score": "0.92075"
+    },
+    {
+      "teamId": 16933174,
+      "teamName": "darkvector4",
+      "submissionDate": "2026-09-25T14:59:10.310Z",
+      "score": "0.92075"
+    },
+    {
+      "teamId": 16839709,
+      "teamName": "kk.sky.9k",
+      "submissionDate": "2026-09-29T10:38:45.080Z",
+      "score": "0.92075"
+    },
+    {
+      "teamId": 16929453,
+      "teamName": "Suneeth reddy",
+      "submissionDate": "2026-09-28T07:54:13.913Z",
+      "score": "0.92074"
+    },
+    {
+      "teamId": 16514513,
+      "teamName": "harmo-miu",
+      "submissionDate": "2026-09-28T05:44:41.470Z",
+      "score": "0.92071"
+    },
+    {
+      "teamId": 16923902,
+      "teamName": "signalior",
+      "submissionDate": "2026-09-25T13:36:36.800Z",
+      "score": "0.92068"
+    },
+    {
+      "teamId": 16933351,
+      "teamName": "Matt",
+      "submissionDate": "2026-09-29T06:52:04.913Z",
+      "score": "0.92068"
+    },
+    {
+      "teamId": 16457265,
+      "teamName": "AL Najafi",
+      "submissionDate": "2026-09-29T00:01:12.670Z",
+      "score": "0.92065"
+    },
+    {
+      "teamId": 16851976,
+      "teamName": "Weixuan Liu",
+      "submissionDate": "2026-09-29T13:20:51.233Z",
+      "score": "0.92064"
+    },
+    {
+      "teamId": 16459225,
+      "teamName": "Jerry Park",
+      "submissionDate": "2026-09-29T12:21:29.490Z",
+      "score": "0.92063"
+    },
+    {
+      "teamId": 16810638,
+      "teamName": "D: Discipline",
+      "submissionDate": "2026-09-29T09:00:17.723Z",
+      "score": "0.92062"
+    },
+    {
+      "teamId": 16877455,
+      "teamName": "Mohamed el.harery",
+      "submissionDate": "2026-09-28T05:05:43.573Z",
+      "score": "0.92062"
+    },
+    {
+      "teamId": 16574913,
+      "teamName": "Freeman Hui",
+      "submissionDate": "2026-09-29T11:15:07.603Z",
+      "score": "0.92060"
+    },
+    {
+      "teamId": 16475697,
+      "teamName": "Marek Nurzynski",
+      "submissionDate": "2026-09-29T17:02:20.096Z",
+      "score": "0.92060"
+    },
+    {
+      "teamId": 16453975,
+      "teamName": "Congcong Bi",
+      "submissionDate": "2026-09-27T23:09:16.800Z",
+      "score": "0.92060"
+    },
+    {
+      "teamId": 16929638,
+      "teamName": "menphim",
+      "submissionDate": "2026-09-29T07:06:24.640Z",
+      "score": "0.92058"
+    },
+    {
+      "teamId": 16479746,
+      "teamName": "Apoorva Ajay",
+      "submissionDate": "2026-09-29T11:17:28.946Z",
+      "score": "0.92057"
+    },
+    {
+      "teamId": 16469126,
+      "teamName": "neurlog",
+      "submissionDate": "2026-09-29T09:40:47.183Z",
+      "score": "0.92057"
+    },
+    {
+      "teamId": 16683690,
+      "teamName": "Julie Pedeches",
+      "submissionDate": "2026-09-29T13:16:34.083Z",
+      "score": "0.92056"
+    },
+    {
+      "teamId": 16803478,
+      "teamName": "Andrey Baranov",
+      "submissionDate": "2026-09-29T12:53:53.956Z",
+      "score": "0.92055"
+    },
+    {
+      "teamId": 16682919,
+      "teamName": "Hirujan Rangaraj",
+      "submissionDate": "2026-09-27T12:05:25.210Z",
+      "score": "0.92055"
+    },
+    {
+      "teamId": 16543953,
+      "teamName": "🐱Kitten",
+      "submissionDate": "2026-09-29T04:36:28.043Z",
+      "score": "0.92055"
+    },
+    {
+      "teamId": 16839387,
+      "teamName": "kyoto-bt",
+      "submissionDate": "2026-09-29T03:01:50.090Z",
+      "score": "0.92055"
+    },
+    {
+      "teamId": 16918347,
+      "teamName": "maoxin123",
+      "submissionDate": "2026-09-29T08:26:29.060Z",
+      "score": "0.92055"
+    },
+    {
+      "teamId": 16508666,
+      "teamName": "xthixsl_ml",
+      "submissionDate": "2026-09-29T06:38:50.070Z",
+      "score": "0.92055"
+    },
+    {
+      "teamId": 16690735,
+      "teamName": "biodegradable kagglers",
+      "submissionDate": "2026-09-29T09:14:42.096Z",
+      "score": "0.92053"
+    },
+    {
+      "teamId": 16833282,
+      "teamName": "skomuro",
+      "submissionDate": "2026-09-29T15:32:36.513Z",
+      "score": "0.92053"
+    },
+    {
+      "teamId": 16533628,
+      "teamName": "Joseph Adamski",
+      "submissionDate": "2026-09-29T10:47:15.040Z",
+      "score": "0.92046"
+    },
+    {
+      "teamId": 16496891,
+      "teamName": "Juyong",
+      "submissionDate": "2026-09-29T01:45:56.323Z",
+      "score": "0.92042"
+    },
+    {
+      "teamId": 16714472,
+      "teamName": "AlejandroAlvarez",
+      "submissionDate": "2026-09-29T07:59:16.006Z",
+      "score": "0.92041"
+    },
+    {
+      "teamId": 16570510,
+      "teamName": "关注塔菲喵，关注塔菲谢谢喵",
+      "submissionDate": "2026-09-29T16:04:53.643Z",
+      "score": "0.92041"
+    },
+    {
+      "teamId": 16723664,
+      "teamName": "Alexander Krylov",
+      "submissionDate": "2026-09-29T02:39:25.656Z",
+      "score": "0.92040"
+    },
+    {
+      "teamId": 16940725,
+      "teamName": "Danzzzl",
+      "submissionDate": "2026-09-29T09:51:59.800Z",
+      "score": "0.92039"
+    },
+    {
+      "teamId": 16906937,
+      "teamName": "Haonan Zhou",
+      "submissionDate": "2026-09-29T03:56:09.766Z",
+      "score": "0.92038"
+    },
+    {
+      "teamId": 16814927,
+      "teamName": "zhehao liang",
+      "submissionDate": "2026-09-29T03:51:35.663Z",
+      "score": "0.92038"
+    },
+    {
+      "teamId": 16461152,
+      "teamName": "Abnormal Guys",
+      "submissionDate": "2026-09-29T12:40:11.386Z",
+      "score": "0.92037"
+    },
+    {
+      "teamId": 16921534,
+      "teamName": "tofu1002",
+      "submissionDate": "2026-09-29T08:15:55.576Z",
+      "score": "0.92035"
+    },
+    {
+      "teamId": 16559438,
+      "teamName": "Aaryan Agarwal",
+      "submissionDate": "2026-09-29T14:48:58.700Z",
+      "score": "0.92034"
+    },
+    {
+      "teamId": 16796396,
+      "teamName": "Satoshi Nguyen",
+      "submissionDate": "2026-09-29T00:02:24.760Z",
+      "score": "0.92034"
+    },
+    {
+      "teamId": 16938519,
+      "teamName": "pavan rajr",
+      "submissionDate": "2026-09-29T00:47:34.383Z",
+      "score": "0.92031"
+    },
+    {
+      "teamId": 16809295,
+      "teamName": "Cherie01",
+      "submissionDate": "2026-09-29T07:14:38.196Z",
+      "score": "0.92031"
+    },
+    {
+      "teamId": 16942259,
+      "teamName": "Daijingping",
+      "submissionDate": "2026-09-29T11:54:27.146Z",
+      "score": "0.92031"
+    },
+    {
+      "teamId": 16458905,
+      "teamName": "Jindong Fan",
+      "submissionDate": "2026-09-28T18:27:49.713Z",
+      "score": "0.92031"
+    },
+    {
+      "teamId": 16518070,
+      "teamName": "Anvith Pothula",
+      "submissionDate": "2026-09-29T00:02:53.000Z",
+      "score": "0.92030"
+    },
+    {
+      "teamId": 16494800,
+      "teamName": "Mikhail Karchevskiy",
+      "submissionDate": "2026-09-29T00:05:28.976Z",
+      "score": "0.92028"
+    },
+    {
+      "teamId": 16457732,
+      "teamName": "Kita Renji",
+      "submissionDate": "2026-09-26T07:48:34.046Z",
+      "score": "0.92026"
+    },
+    {
+      "teamId": 16892960,
+      "teamName": "Sankalp Wanjari",
+      "submissionDate": "2026-09-29T11:45:04.040Z",
+      "score": "0.92026"
+    },
+    {
+      "teamId": 16544856,
+      "teamName": "Ju",
+      "submissionDate": "2026-09-29T15:46:24.860Z",
+      "score": "0.92026"
+    },
+    {
+      "teamId": 16879312,
+      "teamName": "Yusaku Muroya",
+      "submissionDate": "2026-09-28T11:42:44.476Z",
+      "score": "0.92026"
+    },
+    {
+      "teamId": 16742716,
+      "teamName": "Wiz",
+      "submissionDate": "2026-09-29T16:12:28.093Z",
+      "score": "0.92026"
+    },
+    {
+      "teamId": 16791306,
+      "teamName": "woldy",
+      "submissionDate": "2026-09-26T03:49:02.990Z",
+      "score": "0.92024"
+    },
+    {
+      "teamId": 16790581,
+      "teamName": "wzyxp_123",
+      "submissionDate": "2026-09-28T18:19:00.606Z",
+      "score": "0.92021"
+    },
+    {
+      "teamId": 16860520,
+      "teamName": "Marc Maldonado Lorca",
+      "submissionDate": "2026-09-29T08:32:28.596Z",
+      "score": "0.92021"
+    },
+    {
+      "teamId": 16674723,
+      "teamName": "HongchenDai",
+      "submissionDate": "2026-09-29T16:05:57.486Z",
+      "score": "0.92021"
+    },
+    {
+      "teamId": 16825704,
+      "teamName": "Shangshang Zhang",
+      "submissionDate": "2026-09-23T07:10:28.863Z",
+      "score": "0.92021"
+    },
+    {
+      "teamId": 16544501,
+      "teamName": "Hai Nguyen Thien",
+      "submissionDate": "2026-09-29T13:14:17.490Z",
+      "score": "0.92018"
+    },
+    {
+      "teamId": 16799049,
+      "teamName": "Mingcheng Zhao",
+      "submissionDate": "2026-09-29T15:11:34.630Z",
+      "score": "0.92017"
+    },
+    {
+      "teamId": 16483697,
+      "teamName": "Dalton Omondi",
+      "submissionDate": "2026-09-28T14:32:42.693Z",
+      "score": "0.92016"
+    },
+    {
+      "teamId": 16713798,
+      "teamName": "tamryow",
+      "submissionDate": "2026-09-29T10:23:50.210Z",
+      "score": "0.92016"
+    },
+    {
+      "teamId": 16636119,
+      "teamName": "Jordi Corbilla",
+      "submissionDate": "2026-09-29T00:58:45.026Z",
+      "score": "0.92015"
+    },
+    {
+      "teamId": 16840258,
+      "teamName": "Noir",
+      "submissionDate": "2026-09-29T08:01:35.226Z",
+      "score": "0.92014"
+    },
+    {
+      "teamId": 16462331,
+      "teamName": "Subin An",
+      "submissionDate": "2026-09-29T04:54:29.390Z",
+      "score": "0.92014"
+    },
+    {
+      "teamId": 16749082,
+      "teamName": "mraz1006",
+      "submissionDate": "2026-09-29T04:44:46.120Z",
+      "score": "0.92013"
+    },
+    {
+      "teamId": 16516057,
+      "teamName": "Enrique Rodríguez",
+      "submissionDate": "2026-09-29T10:36:22.093Z",
+      "score": "0.92013"
+    },
+    {
+      "teamId": 16833478,
+      "teamName": "brave-心勇-heart",
+      "submissionDate": "2026-09-29T00:20:52.300Z",
+      "score": "0.92013"
+    },
+    {
+      "teamId": 16472928,
+      "teamName": "ne Artem Savchenko",
+      "submissionDate": "2026-09-29T12:50:32.793Z",
+      "score": "0.92013"
+    },
+    {
+      "teamId": 16862594,
+      "teamName": "linhaiy",
+      "submissionDate": "2026-09-29T09:28:01.356Z",
+      "score": "0.92012"
+    },
+    {
+      "teamId": 16854162,
+      "teamName": "tamref",
+      "submissionDate": "2026-09-29T00:02:37.383Z",
+      "score": "0.92011"
+    },
+    {
+      "teamId": 16506717,
+      "teamName": "ebisu_ya",
+      "submissionDate": "2026-09-11T10:19:57.136Z",
+      "score": "0.92007"
+    },
+    {
+      "teamId": 16454847,
+      "teamName": "Lonnie",
+      "submissionDate": "2026-09-29T12:24:50.530Z",
+      "score": "0.92006"
+    },
+    {
+      "teamId": 16479491,
+      "teamName": "Ernesto Santiesteban",
+      "submissionDate": "2026-09-29T00:00:14.920Z",
+      "score": "0.92002"
+    },
+    {
+      "teamId": 16715400,
+      "teamName": "ERS",
+      "submissionDate": "2026-09-29T11:16:04.973Z",
+      "score": "0.92002"
+    },
+    {
+      "teamId": 16587421,
+      "teamName": "chocolat",
+      "submissionDate": "2026-09-29T00:14:10.766Z",
+      "score": "0.92002"
+    },
+    {
+      "teamId": 16593001,
+      "teamName": "PARAG VIJAY PAWAR",
+      "submissionDate": "2026-09-28T14:56:26.363Z",
+      "score": "0.92001"
+    },
+    {
+      "teamId": 16935644,
+      "teamName": "KrittanutSomtuas",
+      "submissionDate": "2026-09-24T10:08:21.103Z",
+      "score": "0.91998"
+    },
+    {
+      "teamId": 16857336,
+      "teamName": "koucha",
+      "submissionDate": "2026-09-29T13:55:54.136Z",
+      "score": "0.91997"
+    },
+    {
+      "teamId": 16480227,
+      "teamName": "AdamJonesJohnson",
+      "submissionDate": "2026-09-29T19:53:59.986Z",
+      "score": "0.91996"
+    },
+    {
+      "teamId": 16905988,
+      "teamName": "ba1Water",
+      "submissionDate": "2026-09-27T12:32:01.213Z",
+      "score": "0.91992"
+    },
+    {
+      "teamId": 16867622,
+      "teamName": "tatt:)ch",
+      "submissionDate": "2026-09-29T13:22:50.273Z",
+      "score": "0.91983"
+    },
+    {
+      "teamId": 16796675,
+      "teamName": "Jiacheng Zhao",
+      "submissionDate": "2026-09-29T06:12:11.920Z",
+      "score": "0.91976"
+    },
+    {
+      "teamId": 16941218,
+      "teamName": "misis_big_balls",
+      "submissionDate": "2026-09-29T10:08:16.596Z",
+      "score": "0.91975"
+    },
+    {
+      "teamId": 16632057,
+      "teamName": "Any Things",
+      "submissionDate": "2026-09-29T00:04:21.083Z",
+      "score": "0.91975"
+    },
+    {
+      "teamId": 16696849,
+      "teamName": "fromage _",
+      "submissionDate": "2026-09-29T11:51:52.036Z",
+      "score": "0.91974"
+    },
+    {
+      "teamId": 16458074,
+      "teamName": "do-jo",
+      "submissionDate": "2026-09-29T15:11:31.146Z",
+      "score": "0.91970"
+    },
+    {
+      "teamId": 16743260,
+      "teamName": "xerkey",
+      "submissionDate": "2026-09-29T11:18:46.276Z",
+      "score": "0.91969"
+    },
+    {
+      "teamId": 16470584,
+      "teamName": "github/shepsci/kaggle-skill",
+      "submissionDate": "2026-09-29T00:38:10.776Z",
+      "score": "0.91969"
+    },
+    {
+      "teamId": 16809458,
+      "teamName": "Pang1101",
+      "submissionDate": "2026-09-29T14:05:48.293Z",
+      "score": "0.91968"
+    },
+    {
+      "teamId": 16627260,
+      "teamName": "X.X",
+      "submissionDate": "2026-09-28T15:03:13.070Z",
+      "score": "0.91967"
+    },
+    {
+      "teamId": 16555768,
+      "teamName": "Taisei",
+      "submissionDate": "2026-09-26T14:19:50.433Z",
+      "score": "0.91966"
+    },
+    {
+      "teamId": 16756833,
+      "teamName": "Vladimir Salazar",
+      "submissionDate": "2026-09-15T05:11:54.090Z",
+      "score": "0.91964"
+    },
+    {
+      "teamId": 16717777,
+      "teamName": "Kento Okumura",
+      "submissionDate": "2026-09-29T12:23:04.196Z",
+      "score": "0.91963"
+    },
+    {
+      "teamId": 16609245,
+      "teamName": "liyansen",
+      "submissionDate": "2026-09-29T01:50:34.000Z",
+      "score": "0.91963"
+    },
+    {
+      "teamId": 16651943,
+      "teamName": "xxxx0314",
+      "submissionDate": "2026-09-29T06:38:30.910Z",
+      "score": "0.91963"
+    },
+    {
+      "teamId": 16924316,
+      "teamName": "tyvallo",
+      "submissionDate": "2026-09-29T03:53:36.750Z",
+      "score": "0.91960"
+    },
+    {
+      "teamId": 16848632,
+      "teamName": "田口雄大",
+      "submissionDate": "2026-09-29T07:44:12.046Z",
+      "score": "0.91958"
+    },
+    {
+      "teamId": 16457338,
+      "teamName": "AWN",
+      "submissionDate": "2026-09-29T05:44:05.600Z",
+      "score": "0.91958"
+    },
+    {
+      "teamId": 16935658,
+      "teamName": "barbosi",
+      "submissionDate": "2026-09-29T00:00:58.396Z",
+      "score": "0.91957"
+    },
+    {
+      "teamId": 16726860,
+      "teamName": "atom0190",
+      "submissionDate": "2026-09-29T16:03:24.776Z",
+      "score": "0.91956"
+    },
+    {
+      "teamId": 16456126,
+      "teamName": "Hira Norm",
+      "submissionDate": "2026-09-29T06:55:14.016Z",
+      "score": "0.91955"
+    },
+    {
+      "teamId": 16459290,
+      "teamName": "Alberto Mocchi",
+      "submissionDate": "2026-09-29T13:32:38.710Z",
+      "score": "0.91953"
+    },
+    {
+      "teamId": 16709193,
+      "teamName": "MKhlystun",
+      "submissionDate": "2026-09-29T11:55:48.680Z",
+      "score": "0.91953"
+    },
+    {
+      "teamId": 16501843,
+      "teamName": "Allen",
+      "submissionDate": "2026-09-29T14:11:56.233Z",
+      "score": "0.91953"
+    },
+    {
+      "teamId": 16818186,
+      "teamName": "interplinker",
+      "submissionDate": "2026-09-29T03:45:38.296Z",
+      "score": "0.91952"
+    },
+    {
+      "teamId": 16609242,
+      "teamName": "xiaoyukun1",
+      "submissionDate": "2026-09-29T16:50:43.093Z",
+      "score": "0.91950"
+    },
+    {
+      "teamId": 16634028,
+      "teamName": "Mike Kim",
+      "submissionDate": "2026-09-29T07:07:16.640Z",
+      "score": "0.91949"
+    },
+    {
+      "teamId": 16739651,
+      "teamName": "OTkm_tn",
+      "submissionDate": "2026-09-29T05:15:04.800Z",
+      "score": "0.91947"
+    },
+    {
+      "teamId": 16939681,
+      "teamName": "tokawa2997",
+      "submissionDate": "2026-09-29T05:38:08.740Z",
+      "score": "0.91947"
+    },
+    {
+      "teamId": 16484138,
+      "teamName": "Hide on bush",
+      "submissionDate": "2026-09-29T09:02:51.503Z",
+      "score": "0.91946"
+    },
+    {
+      "teamId": 16924085,
+      "teamName": "isk54_34",
+      "submissionDate": "2026-09-29T08:01:23.053Z",
+      "score": "0.91943"
+    },
+    {
+      "teamId": 16931156,
+      "teamName": "lyre lin",
+      "submissionDate": "2026-09-29T15:33:50.086Z",
+      "score": "0.91940"
+    },
+    {
+      "teamId": 16482033,
+      "teamName": "zentropy",
+      "submissionDate": "2026-09-29T07:34:13.156Z",
+      "score": "0.91938"
+    },
+    {
+      "teamId": 16754797,
+      "teamName": "lime0001",
+      "submissionDate": "2026-09-28T11:37:22.150Z",
+      "score": "0.91936"
+    },
+    {
+      "teamId": 16591379,
+      "teamName": "MaruanBOttoni",
+      "submissionDate": "2026-09-29T12:28:46.060Z",
+      "score": "0.91936"
+    },
+    {
+      "teamId": 16555140,
+      "teamName": "Xiangjiang Zhou",
+      "submissionDate": "2026-09-25T09:33:29.316Z",
+      "score": "0.91935"
+    },
+    {
+      "teamId": 16634718,
+      "teamName": "Eusebius",
+      "submissionDate": "2026-09-29T15:29:21.640Z",
+      "score": "0.91934"
+    },
+    {
+      "teamId": 16506372,
+      "teamName": "tizawa3",
+      "submissionDate": "2026-09-29T10:36:18.016Z",
+      "score": "0.91933"
+    },
+    {
+      "teamId": 16877644,
+      "teamName": "MaksKhan",
+      "submissionDate": "2026-09-29T11:34:31.523Z",
+      "score": "0.91930"
+    },
+    {
+      "teamId": 16762743,
+      "teamName": "Zenith Ye",
+      "submissionDate": "2026-09-28T10:19:02.746Z",
+      "score": "0.91926"
+    },
+    {
+      "teamId": 16709791,
+      "teamName": "ysd1110",
+      "submissionDate": "2026-09-29T13:50:19.506Z",
+      "score": "0.91925"
+    },
+    {
+      "teamId": 16455471,
+      "teamName": "Jun Liu",
+      "submissionDate": "2026-09-29T07:32:15.276Z",
+      "score": "0.91925"
+    },
+    {
+      "teamId": 16555455,
+      "teamName": "Eng Adam Al mohammedi",
+      "submissionDate": "2026-09-29T11:26:09.006Z",
+      "score": "0.91924"
+    },
+    {
+      "teamId": 16917693,
+      "teamName": "Dilyorbek Muhammadjonov",
+      "submissionDate": "2026-09-29T03:22:28.613Z",
+      "score": "0.91924"
+    },
+    {
+      "teamId": 16499748,
+      "teamName": "Med-AI",
+      "submissionDate": "2026-09-29T00:56:38.346Z",
+      "score": "0.91923"
+    },
+    {
+      "teamId": 16699783,
+      "teamName": "houlidai-jiekiulai",
+      "submissionDate": "2026-09-29T03:32:26.116Z",
+      "score": "0.91922"
+    },
+    {
+      "teamId": 16791838,
+      "teamName": "Ling",
+      "submissionDate": "2026-09-29T17:49:28.590Z",
+      "score": "0.91920"
+    },
+    {
+      "teamId": 16596995,
+      "teamName": "Jackson Bom",
+      "submissionDate": "2026-09-29T15:13:52.516Z",
+      "score": "0.91920"
+    },
+    {
+      "teamId": 16453693,
+      "teamName": "Pilkwang Kim",
+      "submissionDate": "2026-09-16T11:09:57.740Z",
+      "score": "0.91920"
+    },
+    {
+      "teamId": 16578232,
+      "teamName": "Sailor Ren",
+      "submissionDate": "2026-09-29T04:15:27.273Z",
+      "score": "0.91918"
+    },
+    {
+      "teamId": 16721184,
+      "teamName": "aks05410",
+      "submissionDate": "2026-09-29T14:40:25.720Z",
+      "score": "0.91917"
+    },
+    {
+      "teamId": 16903771,
+      "teamName": "liu bo",
+      "submissionDate": "2026-09-29T01:49:38.186Z",
+      "score": "0.91917"
+    },
+    {
+      "teamId": 16483787,
+      "teamName": "Amil Gentili",
+      "submissionDate": "2026-09-29T13:33:40.106Z",
+      "score": "0.91917"
+    },
+    {
+      "teamId": 16501671,
+      "teamName": "Ifeoluwa Adewumi",
+      "submissionDate": "2026-09-29T08:40:15.853Z",
+      "score": "0.91917"
+    },
+    {
+      "teamId": 16888658,
+      "teamName": "hhzzjjj",
+      "submissionDate": "2026-09-29T00:00:39.850Z",
+      "score": "0.91915"
+    },
+    {
+      "teamId": 16535609,
+      "teamName": "vdthcmus123",
+      "submissionDate": "2026-09-27T20:09:25.010Z",
+      "score": "0.91914"
+    },
+    {
+      "teamId": 16530280,
+      "teamName": "firat yavas",
+      "submissionDate": "2026-09-29T08:05:32.993Z",
+      "score": "0.91910"
+    },
+    {
+      "teamId": 16609740,
+      "teamName": "Tim Krige",
+      "submissionDate": "2026-09-24T04:22:53.056Z",
+      "score": "0.91910"
+    },
+    {
+      "teamId": 16705682,
+      "teamName": "Kaz",
+      "submissionDate": "2026-09-29T16:52:49.500Z",
+      "score": "0.91909"
+    },
+    {
+      "teamId": 16854730,
+      "teamName": "Korokke3",
+      "submissionDate": "2026-09-29T10:14:32.066Z",
+      "score": "0.91908"
+    },
+    {
+      "teamId": 16457567,
+      "teamName": "Efthimios",
+      "submissionDate": "2026-09-29T04:00:55.103Z",
+      "score": "0.91907"
+    },
+    {
+      "teamId": 16655148,
+      "teamName": "Ben Pepper",
+      "submissionDate": "2026-09-29T01:07:47.563Z",
+      "score": "0.91902"
+    },
+    {
+      "teamId": 16935351,
+      "teamName": "Bon Ho",
+      "submissionDate": "2026-09-28T08:56:21.676Z",
+      "score": "0.91901"
+    },
+    {
+      "teamId": 16583118,
+      "teamName": "Georgvm1",
+      "submissionDate": "2026-09-26T09:17:27.210Z",
+      "score": "0.91901"
+    },
+    {
+      "teamId": 16943527,
+      "teamName": "Akihiro Yamamoto",
+      "submissionDate": "2026-09-29T16:34:49.546Z",
+      "score": "0.91896"
+    },
+    {
+      "teamId": 16741203,
+      "teamName": "farmer",
+      "submissionDate": "2026-09-29T00:01:46.303Z",
+      "score": "0.91895"
+    },
+    {
+      "teamId": 16771195,
+      "teamName": "chris",
+      "submissionDate": "2026-09-29T16:08:38.573Z",
+      "score": "0.91893"
+    },
+    {
+      "teamId": 16561614,
+      "teamName": "Justin CH123",
+      "submissionDate": "2026-09-29T12:21:51.716Z",
+      "score": "0.91893"
+    },
+    {
+      "teamId": 16461232,
+      "teamName": "Virtute",
+      "submissionDate": "2026-09-29T09:02:44.436Z",
+      "score": "0.91893"
+    },
+    {
+      "teamId": 16460127,
+      "teamName": "AkiraIshikawa",
+      "submissionDate": "2026-09-29T13:08:01.960Z",
+      "score": "0.91891"
+    },
+    {
+      "teamId": 16667756,
+      "teamName": "LeeDongHyuk",
+      "submissionDate": "2026-09-29T01:38:30.666Z",
+      "score": "0.91889"
+    },
+    {
+      "teamId": 16483723,
+      "teamName": "Homii_N",
+      "submissionDate": "2026-09-23T19:28:50.033Z",
+      "score": "0.91887"
+    },
+    {
+      "teamId": 16652951,
+      "teamName": "KiKi",
+      "submissionDate": "2026-09-23T17:52:30.106Z",
+      "score": "0.91887"
+    },
+    {
+      "teamId": 16919567,
+      "teamName": "Mycelis",
+      "submissionDate": "2026-09-29T04:48:19.326Z",
+      "score": "0.91884"
+    },
+    {
+      "teamId": 16744532,
+      "teamName": "Jun AKita",
+      "submissionDate": "2026-09-14T20:02:13.460Z",
+      "score": "0.91884"
+    },
+    {
+      "teamId": 16848865,
+      "teamName": "Sōsuke Aizen",
+      "submissionDate": "2026-09-29T13:58:37.286Z",
+      "score": "0.91883"
+    },
+    {
+      "teamId": 16672667,
+      "teamName": "Takahiro Saito",
+      "submissionDate": "2026-09-29T12:21:40.186Z",
+      "score": "0.91882"
+    },
+    {
+      "teamId": 16536241,
+      "teamName": "Harish Dhanarajan",
+      "submissionDate": "2026-09-29T14:02:53.793Z",
+      "score": "0.91882"
+    },
+    {
+      "teamId": 16571240,
+      "teamName": "wennan cao",
+      "submissionDate": "2026-09-29T21:41:25.756Z",
+      "score": "0.91878"
+    },
+    {
+      "teamId": 16487928,
+      "teamName": "Yu Wu",
+      "submissionDate": "2026-09-29T01:28:12.553Z",
+      "score": "0.91877"
+    },
+    {
+      "teamId": 16488188,
+      "teamName": "L1a0JH",
+      "submissionDate": "2026-09-29T08:09:41.056Z",
+      "score": "0.91876"
+    },
+    {
+      "teamId": 16456070,
+      "teamName": "mikelou1",
+      "submissionDate": "2026-09-29T05:39:01.543Z",
+      "score": "0.91875"
+    },
+    {
+      "teamId": 16925049,
+      "teamName": "Jinhan Gao",
+      "submissionDate": "2026-09-20T00:45:10.820Z",
+      "score": "0.91875"
+    },
+    {
+      "teamId": 16814951,
+      "teamName": "khursani",
+      "submissionDate": "2026-09-13T08:16:36.720Z",
+      "score": "0.91875"
+    },
+    {
+      "teamId": 16462399,
+      "teamName": "Jessica Crisp",
+      "submissionDate": "2026-09-29T06:35:15.756Z",
+      "score": "0.91874"
+    },
+    {
+      "teamId": 16463138,
+      "teamName": "tf",
+      "submissionDate": "2026-09-29T06:43:49.300Z",
+      "score": "0.91873"
+    },
+    {
+      "teamId": 16530936,
+      "teamName": "HiroyukiSasaki",
+      "submissionDate": "2026-09-29T03:43:12.636Z",
+      "score": "0.91873"
+    },
+    {
+      "teamId": 16887083,
+      "teamName": "TK BTW",
+      "submissionDate": "2026-09-28T12:15:24.586Z",
+      "score": "0.91873"
+    },
+    {
+      "teamId": 16717141,
+      "teamName": "Hai Dang",
+      "submissionDate": "2026-09-26T07:07:47.810Z",
+      "score": "0.91870"
+    },
+    {
+      "teamId": 16914590,
+      "teamName": "Luon may Man",
+      "submissionDate": "2026-09-29T14:53:00.116Z",
+      "score": "0.91870"
+    },
+    {
+      "teamId": 16695540,
+      "teamName": "frank9487",
+      "submissionDate": "2026-09-29T08:04:42.043Z",
+      "score": "0.91870"
+    },
+    {
+      "teamId": 16479958,
+      "teamName": "LeeVvin",
+      "submissionDate": "2026-09-29T03:49:39.286Z",
+      "score": "0.91869"
+    },
+    {
+      "teamId": 16479551,
+      "teamName": "Lien",
+      "submissionDate": "2026-09-29T07:56:12.080Z",
+      "score": "0.91868"
+    },
+    {
+      "teamId": 16454368,
+      "teamName": "Sebastian Mateus",
+      "submissionDate": "2026-09-29T01:42:41.916Z",
+      "score": "0.91867"
+    },
+    {
+      "teamId": 16732228,
+      "teamName": "Hongxin Su",
+      "submissionDate": "2026-09-27T02:20:14.933Z",
+      "score": "0.91865"
+    },
+    {
+      "teamId": 16884474,
+      "teamName": "aleksandr3312",
+      "submissionDate": "2026-09-29T16:27:59.020Z",
+      "score": "0.91864"
+    },
+    {
+      "teamId": 16876143,
+      "teamName": "Taeyang",
+      "submissionDate": "2026-09-29T15:06:35.596Z",
+      "score": "0.91864"
+    },
+    {
+      "teamId": 16797084,
+      "teamName": "Ryutaro Tsujii",
+      "submissionDate": "2026-09-29T09:38:53.753Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16461185,
+      "teamName": "Carles Marín",
+      "submissionDate": "2026-09-29T04:22:50.473Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16578167,
+      "teamName": "rekhasri",
+      "submissionDate": "2026-09-29T07:10:20.263Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16753800,
+      "teamName": "桂棹兮兰桨",
+      "submissionDate": "2026-09-29T11:44:38.343Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16553046,
+      "teamName": "Seungjin Kim",
+      "submissionDate": "2026-09-29T08:19:21.816Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16514255,
+      "teamName": "John Park",
+      "submissionDate": "2026-09-29T12:06:01.863Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16848062,
+      "teamName": "Yuan Weijun",
+      "submissionDate": "2026-09-29T02:01:38.013Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16611745,
+      "teamName": "Seine A. Shintani",
+      "submissionDate": "2026-09-29T09:06:33.393Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16462988,
+      "teamName": "DataRockstar",
+      "submissionDate": "2026-09-29T05:02:05.526Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16879796,
+      "teamName": "kta_jpn",
+      "submissionDate": "2026-09-29T07:20:29.146Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16764952,
+      "teamName": "XY0719",
+      "submissionDate": "2026-09-29T11:45:25.473Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16832191,
+      "teamName": "No Name",
+      "submissionDate": "2026-09-29T09:17:44.663Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16602485,
+      "teamName": "Leo Lin05",
+      "submissionDate": "2026-09-29T10:18:58.653Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16494680,
+      "teamName": "Rishav Sanjay",
+      "submissionDate": "2026-09-29T10:56:12.593Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16454360,
+      "teamName": "alban",
+      "submissionDate": "2026-09-29T10:48:08.130Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16588865,
+      "teamName": "Ruoting",
+      "submissionDate": "2026-09-29T11:26:15.986Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16823884,
+      "teamName": "Skyroot",
+      "submissionDate": "2026-09-29T12:38:44.330Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16454157,
+      "teamName": "BlackCat",
+      "submissionDate": "2026-09-29T13:14:19.913Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16751802,
+      "teamName": "tax_free",
+      "submissionDate": "2026-09-29T14:25:24.726Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16591754,
+      "teamName": "KHitomi",
+      "submissionDate": "2026-09-28T16:22:58.093Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16808942,
+      "teamName": "zaki_3",
+      "submissionDate": "2026-09-26T11:23:14.406Z",
+      "score": "0.91863"
+    },
+    {
+      "teamId": 16856120,
+      "teamName": "Alex Lenzi",
+      "submissionDate": "2026-09-28T00:04:44.536Z",
+      "score": "0.91862"
+    },
+    {
+      "teamId": 16861316,
+      "teamName": "mrkhtinia",
+      "submissionDate": "2026-09-25T00:57:52.533Z",
+      "score": "0.91862"
+    },
+    {
+      "teamId": 16820124,
+      "teamName": "Euphor_M",
+      "submissionDate": "2026-09-29T00:02:35.113Z",
+      "score": "0.91861"
+    },
+    {
+      "teamId": 16535220,
+      "teamName": "Wang Yibin",
+      "submissionDate": "2026-09-27T02:56:14.583Z",
+      "score": "0.91860"
+    },
+    {
+      "teamId": 16877600,
+      "teamName": "Rabotyagi",
+      "submissionDate": "2026-09-29T00:48:15.873Z",
+      "score": "0.91860"
+    },
+    {
+      "teamId": 16455622,
+      "teamName": "ChenWenSheng",
+      "submissionDate": "2026-09-28T13:10:31.283Z",
+      "score": "0.91859"
+    },
+    {
+      "teamId": 16796093,
+      "teamName": "Oleg Smirnov",
+      "submissionDate": "2026-09-28T08:15:08.163Z",
+      "score": "0.91858"
+    },
+    {
+      "teamId": 16942239,
+      "teamName": "Isabe11aM00re",
+      "submissionDate": "2026-09-29T05:23:28.536Z",
+      "score": "0.91858"
+    },
+    {
+      "teamId": 16707359,
+      "teamName": "chill~",
+      "submissionDate": "2026-09-29T12:09:15.116Z",
+      "score": "0.91857"
+    },
+    {
+      "teamId": 16539325,
+      "teamName": "Ikeda0516",
+      "submissionDate": "2026-09-29T05:20:02.633Z",
+      "score": "0.91855"
+    },
+    {
+      "teamId": 16888964,
+      "teamName": "MakerFly",
+      "submissionDate": "2026-09-29T10:42:10.556Z",
+      "score": "0.91854"
+    },
+    {
+      "teamId": 16514415,
+      "teamName": "MengYe",
+      "submissionDate": "2026-09-28T01:33:16.630Z",
+      "score": "0.91852"
+    },
+    {
+      "teamId": 16488570,
+      "teamName": "honjousetuna",
+      "submissionDate": "2026-09-29T12:12:49.416Z",
+      "score": "0.91851"
+    },
+    {
+      "teamId": 16891354,
+      "teamName": "Ruslan Akhmetov",
+      "submissionDate": "2026-09-28T21:24:44.233Z",
+      "score": "0.91851"
+    },
+    {
+      "teamId": 16455492,
+      "teamName": "Yin Li",
+      "submissionDate": "2026-09-29T01:33:51.886Z",
+      "score": "0.91851"
+    },
+    {
+      "teamId": 16460928,
+      "teamName": "juliencst",
+      "submissionDate": "2026-09-29T08:10:28.966Z",
+      "score": "0.91847"
+    },
+    {
+      "teamId": 16630356,
+      "teamName": "Shuhan Yang",
+      "submissionDate": "2026-09-26T16:41:37.140Z",
+      "score": "0.91847"
+    },
+    {
+      "teamId": 16742348,
+      "teamName": "AMANI DD",
+      "submissionDate": "2026-09-26T19:51:21.313Z",
+      "score": "0.91847"
+    },
+    {
+      "teamId": 16904998,
+      "teamName": "Yudai Ueno",
+      "submissionDate": "2026-09-29T01:14:58.896Z",
+      "score": "0.91846"
+    },
+    {
+      "teamId": 16455757,
+      "teamName": "Pirhosseinlou",
+      "submissionDate": "2026-09-29T06:59:57.253Z",
+      "score": "0.91846"
+    },
+    {
+      "teamId": 16810028,
+      "teamName": "BOB",
+      "submissionDate": "2026-09-29T00:03:57.500Z",
+      "score": "0.91846"
+    },
+    {
+      "teamId": 16513676,
+      "teamName": "Malla",
+      "submissionDate": "2026-09-28T18:46:13.423Z",
+      "score": "0.91845"
+    },
+    {
+      "teamId": 16737441,
+      "teamName": "junicus",
+      "submissionDate": "2026-09-29T13:21:10.993Z",
+      "score": "0.91845"
+    },
+    {
+      "teamId": 16749192,
+      "teamName": "qr Z1201",
+      "submissionDate": "2026-09-29T03:49:20.893Z",
+      "score": "0.91844"
+    },
+    {
+      "teamId": 16485118,
+      "teamName": "Dimitar Terziev",
+      "submissionDate": "2026-09-29T14:43:53.180Z",
+      "score": "0.91844"
+    },
+    {
+      "teamId": 16833965,
+      "teamName": "Revanth Tambisetty",
+      "submissionDate": "2026-09-29T09:33:53.163Z",
+      "score": "0.91843"
+    },
+    {
+      "teamId": 16773424,
+      "teamName": "4kut4",
+      "submissionDate": "2026-09-29T00:37:58.860Z",
+      "score": "0.91843"
+    },
+    {
+      "teamId": 16802533,
+      "teamName": "Volt",
+      "submissionDate": "2026-09-29T06:30:39.400Z",
+      "score": "0.91843"
+    },
+    {
+      "teamId": 16733967,
+      "teamName": "insuperabilehart",
+      "submissionDate": "2026-09-29T05:50:08.600Z",
+      "score": "0.91842"
+    },
+    {
+      "teamId": 16920556,
+      "teamName": "SHALABI",
+      "submissionDate": "2026-09-28T09:48:22.893Z",
+      "score": "0.91842"
+    },
+    {
+      "teamId": 16459327,
+      "teamName": "Ryo Takaki",
+      "submissionDate": "2026-09-28T12:08:08.983Z",
+      "score": "0.91841"
+    },
+    {
+      "teamId": 16705896,
+      "teamName": "yamashu",
+      "submissionDate": "2026-09-29T09:01:58.330Z",
+      "score": "0.91841"
+    },
+    {
+      "teamId": 16484044,
+      "teamName": "NoOneAhead",
+      "submissionDate": "2026-09-29T13:06:33.740Z",
+      "score": "0.91837"
+    },
+    {
+      "teamId": 16562992,
+      "teamName": "lihaha.36",
+      "submissionDate": "2026-09-29T05:51:49.143Z",
+      "score": "0.91834"
+    },
+    {
+      "teamId": 16607433,
+      "teamName": "ikki1111",
+      "submissionDate": "2026-09-29T11:57:26.953Z",
+      "score": "0.91832"
+    },
+    {
+      "teamId": 16579303,
+      "teamName": "kakuteki",
+      "submissionDate": "2026-09-29T14:49:40.573Z",
+      "score": "0.91832"
+    },
+    {
+      "teamId": 16732664,
+      "teamName": "Stefano Blando",
+      "submissionDate": "2026-09-29T12:35:39.433Z",
+      "score": "0.91832"
+    },
+    {
+      "teamId": 16747924,
+      "teamName": "Matteo Tonello",
+      "submissionDate": "2026-09-29T16:45:45.643Z",
+      "score": "0.91832"
+    },
+    {
+      "teamId": 16545609,
+      "teamName": "Chloe",
+      "submissionDate": "2026-09-29T15:58:09.913Z",
+      "score": "0.91832"
+    },
+    {
+      "teamId": 16488298,
+      "teamName": "An",
+      "submissionDate": "2026-09-24T02:23:03.690Z",
+      "score": "0.91831"
+    },
+    {
+      "teamId": 16632454,
+      "teamName": "AbhiniveshSharma5354",
+      "submissionDate": "2026-09-29T13:15:21.463Z",
+      "score": "0.91827"
+    },
+    {
+      "teamId": 16454696,
+      "teamName": "sectum",
+      "submissionDate": "2026-09-29T07:30:29.176Z",
+      "score": "0.91825"
+    },
+    {
+      "teamId": 16488595,
+      "teamName": "Kamal Das",
+      "submissionDate": "2026-09-29T07:44:17.460Z",
+      "score": "0.91822"
+    },
+    {
+      "teamId": 16924432,
+      "teamName": "stochar",
+      "submissionDate": "2026-09-26T14:27:49.230Z",
+      "score": "0.91822"
+    },
+    {
+      "teamId": 16898822,
+      "teamName": "Ivan Aleksandrov",
+      "submissionDate": "2026-09-28T16:29:43.373Z",
+      "score": "0.91822"
+    },
+    {
+      "teamId": 16687778,
+      "teamName": "Jamie Nojek",
+      "submissionDate": "2026-09-29T12:08:08.283Z",
+      "score": "0.91821"
+    },
+    {
+      "teamId": 16480243,
+      "teamName": "Nils",
+      "submissionDate": "2026-09-24T02:56:50.423Z",
+      "score": "0.91820"
+    },
+    {
+      "teamId": 16770949,
+      "teamName": "我的AI是豆包",
+      "submissionDate": "2026-09-24T07:35:48.856Z",
+      "score": "0.91820"
+    },
+    {
+      "teamId": 16926054,
+      "teamName": "codezzzsleep",
+      "submissionDate": "2026-09-29T01:39:17.190Z",
+      "score": "0.91820"
+    },
+    {
+      "teamId": 16548237,
+      "teamName": "Ikki Katsuyama",
+      "submissionDate": "2026-09-26T01:03:26.376Z",
+      "score": "0.91820"
+    },
+    {
+      "teamId": 16781419,
+      "teamName": "elextra",
+      "submissionDate": "2026-09-23T21:54:25.123Z",
+      "score": "0.91820"
+    },
+    {
+      "teamId": 16768442,
+      "teamName": "Kazuki Sato",
+      "submissionDate": "2026-09-24T06:49:10.916Z",
+      "score": "0.91820"
+    },
+    {
+      "teamId": 16483192,
+      "teamName": "Amitesh Chaudhary",
+      "submissionDate": "2026-09-29T12:17:06.296Z",
+      "score": "0.91820"
+    },
+    {
+      "teamId": 16457266,
+      "teamName": "shahxsalman",
+      "submissionDate": "2026-09-29T10:17:45.386Z",
+      "score": "0.91817"
+    },
+    {
+      "teamId": 16455865,
+      "teamName": "yuanzhe zhou",
+      "submissionDate": "2026-09-29T06:16:56.236Z",
+      "score": "0.91816"
+    },
+    {
+      "teamId": 16453816,
+      "teamName": "Will",
+      "submissionDate": "2026-09-29T10:18:10.580Z",
+      "score": "0.91815"
+    },
+    {
+      "teamId": 16461330,
+      "teamName": "my G1",
+      "submissionDate": "2026-09-29T08:11:25.213Z",
+      "score": "0.91813"
+    },
+    {
+      "teamId": 16705198,
+      "teamName": "Bio-Warriors",
+      "submissionDate": "2026-09-29T13:53:11.570Z",
+      "score": "0.91812"
+    },
+    {
+      "teamId": 16587656,
+      "teamName": "suhreenuh",
+      "submissionDate": "2026-09-29T08:39:54.610Z",
+      "score": "0.91810"
+    },
+    {
+      "teamId": 16862312,
+      "teamName": "Kamal Kadakara",
+      "submissionDate": "2026-09-29T08:26:08.636Z",
+      "score": "0.91810"
+    },
+    {
+      "teamId": 16453533,
+      "teamName": "Boredom",
+      "submissionDate": "2026-09-29T12:48:08.586Z",
+      "score": "0.91810"
+    },
+    {
+      "teamId": 16785643,
+      "teamName": "CrazyML",
+      "submissionDate": "2026-09-29T05:53:42.543Z",
+      "score": "0.91810"
+    },
+    {
+      "teamId": 16566294,
+      "teamName": "hertz",
+      "submissionDate": "2026-09-29T09:16:08.846Z",
+      "score": "0.91809"
+    },
+    {
+      "teamId": 16772756,
+      "teamName": "Suzuki Taichi",
+      "submissionDate": "2026-09-29T08:30:22.943Z",
+      "score": "0.91807"
+    },
+    {
+      "teamId": 16701603,
+      "teamName": "Harshedh Vijay",
+      "submissionDate": "2026-09-28T12:04:09.690Z",
+      "score": "0.91806"
+    },
+    {
+      "teamId": 16878531,
+      "teamName": "HayatoFujihara",
+      "submissionDate": "2026-09-28T14:58:27.033Z",
+      "score": "0.91805"
+    },
+    {
+      "teamId": 16457002,
+      "teamName": "Suncrest",
+      "submissionDate": "2026-09-29T10:21:18.383Z",
+      "score": "0.91804"
+    },
+    {
+      "teamId": 16819110,
+      "teamName": "Qiushuo Geng",
+      "submissionDate": "2026-09-29T01:32:54.556Z",
+      "score": "0.91803"
+    },
+    {
+      "teamId": 16839148,
+      "teamName": "castle_sens",
+      "submissionDate": "2026-09-29T13:57:44.906Z",
+      "score": "0.91803"
+    },
+    {
+      "teamId": 16610783,
+      "teamName": "Kudo",
+      "submissionDate": "2026-09-27T11:19:29.083Z",
+      "score": "0.91802"
+    },
+    {
+      "teamId": 16750577,
+      "teamName": "Gronk",
+      "submissionDate": "2026-09-29T15:53:30.226Z",
+      "score": "0.91802"
+    },
+    {
+      "teamId": 16705972,
+      "teamName": "Nozomi Suzuki",
+      "submissionDate": "2026-09-29T00:04:59.096Z",
+      "score": "0.91802"
+    },
+    {
+      "teamId": 16808882,
+      "teamName": "TheMightiestMan",
+      "submissionDate": "2026-09-29T13:23:03.946Z",
+      "score": "0.91801"
+    },
+    {
+      "teamId": 16601322,
+      "teamName": "Naman_Swami",
+      "submissionDate": "2026-09-20T09:02:25.010Z",
+      "score": "0.91801"
+    },
+    {
+      "teamId": 16663451,
+      "teamName": "jongha24",
+      "submissionDate": "2026-09-29T16:31:56.460Z",
+      "score": "0.91801"
+    },
+    {
+      "teamId": 16513677,
+      "teamName": "DhanaLakshmiMalla",
+      "submissionDate": "2026-09-28T18:46:40.863Z",
+      "score": "0.91801"
+    },
+    {
+      "teamId": 16892542,
+      "teamName": "Dank Axon",
+      "submissionDate": "2026-09-15T16:44:45.363Z",
+      "score": "0.91801"
+    },
+    {
+      "teamId": 16614729,
+      "teamName": "OpPrime",
+      "submissionDate": "2026-09-29T16:27:17.133Z",
+      "score": "0.91800"
+    },
+    {
+      "teamId": 16488535,
+      "teamName": "Mitsuhiro Iizuka",
+      "submissionDate": "2026-09-29T00:04:02.846Z",
+      "score": "0.91800"
+    },
+    {
+      "teamId": 16690818,
+      "teamName": "Takauchi Suguru",
+      "submissionDate": "2026-09-28T13:48:15.230Z",
+      "score": "0.91800"
+    },
+    {
+      "teamId": 16472383,
+      "teamName": "YoungDSML [dsml.kz]",
+      "submissionDate": "2026-09-29T10:38:51.120Z",
+      "score": "0.91799"
+    },
+    {
+      "teamId": 16698887,
+      "teamName": "jjamppongmandu",
+      "submissionDate": "2026-09-29T15:24:44.623Z",
+      "score": "0.91799"
+    },
+    {
+      "teamId": 16732066,
+      "teamName": "zhanghao",
+      "submissionDate": "2026-09-29T11:33:19.463Z",
+      "score": "0.91799"
+    },
+    {
+      "teamId": 16838481,
+      "teamName": "Lunospital",
+      "submissionDate": "2026-09-29T05:55:17.500Z",
+      "score": "0.91798"
+    },
+    {
+      "teamId": 16791172,
+      "teamName": "darasty",
+      "submissionDate": "2026-09-28T17:00:38.956Z",
+      "score": "0.91798"
+    },
+    {
+      "teamId": 16506482,
+      "teamName": "인공저능연구소( Artificial Idiocy Lab )",
+      "submissionDate": "2026-09-28T12:41:51.650Z",
+      "score": "0.91798"
+    }
+  ]
+}

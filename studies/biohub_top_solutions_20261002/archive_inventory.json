@@ -1,0 +1,447 @@
+[
+  {
+    "id": 744801,
+    "rank_to_verify": 1,
+    "title": "1st Place Solution",
+    "author": "Sergio Alvarez",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744801-1st-place-solution.md",
+    "raw_content_chars": 26582,
+    "comments_retrieved": 13,
+    "links": [
+      "https://www.youtube.com/watch?v=98dahngkNOI",
+      "https://www.kaggle.com/hengck23",
+      "https://github.com/MIC-DKFZ/nnssl",
+      "https://www.kaggle.com/tomoon33",
+      "https://www.youtube.com/watch?v=98dahngkNOI",
+      "https://github.com/MouseLand/cellpose",
+      "https://arxiv.org/abs/2111.06377",
+      "https://arxiv.org/abs/2306.13643",
+      "https://arxiv.org/abs/2607.11754",
+      "https://doi.org/10.1038/s41592-025-02778-0",
+      "https://www.kaggle.com/hengck23",
+      "https://github.com/MIC-DKFZ/nnssl",
+      "https://www.kaggle.com/competitions/rsna-intracranial-aneurysm-detection/writeups/1st-place-solution",
+      "https://arxiv.org/abs/2503.01835",
+      "https://arxiv.org/abs/2303.11331"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2F4abea4f187321ef24dfb75b917e5f285%2Foverview.png?generation=1790815299517442&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2Ffd359777c6e2066fa9827e93041a5012%2Funet.png?generation=1790815330067008&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2F5e103c8b92ab80896af62a85979f5ab0%2Fsegmentation_z.gif?generation=1790815643687456&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2Ffa1d421cac80a45072517c19e85e1668%2Fmae_reconstruction.png?generation=1790815735073254&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2F7193a76b3c4b3e903b2727e7a45d3d86%2Finterphase_vs_soon_6bba.gif?generation=1790815901097962&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2Fedcd156320a2c0eafddb48859459f298%2Finterphase_vs_soon_44b6.gif?generation=1790815929142132&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2Fd94cf867ac042f52645fbe16e922f874%2Fsoon_timeline.png?generation=1790815996933069&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2F3af8b495e801e29a98e53116ffe14c9b%2Fsoon_net.png?generation=1790816031116397&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2F61d1182625f817a8a1c291cef2089689%2Fsoon_camera_k1.gif?generation=1790816056993625&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2221915%2F924ff6702eaf16c18eefcdf17cd4cd1d%2Flinker.png?generation=1790816456944552&alt=media"
+    ]
+  },
+  {
+    "id": 744723,
+    "rank_to_verify": 2,
+    "title": "2nd Place Solution",
+    "author": "Soheil Ayati",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744723-2nd-place-solution.md",
+    "raw_content_chars": 22205,
+    "comments_retrieved": 0,
+    "links": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2Fa7a078710baa78cf9a2171b405d83dda%2F1_alt.png?generation=1790801930385686&alt=media",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/data",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2Fde142c986e7fa4ba359dc908515e4594%2F2.png?generation=1790801977101555&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2Fcc2c77777eabbcfad9db81cf28c1c63b%2F3.png?generation=1790801997923887&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2Fcd7dabf7532a40f79b2a04404d14d81b%2F4.png?generation=1790795050161602&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2F7de8627d21eb98bef98440ebb43c5092%2F5.png?generation=1790802025377745&alt=media"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2Fa7a078710baa78cf9a2171b405d83dda%2F1_alt.png?generation=1790801930385686&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2Fde142c986e7fa4ba359dc908515e4594%2F2.png?generation=1790801977101555&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2Fcc2c77777eabbcfad9db81cf28c1c63b%2F3.png?generation=1790801997923887&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2Fcd7dabf7532a40f79b2a04404d14d81b%2F4.png?generation=1790795050161602&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F35563035%2F7de8627d21eb98bef98440ebb43c5092%2F5.png?generation=1790802025377745&alt=media"
+    ]
+  },
+  {
+    "id": 744673,
+    "rank_to_verify": 4,
+    "title": "4th Place Solution",
+    "author": "BarryZhou",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744673-4th-place-solution.md",
+    "raw_content_chars": 25248,
+    "comments_retrieved": 0,
+    "links": [
+      "https://www.kaggle.com/code/songqizhou/biohub-4th-place-solution"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8305359%2F46e77570610c034e0ccdd59bb21e9610%2F01_fig1_pipeline.png?generation=1790793253179803&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8305359%2F32ab9f238aa8b70570827510a2c8cbab%2F02_fig2_data.png?generation=1790793305970371&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8305359%2Fc35015d78fafda53f8db3e485cea7898%2F03_fig_3dnet.png?generation=1790793324887852&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8305359%2F3449bc8053f662ff9d055f9eae78635f%2F04_fig_refine.png?generation=1790793345970344&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8305359%2Fab511fa0ef76c06b1461c17fcfa155d0%2F05_fig_div_prior.png?generation=1790793358687467&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8305359%2F4dd865acb5d2f521f76028beb49c343c%2F06_fig3_division.png?generation=1790793388258867&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8305359%2F71ca120ac33025e6e91df6a0d73f3426%2F07_fig4_ladder.png?generation=1790793373100309&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8305359%2F9d953d4d804a55c5e77f33153705edce%2F08_fig5_public_private.png?generation=1790793398695675&alt=media"
+    ]
+  },
+  {
+    "id": 744937,
+    "rank_to_verify": 7,
+    "title": "7th Place Solution",
+    "author": "tatsutaka",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744937-7th-place-solution.md",
+    "raw_content_chars": 39398,
+    "comments_retrieved": 1,
+    "links": [
+      "https://github.com/MIC-DKFZ/nnUNet",
+      "https://arxiv.org/abs/2404.09556",
+      "https://www.kaggle.com/josefreitasalvesneto",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/732103",
+      "https://www.kaggle.com/code/josefreitasalvesneto/biohub-synthetic-dataset",
+      "https://doi.org/10.1038/s41592-020-01008-z",
+      "https://github.com/MIC-DKFZ/nnUNet",
+      "https://arxiv.org/abs/2404.09556",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/732103",
+      "https://www.kaggle.com/code/josefreitasalvesneto/biohub-synthetic-dataset"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F4156661d6f23a0fffc4922eb9e919338%2F01_pipeline.png?generation=1790862692160738&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F988af10f4d836fb92647a8a5094bc991%2FE_input%20(1).png?generation=1790862818872005&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2Fdaaf3cce4cf06f30da5e714ac83dab34%2FE_output.png?generation=1790862883156702&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2Fb0a1d4aac9979fbabbbfd3d03d07d12f%2FFigure_03_heatmap_width.png?generation=1790863163389951&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2Fe481d41e403d59a57bc3787d45284259%2FFigure_04_synthetic_pretraining.png?generation=1790863177709464&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2Fbc3a45d512d2cc31f1a9dac1529f80b4%2FFigure_05_pretraining_scores.png?generation=1790863187024692&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F350df7bece3e64e28057fc08428b0b27%2FFigure_06_detection_threshold.png?generation=1790863203170850&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F1cbfcef574b4c9c512e0036fd5360935%2FFigure_07_temporal_linking.png?generation=1790863216470056&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F9501ccfefe1dfd73713d3407fbdf6507%2FFigure_08_division_pipeline.png?generation=1790863235006578&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F402f37ba606ff17fcbd64cbffc5d746e%2FFigure_09_division_difference_images.png?generation=1790863247788319&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F72aecfa7394532b7dc064477f9037f16%2FFigure_10_division_model_architecture.png?generation=1790863257844765&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F91b001a0e6a4899fea1ce324290d4405%2FFigure_11_daughter_pairs.png?generation=1790863273039387&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2Fe5da02ecdf503a6f36b30d09cd38de4f%2FFigure_12_two_stage_ilp.png?generation=1790863294848735&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F6d841937b1aa9f27fadbe568bac147c3%2FFigure_13_postprocessing.png?generation=1790863309008619&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2Ff392df85ac14bd1812e6c5c4cd83ae7d%2FFigure_14_motion_averaging.png?generation=1790863321005544&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F36d6dc74a28f103a7082420517144691%2FFigure_15_score_history.png?generation=1790863333593677&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8010264%2F01e83d604b100166640de955c9072f21%2FFigure_16_score_changes.png?generation=1790863346901685&alt=media"
+    ]
+  },
+  {
+    "id": 744835,
+    "rank_to_verify": 9,
+    "title": "9th Place Solution: Own Detectors + Public Tracker + Restored Divisions",
+    "author": "yuto083",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744835-9th-place-solution-own-detectors-public-tracker-restored-divisions.md",
+    "raw_content_chars": 19792,
+    "comments_retrieved": 0,
+    "links": [
+      "https://github.com/royerlab/kaggle-cell-tracking-competition"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F3602324%2F425ffdcda27d805ed511a24e07e0a027%2Fpipeline.png?generation=1790835446139856&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F3602324%2F2d1de7b5f53cd6c2431b027a61a9a8c9%2Fdivision_stages.png?generation=1790835434989360&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F3602324%2F47ac98bf4164c40329444a09a6bbfb85%2Fpublic_vs_private.png?generation=1790835413740902&alt=media"
+    ]
+  },
+  {
+    "id": 744980,
+    "rank_to_verify": 10,
+    "title": "10th place solution: Grandmaster Powered Agentic Approach",
+    "author": "Theo Viel",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744980-10th-place-solution-grandmaster-powered-agentic-approach.md",
+    "raw_content_chars": 14203,
+    "comments_retrieved": 0,
+    "links": [
+      "https://github.com/selimsef/dsb2018_topcoders",
+      "https://www.biorxiv.org/content/10.1101/2025.07.23.666425v1"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2062758%2Fa829822b33c18fd9330d29e537bd2faa%2Fpipeline.png?generation=1790877306330992&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2062758%2Fb6d2984144ce9099e34c6c17edc2b459%2Funet3d.png?generation=1790877345481250&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2062758%2F8e060dfdb5ef5c08ea14535e46355d4f%2Funet25d.png?generation=1790877355698945&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2062758%2F152e566db0daeadcc101876390703c2f%2Fdivision_pipeline.png?generation=1790877368891664&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2062758%2Fa6fc9590ca4e08b95be4184fe600ad11%2Fclassifier.png?generation=1790877381401938&alt=media"
+    ]
+  },
+  {
+    "id": 745092,
+    "rank_to_verify": 11,
+    "title": "11th Place Solution",
+    "author": "tanbo",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-745092-11th-place-solution.md",
+    "raw_content_chars": 12950,
+    "comments_retrieved": 0,
+    "links": [
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development",
+      "https://www.kaggle.com/code/thibautgoldsborough/unet-baseline-inference-submission",
+      "https://www.nature.com/articles/s41587-022-01427-7"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F20497766%2F79cfe6fad2655a3b3037eab5f60f83e2%2Fpipeline.png?generation=1790927951728439&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F20497766%2F07b188ddef3cfd4c480b5be762a65b85%2Fsynthetic_supervision.png?generation=1790927978811325&alt=media"
+    ]
+  },
+  {
+    "id": 744671,
+    "rank_to_verify": 16,
+    "title": "16th Place Solution",
+    "author": "r3takahashi",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744671-16th-place-solution.md",
+    "raw_content_chars": 15390,
+    "comments_retrieved": 0,
+    "links": [
+      "https://www.kaggle.com/pilkwang",
+      "https://www.kaggle.com/anvithpothula",
+      "https://www.kaggle.com/code/nusrati/0-936",
+      "https://www.kaggle.com/code/rishabhr0y/933-biohub-bidir30",
+      "https://www.kaggle.com/code/stephennedumpally/pls-upvote-share-higher-scoring-ideas",
+      "https://www.kaggle.com/nusrati",
+      "https://www.kaggle.com/rishabhr0y",
+      "https://www.kaggle.com/stephennedumpally",
+      "https://www.kaggle.com/hengck23",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/738217",
+      "https://github.com/yu-lab-vt/FOCUS-3D"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F8818721%2Fdf80446b71c7f774b009681f798424ca%2Fpipeline-overview-simple-en.png?generation=1790791154632537&alt=media"
+    ]
+  },
+  {
+    "id": 744930,
+    "rank_to_verify": 17,
+    "title": "17th Place Solution",
+    "author": "by",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744930-17th-place-solution.md",
+    "raw_content_chars": 20184,
+    "comments_retrieved": 0,
+    "links": [],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-forum-message-attachments/o/inbox%2F35023502%2Fabb048093772657283648496ab2df6f7%2Ffig1_design_vs_confirmation.png?generation=1790861610695752&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-forum-message-attachments/o/inbox%2F35023502%2Fbe64a952ed497baa8e5514a4f523cfed%2Ffig2_step_gains.png?generation=1790861610619876&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-forum-message-attachments/o/inbox%2F35023502%2Ff50815404d2725945b18bb9260f98dc9%2Ffig3_headroom.png?generation=1790861610789308&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-forum-message-attachments/o/inbox%2F35023502%2F1bb15e56b703614c6fa2acbfbfc38649%2Ffig4_density.png?generation=1790861610631332&alt=media"
+    ]
+  },
+  {
+    "id": 744601,
+    "rank_to_verify": null,
+    "title": "66th Place Solution",
+    "author": "mige551",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744601-66th-place-solution.md",
+    "raw_content_chars": 18081,
+    "comments_retrieved": 0,
+    "links": [
+      "https://www.kaggle.com/code/mige551/biohub-solution-public-base-temporal-divcnn",
+      "https://www.kaggle.com/datasets/mige551/biohub-ds159-divcnn-v7",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/writeups/66th-place-solution"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F18476336%2F4593fb6b5dc7ea702beba423e62f0f42%2Fwriteup_fig1_pipeline.png?generation=1790777639934228&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F18476336%2Fde25eab0f557efa8153feb3c26024658%2Fwriteup_fig2_division.png?generation=1790777705037220&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F18476336%2F9edebea4d61b7ecc2eeac1ff3a88c7e9%2Fwriteup_fig3_public_vs_private.png?generation=1790777752742835&alt=media"
+    ]
+  },
+  {
+    "id": 744630,
+    "rank_to_verify": null,
+    "title": "41st place: post-processing, a fine-tuned detector, and a flipped public LB",
+    "author": "datnt114",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744630-41st-place-post-processing-a-fine-tuned-detector-and-a-flipped-public-lb.md",
+    "raw_content_chars": 13225,
+    "comments_retrieved": 0,
+    "links": [],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2730329%2Fc311f3150417f9fc1932e2dec74dc19a%2Ffig1_pipeline.png?generation=1790784999429900&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2730329%2Fcd8265c126234c43774dafb414705b57%2Ffig2_steps_on_data.png?generation=1790785011174823&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2730329%2Fa641caa1730018337d3b5df4833826a2%2Ffig4_min_track_len.png?generation=1790785030044827&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2730329%2F73f4fa227632e0250163fe36ed0fdac7%2Ffig3_mitosis_input.png?generation=1790785020096397&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2730329%2Fa847e9c7a53cbaa81e6ee78b7aa41f58%2Ffig5_division.png?generation=1790785040587889&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2730329%2F0354cb5a48dfea0f3fe569a342e2d671%2Ffig6_finetune.png?generation=1790785051103836&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F2730329%2F2e63146d6f0437232ce8b00b2ee058b9%2Ffig7_public_vs_private.png?generation=1790785060922769&alt=media"
+    ]
+  },
+  {
+    "id": 744647,
+    "rank_to_verify": null,
+    "title": "0.957 Public → 0.916 Private: A Postmortem of Three Validation Traps",
+    "author": "Arturo Gutiérrez Aguilar",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744647-0-957-public-0-916-private-a-postmortem-of-three-validation-traps.md",
+    "raw_content_chars": 4374,
+    "comments_retrieved": 0,
+    "links": [
+      "https://github.com/Arturo-GA/biohub-cell-tracking-lab"
+    ],
+    "images": []
+  },
+  {
+    "id": 744670,
+    "rank_to_verify": null,
+    "title": "Biohub solution: controlled experiments for detection and lineage reconstruction",
+    "author": "Jordi Corbilla",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744670-biohub-solution-controlled-experiments-for-detection-and-lineage-reconstruction.md",
+    "raw_content_chars": 1946,
+    "comments_retrieved": 0,
+    "links": [],
+    "images": []
+  },
+  {
+    "id": 744762,
+    "rank_to_verify": null,
+    "title": "181st Place Solution: Retraining the Coordinate-Refinement Head",
+    "author": "Ryota Kawamura",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744762-181st-place-solution-retraining-the-coordinate-refinement-head.md",
+    "raw_content_chars": 7671,
+    "comments_retrieved": 0,
+    "links": [
+      "https://github.com/Ryota-Kawamura/biohub-cell-tracking-during-development",
+      "https://www.kaggle.com/code/ryotakawamura94/biohub-cap-a",
+      "https://www.kaggle.com/code/ryotakawamura94/biohub-cap-b",
+      "https://www.kaggle.com/code/ryotakawamura94/biohub-headtrain",
+      "https://www.kaggle.com/code/ryotakawamura94/biohub-b11-khead4"
+    ],
+    "images": [
+      "https://raw.githubusercontent.com/Ryota-Kawamura/biohub-cell-tracking-during-development/main/docs/images/real_pipeline.png",
+      "https://raw.githubusercontent.com/Ryota-Kawamura/biohub-cell-tracking-during-development/main/docs/images/pipeline.png",
+      "https://raw.githubusercontent.com/Ryota-Kawamura/biohub-cell-tracking-during-development/main/docs/images/heldout_errors.png",
+      "https://raw.githubusercontent.com/Ryota-Kawamura/biohub-cell-tracking-during-development/main/docs/images/cell_over_time.png",
+      "https://raw.githubusercontent.com/Ryota-Kawamura/biohub-cell-tracking-during-development/main/docs/images/target_frame.png",
+      "https://raw.githubusercontent.com/Ryota-Kawamura/biohub-cell-tracking-during-development/main/docs/images/public_vs_private.png"
+    ]
+  },
+  {
+    "id": 744785,
+    "rank_to_verify": null,
+    "title": "79th Place Solution",
+    "author": "Yudai Yamauchi",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744785-79th-place-solution.md",
+    "raw_content_chars": 18981,
+    "comments_retrieved": 0,
+    "links": [
+      "https://github.com/YamauchiYudai/biohub-cell-tracking-solution",
+      "https://github.com/YamauchiYudai/biohub-cell-tracking-solution",
+      "https://github.com/YamauchiYudai/biohub-cell-tracking-solution/blob/main/notebooks/final_submission.ipynb",
+      "https://github.com/YamauchiYudai/biohub-cell-tracking-solution/tree/main/src/biohub_tracking/division",
+      "https://github.com/YamauchiYudai/biohub-cell-tracking-solution/tree/main/src/biohub_tracking/postprocessing",
+      "https://github.com/YamauchiYudai/biohub-cell-tracking-solution/blob/main/THIRD_PARTY_NOTICES.md"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F9840636%2Fdfa717bced88c34a14a8a97ae5f7b8b7%2Fsolution_pipeline.png?generation=1790813312856549&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F9840636%2F477f6063bee00a5f5c4328a97e24f010%2Fdivision_recovery.png?generation=1790813358587491&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F9840636%2Fb4e30d4d14850b73b5da038ed689d113%2Fdivision_timeline.png?generation=1790813374239102&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F9840636%2Ff331c9cccd693182d97410e781c39c9c%2Fdivision_evidence.png?generation=1790813391322679&alt=media"
+    ]
+  },
+  {
+    "id": 744799,
+    "rank_to_verify": null,
+    "title": "92nd Place Solution",
+    "author": "tedo",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744799-92nd-place-solution.md",
+    "raw_content_chars": 10279,
+    "comments_retrieved": 0,
+    "links": [],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F5409146%2F8b3fb61de41f9465008f7d046e91cd81%2F3D_visualization.png?generation=1790816914350065&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F5409146%2Fcdfed095cba2473eb31f1ade079ccada%2Fvalley_veto_cases.png?generation=1790816391352498&alt=media"
+    ]
+  },
+  {
+    "id": 744817,
+    "rank_to_verify": null,
+    "title": "98th place: Cell tracking with a LightGBM division classifier",
+    "author": "Vyas",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744817-98th-place-cell-tracking-with-a-lightgbm-division-classifier.md",
+    "raw_content_chars": 11542,
+    "comments_retrieved": 0,
+    "links": [
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/overview",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/data",
+      "https://www.kaggle.com/code/vyask21/cell-tracking-division-model-and-coordinate-head",
+      "https://github.com/royerlab/kaggle-cell-tracking-competition",
+      "https://github.com/microsoft/LightGBM",
+      "https://github.com/vyask21/cell-tracking"
+    ],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F14151191%2Fc51b8c9adab039e1350f27c7a7a313b9%2Fdivision_feature_importance.png?generation=1790824362617695&alt=media"
+    ]
+  },
+  {
+    "id": 744842,
+    "rank_to_verify": null,
+    "title": "Biohub Cell Lineage Story -🥉bronze medal solution",
+    "author": "Kirderf",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744842-biohub-cell-lineage-story-bronze-medal-solution.md",
+    "raw_content_chars": 6720,
+    "comments_retrieved": 0,
+    "links": [],
+    "images": [
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F3924325%2F26c1c90f7f6a99777dde5176a404df08%2Ffig1_2d_microscopy.png?generation=1790835970486130&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F3924325%2F46a471d23406245ed1273689a54faee7%2Ffig2_3d_lineage.png?generation=1790836071067836&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F3924325%2F5f313d000cfa46d80938efb789cd2897%2Ffig3_4d_montage.png?generation=1790836134266865&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F3924325%2F0d85323aae6671ea15a09148d61220b2%2Ffig4_division.png?generation=1790836150705573&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F3924325%2F518f6ee65ef981a093f7408ef482d4bc%2Ffig5_metric.png?generation=1790836160883484&alt=media",
+      "https://www.googleapis.com/download/storage/v1/b/kaggle-user-content/o/inbox%2F3924325%2F43dc825971a2e31c68cb2c1fe68d199a%2Ffig6_results.png?generation=1790836171766621&alt=media"
+    ]
+  },
+  {
+    "id": 744895,
+    "rank_to_verify": null,
+    "title": "301st Place: Bounded Native Links for 3D Cell Tracking",
+    "author": "MOHAMMADJAFAR ZAMANI",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744895-301st-place-bounded-native-links-for-3d-cell-tracking.md",
+    "raw_content_chars": 9134,
+    "comments_retrieved": 0,
+    "links": [
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/data",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/overview/evaluation",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/data",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/overview/evaluation",
+      "https://github.com/royerlab/kaggle-cell-tracking-competition"
+    ],
+    "images": []
+  },
+  {
+    "id": 744899,
+    "rank_to_verify": null,
+    "title": "301st-place solution: a bounded native-link guard (0.957 public)",
+    "author": "MOHAMMADJAFAR ZAMANI",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744899-301st-place-solution-a-bounded-native-link-guard-0-957-public.md",
+    "raw_content_chars": 3102,
+    "comments_retrieved": 0,
+    "links": [
+      "https://kaggle.com/competitions/biohub-cell-tracking-during-development/writeups/301st-place-bounded-native-links-for-3d-cell-tracI"
+    ],
+    "images": []
+  },
+  {
+    "id": 744912,
+    "rank_to_verify": null,
+    "title": "From 12th Public to 95th Private: Our Biohub Cell Tracking Solution",
+    "author": "Chekhlov Dmitrii",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-744912-from-12th-public-to-95th-private-our-biohub-cell-tracking-solution.md",
+    "raw_content_chars": 4742,
+    "comments_retrieved": 0,
+    "links": [
+      "https://www.kaggle.com/code/pilkwang/biohub-cell-tracking-learned-graph-w-gap-recovery",
+      "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/overview/evaluation"
+    ],
+    "images": []
+  },
+  {
+    "id": 745086,
+    "rank_to_verify": null,
+    "title": "224th Place: Out-of-Sample Validation and What Did Not Transfer",
+    "author": "FOYSAL",
+    "archive": "docs/discussions/biohub-cell-tracking-during-development-745086-224th-place-out-of-sample-validation-and-what-did-not-transfer.md",
+    "raw_content_chars": 35170,
+    "comments_retrieved": 0,
+    "links": [
+      "https://www.kaggle.com/foysalemonshanto",
+      "https://github.com/Foysal348",
+      "https://www.kaggle.com/hosen42",
+      "https://github.com/hamidhosen42",
+      "https://www.kaggle.com/rokaiyasomapti",
+      "https://www.kaggle.com/esfersami50"
+    ],
+    "images": []
+  }
+]

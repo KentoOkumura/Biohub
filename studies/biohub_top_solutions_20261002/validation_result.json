@@ -1,0 +1,29 @@
+{
+  "snapshot_checked_at_utc": "2026-10-02T11:53:20.749286+00:00",
+  "local_link_documents": 34,
+  "archived_discussions": 32,
+  "main_solution_ranks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    9,
+    10,
+    11,
+    12,
+    14,
+    16,
+    17,
+    18
+  ],
+  "model_architecture_tables": 15,
+  "figures_with_png_svg_source_and_bounds": 15,
+  "leaderboard_unique_rows": 600,
+  "own_rank": 409,
+  "own_private": "0.91963",
+  "figure_visual_review": "performed manually; separate from automated bounds checks",
+  "upstream_models_rerun": false
+}

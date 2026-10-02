@@ -1,0 +1,140 @@
+{
+  "created_for": "2026-10-02 report update",
+  "figures": [
+    {
+      "rank": 1,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744801",
+      "png": "docs/images/biohub_top_solutions_20261002/01_occupancy_hierarchical_fork.png",
+      "svg": "docs/images/biohub_top_solutions_20261002/01_occupancy_hierarchical_fork.svg",
+      "verified_source_claims": [
+        "detector channels 24/48/96/192",
+        "Soon Net query crops and occupancy maps",
+        "4 local cross-attention blocks",
+        "137 options with kind/who factorisation",
+        "greedy conflict-aware decoding"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 2,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744723",
+      "png": "docs/images/biohub_top_solutions_20261002/02_faint_track_recovery.png",
+      "svg": "docs/images/biohub_top_solutions_20261002/02_faint_track_recovery.svg",
+      "verified_source_claims": [
+        "3-frame residual 3D U-Net with detection/offset/backward-motion/descriptors",
+        "within-fold dim-cell copy paste",
+        "preserve original-view peaks",
+        "recover unused >=9-frame paths with image contrast",
+        "attach only free endpoints"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 4,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744673",
+      "png": "docs/images/biohub_top_solutions_20261002/04_learned_division_cost.png",
+      "svg": "docs/images/biohub_top_solutions_20261002/04_learned_division_cost.svg",
+      "verified_source_claims": [
+        "18M dual-encoder temporal-attention U-Net",
+        "pseudo-label tracks supported by GT-only model",
+        "edge LightGBM and division CNN/tree models",
+        "node-dependent ILP division cost 6-16q",
+        "post-fork image verifier"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 7,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744937",
+      "png": "docs/images/biohub_top_solutions_20261002/07_motion_two_stage_ilp.png",
+      "svg": "docs/images/biohub_top_solutions_20261002/07_motion_two_stage_ilp.svg",
+      "verified_source_claims": [
+        "joint nnU-Net ResEncM detection and backward motion",
+        "14-channel overlapping windows CNN 24/48/96/128 with BiGRU and auxiliaries",
+        "two-stage ILP version reoptimises original candidates",
+        "alternative-parent features",
+        "identical-frame coordinate anchors"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 9,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744835",
+      "png": "docs/images/biohub_top_solutions_20261002/09_division_after_relink.png",
+      "svg": "docs/images/biohub_top_solutions_20261002/09_division_after_relink.svg",
+      "verified_source_claims": [
+        "six own TemporalUNet3D detectors with offset heads",
+        "50/50 public and own fusion",
+        "motion relink can overwrite ILP forks",
+        "DIVCARRY restores orphan-only forks at final CSV",
+        "np.rint output rounding"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 10,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744980",
+      "png": "docs/images/biohub_top_solutions_20261002/10_appearance_edge_attention.png",
+      "svg": "docs/images/biohub_top_solutions_20261002/10_appearance_edge_attention.svg",
+      "verified_source_claims": [
+        "high-resolution temporal U-Net with pixel-unshuffle",
+        "DINO ViT-B/16 and 4-layer frame attention",
+        "HOCT-style node and edge attention",
+        "ConvNeXt-Tiny temporal image division verifier",
+        "late 2.5D ResNet34 feature + 3D residual detector track addition"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 11,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/745092",
+      "png": "docs/images/biohub_top_solutions_20261002/11_joint_dense_heads.png",
+      "svg": "docs/images/biohub_top_solutions_20261002/11_joint_dense_heads.svg",
+      "verified_source_claims": [
+        "joint temporal U-Net heat/motion/division dense heads",
+        "division earlier/later/difference features",
+        "known two-child/one-child division labels",
+        "FOCUS statistics and GT motion synthetic generation",
+        "ILP after network training, not differentiable solver"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 16,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744671",
+      "png": "docs/images/biohub_top_solutions_20261002/16_graph_pseudo_labels.png",
+      "svg": "docs/images/biohub_top_solutions_20261002/16_graph_pseudo_labels.svg",
+      "verified_source_claims": [
+        "R(2+1)D18 + temporal Conv1D teacher",
+        "Gold and Silver separate losses",
+        "completed graph nodes used for next pseudo round",
+        "ResEnc-L and Kinetics ResNet3D18 U-Net logit ensemble",
+        "Transformer fine-tuning and FOCUS background exclusion"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    },
+    {
+      "rank": 17,
+      "source": "https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/discussion/744930",
+      "png": "docs/images/biohub_top_solutions_20261002/17_assignment_metric_edits.png",
+      "svg": "docs/images/biohub_top_solutions_20261002/17_assignment_metric_edits.svg",
+      "verified_source_claims": [
+        "4-level 32-256ch U-Nets with adaptive input scaling",
+        "47-feature HistGradientBoosting and two augmented LAP passes",
+        "38-feature division scorer plus two-frame intensity valley",
+        "graph-edit labels from official metric effect",
+        "22-feature duplicate and 49-feature gap models"
+      ],
+      "example_data": "synthetic teaching example; not measured predictions",
+      "text_bounds": "passed"
+    }
+  ]
+}
