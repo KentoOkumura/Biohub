@@ -30,3 +30,13 @@
 ## コンペ固有の設定
 
 機械可読な設定は[`project.yml`](../project.yml)を正とします。公式情報、評価指標、CV設計、データ仕様の説明は上記の`01_competition.md`から`04_data.md`を参照し、この索引には設定値を重複記録しません。
+
+## ローカルリンクの検査
+
+`task validate-template`（`task`がない場合は`make validate-template`）で、ローカルファイルとMarkdownの見出しへのリンクを検査します。ローカルにない実験生成物は、既存実験の`artifacts/`配下で、Gitの追跡対象ではなくignoreされている場合だけ、未取得・未検証のリンクとして件数と一覧を表示します。通常の文書・sourceやGit追跡ファイルの欠損はエラーです。
+
+生成物も配置した環境でリンク先の存在を確認するときは、未取得の生成物もエラーにする次の検査を使います。生成物の内容やSHAの確認は、各実験の契約に従って別に行います。
+
+```bash
+uv run python scripts/check_markdown_links.py --require-generated
+```

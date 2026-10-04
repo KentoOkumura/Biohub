@@ -1,3 +1,5 @@
+import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -213,3 +215,232 @@ def test_archived_destination_headings_are_checked_without_scanning_its_links(
     )
 
     assert errors == []
+
+
+def git(root: Path, *args: str) -> None:
+    subprocess.run(["git", *args], cwd=root, check=True, capture_output=True)
+
+
+def artifact_repository(tmp_path: Path, experiments: str = "experiments") -> Path:
+    git(tmp_path, "init", "--quiet")
+    (tmp_path / "project.yml").write_text(f"paths:\n  experiments_dir: {experiments}\n")
+    (tmp_path / ".gitignore").write_text(f"/{experiments}/*/artifacts/*\n*.npy\n")
+    experiment = tmp_path / experiments / "exp001_example"
+    experiment.mkdir(parents=True)
+    (experiment / "config.yaml").write_text("experiment: exp001_example\n")
+    git(tmp_path, "add", "project.yml", ".gitignore", str(experiment.relative_to(tmp_path)))
+    return experiment
+
+
+@pytest.mark.parametrize("experiments", ["experiments", "runs/nested"])
+def test_missing_ignored_artifacts_are_reported_separately(tmp_path, monkeypatch, experiments):
+    artifact_repository(tmp_path, experiments)
+    relative = f"{experiments}/exp001_example/artifacts"
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {
+            "README.md": f"[receipt]({relative}/run/receipt.json)\n"
+            f"[directory]({relative}/run/)\n[readout]({relative}/readout.md#summary)\n",
+        },
+    )
+
+    assert errors == []
+    _, unverified = check_markdown_links.check_links()
+    assert unverified == [
+        f"README.md:1: unavailable artifact {relative}/run/receipt.json",
+        f"README.md:2: unavailable artifact {relative}/run/",
+        f"README.md:3: unavailable artifact {relative}/readout.md",
+    ]
+
+
+@pytest.mark.parametrize("tracked_target", ["receipt.json", "saved/receipt.json", ".gitkeep"])
+def test_deleted_tracked_artifacts_and_their_directories_are_errors(
+    tmp_path, monkeypatch, tracked_target
+):
+    experiment = artifact_repository(tmp_path)
+    target = experiment / "artifacts" / tracked_target
+    target.parent.mkdir(parents=True)
+    target.write_text("tracked evidence")
+    git(tmp_path, "add", "--force", str(target.relative_to(tmp_path)))
+    target.unlink()
+    target.parent.rmdir()
+    target_link = target.relative_to(tmp_path).as_posix()
+    parent_link = target.parent.relative_to(tmp_path).as_posix() + "/"
+
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {"README.md": f"[file]({target_link})\n[directory]({parent_link})\n"},
+    )
+
+    assert len(errors) == 2
+    assert all("missing local link target" in error for error in errors)
+    assert check_markdown_links.check_links()[1] == []
+
+
+def test_ordinary_missing_paths_and_unknown_experiments_are_errors(tmp_path, monkeypatch):
+    artifact_repository(tmp_path)
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {
+            "README.md": "[document](docs/missing.md)\n"
+            "[source](experiments/exp001_example/source.py)\n"
+            "[ignored format](experiments/exp001_example/source.npy)\n"
+            "[unknown experiment](experiments/exp999_missing/artifacts/receipt.json)\n"
+            "[unknown location](experiments/exp001_example/artifacts2/receipt.npy)\n"
+            "[escaped](experiments/exp001_example/artifacts/../source.npy)\n",
+        },
+    )
+
+    assert len(errors) == 6
+    assert check_markdown_links.check_links()[1] == []
+
+
+def test_changed_configuration_does_not_exempt_old_experiment_location(tmp_path, monkeypatch):
+    artifact_repository(tmp_path, "runs")
+    old_experiment = tmp_path / "experiments/exp001_example"
+    old_experiment.mkdir(parents=True)
+    (old_experiment / "config.yaml").write_text("experiment: exp001_example\n")
+    with (tmp_path / ".gitignore").open("a") as handle:
+        handle.write("/experiments/*/artifacts/*\n")
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {"README.md": "[old](experiments/exp001_example/artifacts/receipt.json)\n"},
+    )
+
+    assert len(errors) == 1
+    assert check_markdown_links.check_links()[1] == []
+
+
+def test_artifact_without_git_ignore_rule_is_still_an_error(tmp_path, monkeypatch):
+    artifact_repository(tmp_path)
+    (tmp_path / ".gitignore").write_text("")
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {"README.md": "[receipt](experiments/exp001_example/artifacts/receipt.json)\n"},
+    )
+
+    assert len(errors) == 1
+    assert check_markdown_links.check_links()[1] == []
+
+
+def test_absolute_configured_experiment_path_inside_repository_is_supported(tmp_path, monkeypatch):
+    artifact_repository(tmp_path, "runs")
+    (tmp_path / "project.yml").write_text(f"paths:\n  experiments_dir: {tmp_path / 'runs'}\n")
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {"README.md": "[receipt](runs/exp001_example/artifacts/receipt.json)\n"},
+    )
+
+    assert errors == []
+    assert len(check_markdown_links.check_links()[1]) == 1
+
+
+@pytest.mark.parametrize("target_name", ["source.py", "requirements.md"])
+def test_deleted_tracked_source_and_document_are_errors(tmp_path, monkeypatch, target_name):
+    experiment = artifact_repository(tmp_path)
+    target = experiment / target_name
+    target.write_text("tracked file")
+    git(tmp_path, "add", str(target.relative_to(tmp_path)))
+    target.unlink()
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {"README.md": f"[required]({target.relative_to(tmp_path).as_posix()})\n"},
+    )
+
+    assert len(errors) == 1
+    assert check_markdown_links.check_links()[1] == []
+
+
+def test_present_artifact_fragment_is_checked(tmp_path, monkeypatch):
+    artifact_repository(tmp_path)
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {
+            "README.md": "[readout](experiments/exp001_example/artifacts/readout.md#absent)\n",
+            "experiments/exp001_example/artifacts/readout.md": "# Actual\n",
+        },
+        sources=["README.md"],
+    )
+
+    assert len(errors) == 1
+    assert "missing Markdown fragment #absent" in errors[0]
+
+
+@pytest.mark.parametrize("symlink_destination", ["outside", "artifacts"])
+def test_symlink_cannot_hide_missing_tracked_or_external_target(
+    tmp_path, monkeypatch, symlink_destination
+):
+    experiment = artifact_repository(tmp_path)
+    destination = experiment / symlink_destination
+    destination.mkdir()
+    target = experiment / "artifacts"
+    if symlink_destination == "outside":
+        target.symlink_to(destination, target_is_directory=True)
+        linked = target / "receipt.json"
+    else:
+        linked = target / "tracked.json"
+        linked.symlink_to(target / "absent.json")
+    git(
+        tmp_path,
+        "add",
+        "--force",
+        str((target if target.is_symlink() else linked).relative_to(tmp_path)),
+    )
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {"README.md": f"[evidence]({linked.relative_to(tmp_path).as_posix()})\n"},
+    )
+
+    assert len(errors) == 1
+    assert check_markdown_links.check_links()[1] == []
+
+
+def test_git_failure_does_not_hide_missing_artifacts(tmp_path, monkeypatch):
+    artifact_repository(tmp_path)
+
+    def failed_git(*args, **kwargs):
+        raise subprocess.CalledProcessError(128, "git")
+
+    monkeypatch.setattr(check_markdown_links.subprocess, "check_output", failed_git)
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {"README.md": "[receipt](experiments/exp001_example/artifacts/receipt.json)\n"},
+    )
+
+    assert len(errors) == 1
+
+
+@pytest.mark.parametrize("strict", [False, True])
+def test_cli_reports_unverified_artifacts_and_can_require_them(
+    tmp_path, monkeypatch, capsys, strict
+):
+    artifact_repository(tmp_path)
+    scan(
+        tmp_path,
+        monkeypatch,
+        {"README.md": "[receipt](experiments/exp001_example/artifacts/receipt.json)\n"},
+    )
+    monkeypatch.setattr(
+        sys, "argv", ["check_markdown_links.py", *(["--require-generated"] if strict else [])]
+    )
+
+    if strict:
+        with pytest.raises(SystemExit, match="Generated evidence is required"):
+            check_markdown_links.main()
+    else:
+        check_markdown_links.main()
+    output = capsys.readouterr().out
+    assert "Uncollected generated evidence (1 links; targets not verified)" in output
+    assert "README.md:1: unavailable artifact" in output
+    assert ("Markdown local links passed" in output) is not strict
+    assert ("; 1 generated links unverified" in output) is not strict

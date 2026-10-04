@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import argparse
+import os
+import re
+import subprocess
 import unicodedata
 from collections.abc import Callable, Iterator
 from html.parser import HTMLParser
@@ -12,10 +16,10 @@ from markdown_it.rules_inline.state_inline import StateInline
 from markdown_it.token import Token
 
 try:
-    from .config_utils import ROOT
+    from .config_utils import ROOT, configured_project_path
     from .document_scope import maintained_documents
 except ImportError:  # Direct execution: `uv run python scripts/check_markdown_links.py`
-    from config_utils import ROOT
+    from config_utils import ROOT, configured_project_path
     from document_scope import maintained_documents
 
 
@@ -144,8 +148,67 @@ def document_anchors(tokens: list[Token]) -> set[str]:
     return anchors | explicit.anchors
 
 
-def broken_links() -> list[str]:
-    offenders: list[str] = []
+def unavailable_generated_paths(destinations: set[Path]) -> set[Path]:
+    """Recognize absent, ignored artifacts without hiding missing tracked files."""
+    root = ROOT.resolve()
+    experiments = configured_project_path(
+        "paths.experiments_dir", "experiments", root=root
+    ).resolve()
+    candidates: dict[str, Path] = {}
+    for destination in destinations:
+        resolved = destination.resolve()
+        if (
+            not resolved.is_relative_to(experiments)
+            or not resolved.is_relative_to(root)
+            or not destination.is_relative_to(root)
+        ):
+            continue
+        parts = resolved.relative_to(experiments).parts
+        if (
+            len(parts) < 2
+            or parts[1] != "artifacts"
+            or not re.fullmatch(r"exp[A-Za-z]?\d+_[a-zA-Z0-9_-]+", parts[0])
+            or not (experiments / parts[0] / "config.yaml").is_file()
+        ):
+            continue
+        candidates[destination.relative_to(root).as_posix()] = destination
+    if not candidates:
+        return set()
+
+    # Include parents so a deleted directory containing tracked files cannot be
+    # mistaken for optional evidence. Git failures leave every link as an error.
+    try:
+        tracked = subprocess.check_output(["git", "ls-files", "--cached", "-z"], cwd=root)
+        tracked_files = {Path(name) for name in tracked.decode().split("\0") if name}
+        protected: set[str] = set()
+        for path in tracked_files:
+            protected.add(path.as_posix())
+            protected.update(parent.as_posix() for parent in path.parents)
+        candidates = {
+            name: path
+            for name, path in candidates.items()
+            if name not in protected
+            and not any(parent in tracked_files for parent in Path(name).parents)
+        }
+        if not candidates:
+            return set()
+        ignored = subprocess.run(
+            ["git", "check-ignore", "--stdin", "-z"],
+            cwd=root,
+            input="\0".join(candidates) + "\0",
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+    except (OSError, subprocess.CalledProcessError):
+        return set()
+    if ignored.returncode not in {0, 1}:
+        return set()
+    return {candidates[name] for name in ignored.stdout.split("\0") if name in candidates}
+
+
+def check_links() -> tuple[list[str], list[str]]:
+    findings: list[tuple[str, Path | None]] = []
     parsed_documents: dict[Path, list[Token]] = {}
     anchors_by_path: dict[Path, set[str]] = {}
 
@@ -161,29 +224,64 @@ def broken_links() -> list[str]:
                 continue
             relative_path, fragment = target
             destination = (
-                (path.parent / relative_path).resolve() if relative_path else path.resolve()
+                Path(os.path.abspath(path.parent / relative_path))
+                if relative_path
+                else path.absolute()
             )
             if not destination.exists():
-                offenders.append(
-                    f"{path.relative_to(ROOT)}:{line}: missing local link target {relative_path}"
+                findings.append(
+                    (
+                        f"{path.relative_to(ROOT)}:{line}: "
+                        f"missing local link target {relative_path}",
+                        destination,
+                    )
                 )
             elif fragment and destination.is_file() and destination.suffix in MARKDOWN_EXTENSIONS:
                 if destination not in anchors_by_path:
                     anchors_by_path[destination] = document_anchors(parsed_document(destination))
                 if fragment in anchors_by_path[destination]:
                     continue
-                offenders.append(
-                    f"{path.relative_to(ROOT)}:{line}: missing Markdown fragment "
-                    f"#{fragment} in {relative_path or path.name}"
+                findings.append(
+                    (
+                        f"{path.relative_to(ROOT)}:{line}: missing Markdown fragment "
+                        f"#{fragment} in {relative_path or path.name}",
+                        None,
+                    )
                 )
-    return offenders
+    unavailable = unavailable_generated_paths(
+        {destination for _, destination in findings if destination is not None}
+    )
+    offenders, unverified = [], []
+    for message, destination in findings:
+        if destination in unavailable:
+            unverified.append(message.replace("missing local link target", "unavailable artifact"))
+        else:
+            offenders.append(message)
+    return offenders, unverified
+
+
+def broken_links() -> list[str]:
+    return check_links()[0]
 
 
 def main() -> None:
-    offenders = broken_links()
+    parser = argparse.ArgumentParser(description="Validate maintained Markdown local links.")
+    parser.add_argument(
+        "--require-generated",
+        action="store_true",
+        help="Fail also when ignored experiment artifacts have not been collected locally.",
+    )
+    args = parser.parse_args()
+    offenders, unverified = check_links()
+    if unverified:
+        print(f"Uncollected generated evidence ({len(unverified)} links; targets not verified):")
+        print("\n".join(unverified))
     if offenders:
         raise SystemExit("\n".join(offenders))
-    print(f"Markdown local links passed ({len(markdown_files())} files)")
+    if args.require_generated and unverified:
+        raise SystemExit("Generated evidence is required but has not been collected locally.")
+    qualifier = f"; {len(unverified)} generated links unverified" if unverified else ""
+    print(f"Markdown local links passed ({len(markdown_files())} files{qualifier})")
 
 
 if __name__ == "__main__":
