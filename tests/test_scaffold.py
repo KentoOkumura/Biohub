@@ -2,7 +2,7 @@ from pathlib import Path
 
 import yaml
 
-import conftest as root_conftest
+from scripts import run_tests
 from scripts.config_utils import (
     ROOT as CONFIG_ROOT,
 )
@@ -148,10 +148,13 @@ def test_project_yml_supplies_experiment_defaults() -> None:
         project,
         "submission.sample_file",
     )
-    assert get_nested(defaults, "data.submission_target_column") == get_nested(
-        project,
-        "submission.target_columns",
-    )[0]
+    assert (
+        get_nested(defaults, "data.submission_target_column")
+        == get_nested(
+            project,
+            "submission.target_columns",
+        )[0]
+    )
 
 
 def test_project_yml_supplies_repository_paths() -> None:
@@ -174,35 +177,14 @@ def test_configured_project_path_uses_the_selected_repository_root(tmp_path: Pat
     )
 
 
-def test_pytest_collection_uses_configured_experiments_directory(tmp_path: Path) -> None:
+def test_test_groups_use_configured_experiments_directory(tmp_path: Path) -> None:
     (tmp_path / "project.yml").write_text("paths:\n  experiments_dir: runs\n")
-
-    assert root_conftest.configured_experiments_dir(tmp_path) == tmp_path / "runs"
-
-
-def test_pytest_default_collection_adds_configured_experiments_directory(
-    tmp_path: Path, monkeypatch
-) -> None:
-    experiments_dir = tmp_path / "runs"
-    experiments_dir.mkdir()
-    monkeypatch.setattr(
-        root_conftest,
-        "configured_experiments_dir",
-        lambda: experiments_dir,
-    )
-
-    class Config:
-        args = ["tests"]
-
-        @staticmethod
-        def getoption(name: str) -> list[str]:
-            assert name == "file_or_dir"
-            return []
-
-    config = Config()
-    root_conftest.pytest_configure(config)  # type: ignore[arg-type]
-
-    assert config.args == ["tests", str(experiments_dir)]
+    common = tmp_path / "tests"
+    experiment = tmp_path / "runs/exp001_example/tests"
+    common.mkdir()
+    experiment.mkdir(parents=True)
+    (tmp_path / "experiments/exp002_unused/tests").mkdir(parents=True)
+    assert run_tests.test_groups(tmp_path) == [common, experiment]
 
 
 def test_experiment_template_does_not_duplicate_project_defaults() -> None:

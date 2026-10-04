@@ -1,0 +1,129 @@
+{
+  "run": "b",
+  "independence": {
+    "method": "Sequential passes by one agent, as assigned. Task-first was written before baseline/evidence were opened. No pass rankings or selected portfolio existed when passes A-D were generated. A single context cannot guarantee cognitive independence; this is not represented as fresh-context multi-agent generation.",
+    "additional_agents_spawned": false,
+    "external_or_later_evidence": false
+  },
+  "evidence_readout": [
+    {"id":"E01","fact":"Full official evaluator has fixture distinctions from the proxy; sample score difference on four fixed predictions was zero. This is evaluator validation, not model quality evidence."},
+    {"id":"E02","fact":"Flat mother-daughter set prediction recovers no divisions in either outer fold or 117 covered training divisions. All 128 covered outer true pairs lose to their own singleton/empty subset, but 42 true pairs rank best among pairs. Candidate coverage 107/108 and 21/22 leaves substantial representational headroom; less pruning alone does not solve collapsed cardinality."},
+    {"id":"E03","fact":"Historical-feature tracker pair gate fails both folds. Sparse teacher audit has 97.71% unknown endpoints among active pairs and uses 5um greedy matching, which is not the official 7um optimal matching. Window filtering excludes 994 windows based on GT availability, a train-only selection condition."},
+    {"id":"E04","fact":"Fixed-feature coordinate head reduces mean matched center distance from 1.8214 to 1.5162um on 20 video-grouped conditional comparisons; no official graph score is in that coordinate validation."},
+    {"id":"E05","fact":"Frozen refined route beats zero route in official aggregate score 0.8903485 vs 0.8792390 on 20 videos, while node recall falls by 0.00271. Six 6bba videos worsen adjusted edge Jaccard. Coordinate/feature routes remain unseparated; 183 known edge changes in 18 videos trigger an unrun diagnostic."},
+    {"id":"E06","fact":"Expanding fixed-score edge candidates improves node recall but worsens official aggregate score to 0.8780877; both embryo aggregate scores decrease. All expanded ILPs are optimal. 904102 vs 547895 candidate edges; maximum solve 814.08s, total expanded ILP 2578.79s, peak memory 22.39GB."},
+    {"id":"E07","fact":"Adding past feature attention reduces known-edge recall from public primary 0.95760 to 0.92853 on 44b6 and 0.96440 to 0.95450 on 6bba. On 44b6 observable false edges fall 243 to 172, and top-1 known-parent counts change only 3189 to 3185. All-past-masked outputs nearly match the history model; added history as direct tracker input has little isolated support."},
+    {"id":"E08","fact":"547 new known candidate edges, of which 360 are rejected by ILP: 228 higher-score competing parents, 34 lower-score competing parents, 98 no selected parent. 81 rejected known edges are rank1. All 9 new known divisions select only one daughter. Eleven forced ILPs remain optimal with objective penalties 0.01956-2.54623. The downstream objective, not solely candidate availability or suboptimal solve, can reject known truth."}
+  ],
+  "structural_probes": {
+    "same_entity_context": {
+      "available":"The same hidden sequence supplies unlabeled images, detections, edge scores and history. No GEFF labels, estimated node count or guaranteed neighboring field-of-view overlap is available at test time.",
+      "reference":"Estimate robust physical displacement and residual dispersion in spatial/time neighborhoods from uncontested frozen links. Use a common physical coordinate system and query a sequence-local reference at each ambiguous endpoint.",
+      "roles_compared":["Reference to subtract local common motion", "Observation model via local residual dispersion", "Downstream calibration feature via support size", "Gate via context coverage; no updating frozen tracker"],
+      "coverage_and_fallback":"Require disjoint support links outside the repaired motif, minimum empirically fixed training-side support and stable residual estimation. Outside support or at short/missing/boundary context, exactly copy anchor.",
+      "availability_tests":["Mask all context", "Thin support", "Duplicate support links", "Delete beginning/end history", "Query outside convex spatial support", "Shuffle same-sequence references across embryos"],
+      "not_assumed":"No embryo-specific labeled support set, global motion conservation, known test cardinality or dense annotation."
+    },
+    "imperfect_intermediate_training": {
+      "applicable":"A downstream graph refiner receives fallible outputs of frozen image/coordinate/tracker models. Clean GEFF motifs would make conditioning unrealistically easy.",
+      "closed_design":["Training-side video out-of-fold-like frozen predictions measure signed coordinate bias, temporal error autocorrelation, missing nodes/links, score-ranking swaps, singleton-for-division inversion and density-dependent error rates.", "Construct synthetic conditioning from verified sparse motifs, replay those correlated corruption processes while retaining immutable known graph labels and masking unknown surrounding truth.", "Pretrain only a downstream local event/graph-edit scorer to repair synthetic errors.", "Fine-tune briefly on real training-side held-out-video conditioning; choose stages and gates inside the training embryo.", "Evaluate uncorrupted real frozen conditioning on the other embryo in each direction, conditional on shared public pretrained models."],
+      "kills":["Copy-through matches learned refiner", "Synthetic and real error amplitudes/correlation disagree", "Unrealistic matching uses clean locations unavailable at test", "Known edge or observable false-edge gate worsens either embryo", "Full official score or 12h inference contract fails"],
+      "limitation":"Observed OOF-like intermediate corruption is conditional, not independent image-model OOF. Sparse labels only characterize observable error subsets."
+    },
+    "invariant_discovery": {
+      "known_relations":["Temporal direction", "One incoming mother per child", "Coordinate-unit equivalence under voxel-to-micrometre conversion", "Rigid coordinate relabeling preserves distances and graph topology", "A division event jointly contains two daughter links"],
+      "empirical_relations_to_test":["Local motion residual variance after robust same-sequence subtraction", "Single-cell acceleration distribution outside observed divisions", "Mother/daughter midpoint residual", "Relative pair separation derivative before/after candidate division", "Field-boundary rate of unmatched endpoints"],
+      "cheap_EDA":"Compute robust quantiles and variance by embryo, time, local density and boundary distance on known GEFF motifs and frozen predictions. Compare with sequence-shuffled references. Reject any relation whose residual tails or support depend strongly on embryo before using it as a prior.",
+      "preserved":"Graph topology and physical units under graph-coordinate relabeling; verified parent-child teachers under synthetic errors.",
+      "deliberately_broken":"Conditioning coordinates, link presence and score order under calibrated deployment corruptions.",
+      "recomputation":"Recompute candidate distances, neighborhood membership and derived kinematics after perturbation. If images/crops/time windows change, fixed image features must be re-extracted; graph-only augmentation excludes appearance features rather than pretending equivariance.",
+      "rejected_invariants":"Cell count, fluorescence mass and exact mother-to-daughter barycenter equality are not established invariants in finite fields of view."
+    }
+  },
+  "independent_passes": {
+    "A_representation": [
+      {"id":"A1","definition":"Separate event cardinality from daughter-set ranking, with complete division-versus-own-subset comparisons and explicit unknown-label masks; decode compatible events, not independent edge probabilities."},
+      {"id":"A2","definition":"Retain a distribution over compatible local subgraphs from near-optimal alternative solves, then resolve event uncertainty using temporal support."},
+      {"id":"A3","definition":"Treat tracklet identity permutations across four frames as the output and rank complete swaps/retentions with trajectory continuity."},
+      {"id":"A4","definition":"Maximize likelihood summed over graph completions compatible with observed sparse positives; annotate lower bounds on cardinality instead of forcing missing edges to negatives."},
+      {"id":"A5","definition":"Represent a short mother/daughters trajectory motif with pre-branch/post-branch latent states; rank daughter separation over time rather than one two-frame edge."},
+      {"id":"A6","definition":"Raw-image displacement distributions jointly generate nodes and identities; needs new image-model learning and is policy-deferred."}
+    ],
+    "B_information_invariance": [
+      {"id":"B1","definition":"Move reliable same-sequence link histories into a physical motion reference and an uncertainty reference with context coverage fallback."},
+      {"id":"B2","definition":"Move zero-versus-refined coordinate disagreement into downstream reliability/calibration; never average coordinates before matching."},
+      {"id":"B3","definition":"Use stored past feature consistency as evidence for a decision to preserve or reconsider an edge, without entering or updating the tracker."},
+      {"id":"B4","definition":"Use failed set model pair-conditional rankings as a candidate prior while removing its collapsed cardinality normalization; obtain score/cache availability before reuse."},
+      {"id":"B5","definition":"Correlated measured graph-conditioning corruption, synthetic repair pretraining, real OOF-like refinement and untouched outer-embryo evaluation form one proposal."},
+      {"id":"B6","definition":"Graph-coordinate rigid relabeling plus observation-score corruption trains a geometry-only event scorer; invariant teachers stay fixed and all geometric derived inputs are recomputed."}
+    ],
+    "C_candidate_uncertainty": [
+      {"id":"C1","definition":"Keep baseline and permissive scored edge/event pools distinct, estimate distributions over compatible whole events and only then decode the pooled graph."},
+      {"id":"C2","definition":"Select one of baseline/expanded/zero-refined complete graph routes using observable density, support and disagreement; train selection on nested train-side groups."},
+      {"id":"C3","definition":"Fuse event marginal distributions before selection, comparing with hard-route selection and entropy-gated anchor preservation; correlated candidates are not counted as independent evidence."},
+      {"id":"C4","definition":"Add contextual candidates only around components where existing solutions disagree, exposing compute cost separately from oracle recovery."},
+      {"id":"C5","definition":"Construct independent raw-image temporal foreground components as a separate candidate generator; accept only if held-group oracle node/edge coverage and target-free graph selectability both improve."},
+      {"id":"C6","definition":"Use non-best zero-coordinate or failed history route only where its residual errors differ from anchor; raw average of incompatible graph rows is disallowed."}
+    ],
+    "D_validation_compute": [
+      {"id":"D1","definition":"Partition the optimizer by the full variable/constraint incidence graph, caching unchanged components and preserving exact objective. Speed gain enables compatible multi-event exchanges in previously expensive ambiguous regions."},
+      {"id":"D2","definition":"Cross coordinate geometry with frozen feature-sampling location and lock candidate identities to isolate geometry, score and evaluator matching routes behind coordinate correction."},
+      {"id":"D3","definition":"Stress hidden availability, context length, density and cardinality using no-label inference; verify deterministic anchor fallback and measured per-sequence runtime."},
+      {"id":"D4","definition":"Compute event-level oracle constrained by actual candidate identities, then test target-free selectors on separately held groups; official score and observable partial-label errors remain distinct."},
+      {"id":"D5","definition":"Replace GT-dependent input-window exclusion with prediction-defined coverage auditing, preserving teacher masks and reporting previously excluded contexts."}
+    ]
+  },
+  "closure_tuples": [
+    {"evidence_id":"E02","tuple":{"signal":"known mother-daughter candidate scores","representation":"flat 0/1/2-child set logits","role":"direct set predictor","fusion":"single score globally constrained","validation_regime":"two conditional embryo folds, sparse known motifs","compute_regime":"53M candidate sets/fold; trained small model, CPU diagnostics"},"scope":"Close that learned cardinality/set normalization and reopening by removing pruning alone. Do not close joint-event representation, pair-ranking information or alternative teachers.","positive_remainder":"42 true pairs best within pairs; almost complete candidate coverage; 117 covered training division failures isolate representability before decoder."},
+    {"evidence_id":"E03","tuple":{"signal":"past frozen features","representation":"past-feature cross-attention in tracker","role":"direct predictor","fusion":"tracker pair probabilities","validation_regime":"two conditional embryo folds with GT-window filter","compute_regime":"16246s Kaggle T4 notebook"},"scope":"Close this direct history-conditioning implementation at its early gate. Does not close history as reference, trust gate or motion observation; sparse-label teacher/selection concerns remain.","positive_remainder":"97% candidate known-node recall and abundant unlabeled context exist; no graph official score was measured."},
+    {"evidence_id":"E07","tuple":{"signal":"past feature attention","representation":"primary tracker augmented with past attention","role":"direct score prediction","fusion":"fixed threshold pair scores","validation_regime":"20 conditional outer videos, two embryos","compute_regime":"12131s Kaggle T4 notebook"},"scope":"Together with E03 weakens this direct attention use, not temporal evidence generally. Masked-history near-parity weakens a causal claim that temporal content explains the change.","positive_remainder":"False observable edges fall on 44b6; top1-known-parent changes very little despite recall loss. Margin/calibration role remains untested."},
+    {"evidence_id":"E06","tuple":{"signal":"expanded low-score edges","representation":"independent candidate edges","role":"more choices under fixed cost","fusion":"same ILP and repair pipeline","validation_regime":"20 conditionally evaluated videos","compute_regime":"optimal solves, maximum 814s, memory22.39GB"},"scope":"Close unconditional fixed-cost candidate expansion as an improving replacement. Do not close those candidate scores as uncertainty/conditioner or complete-event selection.","positive_remainder":"Node recall rises; 547 known edges and 9 known division events newly covered according to E08."},
+    {"evidence_id":"E08","tuple":{"signal":"expanded edge scores and optimizer","representation":"fixed additive edge costs","role":"edge choice","fusion":"optimal constrained graph","validation_regime":"forced truth diagnostics on sparse labeled cases","compute_regime":"11 optimal forced counterfactual solves"},"scope":"Close solving the same additive objective more exactly as an accuracy explanation. Do not close faster exact solving as an enabler for a changed objective or coupled edits.","positive_remainder":"81 known rank1 edges still rejected and 9 new divisions all reduced to singletons imply structural-event headroom beyond edge ranking."},
+    {"evidence_id":"E05","tuple":{"signal":"fixed coordinate correction","representation":"one corrected point","role":"coordinates and feature interpolation","fusion":"x138 tracker/ILP/repair","validation_regime":"20 videos, conditional public-model comparison","compute_regime":"saved graphs then192.9s official CPU evaluation"},"scope":"No family closure: average score is positive. Close a claim that smaller point distance guarantees improved node or per-video graph performance; separate feature routing not yet audited.","positive_remainder":"Aggregate +0.0111095 and both embryo aggregate improvement, 14/20 adjusted-edge improvements; 6 negative videos motivate uncertainty use."}
+  ],
+  "cross_combination": {
+    "anonymization":"Pass candidates are referred to by temporary labels R,S,T,U without pass ranks. The mapping preserves provenance for auditing; no external expected answer was used.",
+    "combinations":[
+      {"anonymous_inputs":["R=A1","S=B4","T=C4"],"result":"I01: Complete division/continuation events with separate cardinality score and candidate-relative daughter ranking; ambiguous components only. Pair-ranking reuse is optional and never trusts collapsed old set logits."},
+      {"anonymous_inputs":["R=A5","S=B1"],"result":"I02: Same-sequence reference conditions event displacement/dispersion with fallback; future raw sequence observation is allowed, hidden labels are not."},
+      {"anonymous_inputs":["R=A2","S=B5"],"result":"I03: Train repairs on correlated imperfect graph conditioning, retain uncertainty and refine with real frozen inputs before separate outer evaluation."},
+      {"anonymous_inputs":["R=A2","S=B2","T=C1","V=C3"],"result":"I04: Soft whole-event pool from baseline/permissive scored candidates; disagreement is confidence evidence, not unconditional expanded-edge replacement."},
+      {"anonymous_inputs":["U=D1","R=A3"],"result":"I05: Exact component caching enables multi-event exchanges; accepted only with end-to-end official accuracy evidence for that enabled algorithm."},
+      {"anonymous_inputs":["S=B6","R=A1"],"result":"I10: Graph-only geometry augmentation and observation corruption, omitting unsupported encoder equivariance."}
+    ],
+    "hundred_times_faster_counterfactual":"With 100x faster graph work, enumerate multiple compatible event alternatives and two-event identity swaps, retaining marginals instead of greedy pairwise choice. No 100x claim is made; I05 has a measured speed gate.",
+    "current_best_prohibited_counterfactual":"TF04/I09 construct image temporal components without the current predictor/candidate list. TF05 is an independent learned image displacement-distribution route, deferred for policy change. These are not covertly replaced by frozen point features."
+  },
+  "adversarial_gate": {
+    "role":"Review candidate cards as an adversary after generation: break availability, labels, headroom, baseline equivalence and runtime before ranking.",
+    "common_repairs":["Outer evaluation embryos never tune weights, normalization, corruption or gating. Generate nested training-video intermediates within the training embryo; all results remain conditional on fixed public models and coordinate-head exposure.", "Sparse unknowns are masked; GEFF estimated node counts and annotation-window availability are never inputs at hidden inference.", "Current frozen image/coordinate/tracker modules remain unchanged for top five. No training/runtime outcome is claimed.", "No method uses public-test identities or known hidden cardinality. Images/feature availability and quota are missing, not silently assumed."],
+    "card_checks":[
+      {"id":"I01","risks":"Rare division labels and absence of verified nondivision teachers can cause all-division inflation.","repair":"Use observed-complete pair-vs-subset and known-parent contradictions, lower-bound cardinality for partial parents; preserve anchor outside evidence support; early pair gate before graph."},
+      {"id":"I02","risks":"Anchor-error self-reinforcement or same-sequence calibration accidentally reading labels.","repair":"Exclude query motif from support, label-free robust support, coverage fallback and shuffled-context ablation."},
+      {"id":"I03","risks":"Clean-GT conditioned training, corruption mismatch and fabricated dense negatives.","repair":"Immutable sparse teachers, measured training-only observable corruption, real OOF-like refinement, real unchanged outer conditioning, copy-through and distribution-mismatch kills."},
+      {"id":"I04","risks":"Oracle coverage mistaken for selectability; incompatible soft graph fusion.","repair":"Score complete events, normalize candidates and decode one compatible graph; compare held-group target-free soft fusion with hard and gated alternatives."},
+      {"id":"I05","risks":"Constraint-crossing decomposition, same objective cannot improve accuracy, worst-component slowdown.","repair":"Full incidence coupling and exact parity, global fallback, bounded cache; acceptance includes changed multi-event-search graph score rather than speed alone."},
+      {"id":"I06","risks":"Tracklet identity errors propagate over longer windows.","repair":"Only ambiguous components and known-target masked ranking; anchor outside event support, four-frame ablation and boundary fallback."},
+      {"id":"I07","risks":"Past features unavailable or causally useless per masked ablation.","repair":"Require cache manifest; masked/shuffled histories and geometry-only gate, reject if no conditional lift."},
+      {"id":"I08","risks":"GT-fixed identity diagnostics confused with official score and feature recomputation ignored.","repair":"Keep locked-ID diagnosis auxiliary; full official rematching, four crossed frozen routes, GPU recapture included if required."},
+      {"id":"I09","risks":"Dense foreground mistaken for truth, false node inflation, policy creep into detector training.","repair":"No dense labels claimed, separate fixed processing candidate comparison, GEFF partial coverage and official node penalty, no image model update."},
+      {"id":"I10","risks":"False augmentation invariance of frozen image features.","repair":"Geometry-only inputs and coordinate gauge transforms; no transformed image features reused. Recompute distances, neighbors and derived references."},
+      {"id":"I11","risks":"Sparse likelihood rewards too many completions and summation impossible.","repair":"Restricted exact local enumeration, anchor-reference prior, lower-bound/unknown teacher semantics and complexity/oracle gate."},
+      {"id":"I12","risks":"Validation-only contribution claimed as predictive improvement or proxy replaces official metric.","repair":"Tests identify/kill false candidates; acceptance requires target-free inference and official end-to-end comparison, no surrogate score claim."}
+    ],
+    "rejected_alternatives":[
+      {"idea":"Raise outdegree allowance or lower edge threshold and rerun same expanded ILP","reason":"Parameter-only reopening of E06/E08; optimal fixed objective loses full divisions. No changed information or representation."},
+      {"idea":"Remove set pruning and increase exact optimizer effort for failed learned set logits","reason":"E02 full-catalog test recovers no true divisions and all117 covered training divisions fail. Scoring representation must change first."},
+      {"idea":"Give every unmatched detection a no-parent/no-division teacher","reason":"Unannotated endpoints dominate; absence of sparse GEFF label is not verified negative."},
+      {"idea":"Estimate hidden true cell count using GEFF metadata","reason":"Training-only input unavailable in hidden inference."},
+      {"idea":"Choose each graph route using outer-fold true error and report that oracle as performance","reason":"Same-fold target leakage and coverage/selectability confusion."},
+      {"idea":"Constrain total fluorescence or exact mother/daughter barycenter conservation","reason":"No such invariant is established; bleaching, visibility and field exits invalidate a hard constraint."},
+      {"idea":"Update image encoder to make TF05 currently feasible","reason":"Explicit image-model policy change required, P4 deferred. Not converted silently into a fixed-feature idea."},
+      {"idea":"Use image flips while blindly retaining original frozen image features","reason":"Encoder/time-window equivariance is not established; feature extraction would be necessary."},
+      {"idea":"Read exp050/051 results or linked experiment/source notebooks","reason":"Outside packet boundary and later outcomes cannot be assumed. Not attempted."}
+    ]
+  },
+  "selected_after_all_passes": ["I01", "I02", "I03", "I04", "I05"],
+  "task_first_migration": {"TF01":"I01 representation revised using E02/E08", "TF02":"I02 same-sequence reference", "TF03":"I03 closed corruption-pretrain-real-refine design", "TF04":"I09 independent candidate route outside top five", "TF05":"Policy-deferred rejected present-feasibility claim; exploratory original retained in task_first", "TF06":"I05 exact decomposition plus accuracy-enabling algorithm"},
+  "unresolved_inputs": ["Saved complete candidate/event logits and feature-cache coverage for all selected variants", "Exact anchor optimizer constraints and global coupling", "Per-video raw graphs and errors omitted from packet", "Current GPU quota and actual hidden dataset cardinality", "Availability of real nested training-video prediction caches", "Division teacher coverage for new x138-centered events", "Frozen model/head training exposure by embryo", "Raw image normalization and independent temporal-component coverage", "No independent hidden score or private leaderboard result"]
+}

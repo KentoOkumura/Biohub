@@ -1051,5 +1051,79 @@
     }
   },
   "notes": "Outer 4-arm graph evaluation failed SCIP time limit and has no official 20-video score. User-submitted GNN v3 ref 56638386 scored Public LB 0.938; user-submitted parallel Optuna mean-cost v4 ref 56658424 scored 0.942. The earlier Optuna v3 ref 56630788 exceeded the competition notebook runtime and has no LB. Old-cost v2 ref 56662549 scored Public LB 0.943; earlier GNN v1 and old-cost v1 hidden reruns failed. Existing exp043 ref 56508119 scored 0.950. Top-level public_lb remains the GNN value; candidate scores are recorded separately. On 2026-09-29 the user explicitly closed this experiment as not adopted; status discarded. The incomplete outer evaluation remains a limitation, and the broader hypothesis remains open.",
-  "updated_at": "2026-09-29T12:14:19.282160+00:00"
+  "updated_at": "2026-09-29T12:14:19.282160+00:00",
+  "submissions": {
+    "56626093": {
+      "cv": null,
+      "public_lb": null,
+      "private_lb": null,
+      "submitted_at": "2026-09-28T02:12:13.880000Z",
+      "submission_status": "notebook_unhandled_error",
+      "kernel_id": "kentookumura/exp050-shared-edge-gnn-submission",
+      "kernel_version": 1,
+      "evidence_keys": [
+        "evidence.submission_candidates.gnn"
+      ]
+    },
+    "56626727": {
+      "cv": null,
+      "public_lb": null,
+      "private_lb": null,
+      "submitted_at": "2026-09-28T02:44:12.410000Z",
+      "submission_status": "notebook_unhandled_error",
+      "kernel_id": "kentookumura/exp050-old-cost-submission",
+      "kernel_version": 1,
+      "evidence_keys": [
+        "evidence.submission_candidates.old_cost"
+      ]
+    },
+    "56630788": {
+      "cv": null,
+      "public_lb": null,
+      "private_lb": null,
+      "submitted_at": "2026-09-28T05:57:04.793Z",
+      "submission_status": "runtime_limit_exceeded",
+      "kernel_id": "kentookumura/exp050-optuna-cost-submission",
+      "kernel_version": 3,
+      "evidence_keys": [
+        "evidence.submission_candidates.optuna.v3_competition_submission"
+      ]
+    },
+    "56638386": {
+      "cv": null,
+      "public_lb": 0.938,
+      "private_lb": null,
+      "submitted_at": "2026-09-28T10:53:03.653Z",
+      "submission_status": "complete",
+      "kernel_id": "kentookumura/exp050-shared-edge-gnn-submission",
+      "kernel_version": 3,
+      "evidence_keys": [
+        "evidence.submission_candidates.gnn.v3_competition_submission"
+      ]
+    },
+    "56658424": {
+      "cv": null,
+      "public_lb": 0.942,
+      "private_lb": null,
+      "submitted_at": "2026-09-29T01:21:03.607Z",
+      "submission_status": "complete",
+      "kernel_id": "kentookumura/exp050-optuna-cost-submission",
+      "kernel_version": 4,
+      "evidence_keys": [
+        "evidence.submission_candidates.optuna.v4_competition_submission"
+      ]
+    },
+    "56662549": {
+      "cv": null,
+      "public_lb": 0.943,
+      "private_lb": null,
+      "submitted_at": "2026-09-29T04:25:16.520000Z",
+      "submission_status": "complete",
+      "kernel_id": "kentookumura/exp050-old-cost-submission",
+      "kernel_version": 2,
+      "evidence_keys": [
+        "evidence.submission_candidates.old_cost.v2_unseen_embryo_fix"
+      ]
+    }
+  }
 }

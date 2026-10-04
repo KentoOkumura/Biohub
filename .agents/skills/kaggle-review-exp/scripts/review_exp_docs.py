@@ -71,9 +71,17 @@ def candidate_files(root: Path, exp: str) -> list[Path]:
 
     base_dir = configured_project_path("paths.experiments_dir", "experiments", root=root)
     if base_dir.exists():
-        for candidate_dir in base_dir.iterdir():
-            if not candidate_dir.is_dir() or lowered not in candidate_dir.name.lower():
-                continue
+        matches = sorted(
+            path for path in base_dir.iterdir() if path.is_dir() and lowered in path.name.lower()
+        )
+        exact = [path for path in matches if path.name.lower() == lowered]
+        matches = exact or matches
+        if len(matches) > 1:
+            raise ValueError(
+                f"Ambiguous experiment {exp!r}; use a full directory name: "
+                + ", ".join(path.name for path in matches)
+            )
+        for candidate_dir in matches:
             for path in candidate_dir.rglob("*"):
                 if (
                     path.is_file()
@@ -87,9 +95,10 @@ def candidate_files(root: Path, exp: str) -> list[Path]:
         for path in surveys_dir.glob("*.md"):
             if path.name == "README.md":
                 continue
-            if lowered in path.name.lower() or lowered in path.read_text(
-                encoding="utf-8", errors="replace"
-            ).lower():
+            if (
+                lowered in path.name.lower()
+                or lowered in path.read_text(encoding="utf-8", errors="replace").lower()
+            ):
                 files.add(path)
 
     return sorted(files, key=lambda path: str(path.relative_to(root)))
@@ -115,9 +124,7 @@ def review_file(path: Path) -> dict[str, object]:
 
 
 def evidence_scope(root: Path, path: Path) -> str:
-    experiments_dir = configured_project_path(
-        "paths.experiments_dir", "experiments", root=root
-    )
+    experiments_dir = configured_project_path("paths.experiments_dir", "experiments", root=root)
     try:
         experiment_relative = path.relative_to(experiments_dir)
     except ValueError:
@@ -195,14 +202,9 @@ def render(exp: str, root: Path, reviews: list[dict[str, object]]) -> str:
     if not has_target_evidence:
         lines.append("- No canonical target experiment records were found.")
     if missing:
-        lines.append(
-            "- Missing evidence in target experiment records: "
-            + ", ".join(missing)
-        )
+        lines.append("- Missing evidence in target experiment records: " + ", ".join(missing))
     else:
-        lines.append(
-            "- Core evidence categories are present in target experiment records."
-        )
+        lines.append("- Core evidence categories are present in target experiment records.")
     lines.append("- Context and supporting material do not satisfy target evidence checks.")
     return "\n".join(lines) + "\n"
 
@@ -221,7 +223,10 @@ def main() -> int:
     args = parser.parse_args()
 
     root = Path(args.root).resolve()
-    files = candidate_files(root, args.exp)
+    try:
+        files = candidate_files(root, args.exp)
+    except ValueError as error:
+        parser.error(str(error))
     reviews = collect_reviews(root, files)
     output = render(args.exp, root, reviews)
     print(output)

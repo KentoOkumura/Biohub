@@ -30,7 +30,7 @@
 
 1. 採用済み[exp043](../experiments/exp043_x138_self_trained_head/result.md)のPublic LB 0.950を固定入力の比較基準とする。[exp042](../experiments/exp042_public_x138_replay/result.md)は0.953だが、作者headへの切替は自動で行わない。各差をtracker単独の効果とは扱わない。
 2. [exp045](../experiments/exp045_x138_coordinate_effect_audit/result.md)の両胚各10動画では座標補正で0.879239→0.890348。条件付きtrain比較であり、Public LBのhead単独効果ではない。
-3. [exp051](../experiments/exp051_x138_ilp_score_clipping/result.md)は外側20動画の両胚改善が不成立で、ユーザーが不採用・完了と判断。後処理での選択消失と点数調整の悪化を下記5候補へ反映した。[exp050](../experiments/exp050_shared_edge_graph_learning/result.md)はGNN・Optuna平均費用・拡張候補と旧費用の各Public LBが既存exp043を下回り、2026-09-29にユーザーが不採用・完了と判断。外側4条件比較は未完のまま閉じた。exp052は実験化済みだが、直近記録ではCPU枠不足で試行未実行。実行状態の正本は各記録とする。
+3. [exp051](../experiments/exp051_x138_ilp_score_clipping/result.md)は外側20動画の両胚改善が不成立で、ユーザーが不採用・完了と判断。後処理での選択消失と点数調整の悪化を下記5候補へ反映した。[exp050](../experiments/exp050_shared_edge_graph_learning/result.md)はGNN・Optuna平均費用・拡張候補と旧費用の各Public LBが既存exp043を下回り、2026-09-29にユーザーが不採用・完了と判断。外側4条件比較は未完のまま閉じた。[exp052の結果](../experiments/exp052_x138_relink_candidate_scores/result.md)は、完了した提出評価と未実施の学習動画CPU診断を区別して参照する。実行状態と採否の正本は各実験の記録とする。
 4. tracker内部の特徴・attention追加や履歴延長は再開条件付きP4。[exp040](../experiments/exp040_trackastra_association/result.md)・[exp041](../experiments/exp041_past_feature_cross_attention/result.md)の単体未達から、未測定の公式scoreや手法全体の無効を推定しない。
 5. 必要なtrain対照は改善実験内で取得し、旧exp015/016のcacheで代用しない。公開画像モデルとheadの来歴を含む条件付き比較で、独立CVとは呼ばない。
 
@@ -100,7 +100,7 @@
 | P4 | `HYP-20260910-12` | [`sparse_motion_graph`](sparse_motion_graph.md) | 近傍候補で多時点予測を可能に | 精度上の根拠がある先行案で候補間計算が律速と実測され、同予算の候補保持と両娘回収を失わない比較が必要になった場合に再開する。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260915-01` | [`contrastive_parent_child`](contrastive_parent_child.md) | 教師・特徴診断を含め親子特徴を対照学習 | 統合した診断で確定負例と競合親の識別が成立し、exp043で得点差が最終接続へ残る使用先を特定する。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260910-10` | [`position_history_tracker`](position_history_tracker.md) | 予測対応した位置列を入力して接続を学習 | 予測履歴と正解履歴を区別して残る誤りを診断し、実予測履歴の追加で改善可能な接続を特定する。 | `検討メモ・設計不可` |
-| P4 | `HYP-20260910-10` | [`multi_time_past_candidate_attention`](multi_time_past_candidate_attention.md) | 過去座標の複数時点集約 | 1時点版または作業中のexp044に、同入力で両胚の単体条件を満たす証拠と最終出力への作用を得て、追加時点の費用を見積もる。exp044の結果は現時点で未取得。 | `検討メモ・設計不可` |
+| P4 | `HYP-20260910-10` | [`multi_time_past_candidate_attention`](multi_time_past_candidate_attention.md) | 過去座標の複数時点集約 | 1時点版で同入力の両胚の単体条件と最終出力への作用を確認し、追加時点の費用を見積もる。[exp044の取得済み結果](../experiments/exp044_x138_past_candidate_knn_attention/result.md)は単体条件未達で、再開条件は成立していない。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260910-01` | [`sample_loss_balance`](sample_loss_balance.md) | トラッカー損失の動画間の寄与を揃える | 動画ごとの有効窓数・勾配寄与と失敗の関係を確認し、同じ露出・教師maskで集約だけを変える比較にする。設計可能の状態は維持する。 | `設計可能・実験化未承認` |
 | P4 | `HYP-20260910-03` | [`division_time_dist`](division_time_dist.md) | 分裂時刻の複数候補を残す | 誤りが時刻のずれに由来すると確認でき、固定候補・得点の時間分布だけを変える比較が定まる。 | `検討メモ・設計不可` |
 | P4 | `HYP-20260910-03` | [`division_state_model`](division_state_model.md) | 継続・分裂・観測不能を選ぶ | 観測不能の状態を識別できる教師・出力・損失が定まり、共有得点案では測れない効果を明示する。 | `検討メモ・設計不可` |

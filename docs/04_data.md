@@ -34,7 +34,7 @@
 - 疎な正解は合計133,318 node、128,883 edge。sample単位ではnode数50～1,950（median 659）、edge数49～1,879（median 639）。`estimated_number_of_nodes`の合計は4,725,117。
 - train 199 sampleと公開test 4 sampleの画像shapeはすべて`(100,64,256,256)`、chunk shapeは`(1,64,256,256)`。
 - `sample_submission.csv`は10列、20行の形式例であり、本番予測の必要行数を指定するtemplateではない。
-- 輝度分布、画像内容、division数は画像・edge array本体を読んでいないため未確認。ローカルの`data/raw/`にはデータ本体を置いていない。
+- 初回のmetadata監査では画像・edge array本体を読んでいない。その後の[公式アノテーション分布調査](surveys/biohub-official-annotation-distribution_20260815.md)で全train GEFFを読み、注釈済みの分裂数、胚別の注釈密度、完全注釈領域を示すmaskがないことを確認した。輝度分布や真の未注釈細胞の分布は、このGEFF調査では確認できない。ローカルの`data/raw/`にはデータ本体を置いていない。
 - 実行証拠: [`studies/biohub_repository_setup/input_metadata_audit.json`](../studies/biohub_repository_setup/input_metadata_audit.json)。調査コードは同じディレクトリの`input_metadata_audit.py` / `.ipynb`に置く。
 
 ## データリスク

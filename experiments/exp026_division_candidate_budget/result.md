@@ -6,7 +6,9 @@
 
 ## 実行証拠
 
-初段の実装とローカルの静的・単体検証は完了。Kaggleの全199動画診断は、先行するexp025の完走した状態・校正出力を待つ。候補回収値、公式combined score、division Jaccardは本実験では未計測。
+初段の実装とローカルの静的・単体検証は完了。先行する[exp025のカルマン実験](../exp025_kalman_hungarian_links/result.md)は全199動画の評価を終え、実行receiptと両foldの校正ファイルを取得済みである。取得済みファイルのSHAと状態ファイルの取得状況は[上流のmetrics.json](../exp025_kalman_hungarian_links/metrics.json)を参照する。
+
+本実験で必要な状態のNPZファイルは未回収であり、Kaggle入力としての利用可否と内容の照合も未確認。`config.yaml`の`data.motion.execution_receipt_sha256`と`calibration_sha256`は未設定のままで、本実験の入力との対応を確認してから接続する。上流の完走をもって本実験が実行可能とは判断しない。Kaggleの全199動画診断、候補回収値、公式combined score、division Jaccardは本実験では未実行・未計測。
 
 ## 解釈
 

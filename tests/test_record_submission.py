@@ -119,7 +119,7 @@ def test_submission_scores_are_read_from_experiment_metrics(
     )
     monkeypatch.setattr(record_submission, "EXPERIMENTS_DIR", experiments_dir)
 
-    assert record_submission.experiment_scores("exp123_test") == (
+    assert record_submission.experiment_scores("exp123_test", "12345678") == (
         "0.1234",
         "0.12",
         "-",
@@ -202,3 +202,119 @@ def test_legacy_grouped_submission_ref_must_be_split_before_update() -> None:
 
     with pytest.raises(SystemExit, match="legacy grouped row"):
         record_submission.find_submission_row(lines, "123")
+
+
+def test_multiple_refs_keep_distinct_scores_and_failed_ref_null(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    history = tmp_path / "SUBMISSIONS.md"
+    experiments = tmp_path / "experiments"
+    experiment = experiments / "exp123_test"
+    experiment.mkdir(parents=True)
+    metrics = {
+        "public_lb": 0.938,
+        "submissions": {
+            "111": {"cv": None, "public_lb": 0.942, "private_lb": None},
+            "222": {"cv": None, "public_lb": 0.943, "private_lb": None},
+            "333": {
+                "cv": None,
+                "public_lb": None,
+                "private_lb": None,
+                "submission_status": "runtime_limit_exceeded",
+                "submitted_at": "2026-09-28T02:12:13.880000+00:00",
+            },
+        },
+    }
+    metrics_path = experiment / "metrics.json"
+    metrics_path.write_text(json.dumps(metrics))
+    monkeypatch.setattr(record_submission, "SUBMISSIONS_PATH", history)
+    monkeypatch.setattr(record_submission, "EXPERIMENTS_DIR", experiments)
+    args = SimpleNamespace(
+        experiment=experiment.name,
+        file=str(tmp_path / "absent.csv"),
+        submission_ref="111",
+        version=None,
+        notes=None,
+        allow_missing_file=True,
+    )
+    monkeypatch.setattr(record_submission, "parse_args", lambda: args)
+    for _ in range(2):
+        for ref in metrics["submissions"]:
+            args.submission_ref = ref
+            record_submission.main()
+    lines = history.read_text().splitlines()
+    for ref, expected in (("111", "0.942"), ("222", "0.943"), ("333", "-")):
+        row = record_submission.find_submission_row(lines, ref)[1]
+        assert row[8] == expected
+    assert sum(line.startswith("| v") for line in lines) == 3
+    assert record_submission.find_submission_row(lines, "333")[1][1] == "2026-09-28"
+
+    metrics["submissions"]["222"]["private_lb"] = 0.919
+    metrics_path.write_text(json.dumps(metrics))
+    args.submission_ref = "222"
+    record_submission.main()
+    lines = history.read_text().splitlines()
+    assert record_submission.find_submission_row(lines, "222")[1][7:10] == ["-", "0.943", "0.919"]
+    assert record_submission.find_submission_row(lines, "111")[1][9] == "-"
+    assert record_submission.find_submission_row(lines, "333")[1][8:10] == ["-", "-"]
+
+
+def test_multiple_legacy_refs_reject_experiment_wide_fallback(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(record_submission, "SUBMISSIONS_PATH", tmp_path / "absent.md")
+    metrics = {
+        "public_lb": 0.938,
+        "evidence": {
+            "a": {"submission_ref": 111},
+            "b": {"competition_submission_ref": 222},
+        },
+    }
+    with pytest.raises(SystemExit, match="multiple or different"):
+        record_submission.submission_record("exp123_test", "111", metrics)
+
+
+def test_missing_canonical_ref_never_falls_back_to_experiment_score() -> None:
+    with pytest.raises(SystemExit, match="no score record"):
+        record_submission.submission_record(
+            "exp123_test", "222", {"public_lb": 0.938, "submissions": {"111": {}}}
+        )
+
+
+def test_failed_legacy_ref_rejects_unrelated_experiment_score(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    history = tmp_path / "SUBMISSIONS.md"
+    history.write_text(
+        record_submission.render_table_row(
+            [
+                "v001",
+                "2026-09-28",
+                "exp123_test",
+                "submission.csv",
+                "-",
+                "-",
+                "-",
+                "-",
+                "-",
+                "-",
+                "111",
+                "submission_status=runtime_limit_exceeded",
+            ]
+        )
+        + "\n"
+    )
+    monkeypatch.setattr(record_submission, "SUBMISSIONS_PATH", history)
+    with pytest.raises(SystemExit, match="failed submission"):
+        record_submission.submission_record("exp123_test", "111", {"public_lb": 0.938})
+
+
+def test_current_multiple_submission_scores_match_history() -> None:
+    for line in record_submission.SUBMISSIONS_PATH.read_text().splitlines():
+        cells = record_submission.parse_table_row(line)
+        if cells is not None:
+            metrics = record_submission.experiment_metrics(cells[2])
+            if "submissions" in metrics:
+                assert record_submission.experiment_scores(cells[2], cells[10]) == tuple(
+                    cells[7:10]
+                )

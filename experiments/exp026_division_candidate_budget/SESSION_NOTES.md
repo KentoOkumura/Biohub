@@ -16,6 +16,7 @@
 - 2026-09-20: private・T4・internet無効・`run_on_push=false`のdiagnostic packageを`make prepare-kaggle-notebooks`で生成。exp025 Notebook outputのファイル一覧はまだ空で、完走receiptとfold別校正SHAはconfigへ未設定。未設定ならNotebookが停止する。
 - 2026-09-20: exp025保存graphの各候補ID・時刻・座標をcacheと照合するguard、GPU peak memory、exp021のGT bundle SHA照合を追加。`make check-exp`と4件の対象テストは再実行して成功。
 - 2026-09-20: `make check-strategy-docs`は別作業で作成中の`exp027_multi_frame_tracker`が索引未反映のためHYP-20260910-10で失敗。本実験のHYP-20260910-03の行は移行済み。別実験の索引はこの作業で変更しない。
+- 2026-10-04: リポジトリ監査の指摘に従い、上流出力の待機記録を更新した。exp025のカルマン実験は全199動画を完走し、実行receiptと両foldの校正ファイルは取得・SHA照合済みと上流の`metrics.json`に記録されている。一方、状態のNPZファイルは未回収。本実験で使うKaggle入力との対応・状態内容の照合は未確認のため、configのreceipt・校正SHAは未設定を維持した。追加の取得、Kaggle実行、実験status・採否の変更は行っていない。
 
 ## Notebook構成
 
@@ -23,4 +24,4 @@
 
 ## 次の実行
 
-exp025の全199動画の完走receiptとstateが利用可能になった後、`kaggle-platform`のquota・resource確認を行う。GPU週30時間・Notebook 12時間gateを守り、private診断NotebookをKaggleで初回フル実行する。submissionは行わない。
+exp025のカルマン実験の状態NPZがKaggle入力として利用可能か確認し、取得済みreceipt・校正のSHA、本実験が読む状態ファイル、候補ID・時刻・座標の対応を照合する。対応を確認後にconfigへreceipt・校正SHAを設定する。入力確認が終わるまでは初回フル実行を開始しない。実行時は現在の学習方針と`kaggle-platform`のquota・resource確認を行い、承認されたGPU予算とNotebook 12時間の制限内でprivate診断Notebookを実行する。submissionは行わない。

@@ -6,7 +6,7 @@
 - 対応する上位仮説: `HYP-20260910-10`
 - 関連する上位仮説: なし
 - 作成日: 2026-09-22
-- 最終更新日: 2026-09-24
+- 最終更新日: 2026-10-04
 - 依頼原文: 「全時点を使う必要はなさそうなので過去数時点を使えばいいです」「今回のcross-attention案はpast_candidate_attentionを複数時点参照するようにしただけですか？」「3案すべて追加してください」
 - 期待する成果: 過去の対応を一つに確定せず、直前1時点では不足する位置情報を複数時点の候補集合から補えるかを検証する。
 - 親実験 / 比較対象: 直前1時点の座標集約版past_candidate_attention（現在の移行先は`exp037_past_candidate_attention`）を直接対照とし、[exp016 requirements](../experiments/exp016_frozen_image_encoder/requirements.md)、[config](../experiments/exp016_frozen_image_encoder/config.yaml)、[result](../experiments/exp016_frozen_image_encoder/result.md)も共通基準とする。
@@ -19,7 +19,7 @@
 
 - 現在の判断: 1時点版の精度改善が未確認のまま参照時点を増やすと、学習費用と仮定だけが増える。exp037/038の学習前停止を精度失敗とは扱わない。
 - 根拠: [今回の全候補再評価](../docs/surveys/biohub-backlog-reorganization_20260924.md)。個別の数値・実行状態は同レポートが参照する実験のmetricsとresultを正とする。
-- 再開・着手条件: 1時点版または作業中のexp044に、同入力で両胚の単体条件を満たす証拠と最終出力への作用を得て、追加時点の費用を見積もる。exp044の結果は現時点で未取得。
+- 再開・着手条件: 1時点版に、同入力で両胚の単体条件を満たす証拠と最終出力への作用を得て、追加時点の費用を見積もる。当時はexp044の結果が未取得だったが、後続の[取得済み結果](../experiments/exp044_x138_past_candidate_knn_attention/result.md)は単体条件未達で、再開条件は成立していない。全graphの公式scoreは未計測であり、実験の終了・採否は同実験のユーザー判断欄を参照する。
 - 適用範囲: 優先度の変更であり、実験の採否や上位仮説の支持・棄却ではない。学習対象・予算は[現在の学習方針](KAGGLE_DIRECTION.md#今後の学習方針)に従う。以下の古い日付の優先順は当時の履歴として読む。
 
 ## 観測事実と根拠

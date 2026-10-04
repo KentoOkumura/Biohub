@@ -5,7 +5,7 @@
 - 仮説要約: augmentation乱数とPyTorch/CUDA algorithmを固定すれば、同じKaggle T4 x2環境でmodel、held-out予測、CVを再現できる。
 - 変更点要約: epoch/item別augmentation RNG、決定論的samplerとruntime設定、canonical model/prediction/metric SHA、2 run比較scriptを追加する。
 - リスク: 決定論的algorithmによる停止または速度低下、固定環境外では同一性を保証できないこと。
-- 次: byte-identicalなtrain/inference Notebookを2回ずつKaggleで実行し、全canonical SHAとCVを比較する。
+- 次: [ユーザーの途中停止判断](result.md)に従い、追加実行は行わない。1回目の学習・推論の証拠を保持し、2回の実行間の一致は未検証として扱う。
 
 ## 正の記録
 
@@ -19,7 +19,7 @@
 
 - 学習 notebook: `exp010_exp006_deterministic_replay_train.ipynb`
 - 推論 notebook: `exp010_exp006_deterministic_replay_inference.ipynb`
-- Kaggle 準備と実行: [`SESSION_NOTES.md`](SESSION_NOTES.md)の予定を埋め、`kaggle-review-exp`と`kaggle-platform`の手順に従う
+- 実行済みの手順と停止経緯: [`SESSION_NOTES.md`](SESSION_NOTES.md)
 - notebook 実行: Kaggle kernel run を正とする。ローカル実行は `--allow-local` を付けた smoke debug のみに限定する。
 
 ## 表記

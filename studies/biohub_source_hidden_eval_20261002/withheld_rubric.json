@@ -1,0 +1,32 @@
+{
+  "version": "1",
+  "scale": {"0": "No mechanism, incompatible mechanism, or only a label.", "1": "Related direction, but missing a defining input, target, objective, or decoding step.", "2": "Defining mechanism is specified with enough input, teacher/objective, output and decoding detail to build a falsifiable comparison. Exact architecture dimensions are unnecessary."},
+  "rules": [
+    "Do not reward generic phrases such as temporal information, learn division, improve detection, or graph refinement.",
+    "Score task-first six, all cards, and top five separately. A task-first match is distinct from reuse after reading prior experimental evidence.",
+    "Treat closely related ideas as partial matches when they implement a different operation.",
+    "Separate mechanisms allowed under the cutoff policy from those requiring an explicit policy change. Do not penalize an acknowledged conditional proposal for not being executable under the fixed-image policy.",
+    "Annotate matches already substantially specified by the historical baseline or prior experimental evidence; these show reuse, not independent discovery of that mechanism.",
+    "A 2 means fidelity of an idea, never accuracy, leaderboard improvement, or replication of a complete winning solution.",
+    "Quote concrete card text for each nonzero rating and identify a missing requirement for each partial rating. Do not repair the idea before scoring.",
+    "The rubric is a selected set of mechanisms across fifteen archived solutions, not a comprehensive or score-weighted decomposition of winning performance."
+  ],
+  "criteria": [
+    {"id":"R01","source_rank":[1],"policy":"change_required","mechanism":"Query-specific image prediction of parent/daughter occupancy at adjacent times plus cell division state, followed by separate offspring-count and offspring-set selection; not a generic temporal classifier."},
+    {"id":"R02","source_rank":[2],"policy":"change_required","mechanism":"Construct faint-cell training images from real-cell patches with temporal/photometric degradation and known labels to improve detector training; not arbitrary coordinate jitter."},
+    {"id":"R03","source_rank":[2,10],"policy":"within_policy","mechanism":"Recover previously unused low-confidence detections as persistent image-supported independent tracks; can retain a valid new track without requiring two existing endpoints, then link only compatible free endpoints."},
+    {"id":"R04","source_rank":[3],"policy":"within_policy","mechanism":"Separate probability of being evaluated under sparse annotation from conditional probability of correct division/edge, calibrate corresponding candidate costs. Unknown-label masking alone is a partial match."},
+    {"id":"R05","source_rank":[1,3,18],"policy":"within_policy","mechanism":"Score explicit mother-plus-two-daughters division events against ordinary/no-child alternatives under single-parent constraints and permit replacing competing existing normal edges; parentless second-daughter addition alone is partial."},
+    {"id":"R06","source_rank":[3,4,7,10,12],"policy":"change_required","mechanism":"Train image-crop motion/appearance/division evidence with direct targets independently of inherited frozen point features, then use it for competing candidate selection."},
+    {"id":"R07","source_rank":[3,7],"policy":"within_policy","mechanism":"Use provisional selected topology to update candidate event costs and rerun constrained selection; topology features used only in a once-run classifier are partial."},
+    {"id":"R08","source_rank":[5],"policy":"within_policy","mechanism":"Run staged constrained graph selection: preserve reliable selected paths, introduce weaker detections in a second pass, constrain/cancel newly unsupported divisions while allowing added independent tracks."},
+    {"id":"R09","source_rank":[10],"policy":"change_required","mechanism":"Candidate-edge self-attention represents competition between edges, paired with independently contrastively trained image appearance representation; point/node attention alone is not the full mechanism."},
+    {"id":"R10","source_rank":[14],"policy":"change_required","mechanism":"Dense voxel votes/displacement to cell centers and from daughter voxels to parent centers; integrate votes to recover instances and parent associations. Point coordinate offsets alone are partial."},
+    {"id":"R11","source_rank":[17],"policy":"within_policy","mechanism":"Train final-graph edits on signed official-metric change of applying each edit, distinguish evaluated gains/losses/unknown changes, recompute graph features after edits."},
+    {"id":"R12","source_rank":[18],"policy":"within_policy","mechanism":"Repair/extend daughter tracks first, then re-evaluate division using repaired topology and competing ordinary edges. One-time division addition before downstream repair is partial."},
+    {"id":"R13","source_rank":[16],"policy":"change_required","mechanism":"Feed reliable nodes from completed predicted tracks back as weighted pseudo-labels for a new detector-training pass, distinguish inferred labels and confirmed annotation."},
+    {"id":"R14","source_rank":[3,9,12,14],"policy":"within_policy","mechanism":"Apply final-graph coordinate correction while holding identities/links fixed and/or restore valid divisions after downstream processing deletes them; distinguish final geometry/repair from pre-tracker changes."},
+    {"id":"R15","source_rank":[6],"policy":"change_required","mechanism":"Sparse local graph attention conditioned on motion and positional uncertainty rather than all-pairs fixed-point attention, with motion/uncertainty learned from images in joint detect/link training."},
+    {"id":"R16","source_rank":[5,11],"policy":"change_required","mechanism":"Learn explicit birth/no-parent and mother-division outputs with partial-annotation-aware targets, and use their probabilities for graph start/division costs; new image features must be acknowledged."}
+  ]
+}

@@ -15,10 +15,10 @@
 
 ## ローカル実装
 
-- 実装先: 未実装。最初の実験契約で主催者公開実装を固定し、対象実験の補助モジュールまたは共通利用する場合は`src/`へ置く。
+- 参照実装: [exp003の設定](../experiments/exp003_official_metric_audit/config.yaml)で固定した主催者公開コードを使う。固定版、照合対象、実行証拠は[exp003の結果](../experiments/exp003_official_metric_audit/result.md)を参照する。Kaggleのhidden scorerそのものではない。
 - 入力: 予測tracking graph、疎な正解tracking graph、正解総node数の概算値、voxel scale。
 - 出力: adjusted edge Jaccard、division Jaccard、combined score、および解釈に必要なTP/FP/FN。
-- 公式例との照合: データと公式metric実装を未取得のため未実施。
+- 照合結果: exp003で人工例と保存済み実予測をKaggle CPU上で比較済み。実予測では一致したが、人工例では公開Notebookの簡略評価器との差が確認された。今後は固定公式版を使い、照合済み入力以外での同等性や将来の公式更新への一致は保証しない。
 
 ## エッジケース
 

@@ -1,0 +1,8 @@
+{
+  "reason": "Both generators had saved task-first and pass notes, but continued extended portfolio drafting without finishing artifacts.",
+  "action": "Parent interrupted both active turns and resumed the same contexts from saved own notes, requiring exactly ten complete compact cards and five selected ideas within the original skill's permitted 10-14 range.",
+  "extra_sources_allowed": "Only each run's own previously generated files were explicitly added to its allowlist; no winning writeups, rubric, other-run output, later evidence or Web was added.",
+  "content_hints_added": false,
+  "source_isolation_unchanged": true,
+  "interpretation_limit": "The assessment includes parent intervention to finish artifacts. It is not an unattended run or a measurement of discovery probability. Runtime and finalization overhead are observations of this workflow, not proof of a particular scientific failure cause."
+}

@@ -1,6 +1,6 @@
-# Kaggle 実験テンプレート
+# Biohub 実験リポジトリ
 
-Kaggle コンペの調査、実験、検証、提出、記録を一貫して管理するためのテンプレートです。
+Biohub - Cell Tracking During Development の調査、実験、検証、提出、記録を管理するリポジトリです。
 
 実験化前の未着手候補と検証中の上位仮説は`backlog/`、実験化を承認した作業は`experiments/expXXX_title/`で管理します。実装前の要件と実装方法は同じ実験の`requirements.md`に残します。コンペ単位の設定は`project.yml`、現在の戦略は`backlog/KAGGLE_DIRECTION.md`、実験比較は`experiment_summary.md`、完了した調査・判断履歴の検索入口は`docs/surveys/README.md`に集約します。
 
@@ -40,15 +40,15 @@ task check-skills
 ルートテストのファイル指定とテンプレート検証のコマンド例:
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 UV_CACHE_DIR=/tmp/uv-cache uv run --extra dev --extra notebook pytest -q tests/test_target.py
+PYTHONDONTWRITEBYTECODE=1 UV_CACHE_DIR=/tmp/uv-cache uv run --extra dev --extra notebook --extra app pytest -q tests/test_target.py
 task validate-template
 ```
 
-共通テストと全件検証のコマンド。全件検証では、共通テストと実験固有テストを収集する前にNotebook依存も同期します。
+共通テストと全件検証のコマンド。テストに必要なNotebook・アプリ依存を含めます。全件検証は共通テストと各実験を別々のPythonプロセスで実行し、同名モジュールの衝突を防ぎます。
 
 ```bash
+uv sync --locked --extra dev --extra notebook --extra app
 task test-common
-uv sync --locked --extra dev --extra notebook
 task test
 ```
 
@@ -146,46 +146,13 @@ task validate-config VALIDATE_ARGS="--expected-competition <competition-slug>"
 | 今すぐ実験する | 「この案を実験化して実装してください」 | 形式的なbacklogを作らず、直接実験を作成する |
 | 保存済み候補を実験する | 「`backlog/<candidate>.md`の候補を実装してください」 | 候補の契約を実験へ移行する |
 
-### 仮説と未着手候補
+上位仮説と未着手候補の定義・状態・引き継ぎ条件は [AGENTS.md](AGENTS.md#仮説とアイデアバックログの引き継ぎ) を正とします。候補を保存するときは `kaggle-strategy`、実験化するときは `kaggle-review-exp` を使います。実験番号を指定するときは、既存の重複番号を区別できる完全なディレクトリ名を使ってください。
 
-「上位仮説」と「未着手候補」は、このリポジトリ内の管理用語です。
-
-- チャット内で出た仮説: 壁打ち中の案であり、保存を依頼されるまではファイルに記録しません。
-- 上位仮説: 複数の未着手候補や実験で検証する反証可能な問いです。`backlog/KAGGLE_DIRECTION.md`で対応候補、対応実験、残っている問いを追跡します。
-- 未着手候補: 上位仮説の一部を1回の実験として検証できる具体案です。`backlog/KAGGLE_DIRECTION.md`を索引、`backlog/<candidate>.md`を候補詳細の正とします。
-- 実験固有の仮説: 1件の実験で検証する主張です。実験化後は`experiments/<exp>/requirements.md`へ記録します。
-
-### バックログ化する場合
-
-ユーザーが「バックログ化」「バックログへ追加」と依頼した場合は、`kaggle-strategy`が同名候補、実装済み実験、終了済みの検証との重複を確認します。そのうえで、既存の上位仮説に属する候補なら同じIDを使い、新しい反証可能な問いなら未使用の`HYP-YYYYMMDD-NN`を発行します。
-
-同じ変更で、`backlog/KAGGLE_DIRECTION.md`の「検証中の仮説」と「未着手バックログ」を更新し、`backlog/_TEMPLATE.md`から`backlog/<candidate>.md`を作成します。候補詳細には、根拠、上位仮説のうち直接検証する範囲、変更するもの、固定するもの、最小検証、成功条件、停止条件、実行しないこと、未決事項を記録します。追加後は既存候補を含めて優先度を見直します。
-
-結果や実装方針に影響する未決事項が残る候補は`検討メモ・設計不可`、必要項目が埋まり未決事項が`なし`の候補だけを`設計可能・実験化未承認`として管理します。
-
-バックログ化だけでは、実験番号の採番、実験ディレクトリ作成、コード実装、Kaggle実行を行いません。
-
-### 直接実験化する場合
-
-ユーザーが実験化を直接承認した場合は、形式的なbacklogを作りません。`kaggle-review-exp`が次に利用できる実験番号を採番し、`experiments/<exp>/`を作成または親実験からコピーします。依頼原文と承認、親実験、根拠、変更するもの、固定するもの、実装方法、最小検証、成功条件、停止条件、実行しないことを同じ実験の`requirements.md`へ記録します。
-
-明示的に紐づける既存の上位仮説がなければ、`config.yaml`の`lineage.hypothesis_id`と`lineage.backlog_candidate`は`N/A`とします。上位仮説を発行するためだけの形式的なbacklogは作りません。
-
-### バックログ候補を実験化する場合
-
-候補が`設計可能・実験化未承認`で未決事項が`なし`なら、対象候補を指定した「実装してください」を実験化承認として扱います。重要な解釈差がある場合だけ、コード作成前にユーザーへ確認します。`検討メモ・設計不可`の候補は、未決事項を解消してから実験化します。
-
-実験化時は、候補詳細の上位仮説ID、根拠、具体的な仮説、固定事項、変更事項、実装方法、最小検証、成功条件、停止条件、実行しないこと、判断履歴を`requirements.md`へ移し、`config.yaml`のlineageと一致させます。移行確認後に、元の候補詳細と未着手バックログの行を削除し、「検証中の仮説」の対応先を未着手候補から実験へ変更します。以後は`experiments/<exp>/`だけを正とします。
-
-### 実験の実行と判断
-
-実装、実験契約に必要な Kaggle Notebook の実行、記録、レビューは`kaggle-review-exp`、Kaggle CLIとkernel操作は`kaggle-platform`を使います。提出物の実ファイルを検証する場合は`kaggle-submit-check`、submit後の監視は`kaggle-submit-monitor`を使います。ライフサイクル全体は`docs/05_workflow.md`、作業別の入口は`docs/agent-playbooks.md`を参照してください。
-
-実験結果だけで、完了、採用、不採用を自動決定しません。比較対象、CV・LB、実行証拠、未解決事項を整理し、ユーザーの判断後に確定します。1件の実験が終了しても残っている問いがあれば、上位仮説は検証中のままです。関連実験の証拠が揃った後、ユーザーが支持、棄却、保留を判断し、結論を`docs/surveys/`へ保存して上位仮説別索引へ反映してから「検証中の仮説」から外します。
+実行から判断までの流れは [実験ワークフロー](docs/05_workflow.md)、作業別の入口は [参照索引](docs/agent-playbooks.md) を参照してください。具体的な依頼例は下記に残しています。
 
 ## 記録と判断
 
-保存場所、各記録ファイルの役割、実験status、完了・採用・不採用の判断規則は`AGENTS.md`を正とし、このREADMEでは別定義しません。人間向けの横断入口は`experiment_summary.md`と`SUBMISSIONS.md`です。
+保存場所、各記録ファイルの役割、実験status、完了・採用・不採用の判断規則は`AGENTS.md`を正とし、このREADMEでは別定義しません。人間向けの横断入口は`experiment_summary.md`と`SUBMISSIONS.md`です。 提出スコアは `task record-exp EXP=<exp> SUBMISSION_REF=<ref> PUBLIC_LB=<score>` で当該提出へ記録してから、同じ `SUBMISSION_REF` で `record-submission` を実行します。実験の代表値と提出ごとの値は区別します。
 
 ## データと提出
 

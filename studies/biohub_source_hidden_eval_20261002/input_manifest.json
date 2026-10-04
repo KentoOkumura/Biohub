@@ -1,0 +1,105 @@
+{
+  "cutoff_commit": "7b648a329ad080e177a15e75f166440ffe6b6b78",
+  "cutoff_time_jst": "2026-09-27T17:41:06+09:00",
+  "source_selection": "Specification, historical policy, baseline contract, numerical results. No prior idea reports, candidate files, winning writeups, later results, current strategy index or Web.",
+  "sources": [
+    {
+      "path": "docs/01_competition.md",
+      "git_commit": "7b648a3",
+      "source_sha256": "505008f948d0197febcb27366ebead8fcc909f4c056d945bbd8630f0416abc8d",
+      "selection": "task/factual sections"
+    },
+    {
+      "path": "docs/02_metric.md",
+      "git_commit": "7b648a3",
+      "source_sha256": "ea77e775bf851ee0e9022e86ac5557bfe503c9105ad58dff04371f296f0344d2",
+      "selection": "task/factual sections"
+    },
+    {
+      "path": "docs/04_data.md",
+      "git_commit": "7b648a3",
+      "source_sha256": "2df9c9468b347fc5b40a223ea20bbfe84036c24ccce5ec8522d4c0be185b1d42",
+      "selection": "task/factual sections"
+    },
+    {
+      "path": "backlog/KAGGLE_DIRECTION.md",
+      "git_commit": "7b648a3",
+      "source_sha256": "680a972119d7f99a761fa2f8a0a82dc09eb7e73e6c4239bb9c8dbd2f3f0d7aae",
+      "selection": "今後の学習方針のみ; candidate index excluded"
+    },
+    {
+      "path": "experiments/exp003_official_metric_audit/metrics.json",
+      "git_commit": "7b648a3",
+      "source_sha256": "82befa2ee77391ceea67583c9cd96746325c2ff2255072de88d34572c3a4502e",
+      "selection": "structured numerical evidence; artifact hashes, prose notes, detailed benchmark/fold/per-sample tables and lists longer than five entries omitted"
+    },
+    {
+      "path": "experiments/exp029_mother_daughter_set_selection/metrics.json",
+      "git_commit": "7b648a3",
+      "source_sha256": "1264ecd95e2cdd401d21756cd178f00221e56133428341c6eed8d283efecdd01",
+      "selection": "structured numerical evidence; artifact hashes, prose notes, detailed benchmark/fold/per-sample tables and lists longer than five entries omitted"
+    },
+    {
+      "path": "experiments/exp041_past_feature_cross_attention/metrics.json",
+      "git_commit": "7b648a3",
+      "source_sha256": "9acc18c74a09128331e1cd2ff02ee8119d3860ed5c7f5e67a5cb4639e5abe78c",
+      "selection": "structured numerical evidence; artifact hashes, prose notes, detailed benchmark/fold/per-sample tables and lists longer than five entries omitted"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/metrics.json",
+      "git_commit": "7b648a3",
+      "source_sha256": "575cf41798ec7eacfd95cb1a52d7ee9f7716a3b84b76749192c06ca4dd854124",
+      "selection": "structured numerical evidence; artifact hashes, prose notes, detailed benchmark/fold/per-sample tables and lists longer than five entries omitted"
+    },
+    {
+      "path": "experiments/exp045_x138_coordinate_effect_audit/metrics.json",
+      "git_commit": "7b648a3",
+      "source_sha256": "797675d1740e9991264b84936d32c65b0bef5b888d57c15134b37c3cc99216f5",
+      "selection": "structured numerical evidence; artifact hashes, prose notes, detailed benchmark/fold/per-sample tables and lists longer than five entries omitted"
+    },
+    {
+      "path": "experiments/exp047_x138_edge_candidates/metrics.json",
+      "git_commit": "7b648a3",
+      "source_sha256": "21ebf99f32457890fb1be1038edc2f3c9f282fecdad8efc26c61d952b68ef8e5",
+      "selection": "structured numerical evidence; artifact hashes, prose notes, detailed benchmark/fold/per-sample tables and lists longer than five entries omitted"
+    },
+    {
+      "path": "experiments/exp048_x138_primary_past_feature_attention/metrics.json",
+      "git_commit": "7b648a3",
+      "source_sha256": "5a620f5174a1a832ab6b7f060adf125c428206d1ad27cf2fa23323251fa7eab4",
+      "selection": "structured numerical evidence; artifact hashes, prose notes, detailed benchmark/fold/per-sample tables and lists longer than five entries omitted"
+    },
+    {
+      "path": "experiments/exp049_x138_edge_selection_diagnostic/metrics.json",
+      "git_commit": "7b648a3",
+      "source_sha256": "9428034217d803af5e4f011a970cbcf968c32234ed79a1efbeba4b963c729dcc",
+      "selection": "structured numerical evidence; artifact hashes, prose notes, detailed benchmark/fold/per-sample tables and lists longer than five entries omitted"
+    },
+    {
+      "path": "experiments/exp043_x138_self_trained_head/requirements.md",
+      "git_commit": "7b648a3",
+      "source_sha256": "71c3e8b82fef375cda1f289c347caa262e53c993edb98cb35174e2f9af27b984",
+      "selection": "complete approved baseline contract"
+    },
+    {
+      "path": ".agents/skills/kaggle-idea-forge/SKILL.md",
+      "git_commit": "current file",
+      "source_sha256": "6cc78ba8b1b0c6954198f121d44ec64bf201f5cf6bb9af918b9e22dd3e1418d6",
+      "selection": "current evaluation method; not historical evidence"
+    },
+    {
+      "path": ".agents/skills/kaggle-idea-forge/references/portfolio-schema.md",
+      "git_commit": "current file",
+      "source_sha256": "a622d67c60d7ac0966cc0b0dbf0ee23bddb56ba5e82741b3835d63c644934c66",
+      "selection": "current evaluation method; not historical evidence"
+    }
+  ],
+  "packet_sha256": {
+    "packet/baseline_contract.md": "71c3e8b82fef375cda1f289c347caa262e53c993edb98cb35174e2f9af27b984",
+    "packet/evidence.json": "5c1ee6a33026d6813e0342851cb70f008b7c17dbf78e177086500f26fb816aa7",
+    "packet/idea_forge_skill.md": "6cc78ba8b1b0c6954198f121d44ec64bf201f5cf6bb9af918b9e22dd3e1418d6",
+    "packet/portfolio_schema.md": "a622d67c60d7ac0966cc0b0dbf0ee23bddb56ba5e82741b3835d63c644934c66",
+    "packet/task_packet.md": "5c0f88de1c732370c8c593241a155df6c0adea73a2e502c14cd6de224308fff1"
+  },
+  "limitation": "Packet assembled by a parent already familiar with the solutions. Historical byte provenance is verified, but evidence selection bias remains possible."
+}

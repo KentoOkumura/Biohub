@@ -1,0 +1,217 @@
+{
+  "audit_date": "2026-10-02",
+  "phase": "before reading generator outputs",
+  "generator_outputs_read": false,
+  "web_used": false,
+  "rubric_path": "studies/biohub_source_hidden_eval_20261002/withheld_rubric.json",
+  "original_rubric_sha256": "493e45ca3bf3875c4b8acc70ff075dc1ce5f5543e795799db0993ec2ce3ba199",
+  "input_manifest_sha256": "4528556804e474577cb353e48a63c844b44e9c9488c26501c58491fb4de3fc97",
+  "effective_rubric_path": "studies/biohub_source_hidden_eval_20261002/effective_rubric.json",
+  "effective_rubric_sha256": "c7080374b467d2813189756d5c1606ec90df4d40017025a6ae5ed2de1d96eca8",
+  "effective_rubric_reviewed_before_output_access": true,
+  "criterion_policy_fields_describe": "The original withheld rubric. Effective-policy difference is R16, now within_policy with dense learned-image variants separately requiring a policy change.",
+  "effective_rubric_source_fidelity": {
+    "all_sixteen_effective_criteria_supported": true,
+    "amended_criteria_reviewed": ["R07", "R08", "R11", "R12", "R13", "R14", "R16"],
+    "R11_resolution": "The effective criterion correctly accepts official-count local utility as well as exact score difference and keeps undocumented unknown classes/feature recomputation outside mandatory mechanism match.",
+    "R16_scope_classification": "Valid as within_policy for separately learned downstream birth/division heads over frozen available features, with graph start/division costs selected downstream and sparse-label targets made explicit. It must not update the fixed existing tracker or image encoder. Dense shared-image joint-learning implementations require a policy change. This scope abstraction matches the source operation, not all source upstream modules.",
+    "retained_caveats": ["R06 remains a broad family across heterogeneous image objectives.", "R14 remains an either/or criterion combining final geometry and branch carry.", "R16 remains a cross-source composite, and no fully specified partial-annotation-aware birth teacher is documented by these two sources."]
+  },
+  "secondary_survey_used": false,
+  "source_basis": "Archived primary participant writeups only; section and line references refer to the archived Markdown, not linked code, images or external papers.",
+  "policy_basis": {
+    "path": "studies/biohub_source_hidden_eval_20261002/packet/task_packet.md",
+    "sections": ["当時の学習・計算方針", "評価の作業範囲"],
+    "interpretation": "Public detector, image encoder, coordinate head and existing tracker are fixed. New proposals prioritize downstream selection and repair. New image-model training or changing those frozen upstream parts requires a declared policy change. A compatible downstream mechanism need not reproduce every upstream model used in its source solution. Top five must be executable under the cutoff policy. Exploration may include clearly conditional proposals."
+  },
+  "methodological_caveats": [
+    "The rubric is a purposive selection of sixteen overlapping mechanisms from fifteen ranks; it is neither comprehensive nor weighted by private-score contribution. A summed score is mechanism recall under this rubric, not the fraction of winning performance reproduced.",
+    "Some criteria combine distinct components or information from more than one rank. Component-level source support must not imply that every cited source implements the entire conjunction.",
+    "These are participant narrative writeups. No linked code was inspected or executed, no weights or runtime claims were verified, and source images were not independently inspected.",
+    "Several sources report movie-level CV with both embryos represented, overlapping crops, pretrained public models already trained on evaluation videos, leaderboard-selected settings, or bundled changes. Mechanism fidelity cannot establish causal improvement or independent CV.",
+    "The parent knew the winning writeups before selecting the input packet and rubric. Byte provenance can be verified, but packet-selection and rubric-selection bias remain possible.",
+    "Two generator runs are not an estimate of model population performance. The evaluator must not repair cards, add missing targets, or convert labels into specified mechanisms.",
+    "Cutoff evidence already contains mother-daughter set selection, coordinate refinement and candidate/selection diagnostics. Such matches after historical evidence is read require reuse annotations; task-first output is scored separately.",
+    "Policy compatibility is assigned to the idea's actual inputs and trainable parts, not merely to the rubric label. Replacing a raw-image learned mechanism with fixed features creates a distinct proposal and may lose defining source details.",
+    "Runtime and supervision remain empirical requirements: sparse GEFF provides known centers/links/divisions, not dense verified instance masks or reliable negative labels throughout unannotated space. New image training and complete winning ensembles are not assumed affordable within 45 GPU hours/week and 12 hours per Notebook."
+  ],
+  "criteria": [
+    {
+      "id": "R01",
+      "status": "supported",
+      "sources": [{"rank": 1, "path": "docs/discussions/biohub-cell-tracking-during-development-744801-1st-place-solution.md", "lines": [82, 100, 144, 158], "support": "Query position is supplied to three-frame crops; continuation/division occupancy maps locate the query's relatives; fork kind and conditional child-set heads score no/one/two-child options; greedy decode enforces one option per parent and one parent per child."}],
+      "nuances": ["The kind/who separation appears in the linker rather than solely in the image predictor.", "The source also uses extra manually checked divisions and hard examples; their availability must not be imported into a proposal without authorization."],
+      "policy": "change_required",
+      "classification_valid": true,
+      "policy_reason": "The defining query-specific occupancy image model requires new trainable image features."
+    },
+    {
+      "id": "R02",
+      "status": "supported",
+      "sources": [{"rank": 2, "path": "docs/discussions/biohub-cell-tracking-during-development-744723-2nd-place-solution.md", "lines": [53, 61], "support": "Isolated annotated real tracks have background subtracted, signal dimmed and blurred along depth, and are blended elsewhere in the same movie for 5–15 frames with known centers and links."}],
+      "nuances": ["Donor and host remain in the same movie/fold; photometric degradation of a known temporal cell signal is the key operation.", "Synthetic training variants did not uniformly improve the final pipeline; the stronger bank was later useful as an auxiliary track source."],
+      "policy": "change_required",
+      "classification_valid": true,
+      "policy_reason": "The source mechanism changes detector training."
+    },
+    {
+      "id": "R03",
+      "status": "supported",
+      "sources": [
+        {"rank": 2, "path": "docs/discussions/biohub-cell-tracking-during-development-744723-2nd-place-solution.md", "lines": [83, 95], "support": "Unused saved detections form persistent paths with original-image contrast checks; valid unattachable paths remain separate tracks and attachment cannot add conflicting parents or continuations."},
+        {"rank": 10, "path": "docs/discussions/biohub-cell-tracking-during-development-744980-10th-place-solution-grandmaster-powered-agentic-approach.md", "lines": [152, 162], "support": "An auxiliary detector's separately linked confident nonoverlapping chains are appended as independent tracks and may bridge free main-graph endpoints without overwriting links."}
+      ],
+      "nuances": ["Rank 2 is the stronger source for recovery without another detector pass or new training. It also requires proximity to an existing prediction in at least one frame, although two preexisting endpoints are unnecessary.", "Rank 10's complete auxiliary branch requires a newly trained 2.5D detector; its graph-append operation alone is compatible if candidates already exist."],
+      "policy": "within_policy",
+      "classification_valid": true,
+      "policy_reason": "Graph recovery using already available saved candidates and raw-image measurements is downstream. The rank 10 upstream detector variant would separately require a policy change."
+    },
+    {
+      "id": "R04",
+      "status": "supported",
+      "sources": [{"rank": 3, "path": "docs/discussions/biohub-cell-tracking-during-development-744484-3rd-place-solution.md", "lines": [152, 168], "support": "Calibrators estimate evaluated probability a separately from correctness q conditional on evaluation, then use a*q and a*(1-q) as expected TP/FP contributions to candidate selection."}],
+      "nuances": ["The source's exact parent-and-two-daughter calibration targets differ from the official division metric's local-lineage matching.", "Ignoring unknown examples by a mask is a useful safety treatment but does not implement this two-probability decomposition."],
+      "policy": "within_policy",
+      "classification_valid": true,
+      "policy_reason": "Downstream cost calibration can use fixed available scores and annotation-derived evaluation labels."
+    },
+    {
+      "id": "R05",
+      "status": "supported",
+      "sources": [
+        {"rank": 1, "path": "docs/discussions/biohub-cell-tracking-during-development-744801-1st-place-solution.md", "lines": [144, 158], "support": "No-child, ordinary-child and two-child options compete jointly, with single-parent constraints during greedy selection."},
+        {"rank": 3, "path": "docs/discussions/biohub-cell-tracking-during-development-744484-3rd-place-solution.md", "lines": [170, 190], "support": "Node retention, ordinary edges and mother-plus-two-daughters events are jointly optimized so fixed ordinary assignments cannot block divisions."},
+        {"rank": 18, "path": "docs/discussions/biohub-cell-tracking-during-development-744531-18th-place-solution-lineage-graph-refinement-focused-on-cell-divisions.md", "lines": [108, 116], "support": "Adopting a division removes competing ordinary edges attached to mother and daughters; gain is compared with the ordinary edges replaced."}
+      ],
+      "nuances": ["Joint selection in ranks 1/3 is equivalent in the relevant competition sense to permitting replacement, but rank 1 does not begin from fixed existing normal edges.", "Parentless second-daughter addition cannot solve already-claimed-daughter conflicts.", "Historical packet E02 is already named mother-daughter set selection; later matches need reuse annotations."],
+      "policy": "within_policy",
+      "classification_valid": true,
+      "policy_reason": "The event-selection operation can be implemented downstream of fixed candidate features; source image evidence is a separate component."
+    },
+    {
+      "id": "R06",
+      "status": "supported",
+      "sources": [
+        {"rank": 3, "path": "docs/discussions/biohub-cell-tracking-during-development-744484-3rd-place-solution.md", "lines": [99, 148], "support": "Separate learned flow, matching image features and division models provide directly supervised or self-supervised temporal evidence."},
+        {"rank": 4, "path": "docs/discussions/biohub-cell-tracking-during-development-744673-4th-place-solution.md", "lines": [156, 160, 178, 210], "support": "An independently trained patch encoder uses InfoNCE for correspondence; learned image division evidence affects ILP and fork verification."},
+        {"rank": 7, "path": "docs/discussions/biohub-cell-tracking-during-development-744937-7th-place-solution.md", "lines": [24, 54, 170, 198], "support": "Image-trained motion and division evidence feeds comparison of alternative parents and ordinary/division explanations."},
+        {"rank": 10, "path": "docs/discussions/biohub-cell-tracking-during-development-744980-10th-place-solution-grandmaster-powered-agentic-approach.md", "lines": [90, 110, 124, 148], "support": "Independent contrastive image embeddings and an image division classifier feed links and division gates/recovery."},
+        {"rank": 12, "path": "docs/discussions/biohub-cell-tracking-during-development-744501-12th-place-solution.md", "lines": [169, 190, 194, 202], "support": "New image-based mitosis and identity models feed final graph repairs."}
+      ],
+      "nuances": ["These sources do not all use the same crop architecture or objective. Rank 3 flow includes synthetic direct targets and real-image consistency, and rank 7 motion is learned densely in a shared detector.", "This criterion is intentionally a broad independent-image-evidence direction; it cannot identify a complete winning architecture."],
+      "policy": "change_required",
+      "classification_valid": true,
+      "policy_reason": "The defining feature source is a newly trained image model, independent of inherited frozen point features."
+    },
+    {
+      "id": "R07",
+      "status": "supported",
+      "sources": [
+        {"rank": 7, "path": "docs/discussions/biohub-cell-tracking-during-development-744937-7th-place-solution.md", "lines": [182, 204], "support": "A provisional ILP lineage supplies selected branches and alternative division hypotheses; an MLP recomputes event rewards/penalties and ILP is rerun on original candidates to reconsider competing links."},
+        {"rank": 3, "path": "docs/discussions/biohub-cell-tracking-during-development-744484-3rd-place-solution.md", "lines": [188, 190], "support": "Optimization relinearizes metric-surrogate rewards/costs using current expected graph counts for up to three rounds."}
+      ],
+      "nuances": ["Rank 7 directly supports topology-dependent candidate re-evaluation. Rank 3 supports iterative objective-coefficient updating; it does not document a topology-feature classifier.", "A once-run classifier with topology features has a different operation from graph-dependent rescoring followed by another constrained solve."],
+      "policy": "within_policy",
+      "classification_valid": true,
+      "policy_reason": "An added downstream scorer and constrained reselection can leave the inherited image models and tracker fixed."
+    },
+    {
+      "id": "R08",
+      "status": "supported",
+      "sources": [{"rank": 5, "path": "docs/discussions/biohub-cell-tracking-during-development-744549-5th-place-3d-u-net-transformer-linker-multi-stage-ilp-tracking.md", "lines": [66, 83], "support": "ILP1 uses p>=0.9 cells, ILP2 adds p>=0.6 cells, every division absent from ILP1 is removed while its extra cell keeps an independent track, then ILP3 fixes cells/divisions and solves links again."}],
+      "wording_correction_needed": true,
+      "nuances": ["Preserving reliable selected paths must not mean hard-freezing all ILP1 edges: the primary text does not say that ILP2 fixes those edges, and ILP3 explicitly re-solves links.", "What is preserved across the weaker-candidate pass is the accepted division set, with independent extra tracks allowed. Reliable first-pass selections provide a reference rather than an explicitly immutable path set."],
+      "policy": "within_policy",
+      "classification_valid": true,
+      "policy_reason": "Staged downstream constrained selection over fixed saved detections is compatible."
+    },
+    {
+      "id": "R09",
+      "status": "supported",
+      "sources": [{"rank": 10, "path": "docs/discussions/biohub-cell-tracking-during-development-744980-10th-place-solution-grandmaster-powered-agentic-approach.md", "lines": [90, 110], "support": "An independently trained contrastive DINO image representation is paired with node attention followed by self-attention over candidate edges, including rank/competition features."}],
+      "nuances": ["Contrastive positives are identities between two augmented views of the same frame, with no GT temporal links; temporally adjacent same-cell supervised contrastive training is related but not the exact source objective.", "The defining conjunct is candidate-edge attention plus an independently trained image appearance representation."],
+      "policy": "change_required",
+      "classification_valid": true,
+      "policy_reason": "The source changes both trainable image representation and linker; the cutoff fixes both upstream parts."
+    },
+    {
+      "id": "R10",
+      "status": "supported",
+      "sources": [{"rank": 14, "path": "docs/discussions/biohub-cell-tracking-during-development-744486-14th-place-solution-from-vibes-edges-trade-off.md", "lines": [16, 40, 189, 213], "support": "FlowSeg integrates per-voxel own-center vectors into instances; divflow predicts daughter-voxel displacement to a reference division/parent center, aggregates instance votes and identifies common origins by parent-space convergence and observed-space separation."}],
+      "nuances": ["The divflow supervision uses inferred daughter instance masks and a chosen reference frame; the source includes frame offsets up to seven in either direction rather than only adjacent frames.", "Dense voxel votes require an explicit region teacher/ownership construction from sparse labels; dense verified masks are not supplied by GEFF.", "Pointwise coordinate offset prediction alone is not the defining dense voting operation."],
+      "policy": "change_required",
+      "classification_valid": true,
+      "policy_reason": "Dense learned image vector fields and instance decoding change the fixed image models and candidate construction."
+    },
+    {
+      "id": "R11",
+      "status": "not-supported",
+      "sources": [{"rank": 17, "path": "docs/discussions/biohub-cell-tracking-during-development-744930-17th-place-solution.md", "lines": [143, 159, 249, 255], "support": "Learned edits are labeled by local metric utility u=delta TP-0.87*delta FP plus node-count effects, using label-free features and cross-embryo models. Edit order affects performance."}],
+      "wording_correction_needed": true,
+      "unsupported_parts": ["Requiring exact signed whole-official-score delta instead of local utility derived from evaluated TP/FP and node counts.", "Claiming that a distinct unknown-change target class is documented.", "Claiming that graph features are explicitly recomputed after every applied edit."],
+      "nuances": ["The source core is supported: learn graph-edit utility measured through official evaluated counts rather than semantic duplicate/gap labels.", "Unknown-change treatment and post-edit feature recomputation are sensible supervision/deployment quality considerations, but are not mandatory primary-source match features.", "The unmodified R11 conjunction is not source-supported and should receive a dated erratum before ideas are read."],
+      "policy": "within_policy",
+      "classification_valid": true,
+      "policy_reason": "Edit scorers on fixed graph/image measurements can be added downstream."
+    },
+    {
+      "id": "R12",
+      "status": "supported",
+      "sources": [{"rank": 18, "path": "docs/discussions/biohub-cell-tracking-during-development-744531-18th-place-solution-lineage-graph-refinement-focused-on-cell-divisions.md", "lines": [108, 130, 153, 153], "support": "Provisional division adoption is followed by daughter-track completion; final graph/motion features are then recomputed for a division recheck that can cut the weaker arm and restore an ordinary edge."}],
+      "nuances": ["Repair first means before FINAL division re-evaluation, not before every initial division proposal/adoption.", "The source re-evaluates completed submitted topology, including completion use and downstream motion; a one-time pre-repair division addition misses that operation."],
+      "policy": "within_policy",
+      "classification_valid": true,
+      "policy_reason": "The downstream completion/recheck operation is compatible when it uses fixed available features; source-specific newly learned image heads are a separate conditional component."
+    },
+    {
+      "id": "R13",
+      "status": "supported",
+      "sources": [{"rank": 16, "path": "docs/discussions/biohub-cell-tracking-during-development-744671-16th-place-solution.md", "lines": [28, 38, 40, 54], "support": "A student's final nodes after ILP and post-processing become Silver pseudo-labels for the next detector training round; Gold remains distinct, and separate Silver BCE is weighted by 0.25."}],
+      "wording_correction_needed": true,
+      "nuances": ["The source does not specify an additional reliability filter over final graph nodes. Reliability of selected nodes must not become a mandatory unreported filtering mechanism.", "The core is track-output-derived pseudo-labels, detector retraining and distinct weights/provenance for annotation and inferred labels.", "Successive self-training rounds did not monotonically improve private scores."],
+      "policy": "change_required",
+      "classification_valid": true,
+      "policy_reason": "Feeding graph nodes back into detector training changes the fixed detector."
+    },
+    {
+      "id": "R14",
+      "status": "supported",
+      "sources": [
+        {"rank": 3, "path": "docs/discussions/biohub-cell-tracking-during-development-744484-3rd-place-solution.md", "lines": [204, 216], "support": "Affine coordinate refinement holds node identity, count and edges fixed and protects division/gap endpoints."},
+        {"rank": 9, "path": "docs/discussions/biohub-cell-tracking-during-development-744835-9th-place-solution-own-detectors-public-tracker-restored-divisions.md", "lines": [77, 89], "support": "A final CSV pass carries supported pre-ILP division alternatives into the completed graph after motion relink removed those branches, with no node changes."},
+        {"rank": 12, "path": "docs/discussions/biohub-cell-tracking-during-development-744501-12th-place-solution.md", "lines": [209, 217], "support": "Final recentring and frame-jump correction preserve topology, with guards against harmful displacement."},
+        {"rank": 14, "path": "docs/discussions/biohub-cell-tracking-during-development-744486-14th-place-solution-from-vibes-edges-trade-off.md", "lines": [81, 90], "support": "A constant correction fitted on other folds is applied after every graph decision; the same shift before linking harms edge selection."}
+      ],
+      "nuances": ["This deliberately combines final geometry and final branch restoration; either operation can match, so it is broader than a single homogeneous source mechanism.", "Rank 12's raw-image CNN recentring specifically requires a policy change; graph-only/fixed-feature correction or rule-based frame-jump restoration can remain within policy.", "Historical baseline exp043 already specifies a coordinate head before graph construction. A match requires explaining final placement with topology fixed, not merely repeating pre-tracker coordinate correction."],
+      "policy": "within_policy",
+      "classification_valid": true,
+      "policy_reason": "The final graph-only/fixed-feature geometry or division carry operation is compatible; an actual new raw-image learned refiner must be marked separately as change_required."
+    },
+    {
+      "id": "R15",
+      "status": "supported",
+      "sources": [{"rank": 6, "path": "docs/discussions/biohub-cell-tracking-during-development-744582-6th-place-six-model-detect-and-link-ensemble-global-ilp.md", "lines": [48, 98, 126, 138, 217, 225], "support": "Each image-derived cell descriptor predicts velocity and per-axis uncertainty; sparse bidirectional graph attention uses uncertainty-normalized motion residuals on a local k-nearest-neighbor candidate graph jointly trained with detection."}],
+      "nuances": ["The source supports sparse motion/uncertainty-conditioned attention, not a measured causal comparison against all-pairs attention.", "A geometric sparse graph alone omits the learned image motion/uncertainty conditioning.", "The complete six-model source used external GPUs for training and validation pseudo-label exposure, so its total training budget and CV independence cannot be imported into the cutoff task."],
+      "policy": "change_required",
+      "classification_valid": true,
+      "policy_reason": "The defining image-derived motion/uncertainty and joint detect/link training change frozen upstream models."
+    },
+    {
+      "id": "R16",
+      "status": "supported",
+      "sources": [
+        {"rank": 5, "path": "docs/discussions/biohub-cell-tracking-during-development-744549-5th-place-3d-u-net-transformer-linker-multi-stage-ilp-tracking.md", "lines": [42, 67], "support": "The linker explicitly predicts new/no-parent and division outputs, and ILP start/split costs depend on those probabilities."},
+        {"rank": 11, "path": "docs/discussions/biohub-cell-tracking-during-development-745092-11th-place-solution.md", "lines": [44, 52, 77, 98, 106, 126], "support": "A trainable shared image network's division target is positive for two annotated outgoing edges, negative for one, excluded for none, and its probability lowers parent-specific ILP division cost."}
+      ],
+      "nuances": ["This is a cross-source composite: rank 11 does not document a learned birth/no-parent head, while rank 5 does not detail partial-annotation-aware birth targets.", "A source-equivalent partial-annotation-aware birth teacher is a proposal requirement; absence of an annotated parent is not automatically a confirmed birth.", "Explicit birth and division outputs can be implemented with frozen features as a different downstream design, but then the source's new image-feature component is missing and should not be silently inferred."],
+      "policy": "change_required",
+      "classification_valid": true,
+      "policy_reason": "The original wording includes new learned image features. The effective rubric removes that mandatory image-training component and allows fixed-feature downstream birth/division heads.",
+      "effective_policy": "within_policy",
+      "effective_classification_valid": true,
+      "effective_policy_reason": "Separate heads over frozen features are compatible with downstream selection/repair. A dense shared-image joint-training variant remains change_required, and training targets must distinguish unknown correspondences from confirmed births."
+    }
+  ],
+  "erratum_recommendations_sent_before_output_access": ["R11: permit official-count local utility; do not require undocumented unknown classes or feature recomputation.", "R08: do not require freezing every first-pass reliable path/edge.", "R13: do not require an undocumented extra reliability filter.", "R07, R12, R14 and R16: retain source-component and policy nuances in interpretation."],
+  "next_step": "Effective rubric has been verified. Wait for explicit notification that both generator outputs are frozen; do not read run_a or run_b until then."
+}

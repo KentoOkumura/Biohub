@@ -22,6 +22,11 @@
 
 - [Biohub・トラッキングの6技術](surveys/biohub-tracking-techniques-illustrated_20260915.md)：ILP、ハンガリアン法、SORT、DoG、HOG、対照学習を、具体例・8枚の図・数式で解説。
 
+以下の2件は既存の常設解説としてこの場所から案内します。元の構成と参照時点を保ち、現在の運用方針は上記の運用文書、後続の調査結果は[調査索引](surveys/README.md)を参照してください。
+
+- [コンペ・公開Notebook・validation解説](Biohub_コンペと公開Notebook・validation解説.md)：2026-08-14時点の資料に基づくデータ階層、tracking graph、公開手法、検証方法の図解。
+- [TemporalUNet3Dの3D画像処理と時間情報](temporal_unet3d_explainer.md)：公式baselineの画像入力、時間方向のattention、検出とtrackingへの特徴受け渡しを説明。
+
 ## コンペ固有の設定
 
 機械可読な設定は[`project.yml`](../project.yml)を正とします。公式情報、評価指標、CV設計、データ仕様の説明は上記の`01_competition.md`から`04_data.md`を参照し、この索引には設定値を重複記録しません。

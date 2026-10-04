@@ -6,21 +6,18 @@ from urllib.parse import unquote
 
 try:
     from .config_utils import ROOT
+    from .document_scope import maintained_documents
 except ImportError:  # Direct execution: `uv run python scripts/check_markdown_links.py`
     from config_utils import ROOT
+    from document_scope import maintained_documents
 
 
 LINK_PATTERN = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
-SKIP_PARTS = {".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv"}
 SKIP_PREFIXES = ("#", "/", "http://", "https://", "mailto:", "data:")
 
 
 def markdown_files() -> list[Path]:
-    return sorted(
-        path
-        for path in ROOT.rglob("*.md")
-        if not SKIP_PARTS.intersection(path.relative_to(ROOT).parts)
-    )
+    return maintained_documents(ROOT, {".md"})
 
 
 def normalized_target(raw_target: str) -> str | None:

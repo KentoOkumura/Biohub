@@ -24,11 +24,9 @@
 - 全サンプルのdivision TP、FP、FNを合計するmicro-averageを使う。
 - 疎な正解を考慮するmetricの性質上、combined scoreは1.0を超える場合がある。
 
-## 公式例との照合
+## 評価器の照合記録
 
-- 公式サンプル/例: `sample_submission.csv`と主催者公開metric repository。
-- 照合結果: データをダウンロードしていないため未実施。
-- 参照した実装/ページ: [Kaggle Evaluation](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/overview/evaluation)、[metrics.md](https://github.com/royerlab/kaggle-cell-tracking-competition/blob/main/metrics.md)
+このリポジトリで使用する固定公式版と公開Notebook評価器の照合は、[評価指標の運用メモ](../02_metric.md#ローカル実装)から参照する。実行証拠と解釈はリンク先の実験記録を正とし、この公式資料要約には実行状態を重複記録しない。
 
 ## 公開実装の位置付け
 

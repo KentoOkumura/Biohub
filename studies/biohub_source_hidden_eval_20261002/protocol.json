@@ -1,0 +1,30 @@
+{
+  "assessment_date_jst": "2026-10-02",
+  "protocol_recorded_at_utc": "2026-10-02T13:02:11Z",
+  "cutoff_commit": "7b648a3",
+  "cutoff_time_jst": "2026-09-27T17:41:06+09:00",
+  "generator_runs": [
+    "/root/blind_ideas_a",
+    "/root/blind_ideas_b"
+  ],
+  "fork_turns": "none",
+  "generator_model": "inherited current session model; no override",
+  "judge": "/root/blind_eval_judge",
+  "rubric_sha256": "493e45ca3bf3875c4b8acc70ff075dc1ce5f5543e795799db0993ec2ce3ba199",
+  "rubric_authorship": "Parent drafted criteria before spawning generators and before viewing their outputs. Independent judge audits primary-source fidelity before reading generator outputs.",
+  "method": "Two fresh contexts use identical task/specification/policy inputs and current idea-forge instructions. Save six task-first ideas before reading historical numerical evidence. Generate ten to fourteen cards and select five. Freeze hashes before independent scoring.",
+  "judgment": "Six initial ideas, all final cards, and selected five each receive a mechanism rating 0/1/2. Judge reports source provenance, historical reuse, operational scope, teacher feasibility and practical implementation gaps.",
+  "limitations": [
+    "Instruction-level source isolation in a shared filesystem, not an OS-enforced blind environment.",
+    "Parent knows archived solutions and selected evidence; deterministic historical extraction limits post-cutoff leakage but cannot remove selection bias.",
+    "Two runs characterize this prompt/model/packet only, not a statistically reliable discovery probability.",
+    "Current skill and current model are tested, not historical skill/model behavior.",
+    "Late-competition fixed-image/downstream constraints differ from the conditions under which full winning systems were developed.",
+    "Archived authors' explanations are not source/checkpoint replications. Idea fidelity is not performance evidence.",
+    "Potential knowledge retained during model training cannot be excluded by hiding files.",
+    "Same model family is used for independent generation and evaluation; context independence is not independent scientific validation."
+  ],
+  "effective_rubric_sha256": "c7080374b467d2813189756d5c1606ec90df4d40017025a6ae5ed2de1d96eca8",
+  "source_correction_recorded_at_utc": "2026-10-02T13:06:31.552508+00:00",
+  "source_correction_before_generator_content_read": true
+}

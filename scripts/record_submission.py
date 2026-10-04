@@ -5,7 +5,7 @@ import csv
 import hashlib
 import json
 import re
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -27,7 +27,8 @@ HISTORY_INTRO = (
     "この表はsubmission ref単位の横断履歴であり、各提出の最終スナップショットを"
     "保持します。採点状態と所要時間の詳細な時系列の正は対応実験の"
     "`SESSION_NOTES.md`、CV/LBとNotebook実行時間の正は`metrics.json`です。"
-    "CV/LBは`record-submission`が`metrics.json`から取得します。メモ欄に横断比較用の"
+    "CV/LBは`record-submission`が`metrics.json`の`submissions[submission ref]`から"
+    "取得します。複数の提出を実験全体のスコアで上書きしません。メモ欄に横断比較用の"
     "最終値を置く場合は、Kaggle submissionの採点状態を`submission_status`、"
     "Notebook全体の実行時間を`notebook_runtime_seconds`、提出から採点確定までの"
     "所要時間を`scoring_elapsed_minutes`で記録します。Notebook内の部分処理時間は"
@@ -41,6 +42,14 @@ UNKEYED_COMPLETE_RE = re.compile(
     r"(?:^|;\s*)complete(?:;|$)",
     re.IGNORECASE,
 )
+FAILED_SUBMISSION_STATUSES = {
+    "failed",
+    "error",
+    "notebook_unhandled_error",
+    "runtime_limit_exceeded",
+    "cancelled",
+    "canceled",
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -135,7 +144,7 @@ def display_metric(value: Any) -> str:
     return str(value)
 
 
-def experiment_scores(experiment: str) -> tuple[str, str, str]:
+def experiment_metrics(experiment: str) -> dict[str, Any]:
     if Path(experiment).name != experiment:
         raise SystemExit(f"invalid experiment name: {experiment!r}")
     metrics_path = EXPERIMENTS_DIR / experiment / "metrics.json"
@@ -150,7 +159,118 @@ def experiment_scores(experiment: str) -> tuple[str, str, str]:
         raise SystemExit(f"invalid metrics JSON: {display_path(metrics_path)}: {exc}") from exc
     if not isinstance(metrics, dict):
         raise SystemExit(f"{display_path(metrics_path)} must contain a JSON object")
-    return tuple(display_metric(metrics.get(key)) for key in ("cv", "public_lb", "private_lb"))
+    return metrics
+
+
+def known_submission_refs(experiment: str, metrics: dict[str, Any]) -> set[str]:
+    """Find legacy refs conservatively before allowing an experiment-wide fallback."""
+    refs: set[str] = set()
+
+    def visit(value: Any) -> None:
+        if isinstance(value, dict):
+            for key, child in value.items():
+                if key in {"submission_ref", "competition_submission_ref"}:
+                    if re.fullmatch(r"\d+", str(child)):
+                        refs.add(str(child))
+                else:
+                    visit(child)
+        elif isinstance(value, list):
+            for child in value:
+                visit(child)
+
+    visit(metrics)
+    if SUBMISSIONS_PATH.is_file():
+        for line in SUBMISSIONS_PATH.read_text().splitlines():
+            cells = parse_table_row(line)
+            if cells is not None and cells[2] == experiment:
+                refs.update(item.strip() for item in cells[10].split(","))
+    return refs
+
+
+def initial_submission_scores(
+    experiment: str, submission_ref: str, metrics: dict[str, Any]
+) -> dict[str, Any]:
+    """Migrate only scores already attributable to this exact ref."""
+    keys = ("cv", "public_lb", "private_lb")
+    if SUBMISSIONS_PATH.is_file():
+        existing = find_submission_row(SUBMISSIONS_PATH.read_text().splitlines(), submission_ref)
+        if existing is not None:
+            cells = existing[1]
+            if cells[2] != experiment:
+                raise ValueError(f"submission ref {submission_ref} already belongs to {cells[2]}")
+            scores: dict[str, Any] = {}
+            for key, value in zip(keys, cells[7:10], strict=True):
+                if value in {"", "-", "None", "null"}:
+                    scores[key] = None
+                else:
+                    try:
+                        scores[key] = float(value)
+                    except ValueError:
+                        scores[key] = value
+            return scores
+    if not metrics.get("submissions") and known_submission_refs(experiment, metrics) == {
+        submission_ref
+    }:
+        return {key: metrics.get(key) for key in keys}
+    return dict.fromkeys(keys)
+
+
+def submission_record(
+    experiment: str, submission_ref: str, metrics: dict[str, Any]
+) -> dict[str, Any]:
+    records = metrics.get("submissions")
+    if records is not None:
+        if not isinstance(records, dict):
+            raise SystemExit("metrics.json submissions must be a JSON object")
+        record = records.get(submission_ref)
+        if not isinstance(record, dict):
+            raise SystemExit(
+                f"no score record for submission ref {submission_ref}; "
+                "use record-exp --submission-ref first"
+            )
+        validate_submission_scores(record)
+        return record
+
+    refs = known_submission_refs(experiment, metrics)
+    if refs and refs != {submission_ref}:
+        raise SystemExit(
+            "cannot use experiment-wide scores for multiple or different submission refs; "
+            "use record-exp --submission-ref first"
+        )
+    if SUBMISSIONS_PATH.is_file():
+        existing = find_submission_row(SUBMISSIONS_PATH.read_text().splitlines(), submission_ref)
+        if existing is not None:
+            status = re.search(r"(?:^|;\s*)submission_status=([^;]+)", existing[1][11])
+            if status and status.group(1).lower() in FAILED_SUBMISSION_STATUSES:
+                if any(metrics.get(key) is not None for key in ("public_lb", "private_lb")):
+                    raise SystemExit(
+                        "cannot assign experiment-wide scores to a failed submission; "
+                        "use record-exp --submission-ref first"
+                    )
+    # Legacy single-submission experiments retain their established workflow.
+    return metrics
+
+
+def validate_submission_scores(record: dict[str, Any]) -> None:
+    status = str(record.get("submission_status", "")).lower().rsplit(".", 1)[-1]
+    if status in FAILED_SUBMISSION_STATUSES or record.get("error_description"):
+        if any(record.get(key) is not None for key in ("public_lb", "private_lb")):
+            raise ValueError("failed submissions must have null public_lb and private_lb")
+
+
+def experiment_scores(experiment: str, submission_ref: str) -> tuple[str, str, str]:
+    record = submission_record(experiment, submission_ref, experiment_metrics(experiment))
+    return tuple(display_metric(record.get(key)) for key in ("cv", "public_lb", "private_lb"))
+
+
+def submission_date(record: dict[str, Any]) -> str:
+    submitted_at = record.get("submitted_at")
+    if submitted_at is None:
+        return date.today().isoformat()
+    try:
+        return datetime.fromisoformat(submitted_at).date().isoformat()
+    except (TypeError, ValueError) as exc:
+        raise SystemExit("submission submitted_at must be an ISO 8601 timestamp") from exc
 
 
 def resolve_path(path: str) -> Path:
@@ -235,7 +355,15 @@ def main() -> None:
     ensure_table()
 
     submission_ref = validate_submission_ref(args.submission_ref)
-    cv, public_lb, private_lb = experiment_scores(args.experiment)
+    try:
+        record = submission_record(
+            args.experiment, submission_ref, experiment_metrics(args.experiment)
+        )
+    except ValueError as exc:
+        raise SystemExit(str(exc)) from exc
+    cv, public_lb, private_lb = (
+        display_metric(record.get(key)) for key in ("cv", "public_lb", "private_lb")
+    )
     file_path = resolve_path(args.file)
     if not file_path.exists() and not args.allow_missing_file:
         raise SystemExit(f"submission file does not exist: {display_path(file_path)}")
@@ -277,7 +405,7 @@ def main() -> None:
     validate_new_version(version)
     cells = [
         version,
-        date.today().isoformat(),
+        submission_date(record),
         args.experiment,
         display_file,
         rows,

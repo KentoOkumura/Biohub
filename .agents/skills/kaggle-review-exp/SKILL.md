@@ -204,7 +204,7 @@ train CV が良かった候補を推論化または提出する場合も、同�
 
 - 公開 `test/` と `sample_submission.csv` は実行確認用のサンプルとして扱う。Code submissionでNotebookが再実行されると、入力は採点用のhidden testとそのsample submissionに差し替えられる。公開testで作った `submission.csv` はsmoke testであり、本番提出の予測結果ではない。
 - Kaggle実行環境の現在の入力からcompetition root、testファイル、group/entity IDを動的に列挙する。公開例のID、group数、ファイル名、行数、ID一覧、内容SHA、hidden testの分布を固定値としてハードコードしない。
-- 実行環境の `sample_submission.csv` を提出schema、ID集合、行順、行数の正とする。予測をIDで1対1に整列し、欠損予測、重複ID、余分なID、行数不一致を検証してから `submission.csv` を作る。
+- 提出の行単位とIDの意味はコンペ公式仕様・`project.yml`から確認する。固定行数の予測コンペでは、実行環境の `sample_submission.csv` にIDで1対1に整列し、行順・行数・欠損予測・重複ID・余分なIDを検証する。Biohubのように予測node/edgeを列挙する可変行数の提出ではsampleは列schemaの照合に使い、行数・ID内容の一致を要求しない。実行時testの全dataset、連続した行ID、node/edge参照など[コンペ固有の提出仕様](../../../docs/01_competition.md#提出)を検証する。
 - hidden testに存在する入力と保存済みmodel manifest / model生成物だけで、特徴量生成から予測までを完結させる。train-only列、ローカル専用cache、公開testの保存済み予測に依存しない。
 - 公開test固有のID、SHA、行数、予測値に基づく分岐、ゲート、fallbackを本番推論に入れない。公開例との一致やSHA検査を診断用に残す場合は、hidden testで不一致になることを正常とし、推論を中断しない。
 - 公開例の小さなtestではなく、hidden testの可変なgroup数・行数を前提にメモリと実行時間を設計する。必要に応じてgroup単位の逐次処理、chunking、上限付き並列度を使う。
@@ -239,7 +239,7 @@ task update-summary
 - CV を信頼する前に、validation 方針が明確であること。
 - Kaggle outputの取得有無と根拠が、`kaggle-platform`の取得条件に従っていること。
 - notebook のフル実行と公式評価は Kaggle で行っていること。ローカル notebook 実行は、必要な入力と生成物が揃った smoke debug に限定する。
-- code competition の inference は、このskillの「Code competition の推論実装」を満たし、公開 test 固有値のハードコードがなく、実行時の sample submission と ID で 1 対 1 に整列できること。
+- code competition の inference は、このskillの「Code competition の推論実装」を満たし、公開 test 固有値のハードコードがなく、コンペ固有の行単位とID規則を満たすこと。sampleとの1対1整列は固定行数の予測コンペに限る。
 - 学習時と推論時の前処理が一致していること。
 - すべての結果に、コマンド、config、CV、生成物、解釈、次アクションがあること。
 - 結果と次アクションが、どの予測パイプラインの基準結果を更新するのか明確であること。

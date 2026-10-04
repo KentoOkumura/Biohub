@@ -1,0 +1,90 @@
+{
+  "workflow": "Source-hidden; sequential independent passes by one agent; no external reference or other run inspected.",
+  "task_first_order": "task_first.json was saved after only task_packet.md, idea_forge_skill.md and portfolio_schema.md had been read. baseline_contract.md and evidence.json were first opened afterwards.",
+  "independence_limit": "The same agent necessarily retains task context. Passes A-D were generated sequentially with their different roles, before assigning any portfolio rank; no pass was given another pass's ranking. No claim of independent fresh-agent contexts is made.",
+  "pass_A_representation": [
+    {"id": "A1", "definition": "固定tracker後の3-frame継続・二娘分裂・nullの局所eventと、その互換性を共同選択する。独立edge加算から、競合する完整な局所系譜の相対scoreへ変える。", "target_loss_decode": "既知GEFFで識別できるevent対の順位lossと未知mask; event score; node容量でjoint decode。"},
+    {"id": "A2", "definition": "2-frame edgeを先に確定せず、曖昧なnode集合の複数trackletを3～5-frameのpath候補として保持する。", "target_loss_decode": "path互換性を既知edgeでsupervise; nullと短いpathを別scoreにし、非重複pathを選択。"},
+    {"id": "A3", "definition": "各edgeの一点scoreの代わりに局所graph仮説への確率分布を保持し、分裂の2本を相関したeventとして扱う。", "target_loss_decode": "既知eventへのmasked proper loss; joint event posterior; compatibility projection。"},
+    {"id": "A4", "definition": "補正前・補正後の中心を同じnodeの代替座標状態として保持する。", "target_loss_decode": "既知中心距離と既知親選択の両方を別に評価; 最終graph選択後に座標状態を1個にする。"},
+    {"id": "A5", "definition": "最初から全graphを予測し直さず、固定graphに対する保持・切断・親変更・分裂追加を予測する。", "target_loss_decode": "既知正負が識別できるgraph editだけをsupervise; 編集の集合をjoint制約でdecode。"},
+    {"id": "A6", "definition": "raw画像だけからvoxel占有と時間移動を出す。現行候補に依存しないが画像モデルの新規学習を要する。", "target_loss_decode": "疎い中心・既知edgeのmasked lossと画像一致; occupancy/transport; 領域中心とedge。", "policy": "P4相当で方針変更待ち; portfolio外。"}
+  ],
+  "pass_B_information_invariance": [
+    {"id": "B1", "definition": "同一動画の観測から局所移動referenceを作り、global移動分布と同じ物理座標で比較する。", "roles": "observation -> entity-specific reference/calibrator", "coverage": "複数近傍と連続frameがそろう範囲だけ; 欠損・境界・division周辺はglobal/reference anchorへfallback。"},
+    {"id": "B2", "definition": "失敗した過去特徴をprimary predictorへ加算せず、現在の親候補への適用可否・uncertaintyのgateに用いる。", "roles": "feature -> gate/conditioner", "comparison": "history全mask・履歴順shuffle・正しい履歴を同じ固定scoreに与えて因果的に比較。"},
+    {"id": "B3", "definition": "内部holdoutで測る中間予測の振幅・自己相関・bias・欠損・順位反転をclean annotated motifへ加え、修復pretrain後にreal OOF-like条件でfine-tuneする。", "roles": "intermediate prediction -> corrupted conditioner/trust training", "closed_chain": "error audit -> corruption -> pretrain -> real conditioning fine-tune -> clean held-embryo evaluation; copy-through/mismatch/runtimeをkill。"},
+    {"id": "B4", "definition": "物理単位の距離・時間方向・graph容量を保つ反射/translationと、一方の輝度観測だけを変えるcorruptionを分ける。", "roles": "invariant -> augmenter", "recompute": "方向/位置入力は変換する; photometric変更後の画像特徴は元窓を保って再抽出する; 未検証のrotation/輝度質量保存は使わない。"},
+    {"id": "B5", "definition": "raw画像から得る局所二峰性・領域重なりを新規検出の正解にせず、既存分裂eventが観測に支持されるかの独立なobservationとして使う。", "roles": "weak detector -> observation/gate", "limit": "密なsegmentation教師はなく、未注釈領域をnegativeにしない。"},
+    {"id": "B6", "definition": "固定trackerの絶対scoreではなく、同じ娘の最良競合親との差、親が既に使った継続とのscore差を下流費用へ校正する。", "roles": "score -> competing-choice calibrator", "teacher": "異なる真の親が既知の候補だけhard negative; unknownはmask。"}
+  ],
+  "pass_C_candidate_uncertainty": [
+    {"id": "C1", "definition": "raw画像の複数scale blobと局所画像対応だけで独立node/edge候補を作る。", "diversity": ["observation", "representation"], "tests": "既存未回収の既知node回収率とlabelなし選択可能性を別測定。"},
+    {"id": "C2", "definition": "時間順/逆順の固定tracker出力からreciprocal候補を作り、不一致を削除命令ではなく再検討のgateにする。", "diversity": ["dynamics", "decoder"], "tests": "forward/reverse recall、共同回収率、分裂周辺の適用不可を分離。"},
+    {"id": "C3", "definition": "baseline・expanded ILP、短いpath整合、分裂eventという異なる復号のgraph仮説をsoftに統合する。", "diversity": ["decoder", "representation", "dynamics"], "tests": "hard top-1、soft event fusion、disagreement条件付きfallbackの3方式を別対照にする。"},
+    {"id": "C4", "definition": "zero/refined座標routeを同一nodeの代替状態として保持し、周辺の母候補順位が変わる場所だけselectorで扱う。", "diversity": ["representation"], "tests": "座標状態oracleとfeature再補間の寄与を混同しない。"},
+    {"id": "C5", "definition": "ILPに落とされたrank1 edgeや、1娘を選び2娘目を落とした親から、元のgraphを壊し過ぎない最小の代替event集合を生成する。", "diversity": ["decoder"], "tests": "GTは候補生成に使わず、競合目的関数差とobservable errorを測る。"},
+    {"id": "C6", "definition": "終端/開始の近傍だけで画像blob候補を再生成し、既存nodeへの重複統合を含む局所repair候補を作る。", "diversity": ["observation", "candidate"], "tests": "triggerのrecallと、候補生成のoracle回収を別計測。C1の独立生成とは混同しない。"}
+  ],
+  "pass_D_validation_compute": [
+    {"id": "D1", "definition": "node/eventが共有する全制約を含むconflict graphの連結成分をexactに分割し、固定graph solveを再利用する。", "enables": "異なるevent仮説の列挙と比較; 目的関数・edge集合のparity後に新decoderのend-to-end公式評価。"},
+    {"id": "D2", "definition": "大きいcomponentでは確定した外部edgeをboundaryとして残し曖昧な局所だけを再solveする。", "enables": "費用の大きいjoint event探索; exact分割と異なりboundaryによるoracle損失を明示。", "status": "独立cardにしない; 大きいcomponentでparityを保証できないためfallbackする。"},
+    {"id": "D3", "definition": "context欠落、時間端、dataset数増加、cache不存在、density tailをhidden availability stressとして扱う。", "accept": "train-only maskを推論triggerに使わず、空contextでもanchorを再現、最悪componentのruntimeを計測。"},
+    {"id": "D4", "definition": "提出座標zero/refined × tracker特徴の補間位置zero/refinedの2×2比較で座標対応と特徴routeを分離する。", "accept": "同じnode identity/候補/重みの下で再補間が必要; 既存183edge triggerを原因確定と呼ばない。"},
+    {"id": "D5", "definition": "両胚を反対方向に学習/評価し、division・孤立node・境界・近接競合bucketを先に定義する。", "accept": "公開画像モデルのtrain exposureを残す条件付き比較; 内部foldのみで設定選択; 対象stageのobservable負例と未知を分ける。"}
+  ],
+  "structural_probes": {
+    "same_entity_context": {
+      "available": "同一推論動画の100frameの画像と固定予測履歴。hidden testのlabel/support annotationは提供されない。",
+      "global_and_entity_reference": "globalな物理移動・score誤差referenceを学習胚内部で作る。testでは局所画像移動と複数の高margin候補から同じ単位のentity referenceを作る。自己予測を教師にしない。",
+      "roles_compared": ["観測ずれのcalibrator", "parent competitionのreference", "history適用のgate"],
+      "fallback": "sample開始/終了、neighbors不足、division付近、context欠損、観測範囲外ではglobal referenceと固定anchorを使う。",
+      "availability_tests": ["履歴0/1/複数frame", "履歴shuffle", "近傍node欠落", "重複context", "画像境界と大変位"],
+      "result": "I02で閉じた案にする; test-time label adaptationは棄却。"
+    },
+    "imperfect_intermediate_training": {
+      "mismatch": "全下流候補が固定model予測を入力とする。clean GEFF上だけの学習は推論のscore競合、長く続く誤接続、欠落を再現しない。",
+      "chain": ["学習側内部holdout予測からscore/位置誤差振幅・時間自己相関・bias・missing candidate・mode/rank inversionを胚とbucket別に測る", "既知annotated motifへそのjoint corruptionを付加; 未知領域の教師を新造しない", "修復/保持/変更modelをpretrain", "別の実際の内部holdout予測conditioningで短くfine-tune", "outer held胚の非corrupt予測上で評価"],
+      "kill": ["copy-throughでsyntheticだけ向上", "error auditとcorruption統計不一致", "real conditioningで改善消失", "教師maskがunknownをnegative化", "runtime超過"],
+      "result": "I03; simple input noiseだけでは完了と数えない。"
+    },
+    "invariant_discovery": {
+      "cheap_EDA": ["既知GEFFの隣接移動の物理単位varianceと時間差別分布", "反射/translation前後の距離とgraph incidenceの誤差", "画像の局所shiftと既知相対移動の残差", "division前後の局所輝度総量ratioと境界別誤差"],
+      "already_supported": ["物理voxel scale", "時間方向edge", "座標と画像を同時変換する対応関係"],
+      "unverified_not_hard_constraints": ["蛍光量保存", "細胞数の厳密増加", "一定速度", "division中心が娘の平均位置と一致"],
+      "preserve_and_break": "幾何augmentationは物理距離・時刻順・node identity・graph incidenceを保存。photometric corruptionは観測輝度だけを壊す。変換した位置/方向入力と、画像変更時の特徴は再計算。",
+      "result": "I10; 無条件のmass conservation lossは棄却。"
+    }
+  },
+  "cross_combinations": [
+    {"anonymous_inputs": ["A1/A2", "B6", "C5"], "output": "I01", "added_mechanism": "既存2-frame set選択を、固定graph後の3-frame完整event対の相対選択へ変える。null大多数のteacherを繰り返さない。"},
+    {"anonymous_inputs": ["B1", "B2", "C2"], "output": "I02", "added_mechanism": "historyと動画の動きをprimary predictorではなく局所referenceとconfidence校正に使う。"},
+    {"anonymous_inputs": ["A5", "B3", "C3"], "output": "I03", "added_mechanism": "予測graphの誤り構造を生成して、信頼すべき中間予測と修復すべき部分を学ぶ。"},
+    {"anonymous_inputs": ["A3", "C3", "B2"], "output": "I04", "added_mechanism": "弱いexpanded graphを平均graphとして採用せず、point化前のevent分布とdisagreementとして使う。"},
+    {"anonymous_inputs": ["D1", "A1/A3", "C5"], "output": "I05", "added_mechanism": "exact parityの高速化を複数event探索と最終公式scoreまで結ぶ。"},
+    {"anonymous_inputs": ["A4", "C4", "D4"], "output": "I06", "added_mechanism": "coordinate効果とfeature lookup効果を分離し、座標状態のconditional選択への根拠を作る。"},
+    {"question": "100倍速なら何の近似を外すか", "answer": "thresholdで早期に候補を消す処理と、2-frameで分裂を独立edgeへ分解する処理。全候補のoracleだけでなく、conflict componentで完整な3-frame eventを列挙・共同選択する。実測100倍は主張しない。"},
+    {"question": "current bestを使用禁止にしたら", "answer": "raw画像の物理scale付きblob/領域対応から独立候補を作るI08。raw occupancy/transportの新規学習I12は方針変更が必要でtop5外。"}
+  ],
+  "adversarial_gate": {
+    "held_group_leakage": "全学習・calibration・corruption推定・方式選択を学習胚内部の動画foldで行い、反対胚のGTでは候補/trigger/方式を決めない。上流公開モデル由来のexposureは明記する。",
+    "sparse_label": "unknownをnegativeにしない。既知別親や完全に識別可能な局所eventだけで負例を作り、fully unlabelled領域はloss外。",
+    "target_free_selection": "oracleは候補上限の診断のみ。実運用selectorは画像・固定score・履歴・availabilityから判断し、GT rankを入力しない。",
+    "hidden_contract": "公開test 4件や特定sample名に依存しない。cacheは新しいtestから作る。offline artifactを固定し、datasetごとにstreaming。",
+    "worst_group": "両方向の胚比較、density/境界/分裂bucket、悪化動画数、worst component runtimeを必須にする。division数の少なさでconfidenceを上げない。",
+    "determinism": "stable node/event順、固定seed、solver tie-break、特徴/score source版を固定。CUDA/ILP完全決定性は保証しない。",
+    "nearest_failure": "I01はexp029の同じ母娘set cardinality headを再命名しない。I02はexp048のprimary attention追加を再現しない。I04はexp047のexpanded graphをそのまま採用しない。",
+    "policy_gate": "I12を現在実行可能案としてrankしない。I08は新規画像モデル学習なしだが局所候補回収は別比較として扱う。",
+    "outcome": "12 complete cardsを残し、5枠を満たすtop5を選ぶ。得点改善は観測されていない。"
+  },
+  "rejected_alternatives": [
+    {"idea": "exp047と同じscoreのまま閾値だけを下げてexpanded graphを採用", "gate": "最も近い既存失敗との差がparameterのみ; 両胚の公式score悪化", "reopen": "選択目的/校正/共同eventが変わりheld胚でtarget-free改善"},
+    {"idea": "exp029のset headを大きくし全母にnull教師を増やす", "gate": "representation/teacher/decodeが既存失敗と同じ; unknownを負例化する危険", "reopen": "既知event教師の被覆と未知maskを再定義し3-frame downstream相対選択へ変える"},
+    {"idea": "past feature attentionを同じprimary trackerに足す", "gate": "同じrole/fusionのexp041/048失敗; 44b6のmargin減少", "reopen": "gate/referenceへのrole変更とmask/shuffle対照が成立"},
+    {"idea": "GTで11分裂を強制選択したgraphを最終案にする", "gate": "oracle selectionとtarget-free selectionを混同; testにGEFFはない", "reopen": "GTなしevent選択が内部学習で識別可能"},
+    {"idea": "testの推定真cell数metadataやannotation coverageでnode数を校正", "gate": "train-only input; hiddenでは画像のみ", "reopen": "同じ量を画像だけから推定しavailabilityを検証"},
+    {"idea": "分裂の蛍光量保存をhard constraintにする", "gate": "保存則を示す証拠がpacketにない; bleaching・境界・重なりを無視", "reopen": "cheap EDAでconditioned残差とboundary誤差を測りsoft priorとして支持"},
+    {"idea": "新規画像モデルを固定224D特徴へ置き換えて同じ案とする", "gate": "入力/学習対象/出力が変わるため原案と別物", "reopen": "別cardとして再設計し教師と候補上限を明示"}
+  ],
+  "missing_information": ["全候補raw score・forward/reverse・画像窓・特徴の保存範囲", "exp043 headを固定して両方向胚条件付き比較に使うcheckpoint版と上流来歴の完全性", "画像再抽出のruntimeとcutoff時点のGPU quota", "20動画より広いdivision教師と完全局所eventの有効件数", "hidden dataset数とdensity tail上限", "exp050/051のcutoff時点の設計詳細・結果は未知", "疎いannotationの未知領域における真のFP数", "画像由来独立候補のnode回収とtarget-free selectability"]
+}

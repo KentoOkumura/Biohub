@@ -1,0 +1,13 @@
+{
+  "observed_at_utc": "2026-10-02T13:06:32.138262+00:00",
+  "files": {
+    "run_a/task_first.json": {
+      "sha256": "d88b452524cadfd94219bd7fa755357daaee8b5c3311d4da43449491a87bf120",
+      "mtime_utc": "2026-10-02T13:03:27.994952+00:00"
+    },
+    "run_b/task_first.json": {
+      "sha256": "66a2edc28d46782a11931596e4dfb8c631a5128ccf93da2f5e1e4015f2dec94b",
+      "mtime_utc": "2026-10-02T13:03:11.334953+00:00"
+    }
+  }
+}

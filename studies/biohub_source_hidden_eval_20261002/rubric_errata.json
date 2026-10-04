@@ -1,0 +1,48 @@
+{
+  "recorded_at_utc": "2026-10-02T13:06:31.552508+00:00",
+  "effective_rubric_sha256": "c7080374b467d2813189756d5c1606ec90df4d40017025a6ae5ed2de1d96eca8",
+  "amendments": [
+    {
+      "criterion": "R07",
+      "old": "Use provisional selected topology to update candidate event costs and rerun constrained selection; topology features used only in a once-run classifier are partial.",
+      "new": "Use a provisional graph to revise division costs and rerun ILP (rank 7), or iteratively relinearize metric-surrogate coefficients from predicted/expected graph counts and rerun constrained selection (rank 3). One-time use of graph features alone is partial.",
+      "reason": "Rank 3's metric-surrogate iteration is not necessarily a topology-feature classifier."
+    },
+    {
+      "criterion": "R08",
+      "old": "Run staged constrained graph selection: preserve reliable selected paths, introduce weaker detections in a second pass, constrain/cancel newly unsupported divisions while allowing added independent tracks.",
+      "new": "Run high-confidence graph selection first and include weaker detections in a second ILP; cancel divisions absent from the first pass while keeping extra independent cells, then re-solve links. Hard fixation of all first-pass paths is not required.",
+      "reason": "Rank 5 does not explicitly freeze all reliable first-pass paths."
+    },
+    {
+      "criterion": "R11",
+      "old": "Train final-graph edits on signed official-metric change of applying each edit, distinguish evaluated gains/losses/unknown changes, recompute graph features after edits.",
+      "new": "Train final-graph edit candidates using signed utility based on changes in officially evaluated TP/FP and node-count cost, or an exact official-score difference. Exact whole-score delta is not required; unknown-label handling and feature recomputation are separate safety/implementation checks.",
+      "reason": "Rank 17 uses a local surrogate utility rather than exact official-score delta; the other two details were undocumented as source mechanisms."
+    },
+    {
+      "criterion": "R12",
+      "old": "Repair/extend daughter tracks first, then re-evaluate division using repaired topology and competing ordinary edges. One-time division addition before downstream repair is partial.",
+      "new": "After provisional division adoption, repair/extend daughter tracks and then perform a final division re-evaluation on repaired topology while considering competing ordinary edges. Initial provisional decisions before repair are allowed.",
+      "reason": "Rank 18 makes provisional decisions before daughter repair; only the final recheck must follow repair."
+    },
+    {
+      "criterion": "R13",
+      "old": "Feed reliable nodes from completed predicted tracks back as weighted pseudo-labels for a new detector-training pass, distinguish inferred labels and confirmed annotation.",
+      "new": "Feed final predicted track nodes after ILP and postprocessing back as weighted pseudo-labels for a new detector-training pass, distinguish inferred labels and confirmed annotation. A special reliability filter is not required.",
+      "reason": "Rank 16 documents Silver final nodes with a separately weighted loss, not a special reliability filter."
+    },
+    {
+      "criterion": "R14",
+      "old": "Apply final-graph coordinate correction while holding identities/links fixed and/or restore valid divisions after downstream processing deletes them; distinguish final geometry/repair from pre-tracker changes.",
+      "new": "Apply final-graph coordinate correction while holding identities/links fixed and/or restore valid divisions after downstream processing deletes them; distinguish final geometry/repair from pre-tracker changes. Graph-only or frozen-feature variants fit the policy; rank 12's own learned raw-image recentring requires a policy change.",
+      "reason": "Policy feasibility depends on the correction's input/model; rank 12's exact CNN variant is outside the frozen-image policy."
+    },
+    {
+      "criterion": "R16",
+      "old": "Learn explicit birth/no-parent and mother-division outputs with partial-annotation-aware targets, and use their probabilities for graph start/division costs; new image features must be acknowledged.",
+      "new": "Learn explicit birth/no-parent and mother-division outputs and use their probabilities for graph start/division costs (rank 5). Partial-annotation-aware division supervision is independently documented in rank 11, which has no documented learned birth head. State how unknown birth/division targets are treated; dense joint image learning requires a policy change, but separate heads on frozen features can be within policy.",
+      "reason": "Rank 5 and rank 11 do not each implement the whole conjunction; downstream heads can be studied on fixed image features."
+    }
+  ]
+}

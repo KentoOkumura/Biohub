@@ -1,0 +1,50 @@
+{
+  "run": "run_a",
+  "source_hidden": true,
+  "permitted_input_root": "/home/kento/work/kaggle/Biohub/studies/biohub_source_hidden_eval_20261002/packet/",
+  "output_root": "/home/kento/work/kaggle/Biohub/studies/biohub_source_hidden_eval_20261002/run_a/",
+  "inputs_actually_read": [
+    {"path": "packet/task_packet.md", "first_phase": 1, "method": "cat; supplied task text only"},
+    {"path": "packet/idea_forge_skill.md", "first_phase": 1, "method": "cat; supplied skill copy only"},
+    {"path": "packet/portfolio_schema.md", "first_phase": 1, "method": "cat; supplied version-2 schema only"},
+    {"path": "packet/baseline_contract.md", "first_phase": 3, "method": "cat after task_first.json had been saved"},
+    {"path": "packet/evidence.json", "first_phase": 3, "method": "head then structured extraction by run-local Python scripts"}
+  ],
+  "chronological_workflow": [
+    {"phase": 1, "action": "Read the three initial permitted files in one parallel read batch without following their links."},
+    {"phase": 2, "action": "Constructed and saved task_first.json with a task card and six non-parameter initial ideas; two did not use the current point predictor/candidate set."},
+    {"phase": 3, "action": "Read baseline_contract.md and the initial structure of evidence.json only after the task-first save."},
+    {"phase": 4, "action": "Executed summarize_evidence.py to read evidence.json and write evidence_summary.json; long console output was truncated."},
+    {"phase": 5, "action": "Executed inspect_evidence.py on the same evidence.json to view selected E03-E06 fields and avoid inferring from truncated output."},
+    {"phase": 6, "action": "Generated sequential passes A-D, the structural probes, scoped closures, combinations and adversarial checks; saved generation_notes.json."},
+    {"phase": 7, "action": "Parent stated task_first.json had been hashed without content inspection and requested it remain unchanged."},
+    {"phase": 8, "action": "Parent paused extended drafting and requested compact finalization without adding evidence, external inputs or target hints."},
+    {"phase": 9, "action": "Resumed the same run using retained context and encoded the existing ideas into exactly ten complete cards and five selections; no new pass or search was made."},
+    {"phase": 10, "action": "Saved idea_portfolio.json and this access log; task_first.json remained unchanged."},
+    {"phase": 11, "action": "Performed a run-local structural validation using the supplied schema rules, reading only the newly generated portfolio; no repository validator source was opened."}
+  ],
+  "run_local_code_executed": ["run_a/summarize_evidence.py", "run_a/inspect_evidence.py", "run_a/validate_output.py"],
+  "own_generated_artifacts_read": ["idea_portfolio.json for structural validation"],
+  "unpermitted_references_followed": [],
+  "missing_information": [
+    "Complete candidate scores, forward/reverse outputs, image-window and feature cache coverage.",
+    "Cutoff-time GPU quota and measured cost of additional feature extraction.",
+    "Full ILP coupling constraints and whether exact component decomposition provides speedup.",
+    "Number of fully identifiable division/event teachers beyond the twenty-video audit.",
+    "Hidden dataset cardinality, density tail and true false-positive count in unannotated regions.",
+    "No post-cutoff result or design detail from exp050/051 was inferred."
+  ],
+  "declarations": {
+    "no_repository_exploration": true,
+    "no_web_browsing": true,
+    "no_links_followed": true,
+    "no_target_answers_read": true,
+    "no_evaluation_rubric_read": true,
+    "no_other_run_outputs_read": true,
+    "no_post_cutoff_evidence_read": true,
+    "no_training_kaggle_backlog_experiment_or_submission_actions": true,
+    "task_first_unchanged_after_save": true,
+    "parent_compaction_messages_were_workflow_instructions_only": true
+  },
+  "validation_limit": "Local schema checks assess completeness and portfolio structure only; they do not establish scientific validity or improvement."
+}

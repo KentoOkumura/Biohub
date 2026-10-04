@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import shutil
 from datetime import date
 from pathlib import Path
@@ -166,10 +167,27 @@ def reset_parent_records(
         raise RuntimeError("reset metrics.json did not produce a planned child experiment")
 
 
+def validate_experiment_name(name: str, experiments_dir: Path) -> None:
+    match = re.fullmatch(r"(exp[A-Za-z]?\d+)_[a-zA-Z0-9_-]+", name)
+    if match is None:
+        raise ValueError("experiment name must use an ID and suffix, e.g. exp054_example")
+    experiment_id = match.group(1).lower()
+    collisions = sorted(
+        path.name
+        for path in experiments_dir.glob("*")
+        if path.is_dir()
+        and path.name != name
+        and path.name.split("_", 1)[0].lower() == experiment_id
+    )
+    if collisions:
+        raise ValueError(f"experiment ID {experiment_id} already exists: {', '.join(collisions)}")
+
+
 def main() -> None:
     args = parse_args()
     source = (ROOT / args.source).resolve()
     experiments_dir = configured_project_path("paths.experiments_dir", "experiments", root=ROOT)
+    validate_experiment_name(args.name, experiments_dir)
     destination = experiments_dir / args.name
 
     if not source.exists():

@@ -5,7 +5,7 @@
 - 仮説要約: exp043の候補と画像特徴上で、直前frameの近傍8候補をattentionで参照すると既知edgeの接続が改善するか。
 - 変更点要約: exp043の検出・座標補正・画像encoder・secondary tracker・融合を固定し、公開primary trackerとK=8 attentionを同時学習する別実験。
 - リスク: GEFFの部分注釈、公開画像モデルに条件付けられたCV、capture・学習のGPU費用。
-- 次: Kaggleでpair cacheのbaseline一致とK=8既知親回収率を確認し、通過した場合だけ学習する。
+- 次: Kaggle学習・隣接2フレームの評価と追加診断は終了した。[結果](result.md)のgraph進行条件を満たさなかったため全graph推論を保留し、実験の完了・採否についてユーザー判断を待つ。
 
 ## 正の記録
 
@@ -18,8 +18,8 @@
 ## 実行入口
 
 - 学習 notebook: `exp044_x138_past_candidate_knn_attention_train.ipynb`
-- 全graph推論Notebook: pair評価後に進行判断するため、現段階では作成しない。
-- Kaggle 準備と実行: [`SESSION_NOTES.md`](SESSION_NOTES.md)の予定を埋め、`kaggle-review-exp`と`kaggle-platform`の手順に従う
+- 全graph推論Notebook: 進行条件未達のため作成していない。
+- 実行済みの手順と診断経緯: [`SESSION_NOTES.md`](SESSION_NOTES.md)
 - notebook 実行: Kaggle kernel run を正とする。ローカル実行は `--allow-local` を付けた smoke debug のみに限定する。
 
 ## 表記

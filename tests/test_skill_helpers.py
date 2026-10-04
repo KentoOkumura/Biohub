@@ -137,6 +137,21 @@ def test_experiment_reviewer_uses_current_canonical_paths(tmp_path: Path) -> Non
     assert "submit/SUBMISSIONS.md" not in relative
 
 
+def test_experiment_reviewer_rejects_ambiguous_short_ids(tmp_path: Path) -> None:
+    reviewer = load_module(
+        "review_exp_docs_ambiguous",
+        ROOT / ".agents/skills/kaggle-review-exp/scripts/review_exp_docs.py",
+    )
+    for name in ("exp025_first", "exp025_second"):
+        directory = tmp_path / "experiments" / name
+        directory.mkdir(parents=True)
+        (directory / "result.md").write_text("objective baseline CV result artifact next action")
+    with pytest.raises(ValueError, match="Ambiguous experiment"):
+        reviewer.candidate_files(tmp_path, "exp025")
+    files = reviewer.candidate_files(tmp_path, "exp025_first")
+    assert files == [tmp_path / "experiments/exp025_first/result.md"]
+
+
 def test_experiment_reviewer_does_not_treat_global_context_as_target_evidence(
     tmp_path: Path,
 ) -> None:

@@ -109,7 +109,7 @@ tasks:
     cmds:
       - |
         if [ -d {{.EXPERIMENTS_DIR}}/{{.EXP}}/tests ]; then
-          uv run --extra dev --extra notebook pytest -q {{.EXPERIMENTS_DIR}}/{{.EXP}}/tests
+          uv run --extra dev --extra notebook --extra app pytest -q {{.EXPERIMENTS_DIR}}/{{.EXP}}/tests
         else
           echo "No experiment-specific tests: {{.EXPERIMENTS_DIR}}/{{.EXP}}/tests"
         fi
@@ -117,7 +117,7 @@ tasks:
   test-common:
     desc: Run repository-level common tests without collecting experiment tests.
     cmds:
-      - uv run --extra dev --extra notebook pytest -q tests
+      - uv run --extra dev --extra notebook --extra app pytest -q tests
 
   train-local:
     desc: Debug-only local train notebook execution; pass --allow-local explicitly.
@@ -226,7 +226,7 @@ tasks:
   record-exp:
     desc: Update one experiment metrics.json and regenerate experiment_summary.md.
     cmds:
-      - uv run python scripts/record_experiment.py --experiment {{.EXP}} --status "{{.STATUS}}" --cv "{{.CV}}" --public-lb "{{.PUBLIC_LB}}" --private-lb "{{.PRIVATE_LB}}" --metric "{{.METRIC}}" --key-idea "{{.KEY_IDEA}}" --notes "{{.NOTES}}" {{.EXTRA_ARGS}}
+      - uv run python scripts/record_experiment.py --experiment {{.EXP}} --submission-ref "{{.SUBMISSION_REF}}" --status "{{.STATUS}}" --cv "{{.CV}}" --public-lb "{{.PUBLIC_LB}}" --private-lb "{{.PRIVATE_LB}}" --metric "{{.METRIC}}" --key-idea "{{.KEY_IDEA}}" --notes "{{.NOTES}}" {{.EXTRA_ARGS}}
 
   compare-exp:
     desc: Print a compact comparison table for experiments.
@@ -255,9 +255,9 @@ tasks:
       - uv run ruff format .
 
   test:
-    desc: Run all repository and configured experiment tests.
+    desc: Run common tests and each configured experiment in isolated Python processes.
     cmds:
-      - uv run --extra dev --extra notebook pytest tests {{.EXPERIMENTS_DIR}}
+      - uv run --extra dev --extra notebook --extra app python scripts/run_tests.py
 
   tracking-app:
     desc: Run the local cell-tracking EDA viewer.

@@ -6,7 +6,7 @@
 - 対応する上位仮説: `HYP-20260910-11`
 - 関連する上位仮説: `HYP-20260910-12`（公開構成と後処理への適用）、`HYP-20260910-03`（分裂の構造）。
 - 作成日: 2026-09-24
-- 最終更新日: 2026-09-24
+- 最終更新日: 2026-10-04
 - 依頼原文: 「改善アイデアはありますか？例えばILPの箇所を何かのモデルで学習して置き換えるとかですか？」への3案の説明後、「バックログに追加してcommitとpushしてください」。
 - 期待する成果: 同じ検出・接続候補から、選択自体の学習により誤接続を抑えて通常継続と分裂を保持できるかを確かめる。
 - 親実験 / 比較対象: [exp043](../experiments/exp043_x138_self_trained_head/)の採用構成を性能基準とする。[exp028](../experiments/exp028_direct_graph_prediction/)は直接親選択、[exp029](../experiments/exp029_mother_daughter_set_selection/)は集合得点の失敗を参照する。
@@ -73,7 +73,7 @@
 ## 実行しないこと
 
 - 禁止する代替実装、proxy、同一OOF上の救済探索: ILP出力を生物学的正解にした模倣学習、未知辺の一律負例化、画像側再学習、単なるILP費用倍率探索、既存ILPが全選択を行う構成を置換と呼ぶこと。
-- 壁打ちで採らなかった案と理由: [shared_edge_graph_learning](../experiments/exp050_shared_edge_graph_learning/requirements.md)はILPを保持する得点学習。[final_graph_edit](final_graph_edit.md)は完成graphの局所修正。候補生成の変更は[x138_edge_candidates](x138_edge_candidates.md)へ分離する。
+- 壁打ちで採らなかった案と理由: [shared_edge_graph_learning](../experiments/exp050_shared_edge_graph_learning/requirements.md)はILPを保持する得点学習。[final_graph_edit](final_graph_edit.md)は完成graphの局所修正。候補生成の変更は[exp047へ移行したx138_edge_candidates](../experiments/exp047_x138_edge_candidates/requirements.md)へ分離する。
 
 ## リスク
 

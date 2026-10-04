@@ -5,10 +5,15 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_template_has_no_sample_experiment_or_submission_directory() -> None:
+def test_experiment_records_and_submission_history_use_current_layout() -> None:
     experiments = ROOT / "experiments"
 
-    assert {path.name for path in experiments.iterdir()} == {"README.md"}
+    assert (experiments / "README.md").is_file()
+    for path in experiments.iterdir():
+        if path.is_dir():
+            assert path.name.startswith("exp")
+            assert (path / "config.yaml").is_file()
+            assert (path / "metrics.json").is_file()
     assert not (ROOT / "submissions").exists()
     assert (ROOT / "SUBMISSIONS.md").is_file()
 
@@ -54,10 +59,7 @@ def test_project_is_configured_for_biohub_cell_tracking() -> None:
         "name": "Biohub - Cell Tracking During Development",
         "platform": "kaggle",
         "slug": "biohub-cell-tracking-during-development",
-        "url": (
-            "https://www.kaggle.com/competitions/"
-            "biohub-cell-tracking-during-development"
-        ),
+        "url": ("https://www.kaggle.com/competitions/biohub-cell-tracking-during-development"),
         "is_code_competition": True,
     }
     assert project["data"]["group_column"] == "embryo_id"

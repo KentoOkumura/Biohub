@@ -26,7 +26,8 @@ def test_explicit_monitor_log_path_is_preserved(tmp_path: Path) -> None:
     assert MONITOR.resolve_log_path("exp001_baseline", str(path), None) == path
 
 
-def test_missing_experiment_uses_temporary_directory() -> None:
+def test_missing_experiment_uses_temporary_directory(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(MONITOR, "REPO_ROOT", tmp_path)
     path = MONITOR.resolve_log_path("exp001_baseline", None, None)
     assert path == (
         Path(tempfile.gettempdir()) / "kaggle-submission-monitor" / "submission_exp001_baseline.log"

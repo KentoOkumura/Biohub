@@ -7,6 +7,11 @@ from pathlib import Path
 from typing import Any
 
 from config_utils import EXPERIMENT_STATUSES, ROOT, configured_project_path
+from record_submission import (
+    initial_submission_scores,
+    validate_submission_ref,
+    validate_submission_scores,
+)
 from update_experiment_summary import collect_records, render_auto_block, update_summary
 
 EXPERIMENTS_DIR = configured_project_path("paths.experiments_dir", "experiments")
@@ -21,6 +26,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--cv", default="")
     parser.add_argument("--public-lb", default="")
     parser.add_argument("--private-lb", default="")
+    parser.add_argument(
+        "--submission-ref",
+        default="",
+        help="Record CV/LB for this submission ref without changing experiment-wide scores.",
+    )
+    parser.add_argument("--submission-status", default="", help="Scoring state for the ref.")
+    parser.add_argument("--submitted-at", default="", help="ISO 8601 submission timestamp.")
     parser.add_argument("--metric", default="")
     parser.add_argument("--key-idea", default="")
     parser.add_argument("--notes", default="")
@@ -74,6 +86,40 @@ def set_score_if_provided(metrics: dict[str, Any], key: str, value: str) -> None
     metrics[key] = parse_score(value)
 
 
+def record_scores(metrics: dict[str, Any], args: argparse.Namespace) -> None:
+    """Keep experiment scores and individual submissions separate."""
+    submission_ref = args.submission_ref.strip()
+    if not submission_ref:
+        if args.submission_status or args.submitted_at:
+            raise ValueError("--submission-status and --submitted-at require --submission-ref")
+        record = metrics
+    else:
+        submission_ref = validate_submission_ref(submission_ref)
+        records = metrics.get("submissions", {})
+        if not isinstance(records, dict):
+            raise ValueError("metrics.json submissions must be a JSON object")
+        if submission_ref not in records:
+            initial_scores = initial_submission_scores(args.experiment, submission_ref, metrics)
+            records[submission_ref] = initial_scores
+        metrics["submissions"] = records
+        record = records[submission_ref]
+        if not isinstance(record, dict):
+            raise ValueError(f"submission {submission_ref} must be a JSON object")
+        set_if_provided(record, "submission_status", args.submission_status)
+        if args.submitted_at:
+            try:
+                timestamp = datetime.fromisoformat(args.submitted_at)
+            except ValueError as exc:
+                raise ValueError("--submitted-at must be an ISO 8601 timestamp") from exc
+            if timestamp.tzinfo is None:
+                raise ValueError("--submitted-at must include a timezone")
+            record["submitted_at"] = timestamp.isoformat()
+    for key in ("cv", "public_lb", "private_lb"):
+        set_score_if_provided(record, key, getattr(args, key))
+    if submission_ref:
+        validate_submission_scores(record)
+
+
 def parse_evidence_value(value: str) -> Any:
     try:
         return json.loads(value)
@@ -123,19 +169,22 @@ def main() -> None:
     if args.status and args.status not in ALLOWED_STATUSES:
         allowed = ", ".join(sorted(ALLOWED_STATUSES))
         raise SystemExit(f"invalid status: {args.status}. allowed: {allowed}")
+    if args.submission_ref.strip() and args.status:
+        raise SystemExit(
+            "--status changes the experiment; record it separately from --submission-ref "
+            "or use --submission-status for the scoring state"
+        )
 
     metrics_path = experiment_dir / "metrics.json"
     metrics = read_json(metrics_path)
     metrics.setdefault("experiment", args.experiment)
 
     set_if_provided(metrics, "status", args.status)
-    set_score_if_provided(metrics, "cv", args.cv)
-    set_score_if_provided(metrics, "public_lb", args.public_lb)
-    set_score_if_provided(metrics, "private_lb", args.private_lb)
     set_if_provided(metrics, "metric", args.metric)
     set_if_provided(metrics, "key_idea", args.key_idea)
     set_if_provided(metrics, "notes", args.notes)
     try:
+        record_scores(metrics, args)
         apply_evidence_assignments(metrics, args.evidence)
     except ValueError as exc:
         raise SystemExit(str(exc)) from exc

@@ -1,0 +1,96 @@
+{
+  "stage": "task_only_before_baseline_and_evidence",
+  "sources_read_at_this_stage": ["packet/task_packet.md", "packet/idea_forge_skill.md", "packet/portfolio_schema.md"],
+  "task_card": {
+    "target_and_penalties": "3D fluorescence sequences to node centroids and forward-time continuation/division edges. The official adjusted edge Jaccard punishes wrong/missing links and adjusts overpredicted nodes; division Jaccard rewards correctly localized branching. Matching uses physical coordinates, 7 micrometre radius and anisotropic voxel scales.",
+    "known_at_inference": ["All frames of each test Zarr sequence", "Physical voxel scale", "Sequence/dataset identity", "Offline frozen detector, image encoder, coordinate head and tracker if their files are supplied"],
+    "unknown_at_inference": ["True nodes, links and divisions", "Hidden embryo identity relative to training biology", "Estimated true cell count from training GEFF is not available for hidden images", "Baseline output error distribution and caches have not yet been read"],
+    "partly_known": ["Sparse train graph labels identify some positive links and divisions; unlabeled cells are not verified negatives", "Same sequence supplies unlabeled temporal context but no hidden graph labels"],
+    "dependency_units": ["Embryo for validation separation", "Multiple fields of view may belong to one embryo", "A sequence couples all timepoints", "A graph component couples incoming/outgoing edges and division events"],
+    "uncertainty_lost": "CSV exports a selected graph. Alternative edge assignments, candidate location uncertainty, event ambiguity and disagreement between solutions can be lost before output. Whether the current system preserves these internally is missing.",
+    "domain_invariants": ["Temporal edge direction", "Coordinate transforms must respect z/y/x physical scale", "Node identity must remain internally consistent under axis reflection/translation", "A biological daughter can have at most one mother; divisions are coordinated events", "Cell count and motion are not strict conserved quantities in an observed field of view"],
+    "hidden_changes": ["Unknown embryo appearance, motion, division frequency and density", "Unknown number of test datasets", "Offline dependencies and variable memory/runtime per sequence", "Sequence context can be absent at boundaries or unreliable under image noise"],
+    "policy": "Prefer processing after the frozen tracker; training an image model, updating detector/encoder/head/tracker requires a policy change. Candidate recovery using frozen image processing must be a separate explicitly scoped comparison. Kaggle only, offline, 12h per notebook, 45 GPUh per week, no paid compute.",
+    "missing_before_evidence": ["Trusted baseline exact graph/objective and saved scores", "Validation sample selection", "Public model training provenance", "Available candidate cache and negatives", "Runtime bottleneck and residual error cases"]
+  },
+  "initial_ideas": [
+    {
+      "id": "TF01",
+      "title": "Select continuation and division events jointly across short tracklets",
+      "input": "Frozen predicted detections, tracker edge scores and short tracklets",
+      "target": "Mutually compatible continuation, mother-to-two-daughters, boundary birth and termination events",
+      "objective": "Structured event likelihood or a sparse-label masked ranking objective followed by globally compatible selection",
+      "output": "A scored set of multi-node temporal events, preserving near-optimal alternatives until graph decoding",
+      "decode": "Select complete events with one mother per daughter and compatible tracklet endpoints; serialize selected node/edge graph",
+      "teacher_assumptions": "GEFF known edges/divisions mapped to predicted nodes; unknown edges are masked, and births/deaths without known evidence receive no false negative labels",
+      "scope_feasibility": "Current downstream policy; CPU graph cache can support cheap comparison. Exact baseline solver and event headroom unknown.",
+      "requires_current_point_predictor_or_candidates": true,
+      "policy_change": false
+    },
+    {
+      "id": "TF02",
+      "title": "Use same-sequence motion as a reference for ambiguous links",
+      "input": "Frozen predicted coordinates and reliable short link histories from the same sequence",
+      "target": "Residual displacement relative to robust local image/point motion",
+      "objective": "No mandatory training; robust context estimation, then masked conditional edge ranking if learned calibration is needed",
+      "output": "A sequence-specific physical displacement reference with support/uncertainty at each candidate endpoint",
+      "decode": "Modify only ambiguous downstream event choices where local support exists; fallback exactly to anchor elsewhere",
+      "teacher_assumptions": "Same-sequence support uses predictions, never hidden GEFF; calibration uses train-side known links only",
+      "scope_feasibility": "Current downstream policy; image reread may be avoided using fixed coordinates. Calibration bias and insufficient support are key risks.",
+      "requires_current_point_predictor_or_candidates": true,
+      "policy_change": false
+    },
+    {
+      "id": "TF03",
+      "title": "Train local graph repair using realistically corrupted intermediate graphs",
+      "input": "Sparse known GEFF motifs transformed into approximate predicted subgraphs, then real held-out-like frozen predictions",
+      "target": "A compatible set of graph edits in known annotated neighborhoods",
+      "objective": "Masked event ranking/reconstruction under omissions, coordinate bias, temporally correlated swaps and division inversions",
+      "output": "Probabilities of retaining, deleting or exchanging complete continuation/division events",
+      "decode": "Choose compatible edits on the frozen graph and retain anchor where support is weak",
+      "teacher_assumptions": "Only motifs covered by sparse GEFF provide teachers; a failed matching or omitted unknown cell is not a verified negative. Corruption parameters must later be measured on training-side OOF-like predictions.",
+      "scope_feasibility": "Downstream scorer training is in policy. Realistic corruption, real-prediction refinement and clean embryo evaluation are required parts of one comparison.",
+      "requires_current_point_predictor_or_candidates": true,
+      "policy_change": false
+    },
+    {
+      "id": "TF04",
+      "title": "Construct independent trajectory proposals from temporal image components",
+      "input": "Raw 3D images across time, anisotropic physical scale, no detector point proposals",
+      "target": "Intensity-supported temporal components and their continuation/splitting boundaries",
+      "objective": "Non-learned spatial/background normalization and temporal consistency scoring, audited against known GEFF points/edges",
+      "output": "Alternative cell-center trajectories and split-event proposals independently extracted from images",
+      "decode": "Extract centers and forward links from temporally connected foreground regions; constrain merges and use as a separate route or recovery proposal source",
+      "teacher_assumptions": "No dense masks exist; intensity foreground is observation, not truth. Sparse known centers/links validate coverage and errors without assuming complete annotation.",
+      "scope_feasibility": "Independent candidate recovery is a separate comparison beyond fixed-candidate initial tests. No detector weight update, but image reread/processing cost must be measured; touching nuclei may defeat components.",
+      "requires_current_point_predictor_or_candidates": false,
+      "policy_change": "Separate candidate-generation comparison required; fixed downstream top-five priority does not automatically authorize this route"
+    },
+    {
+      "id": "TF05",
+      "title": "Predict displacement distributions directly between image volumes",
+      "input": "Adjacent raw image volumes and physical positions, no current point predictor or candidate set",
+      "target": "A spatial displacement distribution with continuation/division uncertainty",
+      "objective": "Image reconstruction consistency with sparse known point-to-point correspondence loss; preserve multimodality rather than force one vector",
+      "output": "Dense or locally queried transition distributions, plus centers extracted from raw intensity support",
+      "decode": "Jointly follow spatial probability mass and branch when two compatible daughter modes persist; convert to graph",
+      "teacher_assumptions": "Image consistency is self-supervision, not verified cell identity; sparse GEFF links supervise only known transitions. No dense field labels or masks are assumed.",
+      "scope_feasibility": "New image-model training requires explicit policy change and P4 deferral. Sparse teacher coverage and GPU cost are unknown.",
+      "requires_current_point_predictor_or_candidates": false,
+      "policy_change": true
+    },
+    {
+      "id": "TF06",
+      "title": "Solve independent ambiguous graph components exactly and reuse fixed regions",
+      "input": "Frozen candidate graph and current edge/event scores, with fixed resolved subgraphs",
+      "target": "Exact alternative compatible graphs for small ambiguous connected components",
+      "objective": "Same downstream objective and graph constraints as the baseline, with correctness-preserving decomposition",
+      "output": "Component solutions and certificates of score/constraint equivalence for fixed settings",
+      "decode": "Reassemble components after proving no cross-component event remains; use speed gain to enumerate whole-event swaps rather than greedy edits",
+      "teacher_assumptions": "No new teacher for acceleration; known GEFF evaluates any algorithm enabled by the faster solver separately",
+      "scope_feasibility": "Current policy and CPU cached processing; decomposition cannot cut true coupling or rely on hidden cardinality. Baseline runtime and solver unknown.",
+      "requires_current_point_predictor_or_candidates": true,
+      "policy_change": false
+    }
+  ]
+}

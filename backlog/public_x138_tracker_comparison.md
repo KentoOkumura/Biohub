@@ -5,12 +5,12 @@
 - 対応する上位仮説: `HYP-20260910-12`
 - 関連する上位仮説: `HYP-20260910-14`（公式評価と候補順位）。座標補正などの個別機構は直接検証しない。
 - 作成日: 2026-09-23
-- 最終更新日: 2026-09-25
+- 最終更新日: 2026-10-04
 - 依頼原文: 「バックログ案にするとどうなりますか？」「先ほどのバックログ案2件をバックログに追加してください」
 - 期待する成果: 再現したx138で、公開primary trackerとexp016の保存済み再学習trackerを同じ入力・後処理で比較する。従来構成の同じ比較も合わせ、新しい入力・後処理の下で重みの順位が変わるかを示す。
 - 親実験 / 比較対象: 学習済み重み・旧構成の対照は[`exp016_frozen_image_encoder`](../experiments/exp016_frozen_image_encoder/)、新構成は[`exp042_public_x138_replay`](../experiments/exp042_public_x138_replay/)の忠実再現。追加学習は行わない。
 - 優先度: P4
-- 優先度の理由: 作者の追加座標補正重みは2026-09-25に取得済みとなり、取得に関する先行条件は解消した。ただし保存済みexp016 trackerを転用して比べる目的は再開されていない。[exp043](../experiments/exp043_x138_self_trained_head/result.md)を現行基準とする方針とP4を維持する。今回追加した[座標head交換比較](x138_author_head_comparison.md)はtrackerを固定する別の比較であり、その依頼を本候補の再開承認とは扱わない。
+- 優先度の理由: 作者の追加座標補正重みは2026-09-25に取得済みとなり、取得に関する先行条件は解消した。ただし保存済みexp016 trackerを転用して比べる目的は再開されていない。[exp043](../experiments/exp043_x138_self_trained_head/result.md)を現行基準とする方針とP4を維持する。[exp046へ移行した座標head交換比較](../experiments/exp046_x138_author_head_comparison/requirements.md)はtrackerを固定する別の比較であり、その依頼を本候補の再開承認とは扱わない。
 - `backlog/KAGGLE_DIRECTION.md` の対応箇所: 「検証中の仮説」の`HYP-20260910-12`、未着手バックログの本候補。
 
 ## 観測事実と根拠

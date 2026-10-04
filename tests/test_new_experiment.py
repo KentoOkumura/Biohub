@@ -4,9 +4,23 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
 import yaml
 
 from scripts import new_experiment
+
+
+def test_existing_number_cannot_be_reused_for_a_different_experiment(tmp_path):
+    (tmp_path / "exp025_original").mkdir()
+    with pytest.raises(ValueError, match="ID exp025 already exists"):
+        new_experiment.validate_experiment_name("exp025_other", tmp_path)
+    new_experiment.validate_experiment_name("exp025_original", tmp_path)
+    new_experiment.validate_experiment_name("exp026_new", tmp_path)
+
+
+def test_experiment_name_cannot_escape_the_experiments_directory(tmp_path):
+    with pytest.raises(ValueError, match="experiment name"):
+        new_experiment.validate_experiment_name("../exp025_elsewhere", tmp_path)
 
 
 def write_record_templates(root: Path) -> None:

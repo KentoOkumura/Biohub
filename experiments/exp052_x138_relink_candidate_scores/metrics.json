@@ -127,5 +127,34 @@
     }
   },
   "notes": "GPU診断v1は誤起動後に削除（約0.36 GPU時間消費）。CPU pilotはGPU無効で準備済みだが、Kaggle batch CPU同時実行5件の上限でpush拒否。CPU所要時間と公式scoreは未計測。",
-  "updated_at": "2026-09-30T10:00:11.265505+00:00"
+  "updated_at": "2026-09-30T10:00:11.265505+00:00",
+  "submissions": {
+    "56662528": {
+      "cv": null,
+      "public_lb": null,
+      "private_lb": null,
+      "submitted_at": "2026-09-29T04:23:51Z",
+      "submission_status": "notebook_unhandled_error",
+      "kernel_id": "kentookumura/exp052-relink-scores-gpu-submit",
+      "kernel_version": 1,
+      "source_records": [
+        "SESSION_NOTES.md:41",
+        "SESSION_NOTES.md:45"
+      ]
+    },
+    "56675101": {
+      "cv": null,
+      "public_lb": 0.95,
+      "private_lb": 0.919,
+      "submitted_at": "2026-09-29T12:23:04Z",
+      "submission_status": "complete",
+      "kernel_id": "kentookumura/exp052-relink-scores-gpu-submit",
+      "kernel_version": 3,
+      "source_records": [
+        "SESSION_NOTES.md:51",
+        "SESSION_NOTES.md:54",
+        "SESSION_NOTES.md:55"
+      ]
+    }
+  }
 }

@@ -14,6 +14,11 @@ from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from pathlib import Path
 
+try:
+    from .document_scope import maintained_documents
+except ImportError:
+    from document_scope import maintained_documents
+
 ROOT = Path(__file__).resolve().parents[1]
 EXTENSIONS = {".md", ".markdown", ".mdx", ".ipynb"}
 FENCE = re.compile(r"^( {0,3})(`{3,}|~{3,})(.*)$")
@@ -287,14 +292,7 @@ def document_sources(path: Path) -> list[tuple[str, str]]:
 
 
 def default_paths() -> list[Path]:
-    output = subprocess.check_output(
-        ["git", "ls-files", "-z", "--cached", "--others", "--exclude-standard"],
-        cwd=ROOT,
-    )
-    names = set(output.decode().split("\0"))
-    return sorted(
-        ROOT / name for name in names if Path(name).suffix in EXTENSIONS and (ROOT / name).is_file()
-    )
+    return maintained_documents(ROOT, EXTENSIONS)
 
 
 def main(argv: list[str] | None = None) -> int:

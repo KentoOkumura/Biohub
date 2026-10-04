@@ -91,7 +91,7 @@ exp043は整数線形計画法（ILP）の後に近傍移動を使って接続�
 | 候補 | 旧→新 | 理由 |
 | --- | --- | --- |
 | [`x138_coordinate_effect_audit`](../../experiments/exp045_x138_coordinate_effect_audit/requirements.md) | P1→P1 | 最初の改善実験に共通する診断。座標補正だけの効果と、採点から最終接続まで改善が残る段階を先に確認する。 |
-| [`x138_edge_candidates`](../../backlog/x138_edge_candidates.md) | P1→P1 | 新しいtrackerを学習せず、固定得点の枝刈りで失う接続・両娘を保持する比較を先に扱う。後処理後の残存まで測る。 |
+| [`x138_edge_candidates`](../../experiments/exp047_x138_edge_candidates/requirements.md) | P1→P1 | 新しいtrackerを学習せず、固定得点の枝刈りで失う接続・両娘を保持する比較を先に扱う。後処理後の残存まで測る。 |
 | [`x138_detection_recovery`](../../backlog/x138_detection_recovery.md) | P1→P1 | 現行exp043で実際に働く回収処理の採否・接続を変える。通常の高得点点への特徴追加より、出力へ作用する箇所と比較対象が明確。 |
 | [`neighbor_dynamics`](../../backlog/neighbor_dynamics.md) | P1→P2 | P1の診断の後。再接続に直接使う得点を学ぶ点は残すが、exp035の自己速度とexp043既存の近傍移動ルールを上回る証拠はまだない。GNNという構造名だけで上位にしない。 |
 | [`shared_edge_graph_learning`](../../experiments/exp050_shared_edge_graph_learning/requirements.md) | P2→P2 | exp029の正解2娘128/128件が1娘・空集合に負けた失敗に対し、出力得点の共有と分裂教師の寄与を変える案。通常trackerの特徴追加とは分けて残す。 |

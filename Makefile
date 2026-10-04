@@ -81,13 +81,13 @@ check-skill-modules: check-skills
 
 test-exp:
 	@if [ -d $(EXPERIMENTS_DIR)/$(EXP)/tests ]; then \
-		uv run --extra dev --extra notebook pytest -q $(EXPERIMENTS_DIR)/$(EXP)/tests; \
+		uv run --extra dev --extra notebook --extra app pytest -q $(EXPERIMENTS_DIR)/$(EXP)/tests; \
 	else \
 		echo "No experiment-specific tests: $(EXPERIMENTS_DIR)/$(EXP)/tests"; \
 	fi
 
 test-common:
-	uv run --extra dev --extra notebook pytest -q tests
+	uv run --extra dev --extra notebook --extra app pytest -q tests
 
 # Debug-only. Kaggle notebook execution is authoritative; pass
 # EXTRA_ARGS="--allow-local ..." to opt in to local smoke execution.
@@ -151,7 +151,7 @@ record-submission:
 	.venv/bin/python scripts/record_submission.py --experiment $(EXP) --file $(SUBMISSION) --submission-ref "$(SUBMISSION_REF)" $(EXTRA_ARGS)
 
 record-exp:
-	.venv/bin/python scripts/record_experiment.py --experiment $(EXP) --status "$(STATUS)" --cv "$(CV)" --public-lb "$(PUBLIC_LB)" --private-lb "$(PRIVATE_LB)" --metric "$(METRIC)" --key-idea "$(KEY_IDEA)" --notes "$(NOTES)" $(EXTRA_ARGS)
+	.venv/bin/python scripts/record_experiment.py --experiment $(EXP) --submission-ref "$(SUBMISSION_REF)" --status "$(STATUS)" --cv "$(CV)" --public-lb "$(PUBLIC_LB)" --private-lb "$(PRIVATE_LB)" --metric "$(METRIC)" --key-idea "$(KEY_IDEA)" --notes "$(NOTES)" $(EXTRA_ARGS)
 
 compare-exp:
 	.venv/bin/python scripts/compare_experiments.py $(EXTRA_ARGS)
@@ -170,7 +170,7 @@ fmt:
 	.venv/bin/ruff format .
 
 test:
-	uv run --extra dev --extra notebook pytest tests $(EXPERIMENTS_DIR)
+	uv run --extra dev --extra notebook --extra app python scripts/run_tests.py
 
 .PHONY: tracking-app build-tracking-viewer check-tracking-viewer test-tracking-viewer
 tracking-app:
