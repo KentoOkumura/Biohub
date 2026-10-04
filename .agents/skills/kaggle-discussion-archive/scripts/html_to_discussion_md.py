@@ -73,24 +73,32 @@ class MarkdownHTMLParser(HTMLParser):
         return text.strip()
 
 
-def convert(raw: str) -> str:
-    if "<" not in raw or ">" not in raw:
-        return raw.strip()
+def convert(raw: str, *, input_format: str = "text") -> str:
+    if input_format == "text":
+        return raw
+    if input_format != "html":
+        raise ValueError(f"unsupported input format: {input_format}")
     parser = MarkdownHTMLParser()
     parser.feed(raw)
+    parser.close()
     return parser.markdown()
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("input", nargs="?", help="Input HTML/text file; stdin if omitted")
+    parser.add_argument(
+        "--input-format",
+        choices=("text", "html"),
+        default="text",
+        help="Keep text/Markdown unchanged by default; select html for copied HTML.",
+    )
     parser.add_argument("--title", default=None)
     parser.add_argument("--url", default=None)
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=configured_project_path("paths.docs_dir", "docs", root=REPO_ROOT)
-        / "discussions",
+        default=configured_project_path("paths.docs_dir", "docs", root=REPO_ROOT) / "discussions",
     )
     parser.add_argument("--slug", default=None)
     args = parser.parse_args()
@@ -102,7 +110,7 @@ def main() -> int:
         slug_source = Path(urlparse(args.url).path).name
     slug = slugify(slug_source or title)
 
-    body = convert(raw)
+    body = convert(raw, input_format=args.input_format)
     out_dir = args.output_dir
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{slug}.md"

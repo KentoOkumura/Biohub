@@ -4,6 +4,8 @@ import argparse
 import json
 import re
 import shutil
+import tempfile
+from collections.abc import Callable
 from datetime import date
 from pathlib import Path
 
@@ -52,12 +54,26 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def copy_tree(source: Path, destination: Path, force: bool, copy_tests: bool) -> None:
-    if destination.exists():
-        if not force:
-            raise FileExistsError(f"{destination} already exists. Use --force to overwrite.")
-        shutil.rmtree(destination)
+def validate_copy_paths(source: Path, destination: Path, *, force: bool) -> None:
+    if not source.is_dir():
+        raise NotADirectoryError(f"Template/source is not a directory: {source}")
+    source_path = source.resolve()
+    destination_path = destination.resolve()
+    if source_path.is_relative_to(destination_path) or destination_path.is_relative_to(source_path):
+        raise ValueError("source and destination must not be the same or contain one another")
+    if (destination.exists() or destination.is_symlink()) and not force:
+        raise FileExistsError(f"{destination} already exists. Use --force to overwrite.")
 
+
+def copy_tree(
+    source: Path,
+    destination: Path,
+    force: bool,
+    copy_tests: bool,
+    *,
+    postprocess: Callable[[Path], None] | None = None,
+) -> None:
+    validate_copy_paths(source, destination, force=force)
     ignored_names = [
         "__pycache__",
         ".pytest_cache",
@@ -65,14 +81,61 @@ def copy_tree(source: Path, destination: Path, force: bool, copy_tests: bool) ->
         *IGNORED_DIRS,
     ]
     experiments_dir = configured_project_path("paths.experiments_dir", "experiments", root=ROOT)
-    if source.parent == experiments_dir and not copy_tests:
+    if source.resolve().parent == experiments_dir.resolve() and not copy_tests:
         ignored_names.append("tests")
     ignore = shutil.ignore_patterns(*ignored_names)
-    shutil.copytree(source, destination, ignore=ignore)
-    for dirname in GENERATED_DIRS:
-        generated_dir = destination / dirname
-        generated_dir.mkdir(parents=True, exist_ok=True)
-        (generated_dir / ".gitkeep").touch()
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(
+        prefix=f".{destination.name}-", dir=destination.parent
+    ) as temp:
+        staged = Path(temp) / "experiment"
+        shutil.copytree(source, staged, ignore=ignore)
+        for dirname in GENERATED_DIRS:
+            generated_dir = staged / dirname
+            generated_dir.mkdir(parents=True, exist_ok=True)
+            (generated_dir / ".gitkeep").touch()
+        if postprocess is not None:
+            postprocess(staged)
+
+        if not force:
+            # copytree creates the destination exclusively. A rename could replace
+            # an empty directory created by another writer after our initial check.
+            # Leave a partial destination intact on failure; another writer may
+            # already have added work to it.
+            shutil.copytree(staged, destination)
+            return
+
+        # Keep the backup outside automatically cleaned staging, so even an
+        # interrupted publication or failed restoration leaves recoverable work.
+        backup_dir: Path | None = None
+        backup: Path | None = None
+        if destination.exists() or destination.is_symlink():
+            backup_dir = Path(
+                tempfile.mkdtemp(prefix=f".{destination.name}-backup-", dir=destination.parent)
+            )
+            backup = backup_dir / "previous"
+            try:
+                destination.rename(backup)
+            except BaseException:
+                backup_dir.rmdir()
+                raise
+        try:
+            staged.rename(destination)
+        except BaseException:
+            if backup is not None:
+                try:
+                    backup.rename(destination)
+                except BaseException as exc:
+                    raise RuntimeError(
+                        "copy publication and restoration failed; "
+                        f"original work is preserved at {backup}"
+                    ) from exc
+                assert backup_dir is not None
+                backup_dir.rmdir()
+            raise
+        else:
+            if backup_dir is not None:
+                shutil.rmtree(backup_dir)
 
 
 def replace_text(path: Path, replacements: tuple[tuple[str, str], ...]) -> None:
@@ -183,30 +246,37 @@ def validate_experiment_name(name: str, experiments_dir: Path) -> None:
         raise ValueError(f"experiment ID {experiment_id} already exists: {', '.join(collisions)}")
 
 
+def display_path(path: Path) -> str:
+    return str(path.relative_to(ROOT) if path.is_relative_to(ROOT) else path)
+
+
 def main() -> None:
     args = parse_args()
     source = (ROOT / args.source).resolve()
-    experiments_dir = configured_project_path("paths.experiments_dir", "experiments", root=ROOT)
+    experiments_dir = configured_project_path(
+        "paths.experiments_dir", "experiments", root=ROOT
+    ).resolve()
     validate_experiment_name(args.name, experiments_dir)
     destination = experiments_dir / args.name
 
-    if not source.exists():
-        raise FileNotFoundError(f"Template/source does not exist: {source}")
+    validate_copy_paths(source, destination, force=args.force or args.dry_run)
 
     if args.dry_run:
-        print(f"Source: {source.relative_to(ROOT)}")
-        print(f"Destination: {destination.relative_to(ROOT)}")
+        print(f"Source: {display_path(source)}")
+        print(f"Destination: {display_path(destination)}")
         print(f"Exists: {destination.exists()}")
         return
 
-    copy_tree(source, destination, args.force, args.copy_tests)
-    if source.parent == experiments_dir:
-        replace_parent_experiment_identity(destination, source.name, args.name)
-        reset_parent_records(destination, args.name, source.name)
-    else:
-        replace_tokens(destination, args.name)
+    def initialize_records(staged: Path) -> None:
+        if source.parent == experiments_dir:
+            replace_parent_experiment_identity(staged, source.name, args.name)
+            reset_parent_records(staged, args.name, source.name)
+        else:
+            replace_tokens(staged, args.name)
 
-    print(f"Created {destination.relative_to(ROOT)}")
+    copy_tree(source, destination, args.force, args.copy_tests, postprocess=initialize_records)
+
+    print(f"Created {display_path(destination)}")
     if source.parent == experiments_dir and not args.copy_tests:
         print("Source experiment tests were not copied. Add tests for the new experiment contract.")
     elif source.parent == experiments_dir and args.copy_tests:

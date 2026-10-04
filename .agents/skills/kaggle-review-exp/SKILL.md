@@ -221,6 +221,7 @@ local smoke に必要な入力、依存関係、生成物がローカルに揃�
    - 「検証中の仮説」またはアイデアバックログ節の変更が必要な場合は、上位仮説ID、候補、根拠、非使用条件、移行状態を`kaggle-strategy`へ引き渡す。このskillから直接変更しない。
    - 通常の実験結果と証拠の解釈だけなら`result.md`で完結させる。独立した完了分析レポートを作る場合は、対象が単一実験でも実験横断でも`docs/surveys/README.md`の手順を使う。
    - 旧形式READMEとstatusの移行時対応も`AGENTS.md`に従い、一括変換しない。
+   - 記録更新後は[AGENTS.mdの運用ルール](../../../AGENTS.md#運用ルール)に従い、README・SESSION_NOTESの現行案内と正本を照合する。
 
 ```bash
 task update-summary
@@ -303,6 +304,7 @@ reviewer の `target evidence` は対象実験直下の `README.md`、`requireme
    - 生成物、checkpoint、submission が命名され、再現可能か。
    - negative result が記録されているか。
    - 次アクションが証拠から自然に導かれているか。
+   - 上記の運用ルールに従い、現在欄・過去履歴・後続実験の結果を区別し、古い予定を現在の指示として残していないか。
 
 ## 出力
 

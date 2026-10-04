@@ -23,19 +23,19 @@ rulesと[account settings](https://www.kaggle.com/settings)の現在の案内を
 
 | Client | 利用できる方式 |
 |--------|----------------|
-| Kaggle CLI | OAuth、API token、legacy username/key |
-| Kaggle Python API / kagglehub | API token、legacy username/key |
+| Kaggle CLI / Kaggle Python API (`kaggle==2.2.4`) | OAuth、API token、legacy username/key |
+| kagglehub (`kagglehub==1.0.2`) | API token、legacy username/key（CLIのOAuthファイルは読まない） |
 | Kaggle MCP Server | API token |
 
-### Interactive CLI: OAuth Login
+### OAuth Login for Kaggle CLI and Python API
 
-For local CLI use with a browser:
+For local CLI or Kaggle Python API use, first log in with a browser:
 
 ```bash
 uv run kaggle auth login
 ```
 
-Use `uv run kaggle auth login --no-launch-browser` if the CLI cannot open a browser automatically. This creates `~/.kaggle/credentials.json`.
+Use `uv run kaggle auth login --no-launch-browser` if the CLI cannot open a browser automatically. This creates `~/.kaggle/credentials.json`. Kaggle CLIとKaggle Python APIの`KaggleApi.authenticate()`は同じOAuthファイルを読み、必要に応じてtokenを更新する。kagglehubはこのファイルを読み込まない。
 
 Do not log or share output from `kaggle auth print-access-token`.
 
@@ -69,7 +69,7 @@ Kaggle CLI、Kaggle Python API、kagglehubでは、API tokenの代わりにlegac
 
 ## 3. Install Your Credentials
 
-### Method 1: OAuth Login (Local CLI)
+### Method 1: OAuth Login (Local CLI / Kaggle Python API)
 
 ```bash
 uv run kaggle auth login
@@ -107,8 +107,11 @@ Note: `kaggle.json` only stores username + legacy key. For the API token, use Me
 ### Using the Registration Checker
 
 ```bash
-uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py
+uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require python-api
+# kagglehubを使う場合は --require kagglehub、MCPは --require api-token
 ```
+
+checkerはローカルの設定を調べるだけで、認証・期限・失効・利用権限・通信の確認はしない。OAuthは`credentials.json`内の非空の`refresh_token`等の形式を確認し、ファイルが存在するだけでは成功扱いにしない。Kaggle/Colab実行環境の専用secretやclientへ直接渡した設定は、このローカルcheckerの対象外。
 
 Expected output when credentials are configured:
 ```
@@ -132,22 +135,26 @@ uv run python -c "import kagglehub; print(kagglehub.whoami())"
 
 ## 5. Credential Priority Order
 
-When multiple credential sources exist, they are checked in this order:
+`uv.lock`で固定したKaggle 2.2.4の`KaggleApi.authenticate()`（CLIとPython API共通）は、API token、legacy username/key、OAuthの順に試す。kagglehub 1.0.2の`config.get_kaggle_credentials()`は別実装であり、OAuthファイルを読み込まない。
 
 | Priority | Source | Used By |
 |----------|--------|----------|
-| 1 | `KAGGLE_API_TOKEN` env var | CLI, kagglehub, MCP |
-| 2 | `~/.kaggle/access_token` file | CLI, kagglehub, MCP |
-| 3 | `~/.kaggle/credentials.json` from `uv run kaggle auth login` | CLI |
-| 4 | `KAGGLE_USERNAME` + `KAGGLE_KEY` env vars | CLI, Kaggle Python API, kagglehub (legacy) |
-| 5 | `~/.kaggle/kaggle.json` file | CLI, Kaggle Python API, kagglehub (legacy) |
+| 1 | `KAGGLE_API_TOKEN` env var（token文字列または既存tokenファイルのパス） | CLI, Kaggle Python API, kagglehub, MCP |
+| 2 | `~/.kaggle/access_token` file、空または不在なら`access_token.txt` | CLI, Kaggle Python API, kagglehub, MCP |
+| 3 | `KAGGLE_USERNAME` + `KAGGLE_KEY` env vars | CLI, Kaggle Python API, kagglehub (legacy) |
+| 4 | `~/.kaggle/kaggle.json` file | CLI, Kaggle Python API, kagglehub (legacy) |
+| 5 | `~/.kaggle/credentials.json` from `uv run kaggle auth login` | CLI, Kaggle Python API |
+
+tokenの探索はcheckerと同梱MCP clientも固定版`kagglesdk.kaggle_env.get_access_token_from_env()`を使う。`KAGGLE_API_TOKEN`が既存ファイルを指す場合は内容を読み、そのファイルが空なら別のtokenへfallbackしない。ファイルのパス文字列そのものをtokenとして送らない。
+
+これは標準ローカル保存先の優先順位。CLI/APIはlegacyの環境変数と設定ファイルを組み合わせて読む場合がある。kagglehubではprocess内に明示設定したcredentialが先に使われ、環境変数のlegacy pairは両方が必要。clientの`KAGGLE_CONFIG_DIR`やLinuxのXDG fallback、Kaggle/Colabの専用認証を使う場合はclientの実際の認証結果で確認し、標準保存先だけを調べるcheckerの失敗を未設定と断定しない。
 
 ## 6. Common Misconfigurations
 
 | Issue | Fix |
 |-------|-----|
 | `KAGGLE_TOKEN` set instead of `KAGGLE_API_TOKEN` | Rename to `KAGGLE_API_TOKEN` |
-| OAuth credentialしかなくKaggle Python APIを使う | API tokenまたはlegacy username/keyを設定する |
+| OAuth credentialしかなくkagglehubを使う | API tokenまたはlegacy username/keyを設定する（Kaggle Python APIならOAuthのまま利用可能） |
 | Legacy credentialしかなくMCPを使う | Kaggle SettingsでAPI tokenを生成する |
 | API token is not stored locally | Run `uv run python .agents/skills/kaggle-platform/modules/registration/scripts/configure_token.py` in a local interactive terminal |
 | Old kaggle CLI (< 1.8.0) doesn't recognize new tokens | Run `uv sync --locked` to restore the repository-pinned CLI, or use a legacy key |

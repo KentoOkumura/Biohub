@@ -31,4 +31,8 @@ Kaggle T4 x2で固定batch size 16を維持したfold 1 smokeは、fold間のCUD
 
 ## 次
 
+batch size 8への変更は[exp005](../exp005_embryo_holdout_batch8/result.md)で実施済み。本実験の固定条件での失敗を保持し、採否・完了は上記のとおり未判断とする。固定条件の追加実行は予定しない。
+
+## 2026-09-11 失敗後の提案（履歴）
+
 推奨は、この固定条件の失敗をexp004に残し、batch size 8へ変更する別実験を作ることである。microbatchとgradient accumulationはBatchNorm3dの統計が変わるため親学習と等価ではなく、AMPも固定sourceでは未実装で学習数値を変える。いずれの再開案も結果に影響するため、ユーザー判断後に実験化する。

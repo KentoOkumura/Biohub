@@ -33,9 +33,10 @@ uv run python .agents/skills/kaggle-platform/modules/comp-report/scripts/utils.p
 
 This checks the credential sources supported by this Python API workflow:
 `KAGGLE_API_TOKEN`, `~/.kaggle/access_token`, `KAGGLE_USERNAME` plus
-`KAGGLE_KEY`, or legacy `~/.kaggle/kaggle.json`. It then authenticates and
-runs a small API request. Interactive CLI OAuth by itself is not accepted by
-this module. If the check fails, follow the canonical registration guide.
+`KAGGLE_KEY`, legacy `~/.kaggle/kaggle.json`, or OAuth configured by
+`uv run kaggle auth login` in `~/.kaggle/credentials.json`. The local checker
+only checks configuration; this script then authenticates with the same
+Kaggle Python API used by the CLI and runs a small API request. If the check fails, follow the canonical registration guide.
 
 ### Step 2: Gather Competition List
 
@@ -180,7 +181,7 @@ indirect prompt injection:
 
 ## Prerequisites
 
-- Kaggle Python API credentials configured (`KAGGLE_API_TOKEN`, `~/.kaggle/access_token`, or legacy username/key credentials). OAuth from `uv run kaggle auth login` alone is not sufficient for this module. See [`../registration/references/kaggle-setup.md`](../registration/references/kaggle-setup.md).
+- Kaggle Python API credentials configured: API token, legacy username/key, or OAuth from `uv run kaggle auth login`. See [`../registration/references/kaggle-setup.md`](../registration/references/kaggle-setup.md).
 - `uv sync --locked`（Kaggle CLI と、このリポジトリで固定した依存を導入）
 - Playwright MCP tools are not a prerequisite. Use them only for the optional
   Step 4 when rendered SPA-only content is necessary and the host agent already

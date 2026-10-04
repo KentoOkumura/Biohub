@@ -11,8 +11,8 @@ Kaggleアカウントとcredentialの設定を案内する。詳細な手順と�
    ```
 
 2. 実行するclientに合う方式を選ぶ。
-   - Kaggle CLIはOAuth、API token、legacy username/keyを使用できる。
-   - Kaggle Python APIとkagglehubはAPI tokenまたはlegacy username/keyを使用できる。
+   - Kaggle CLIとKaggle Python APIはOAuth、API token、legacy username/keyを使用できる。
+   - kagglehubはAPI tokenまたはlegacy username/keyを使用でき、CLIのOAuthファイルは読み込まない。
    - MCPはKaggle Settingsの「Generate New Token」で生成したAPI tokenを使用する。
 3. API tokenをローカルファイルへ保存する場合は、ユーザー自身が対話端末で次を実行する。
 

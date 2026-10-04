@@ -3,15 +3,19 @@ title: Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設�
 date: '2026-09-20'
 types: [survey]
 hypotheses: [HYP-20260920-02]
-experiments: [exp016]
+experiments: [exp016, exp025_frame_self_attention]
 topics: [architecture, tracking]
 status: final
-summary: 現行の入出力・lossを維持し、共有Encoderによるフレーム内Self-AttentionとCross-Attentionを切り替える設計。Model Bの逐次更新はユーザー確認済み。実装・学習は未実施。
+summary: exp016の入出力・lossとModel Bの逐次更新を維持し、共有Encoderを追加する設計記録。設計後の実装・学習結果はexp025_frame_self_attentionへ引き継いだ。
 ---
 
 # Biohub SimpleNodeTransformerへのフレーム内Self-Attention追加設計
 
 作成日: 2026-09-20
+
+## 設計後の参照先
+
+この設計は[exp025_frame_self_attentionの契約](../../experiments/exp025_frame_self_attention/requirements.md)へ移行し、学習・隣接ペア診断まで実施された。実行範囲とユーザー判断は[同実験の結果](../../experiments/exp025_frame_self_attention/result.md)、関連する後続実験は[検証中の仮説](../../backlog/KAGGLE_DIRECTION.md#検証中の仮説)を参照する。以下の「現行」「未実施」は設計時点の記述であり、現在の実行状態や比較対象を指さない。
 
 ## 結論と依頼範囲
 

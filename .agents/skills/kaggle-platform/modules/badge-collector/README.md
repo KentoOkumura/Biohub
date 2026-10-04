@@ -36,7 +36,7 @@ uv run python .agents/skills/kaggle-platform/modules/badge-collector/scripts/orc
 ## Prerequisites
 
 - Kaggle credentials configured according to [`../registration/references/kaggle-setup.md`](../registration/references/kaggle-setup.md)
-- Phase 1はAPI tokenまたはlegacy username/keyが必要。OAuth-onlyの設定では実行しない
+- Phase 1はKaggle Python APIが利用できる認証が必要（CLIと同じOAuth、API token、legacy username/key）
 - Phase 2、3、5はKaggle CLIが利用できる認証が必要
 - Phase 1–3はresource ownership用に`KAGGLE_USERNAME`を明示する。tokenから推測しない
 - `uv sync --locked --extra kaggle-platform`

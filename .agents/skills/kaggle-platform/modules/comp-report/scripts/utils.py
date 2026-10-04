@@ -1,5 +1,6 @@
 """Shared utilities for Kaggle competition report generation."""
 
+import importlib.util
 import json
 import os
 import sys
@@ -10,7 +11,7 @@ from pathlib import Path
 API_DELAY = 3
 
 # Skill root: 3 levels up from modules/comp-report/scripts/utils.py
-SKILL_ROOT = Path(__file__).resolve().parent.parent.parent
+SKILL_ROOT = Path(__file__).resolve().parents[3]
 
 
 def get_api():
@@ -36,20 +37,13 @@ def get_username() -> str:
 
 def check_credentials() -> bool:
     """Verify Kaggle credentials are configured and API authenticates."""
-    # Check credential sources in priority order
-    access_token = Path.home() / ".kaggle" / "access_token"
-    kaggle_json = Path.home() / ".kaggle" / "kaggle.json"
-    has_creds = (
-        access_token.exists()
-        or os.getenv("KAGGLE_API_TOKEN")
-        or (os.getenv("KAGGLE_USERNAME") and os.getenv("KAGGLE_KEY"))
-        or kaggle_json.exists()
-    )
-    if not has_creds:
-        print("ERROR: No Kaggle credentials found.")
-        print("  Generate a token at: https://www.kaggle.com/settings")
-        print("  → API Tokens (Recommended) → Generate New Token")
-        print("  Save as ~/.kaggle/access_token or set KAGGLE_API_TOKEN env var")
+    checker_path = SKILL_ROOT / "shared" / "check_all_credentials.py"
+    spec = importlib.util.spec_from_file_location("kaggle_credentials", checker_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Cannot load credential checker: {checker_path}")
+    checker = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(checker)
+    if not checker.check_all_credentials(requirement="python-api"):
         return False
 
     # Try to authenticate
@@ -62,7 +56,7 @@ def check_credentials() -> bool:
         print(f"OK: Kaggle API authenticated as '{username}'")
         print(f"  API returned {len(comps)} competition(s) in smoke test")
         return True
-    except Exception as e:
+    except (Exception, SystemExit) as e:
         print(f"ERROR: Kaggle API authentication failed: {e}")
         return False
 

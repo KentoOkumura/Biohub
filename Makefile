@@ -160,10 +160,10 @@ update-summary:
 	.venv/bin/python scripts/update_experiment_summary.py
 
 app:
-	.venv/bin/streamlit run app/streamlit_app.py
+	.venv/bin/python -m streamlit run app/streamlit_app.py
 
 oof-app:
-	.venv/bin/streamlit run app/oof_analysis_app.py
+	.venv/bin/python -m streamlit run app/oof_analysis_app.py
 
 fmt:
 	.venv/bin/ruff check --fix .

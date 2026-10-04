@@ -43,10 +43,7 @@
 
 ## 観測事実と根拠
 
-- 実測済みの事実: 本候補の改善値は未取得。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
-  - [E01](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e01): 公開0.94前後の推論構成、proxyの相違、FOCUSと局所化のdiscussion。スコアはページ表示と自己報告を区別。
-  - [E02](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02): 133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotation maskなし。
-  - [E05](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e05): 9月10日参照の公式評価。局所分裂構造と一対一対応。
+- 実測済みの事実: 本候補の改善値は未取得。着想時の共通根拠は、2026-09-10調査の[E01: 公開Notebookの構成](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e01)、[E02: 注釈の分布](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02)、[E05: 公式評価](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e05)を参照する。これらは本候補の改善効果や現在の評価状況を示すものではない。
 - 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI03。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
 - 利用する保存済み生成物とSHA: 公開モデルと比較基準の所在・版は[現行の比較基準](KAGGLE_DIRECTION.md#現行の比較基準)を参照する。本候補に必要な予測・特徴の所在とSHAは「先行条件 / 依存」に対応する生成物の取得時に記録する。過去調査の入力は[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)にある。
 - 仮定: Assumption: 独立した2本のedgeではなく母細胞・2娘細胞・分裂時刻を一つの事象として学習すると、継続との混同と不正な分裂を減らせる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。

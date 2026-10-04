@@ -15,14 +15,17 @@ selected client without exposing its value:
 # Local Kaggle CLI operations
 uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require cli
 
-# Kaggle Python API and kagglehub operations
+# Kaggle Python API operations (including CLI OAuth credentials)
 uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require python-api
+
+# kagglehub operations (does not load the CLI OAuth file)
+uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require kagglehub
 
 # Kaggle MCP Server operations
 uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require api-token
 ```
 
-認証方式、保存先、優先順位は[registrationの認証設定](../registration/references/kaggle-setup.md)を正とする。CLIはOAuth、API token、legacy username/key、kagglehubはAPI tokenまたはlegacy username/key、MCPはAPI tokenを使う。tokenの種類をprefixから推測しない。
+認証方式、保存先、優先順位は[registrationの認証設定](../registration/references/kaggle-setup.md)を正とする。CLIとKaggle Python APIはOAuth、API token、legacy username/key、kagglehubはAPI tokenまたはlegacy username/key、MCPはAPI tokenを使う。tokenの種類をprefixから推測しない。
 
 ## Four Methods of Interaction
 

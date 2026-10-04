@@ -241,12 +241,12 @@ tasks:
   app:
     desc: Run the Streamlit experiment dashboard.
     cmds:
-      - uv run streamlit run app/streamlit_app.py
+      - uv run --extra app python -m streamlit run app/streamlit_app.py
 
   oof-app:
     desc: Run the Streamlit OOF analysis app.
     cmds:
-      - uv run streamlit run app/oof_analysis_app.py
+      - uv run --extra app python -m streamlit run app/oof_analysis_app.py
 
   fmt:
     desc: Format and lint code.

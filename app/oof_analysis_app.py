@@ -13,7 +13,7 @@ EXPERIMENTS_DIR = project_path(load_project_config(), "paths.experiments_dir")
 
 def list_oof_files() -> list[Path]:
     patterns = [
-        "*/artifacts/*oof*.csv",
+        "*/artifacts/**/*oof*.csv",
         "*/features/*oof*.csv",
         "*/*oof*.csv",
     ]
@@ -27,23 +27,27 @@ def load_csv(path: Path) -> pd.DataFrame:
     return pd.read_csv(path)
 
 
+def display_path(path: Path) -> str:
+    return str(path.relative_to(ROOT) if path.is_relative_to(ROOT) else path)
+
+
 def main() -> None:
     st.set_page_config(page_title="OOF Analysis", layout="wide")
     st.title("OOF Analysis")
 
     oof_files = list_oof_files()
     if not oof_files:
-        st.info(f"No OOF CSV files found under {EXPERIMENTS_DIR.relative_to(ROOT)}/.")
+        st.info(f"No OOF CSV files found under {display_path(EXPERIMENTS_DIR)}/.")
         return
 
     selected = st.sidebar.selectbox(
         "OOF file",
         oof_files,
-        format_func=lambda path: str(path.relative_to(ROOT)),
+        format_func=display_path,
     )
     df = load_csv(selected)
 
-    st.subheader(str(selected.relative_to(ROOT)))
+    st.subheader(display_path(selected))
     st.dataframe(df.head(200), use_container_width=True)
 
     numeric_columns = df.select_dtypes(include="number").columns.tolist()

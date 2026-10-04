@@ -4,6 +4,10 @@
 
 承認済みの`kalman_hungarian_links`を実験へ移し、固定分裂・固定画像得点の通常割当でカルマンの有無を比較できるようにする。
 
+## 現在の作業
+
+公式評価と結果回収は終了し、ユーザーの不採用・完了判断を記録済み。[結果と判断の範囲](result.md)を参照し、追加実行は予定しない。
+
 ## 作業ログ
 
 - 2026-09-20: ユーザーの「それでいいです」により校正、track継承、分裂予約の保持方式が確定。`make new-exp EXP=exp025_kalman_hungarian_links`で雛形作成。環境に`task`がないためMakeを使用した。sandbox launcherにbwrapがなく、shell操作は通常環境で必要な範囲に限定して実行した。
@@ -22,7 +26,7 @@ PYTHONDONTWRITEBYTECODE=1 UV_CACHE_DIR=/tmp/uv-cache uv run --offline python exp
 
 親exp016にcompact self-contained版はない。親の正規inferenceは別moduleとexp015固定sourceを組み合わせる構成だった。本実験は必要なcache読み取り・tracker・offline依存関数だけを抽出し、Imports、入力、状態推定、割当、校正、評価、出力を8節にまとめた。setup、校正、outer評価、集計は独立した実行セルに展開した。Notebook内で同じ実験のhelperをimportせず、`__file__`にも依存しない。
 
-## 次の実行
+## 2026-09-20 初回実行前の予定（履歴）
 
 初回のフル実行と公式評価はKaggleで行う。CPU設定と小規模実測の12時間gateを確認し、実行開始時に`kaggle-platform`の手順に従う。
 

@@ -18,6 +18,7 @@ try:
     from .config_utils import (
         ROOT,
         effective_kaggle_runtime,
+        effective_kaggle_sources,
         get_nested,
         is_todo,
         kaggle_runtime_errors,
@@ -29,6 +30,7 @@ except ImportError:  # Direct execution: `uv run python scripts/prepare_kaggle_n
     from config_utils import (
         ROOT,
         effective_kaggle_runtime,
+        effective_kaggle_sources,
         get_nested,
         is_todo,
         kaggle_runtime_errors,
@@ -471,6 +473,7 @@ def prepare_one(
     kernel_sources: list[str] | None,
     dataset_sources: list[str] | None,
     model_sources: list[str] | None,
+    competition_slug_override: str | None = None,
 ) -> tuple[Path, list[str]]:
     notebook_name = f"{experiment}_{kind}.ipynb"
     source_notebook = experiment_dir / notebook_name
@@ -514,6 +517,13 @@ def prepare_one(
         model_sources=model_sources,
     )
     write_json(destination_dir / "kernel-metadata.json", metadata)
+    if competition_slug_override is not None:
+        if is_todo(competition_slug_override):
+            raise ValueError("competition slug override must be a non-empty configured value")
+        write_json(
+            destination_dir / "prepare-options.json",
+            {"competition_slug_override": competition_slug_override},
+        )
     return destination_dir, metadata_validation_errors(metadata)
 
 
@@ -538,28 +548,11 @@ def main() -> None:
     competition_slug = args.competition_slug or get_nested(config, "competition.slug")
     competition_name = get_nested(config, "competition.name")
     owner = get_nested(config, "metadata.owner")
-    configured_kernel_sources = get_nested(experiment_config, "runtime.kaggle.kernel_sources")
-    configured_dataset_sources = get_nested(experiment_config, "runtime.kaggle.dataset_sources")
-    configured_model_sources = get_nested(experiment_config, "runtime.kaggle.model_sources")
     configured_bootstrap_files = get_nested(experiment_config, "runtime.kaggle.bootstrap_files")
     configured_bootstrap_dependency_files = get_nested(
         experiment_config, "runtime.kaggle.bootstrap_dependency_files"
     )
-    default_kernel_sources = (
-        [str(value) for value in configured_kernel_sources]
-        if isinstance(configured_kernel_sources, list)
-        else None
-    )
-    default_dataset_sources = (
-        [str(value) for value in configured_dataset_sources]
-        if isinstance(configured_dataset_sources, list)
-        else None
-    )
-    default_model_sources = (
-        [str(value) for value in configured_model_sources]
-        if isinstance(configured_model_sources, list)
-        else None
-    )
+
     default_bootstrap_files = (
         [str(value) for value in configured_bootstrap_files]
         if isinstance(configured_bootstrap_files, list)
@@ -614,48 +607,7 @@ def main() -> None:
         if args.kernel_id:
             explicit_kernel_id = args.kernel_id
         kernel_id = explicit_kernel_id or suffixed_kernel_id(args.kernel_id_prefix, kind)
-        kind_configured_kernel_sources = get_nested(
-            experiment_config,
-            f"runtime.kaggle.{kind}.kernel_sources",
-        )
-        if kind_configured_kernel_sources is None:
-            kind_configured_kernel_sources = get_nested(
-                experiment_config,
-                f"runtime.kaggle.{kind}_kernel_sources",
-            )
-        kind_configured_dataset_sources = get_nested(
-            experiment_config,
-            f"runtime.kaggle.{kind}.dataset_sources",
-        )
-        if kind_configured_dataset_sources is None:
-            kind_configured_dataset_sources = get_nested(
-                experiment_config,
-                f"runtime.kaggle.{kind}_dataset_sources",
-            )
-        kind_configured_model_sources = get_nested(
-            experiment_config,
-            f"runtime.kaggle.{kind}.model_sources",
-        )
-        if kind_configured_model_sources is None:
-            kind_configured_model_sources = get_nested(
-                experiment_config,
-                f"runtime.kaggle.{kind}_model_sources",
-            )
-        kernel_sources = (
-            [str(value) for value in kind_configured_kernel_sources]
-            if isinstance(kind_configured_kernel_sources, list)
-            else default_kernel_sources
-        )
-        dataset_sources = (
-            [str(value) for value in kind_configured_dataset_sources]
-            if isinstance(kind_configured_dataset_sources, list)
-            else default_dataset_sources
-        )
-        model_sources = (
-            [str(value) for value in kind_configured_model_sources]
-            if isinstance(kind_configured_model_sources, list)
-            else default_model_sources
-        )
+        sources = effective_kaggle_sources(experiment_config, kind)
         prepared.append(
             prepare_one(
                 experiment_dir=experiment_dir,
@@ -675,9 +627,10 @@ def main() -> None:
                 bootstrap_files=resolved_bootstrap_files,
                 bootstrap_dependency_files=resolved_bootstrap_dependency_files,
                 include_experiment_sources=resolved_include_experiment_sources,
-                kernel_sources=kernel_sources,
-                dataset_sources=dataset_sources,
-                model_sources=model_sources,
+                kernel_sources=sources["kernel_sources"],
+                dataset_sources=sources["dataset_sources"],
+                model_sources=sources["model_sources"],
+                competition_slug_override=args.competition_slug,
             )
         )
 

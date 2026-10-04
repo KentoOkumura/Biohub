@@ -19,7 +19,7 @@ description: "Kaggle 提出前に、提出物と notebook metadata を検証し�
 task submit-check EXP=expXXX_title SUBMISSION=/tmp/kaggle-output/expXXX_title/inference/submission.csv
 ```
 
-`task`が利用できない場合は、同じ引数で`make submit-check`を使う。CSV以外のzip、notebook folder、`kernel-metadata.json`もまとめて調べる必要がある場合だけ、補助checkerを追加実行する。補助checkerもCSV部分は正のvalidatorへ委譲する。
+`task`が利用できない場合は、同じ引数で`make submit-check`を使う。CSV以外のzip、notebook folder、`kernel-metadata.json`もまとめて調べる必要がある場合だけ、補助checkerを追加実行する。補助checkerはCSV部分を正のCSV validator、Notebook packageを`scripts/validate_kaggle_metadata.py`へ委譲する。Notebook検証の対象は`prepare-kaggle-notebooks`が生成したpackage全体であり、`project.yml`、bootstrapを含むNotebook、同梱sourceを一緒に指定する。metadataだけを切り出したコピーはPASSにしない。複数CSVから提出ファイルを選べない場合や検査対象がない場合はFAILとし、対象ファイルを明示して再実行する。
 
 ```bash
 uv run python .agents/skills/kaggle-submit-check/scripts/check_submission.py PATH --sample sample_submission.csv
@@ -55,7 +55,7 @@ Kaggle 実験リポジトリ内で作業する場合:
 5. submit が行われてスコアが分かったら、リポジトリに記録する。
 
 ```bash
-task record-exp EXP=expXXX SUBMISSION_REF=12345678 CV=0.1234 PUBLIC_LB=0.1200
+task record-exp EXP=expXXX SUBMISSION_REF=12345678 CV=0.1234 PUBLIC_LB=0.1200 EXTRA_ARGS="--submission-status complete"
 task record-submission EXP=expXXX SUBMISSION=/path/to/submission.csv SUBMISSION_REF=12345678 EXTRA_ARGS="--notes baseline"
 ```
 
@@ -82,6 +82,6 @@ task record-submission EXP=expXXX SUBMISSION=submission.csv SUBMISSION_REF=12345
 
 - CSV: header、行数、重複 ID、空値/NaN/Inf、sample 互換性を検証する。
 - Zip: member、hidden file、nested path、含まれる CSV があればその内容を検証する。
-- Kaggle Notebook: `kernel-metadata.json`、notebook の存在、source、internet/GPU flags、期待する output file を検証する。
+- Kaggle Notebook: 正のpackage validatorで`kernel-metadata.json`、Notebookの存在、bootstrapとsourceの整合性、internet/GPU flagsを検証する。期待するoutput fileの存在・内容はmetadataだけでは証明できないため、Kaggle実行後のfiles一覧・UIまたは取得済みoutputで別に確認する。
 
 このスキルは提出前検証に集中する。アップロード済みの提出を監視する場合だけ `kaggle-submit-monitor` を使う。

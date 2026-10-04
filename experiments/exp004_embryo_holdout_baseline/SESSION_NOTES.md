@@ -9,7 +9,7 @@ exp002の学習・推論条件を固定し、`44b6`だけで学習して`6bba`�
 - 作業内容: Kaggle train versions 1-3を実行し、fold 1の固定batch size 16がCUDA OOMとなることを確認した。full trainingとinferenceは未実行。
 - 実行予定の規模: active variant 1、model config 1、外側2fold、各3 epochs、選択済みmodel 2、booster 0。exp002の両胚混在controlは再学習しない。
 - ブロック要因: batch size 16のfold 1 smokeが、fold境界のCUDA解放後も最初のbackwardで再現してOOMとなる。契約を変更せずにはfull trainingへ進めない。
-- 次: 計算条件を変更した再実験を行うか、ユーザー判断を確認する。
+- 次: 計算条件を変更した後続比較は[exp005](../exp005_embryo_holdout_batch8/result.md)で実施済み。[本実験の結果と未判断事項](result.md)を参照する。
 
 ## コマンドログ
 
@@ -82,6 +82,10 @@ make kaggle-logs KERNEL=kentookumura/exp004-embryo-holdout-baseline-inference
 - competition test、submission.csv、Public LBは扱わない。
 
 ## 次のアクション
+
+[結果と後続比較](result.md#次)を参照する。本実験の固定条件で追加実行は予定しない。
+
+## 2026-09-11 初回実行前の予定（履歴）
 
 1. Kaggle実行へ進む場合は、`kaggle-platform`の手順でGPU quotaとActive Sessionsを確認する。
 2. train Notebookで2foldのsmokeを行い、合計runtime gate通過時だけscratch 3 epochsを2方向で実行する。

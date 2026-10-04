@@ -38,7 +38,7 @@ test入力からstochasticな特徴や候補を再生成する実験では、次
 
 再現性を主張する実験では、少なくとも次を`metrics.json`の`evidence`へ機械可読に残す。値を得たコマンド、時刻、途中経過だけを`SESSION_NOTES.md`へ記録する。
 
-実験化時にsource、重み、分割、教師、候補、設定、評価器の版とSHAを固定する。参照設定だけから同一結果を保証せず、未取得の証拠は取得後に記録する。
+実験化時に、参照するsource、重み、分割、教師、候補、設定、評価器の対象・版とSHAの確認方法を決める。既存入力は使用時に確認し、新たに生成する重みや候補などのSHAは生成後に記録する。参照設定だけから同一結果を保証しない。
 
 - Kaggle kernel id、version、URL、kernel source id、CPU/GPUなどのresource、Notebook実行時間、internet enabled/disabled。
 - 入力cache / artifactのfile SHA、schema SHA、row count、group count、feature count。

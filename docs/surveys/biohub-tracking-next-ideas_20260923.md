@@ -3,10 +3,10 @@ title: Biohubの過去情報利用を見直す次実験案
 date: '2026-09-24'
 types: [survey]
 hypotheses: [HYP-20260910-02, HYP-20260910-03, HYP-20260910-04, HYP-20260910-10, HYP-20260910-11]
-experiments: [exp016, exp029, exp035, exp037, exp038, exp040, exp041, exp043]
+experiments: [exp016, exp029, exp035, exp037, exp038, exp040, exp041, exp043, exp045, exp050]
 topics: [tracking, architecture, validation]
 status: final
-summary: exp043の中心補正とPublic LBを受け12案を再評価。5案は維持し、同じ新入力の公開tracker対照と位置・接続の作用確認を先行。分裂比較学習は条件付き本命。exp040は旧実装の未達と損失修正後未測定を反映。
+summary: 2026-09-24時点のexp043を受けた12案の再評価記録。後日実施されたexp040修正版の診断、exp045の座標作用診断、exp050の学習比較への参照を追加し、当時の推奨と現在の結果を区別する。
 ---
 
 # Biohubの過去情報利用を見直す次実験案
@@ -16,6 +16,10 @@ summary: exp043の中心補正とPublic LBを受け12案を再評価。5案は�
 - 対応する上位仮説: `HYP-20260910-02`, `HYP-20260910-03`, `HYP-20260910-04`, `HYP-20260910-10`, `HYP-20260910-11`
 - 依頼: 過去情報を使った手法の未改善と、それを別のattentionなら解決できると受け取られる説明を踏まえ、次に行う価値のある案を徹底的に比較する。
 - このレポートのfinalは調査の完了。実験の採否・完了、設計の確定、実験化を表さない。backlogの状態と実験statusは変更していない。
+
+## 調査後の参照先
+
+exp040の損失修正後の学習・診断は実施済みで、結果は[exp040の正本](../../experiments/exp040_trackastra_association/result.md)にある。座標補正の作用は[exp045の診断](../../experiments/exp045_x138_coordinate_effect_audit/result.md)、共有接続得点を使う学習比較は[exp050の結果](../../experiments/exp050_shared_edge_graph_learning/result.md)へ引き継がれた。以下の「現在の推奨」「未測定」は2026-09-24の再検討時点を指す。現在の候補・比較基準・再開条件は[方針とバックログ](../../backlog/KAGGLE_DIRECTION.md)を参照する。
 
 ## 2026-09-24: exp043を受けた再検討（現在の推奨）
 

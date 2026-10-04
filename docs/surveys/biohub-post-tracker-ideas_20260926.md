@@ -20,17 +20,21 @@ experiments:
 - exp049
 - exp050
 - exp051
+- exp052
+- exp053
 topics:
 - tracking
 - postprocessing
 - validation
 status: final
-summary: trackerを固定し、候補得点の再接続への受け渡し、分裂前後の局所graph、欠落経路の選択、実誤りによるgraph修正、競合する修復の同時選択を提案。exp050・051の未測定結果を前提にせず、公開LBと条件付きtrain評価を分ける。
+summary: 2026-09-26時点でtrackerを固定した下流の選択・修復を提案した記録。当時未測定だったexp050・051の結果と、後続のexp052・053への実験化を参照し、提案と実証範囲を区別する。
 ---
 
 # Biohub tracker後の接続・分裂・修復処理の改善案
 
 確認日: 2026-09-26。依頼は「trackerや公開ノートブックの結果からtrackerより後の処理の改善に注力したい。その前提で改善アイデアを考えてください」。
+
+本書の提案と「進行中」「未測定」は確認日時点の記録である。その後の実験化は[exp052の契約](../../experiments/exp052_x138_relink_candidate_scores/requirements.md)と[exp053の契約](../../experiments/exp053_x138_postlink_division_score/requirements.md)、exp050・051を含む実行結果・ユーザー判断は各実験の`result.md`を参照する。現在の未着手候補と比較基準は[方針とバックログ](../../backlog/KAGGLE_DIRECTION.md)を正とする。
 
 - 対応する上位仮説: `HYP-20260910-03`（分裂）、`HYP-20260910-06`（予測誤りからの学習）、`HYP-20260910-09`（複数候補の選択）、`HYP-20260910-10`（時間情報・欠落）、`HYP-20260910-11`（最終graph選択）、`HYP-20260910-12`（公開構成と計算）。今回の整理は各仮説の下流側での検証案を示すものであり、支持・棄却・終了の判断ではない。
 

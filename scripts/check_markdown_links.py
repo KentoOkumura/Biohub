@@ -67,7 +67,7 @@ def normalized_target(raw_target: str) -> tuple[str, str] | None:
     if not target or target.startswith("/"):
         return None
     parsed = urlsplit(target)
-    if parsed.scheme or parsed.netloc or parsed.query:
+    if parsed.scheme or parsed.netloc:
         return None
     path, fragment = unquote(parsed.path), unquote(parsed.fragment)
     if "{{" in path or "}}" in path or any(char in path for char in "*?"):

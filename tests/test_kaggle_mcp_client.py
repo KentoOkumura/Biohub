@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+from kagglesdk import kaggle_env
 
 ROOT = Path(__file__).resolve().parents[1]
 MODULE_PATH = ROOT / ".agents/skills/kaggle-platform/shared/mcp_client.py"
@@ -13,6 +14,20 @@ MODULE_SPEC = importlib.util.spec_from_file_location("kaggle_mcp_client", MODULE
 assert MODULE_SPEC is not None and MODULE_SPEC.loader is not None
 mcp_client = importlib.util.module_from_spec(MODULE_SPEC)
 MODULE_SPEC.loader.exec_module(mcp_client)
+
+
+@pytest.fixture(autouse=True)
+def isolated_token_sources(tmp_path, monkeypatch):
+    monkeypatch.setattr(
+        kaggle_env.os.path,
+        "expanduser",
+        lambda value: str(tmp_path / value[2:]) if value.startswith("~/") else value,
+    )
+    for name in ("KAGGLE_API_TOKEN", "KAGGLE_KERNEL_RUN_TYPE"):
+        monkeypatch.delenv(name, raising=False)
+    directory = tmp_path / ".kaggle"
+    directory.mkdir()
+    return directory
 
 
 class FakeResponse:
@@ -78,13 +93,22 @@ def test_resolve_token_accepts_api_token_without_prefix(
     assert mcp_client.resolve_token() == "generated-token-without-assumed-prefix"
 
 
-def test_resolve_token_accepts_access_token_file(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
-    monkeypatch.delenv("KAGGLE_API_TOKEN", raising=False)
-    monkeypatch.setattr(mcp_client, "get_access_token", lambda: "stored-api-token")
+@pytest.mark.parametrize("filename", ["access_token", "access_token.txt"])
+def test_resolve_token_accepts_access_token_file(isolated_token_sources, filename) -> None:
+    (isolated_token_sources / filename).write_text("stored-api-token")
 
     assert mcp_client.resolve_token() == "stored-api-token"
+
+
+@pytest.mark.parametrize("contents, expected", [("stored-api-token", "stored-api-token"), ("", "")])
+def test_resolve_token_reads_explicit_file_without_fallback(
+    isolated_token_sources, monkeypatch, contents, expected
+):
+    selected = isolated_token_sources / "selected-token"
+    selected.write_text(contents)
+    (isolated_token_sources / "access_token").write_text("must-not-use-default-token")
+    monkeypatch.setenv("KAGGLE_API_TOKEN", str(selected))
+    assert mcp_client.resolve_token() == expected
 
 
 def test_resolve_token_rejects_legacy_credentials(
@@ -93,8 +117,6 @@ def test_resolve_token_rejects_legacy_credentials(
     monkeypatch.delenv("KAGGLE_API_TOKEN", raising=False)
     monkeypatch.setenv("KAGGLE_MCP_TOKEN", "unsupported-alias")
     monkeypatch.setenv("KAGGLE_KEY", "legacy-key")
-    monkeypatch.setattr(mcp_client, "get_access_token", lambda: "")
-
     assert mcp_client.resolve_token() == ""
 
 

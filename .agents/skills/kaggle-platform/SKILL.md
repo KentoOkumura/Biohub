@@ -32,14 +32,17 @@ Kaggleリポジトリテンプレートの設定、`project.yml`、data sync、�
 # ローカルのKaggle CLI操作
 uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require cli
 
-# Kaggle Python APIまたはkagglehub
+# Kaggle Python API（CLIと同じOAuth設定も利用可能）
 uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require python-api
+
+# kagglehub（CLIのOAuthファイルは読まない別client）
+uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require kagglehub
 
 # Kaggle MCP Server
 uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require api-token
 ```
 
-認証方式と設定手順の正本は`modules/registration/references/kaggle-setup.md`とする。CLIはOAuth、API token、legacy username/keyを利用でき、Kaggle Python APIとkagglehubはAPI tokenまたはlegacy username/keyを利用できる。MCPはKaggle Settingsの「Generate New Token」で生成したAPI tokenをBearer tokenとして使う。owner名を必要とするscriptでは`KAGGLE_USERNAME`を明示し、tokenから推測しない。
+認証方式と設定手順の正本は`modules/registration/references/kaggle-setup.md`とする。CLIとKaggle Python APIはOAuth、API token、legacy username/keyを利用できる。kagglehubはAPI tokenまたはlegacy username/keyを利用でき、CLIのOAuthファイルは読み込まない。MCPはKaggle Settingsの「Generate New Token」で生成したAPI tokenをBearer tokenとして使う。owner名を必要とするscriptでは`KAGGLE_USERNAME`を明示し、tokenから推測しない。
 
 **セキュリティ:** credentialの実値をユーザーへ要求しない。chat、コマンド引数、shell history、terminal output、log、commitへ残さない。
 
@@ -62,10 +65,10 @@ uv run python .agents/skills/kaggle-platform/modules/registration/scripts/config
 
 6 ステップの手順:
 
-1. `--require python-api`でcredentialを確認する。API tokenまたはlegacy username/keyを利用できるが、OAuth-only credentialは使用しない。
+1. `--require python-api`でcredentialを確認する。CLIと同じOAuth、API token、legacy username/keyを利用できる。
 2. 全カテゴリからコンペ一覧を集める。
 3. コンペごとに構造化された detail（files、leaderboard、kernels）を取得する。
-4. API tokenが利用できる場合だけ、`--require api-token`で追加確認してから`list_competition_pages`でoverview contentを補完する。legacy username/keyだけの場合はMCP補完を省略する。それでも必要なSPA-only contentがあり、host agentがPlaywright MCP toolsを提供している場合だけ、problem statement、evaluation metric、writeupをscrapeする。利用できない項目は未取得とし、推測で補完しない。
+4. API tokenが利用できる場合だけ、`--require api-token`で追加確認してから`list_competition_pages`でoverview contentを補完する。legacy username/keyだけの場合はMCP補完を省略する。OAuthだけの場合も同様とする。それでも必要なSPA-only contentがあり、host agentがPlaywright MCP toolsを提供している場合だけ、problem statement、evaluation metric、writeupをscrapeする。利用できない項目は未取得とし、推測で補完しない。
 5. Methods & Insights analysis を含む Markdown report を組み立てる。
 6. ユーザーへインラインで提示する。再利用する完了レポートとしてリポジトリへ残す場合は、`docs/surveys/README.md`の作成・完了手順に従う。一時的な照会結果は保存しない。
 
@@ -239,6 +242,7 @@ Kaggle CLI 2.2.4はアカウント全体のActive Sessions数を取得できな�
 - Kaggle 側に反映された accelerator は、push 後に `uv run kaggle kernels pull <kernel> -p /tmp/kaggle-pull/<slug> -m` で metadata を取得し、`machine_shape` が `NvidiaTeslaT4` になっていることを確認する。UI 表示も併せて見るとよい。
 - Kaggle CLI の metadata key は snake_case の `machine_shape` を優先する。古いメモや外部投稿に `machineShape` と書かれていても、このリポジトリの notebook 生成では `machine_shape` を正とする。
 - `prepare-kaggle-notebooks` は `competition_sources` を metadata に入れるため、通常は Kaggle UI の Input 追加は不要。
+- 入力sourceは実験`config.yaml`のNotebook別設定、従来の`<kind>_kernel_sources`等、共通設定の順で解決し、push前に生成metadataとの一致を検証する。`--competition-slug`を明示した場合はpackage内の`prepare-options.json`へoverrideを保存し、validatorもその値を参照する。overrideがない場合は同梱`project.yml`のcompetition slugを使う。生成metadataだけを手編集してsourceを変更せず、設定を直してprepareを再実行する。
 - Kaggle CLI の `kernels push` は `code_file` の notebook 本体だけを API に送る。生成 notebook には、既定で`settings.py`、`config.yaml`、`metrics.json`、実験補助 `.py`、`project.yml`、`src/` を復元する base64 zip bootstrap セルが入る。`runtime.kaggle.<kind>.include_experiment_sources: false`では実験側のsupport files、`--no-src`では`src/`を除外する。後者はrepositoryの`src/`をimportしないNotebookだけで使う。`metrics.json`を含めることで、Notebook側の部分更新でも既存のstatus、CV/LB、実行証拠を保持する。
 - 編集対象は常に `experiments/<exp>/<exp>_*.ipynb`。`experiments/<exp>/kaggle/` は push 用の生成物。
 - train-side CV の評価だけなら、Kaggle output archive は取得しない。`task kaggle-logs KERNEL=owner/slug`、notebook cell 出力、Kaggle UI 上の metrics を根拠に記録する。`submission.csv`、OOF、`metrics.json`、feature importance、model manifest、SHA、後続実験の入力、提出形式検証など実ファイル確認が必要な場合だけ `task kaggle-output KERNEL=<kernel> OUT=<out>` を使う。
@@ -303,11 +307,11 @@ uv run python .agents/skills/kaggle-platform/modules/badge-collector/scripts/orc
 uv run python .agents/skills/kaggle-platform/shared/check_all_credentials.py --require python-api
 ```
 
-この後に実行するcomp-reportはOAuth-only credentialを使用できず、API tokenまたはlegacy username/keyを使う。MCPによるoverview補完を行う場合だけ、呼び出し前に`--require api-token`で追加確認する。credentialの実値を要求せず、ユーザー自身がローカルで設定する。
+この後に実行するcomp-reportはKaggle Python APIを使い、CLIと同じOAuth、API token、legacy username/keyを利用できる。MCPによるoverview補完を行う場合だけ、呼び出し前に`--require api-token`で追加確認する。credentialの実値を要求せず、ユーザー自身がローカルで設定する。
 
 ### Step 2: Competition Landscape Report 生成
 
-comp-report workflow を実行する。コンペ一覧と詳細を取得する。API tokenが利用できる場合は`list_competition_pages`によるoverview補完を優先する。legacy credentialだけの場合はMCP補完を省略し、必要な SPA-only content が残り、host agent が Playwright MCP tools を提供している場合だけ scraping を追加する。取得できない項目は省略または未取得とする。report はインラインで提示し、再利用する完了レポートとして残す場合だけCompetition Reportsの手順に従って`docs/surveys/`へ保存する。
+comp-report workflow を実行する。コンペ一覧と詳細を取得する。API tokenが利用できる場合は`list_competition_pages`によるoverview補完を優先する。legacyまたはOAuth credentialだけの場合はMCP補完を省略し、必要な SPA-only content が残り、host agent が Playwright MCP tools を提供している場合だけ scraping を追加する。取得できない項目は省略または未取得とする。report はインラインで提示し、再利用する完了レポートとして残す場合だけCompetition Reportsの手順に従って`docs/surveys/`へ保存する。
 
 ### Step 3: Kaggle とのやり取り方法を要約
 

@@ -49,13 +49,14 @@
   - 再利用するコードは `src/`、その場限りの調査コードと生の表・図は `studies/`。
   - 公式から取得した生のコンペデータは `data/raw/`、外部データは `data/external/`、再利用する加工済みデータは `data/processed/`。
   - 実験固有のテストは `experiments/<exp>/tests/`、複数実験やリポジトリ全体に関わるテストはルートの `tests/`。
-  - clean checkoutで実行するテストは、Gitで追跡しない`experiments/<exp>/artifacts/`、`experiments/<exp>/kaggle/`、`/tmp/kaggle-output/`を暗黙の必須入力にしません。保存済み実行証拠そのもののSHA・schema・packageを検証するテストだけ、`tests.support.require_saved_files`または`require_one_saved_file`で必要パスを明示し、証拠がローカルにない場合はskipします。config、追跡対象source、純粋関数の契約検証は同じskipへ巻き込まず、別テストまたはskip前に常時検証します。Gitで追跡すべきファイルの欠損をskipで隠しません。
+  - clean checkoutで実行するテストは、Gitで追跡しない`experiments/<exp>/artifacts/`、`experiments/<exp>/kaggle/`、`/tmp/kaggle-output/`を暗黙の必須入力にしません。保存済み実行証拠そのもののSHA・schema・packageを検証するテストだけ、`tests.test_support.require_saved_files`または`require_one_saved_file`で必要パスを明示し、証拠がローカルにない場合はskipします。config、追跡対象source、純粋関数の契約検証は同じskipへ巻き込まず、別テストまたはskip前に常時検証します。Gitで追跡すべきファイルの欠損をskipで隠しません。
   - 実験で参照する小規模な固定データは`experiments/<exp>/assets/`へ置き、トップレベルの`assets/`は作りません。
   - 新規実験と調査レポートを作成するための雛形は`templates/`。
   - リポジトリが管理する自動化と外部ツールの起動ラッパーは`scripts/`、Gitで追跡しない外部ツールのcloneやローカル配置は`tools/`に置きます。
 - トップレベルの`artifacts/`は使いません。実験生成物は`experiments/<exp>/artifacts/`へ集約し、必要な分類はその下のサブディレクトリで表します。旧実験の`features/`と`variants/`は履歴として残せますが、新規作成せず、次にその生成物を更新するとき`artifacts/`配下へ移します。その場限りの調査表・図は`studies/`、確認済みの調査結論は`docs/surveys/`へ保存します。
 - 提出監視中のpollingログは一時生成物とし、Gitへ保存しません。CV/LBなど機械処理する数値とkernel version・Kaggle Notebook実行時間・生成物SHAなどの構造化された実行証拠は対応する実験の`metrics.json`、submission ref・提出日時・submission scoring status・監視開始からscore確定までの所要時間を含む詳細な時系列は`SESSION_NOTES.md`、証拠への参照と結果の解釈は`result.md`を正とします。リポジトリ直下の`SUBMISSIONS.md`はsubmission refを専用列に持つ横断履歴であり、`metrics.json`から取得したCV/LBと、必要な場合だけ採点状態・Notebook実行時間・採点所要時間の最終スナップショットを保持します。`SUBMISSIONS.md`のスナップショットは正本の代わりにせず、状態遷移、観測時刻、実行コマンドを重複記録しません。スコア確定時は先に`record-exp`へ`SUBMISSION_REF`を渡して`metrics.json.submissions[submission_ref]`へ当該提出のCV/LBを記録し、同じrefの値を`record-submission`が読み取って提出履歴へ記録します。実験全体の代表CV/LBは別に保持し、提出別値の更新では書き換えません。代表値を変更するときだけrefなしで明示的に更新します。同じsubmission refを再記録した場合は新しい行を作らず、既存行のCV/LBと明示されたメモを更新します。code competitionの出力をローカル取得していない場合は、Kaggle側で対象ファイルを確認したうえで`record-submission`に`--allow-missing-file`を渡し、ローカル行数・列・SHAを未取得として記録します。Notebook実行時間は`notebook_runtime_seconds`、submission scoring所要時間は`scoring_elapsed_minutes`とし、どちらも`runtime`と呼びません。
 - 実験記録は、`requirements.md`を実装前の契約・実装方法・受け入れ条件、`metrics.json`を機械処理する数値・実験の唯一のstatusフィールド・構造化された実行証拠、`config.yaml`をroute・設定・系譜と再現性方針、`result.md`を証拠への参照・解釈・ユーザーの採否判断、`SESSION_NOTES.md`を実行中の時系列ログの正とします。実装の進捗は`SESSION_NOTES.md`へ記録し、`requirements.md`へ重複させません。実験の `README.md` は目的、差分、リスク、次アクションとこれらへのリンクに留め、設定、系譜、実験status、CV/LB、SHAを複数ファイルへ手作業で重複記録しません。submission scoring statusは時系列イベントであり、`metrics.json`の実験statusとは別物です。
+- 実行終了・停止・契約改訂・ユーザー判断を記録したときは、`README.md`の次アクションと`SESSION_NOTES.md`の現在欄・次アクションも正本への短い参照で更新します。古い予定や実行中の記述は日付付きの履歴として残し、現在の指示と区別します。後続実験の結果により既存文書の「未検証」「継続予定」などが古くなった場合も、現行の案内を更新し、当時の判断は書き換えません。
 - `docs/surveys/` を完了した調査・分析・統合説明の正とします。実験前の文献・公開Notebook調査と、実験後の分析・実験横断の結論のどちらも対象です。`studies/` や `experiments/` を完了した調査レポートの検索入口にしません。
 - 生のコンペデータ、モデル重み、大きな生成物を Git に保存しません。
 

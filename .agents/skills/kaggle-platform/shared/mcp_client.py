@@ -14,12 +14,9 @@ import urllib.request
 from pathlib import Path
 from typing import Any
 
+from kagglesdk.kaggle_env import get_access_token_from_env
+
 MCP_ENDPOINT = "https://www.kaggle.com/mcp"
-
-
-def get_api_token() -> str:
-    """Return the explicitly configured API token without inferring its type."""
-    return os.getenv("KAGGLE_API_TOKEN", "")
 
 
 def get_username() -> str:
@@ -36,17 +33,10 @@ def get_username() -> str:
     return ""
 
 
-def get_access_token() -> str:
-    """Return token from ~/.kaggle/access_token if present."""
-    p = Path.home() / ".kaggle" / "access_token"
-    if p.exists():
-        return p.read_text().strip()
-    return ""
-
-
 def resolve_token() -> str:
-    """Return an API token supported by the Kaggle MCP server."""
-    return get_api_token() or get_access_token() or ""
+    """Resolve API tokens exactly as the locked Kaggle clients and checker do."""
+    token, _ = get_access_token_from_env()
+    return token or ""
 
 
 def _parse_mcp_response(raw: str) -> dict[str, Any]:

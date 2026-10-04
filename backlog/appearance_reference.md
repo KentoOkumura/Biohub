@@ -59,10 +59,7 @@
 
 ## 観測事実と根拠
 
-- 実測済みの事実: 本候補の改善値は未取得。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
-  - [E02](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02): 133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotation maskなし。
-  - [E03](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03): compute_loss55行、compute_detection_loss528行、detect_and_match620行、train_epoch794行。実学習も検出候補を使う。
-  - [E06](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e06): 胚を分ける2方向評価、100x64x256x256、物理scale、hidden画像のみ。
+- 実測済みの事実: 本候補の改善値は未取得。着想時の共通根拠は、2026-09-10調査の[E02: 注釈の分布](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02)、[E03: 学習コードの確認](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03)、[E06: データと評価分割](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e06)を参照する。これらは本候補の改善効果や現在の評価状況を示すものではない。
 - 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI04。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
 - 利用する保存済み生成物とSHA: [exp011選定manifest](../experiments/exp011_public_detector_selection/assets/public_detector_selection.json)と[exp015 metrics](../experiments/exp015_oracle_stage_limits/metrics.json)を正とし、固定公開重み・199動画の時間窓cacheを継承する。履歴の予測生成物は先行入力として実行時に版・SHAを確認する。過去の自前予測は補助診断に限る。
 - 仮定: Assumption: 絶対距離だけでなく、同じ動画の局所運動とその細胞自身の見た目からのずれを使えば、胚ごとに異なる移動・撮像条件に対応しやすい。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。

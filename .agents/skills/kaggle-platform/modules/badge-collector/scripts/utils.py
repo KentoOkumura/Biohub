@@ -15,7 +15,7 @@ API_DELAY = 5
 RESOURCE_PREFIX = "badge-collector-"
 
 # Skill root: 3 levels up from modules/badge-collector/scripts/utils.py
-SKILL_ROOT = Path(__file__).resolve().parent.parent.parent
+SKILL_ROOT = Path(__file__).resolve().parents[3]
 REPO_ROOT = SKILL_ROOT.parents[2]
 SHARED_SCRIPTS = SKILL_ROOT / "shared"
 TEMPLATES_DIR = Path(__file__).resolve().parent / "templates"
@@ -96,24 +96,9 @@ def check_credentials(phases: list[int]) -> bool:
         print(result.stdout.strip())
         return result.returncode == 0
 
-    # Fallback mirrors the canonical source types if the shared checker is absent.
-    access_token = Path.home() / ".kaggle" / "access_token"
-    has_api_token = bool(os.getenv("KAGGLE_API_TOKEN")) or access_token.exists()
-    if requirement == "api-token":
-        return has_api_token
-
-    oauth_credentials = Path.home() / ".kaggle" / "credentials.json"
-    kaggle_json = Path.home() / ".kaggle" / "kaggle.json"
-    has_legacy = bool(os.getenv("KAGGLE_USERNAME") and os.getenv("KAGGLE_KEY"))
-    if kaggle_json.exists():
-        try:
-            legacy_file = json.loads(kaggle_json.read_text())
-            has_legacy = has_legacy or bool(legacy_file.get("username") and legacy_file.get("key"))
-        except (json.JSONDecodeError, OSError):
-            pass
-    if requirement == "python-api":
-        return has_api_token or has_legacy
-    return has_api_token or oauth_credentials.exists() or has_legacy
+    # Missing tracked helpers indicate an incomplete checkout; do not weaken
+    # client requirements with a second implementation of credential detection.
+    raise FileNotFoundError(f"Credential checker is missing: {script}")
 
 
 def resource_name(kind: str, suffix: str = "") -> str:

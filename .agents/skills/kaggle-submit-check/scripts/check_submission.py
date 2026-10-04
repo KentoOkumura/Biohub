@@ -14,6 +14,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
 CANONICAL_CSV_VALIDATOR = REPO_ROOT / "scripts" / "validate_submission.py"
+CANONICAL_METADATA_VALIDATOR = REPO_ROOT / "scripts" / "validate_kaggle_metadata.py"
 
 
 class Reporter:
@@ -107,19 +108,25 @@ def check_zip(path: Path, reporter: Reporter, sample: Path | None = None) -> Non
 
 
 def check_metadata(path: Path, reporter: Reporter) -> None:
+    command = [
+        sys.executable,
+        str(CANONICAL_METADATA_VALIDATOR),
+        "--package-dir",
+        str(path.resolve().parent),
+    ]
+    process = subprocess.run(command, text=True, capture_output=True)
+    if process.returncode != 0:
+        detail = process.stderr.strip() or process.stdout.strip() or "no output"
+        reporter.fail(f"{path}: canonical notebook package validator failed: {detail}")
+        return
     try:
         meta = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
         reporter.fail(f"{path}: invalid JSON: {exc}")
         return
-    for key in ("id", "title"):
-        if not meta.get(key):
-            reporter.warn(f"{path}: missing `{key}`")
     if meta.get("enable_internet") is True:
         reporter.warn(f"{path}: enable_internet=true; confirm competition rules allow internet")
-    if "competition_sources" not in meta and "dataset_sources" not in meta:
-        reporter.warn(f"{path}: no competition_sources or dataset_sources found")
-    reporter.ok(f"{path}: kernel metadata parsed")
+    reporter.ok(f"{path}: notebook package validation passed")
 
 
 def check_dir(path: Path, reporter: Reporter, sample: Path | None = None) -> None:
@@ -130,10 +137,14 @@ def check_dir(path: Path, reporter: Reporter, sample: Path | None = None) -> Non
     metadata = path / "kernel-metadata.json"
     if "submission.csv" in names:
         check_csv(path / "submission.csv", reporter, sample)
-    elif csvs:
+    elif len(csvs) == 1:
         reporter.warn(f"{path}: no submission.csv; checking {csvs[0].name}")
         check_csv(csvs[0], reporter, sample)
-    for zip_path in zips[:3]:
+    elif csvs:
+        reporter.fail(
+            f"{path}: multiple CSV files without submission.csv; specify the intended file"
+        )
+    for zip_path in zips:
         check_zip(zip_path, reporter, sample)
     if metadata.exists():
         check_metadata(metadata, reporter)
@@ -148,7 +159,7 @@ def check_dir(path: Path, reporter: Reporter, sample: Path | None = None) -> Non
             "local test script if available"
         )
     if not csvs and not zips and not metadata.exists():
-        reporter.warn(f"{path}: no CSV, zip, or kernel-metadata.json found")
+        reporter.fail(f"{path}: no CSV, zip, or kernel-metadata.json found")
 
 
 def main() -> int:
@@ -172,7 +183,7 @@ def main() -> int:
     elif path.name == "kernel-metadata.json":
         check_metadata(path, reporter)
     else:
-        reporter.warn(f"unknown submission target type: {path}")
+        reporter.fail(f"unknown submission target type: {path}")
 
     reporter.print()
     return 1 if reporter.failures else 0

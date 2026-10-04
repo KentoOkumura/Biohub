@@ -6,6 +6,10 @@
 
 ## 現在の作業
 
+本診断と後続の検出器を通す診断は終了している。[本実験の判断](result.md#ユーザー判断)と[exp023の結果](../exp023_synthetic_detector_teacher_audit/result.md)を参照する。
+
+## 2026-09-19〜20 実装と判断の記録
+
 - 2026-09-19: ユーザーが推奨の公開合成系譜小規模診断を選択。直接承認の診断実験として作成。
 - 公開Notebook source、outputのmanifest・metadata、先頭1時系列のSHAとschemaを確認。先頭32時系列を固定した。
 - self-contained CPU診断Notebookを実装。先頭1時系列のlocal smokeで47分裂中45組を回収。local smokeは公式実行ではない。
@@ -21,7 +25,7 @@
 
 ## 次のアクション
 
-固定公開検出器から得る候補・特徴と合成系譜の教師の対応を、別の小規模診断で検証する。
+[exp023で完了した対応診断](../exp023_synthetic_detector_teacher_audit/result.md)を後続設計へ引き継ぐ。合成から実画像への転移や学習効果は、この診断だけで判断しない。
 
 ## Kaggle実行前確認
 

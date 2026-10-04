@@ -15,7 +15,9 @@ try:
         ROOT,
         configured_project_path,
         effective_kaggle_runtime,
+        effective_kaggle_sources,
         get_nested,
+        is_todo,
         kaggle_runtime_errors,
         load_project_config,
     )
@@ -28,7 +30,9 @@ except ImportError:  # Direct execution: `uv run python scripts/validate_kaggle_
         ROOT,
         configured_project_path,
         effective_kaggle_runtime,
+        effective_kaggle_sources,
         get_nested,
+        is_todo,
         kaggle_runtime_errors,
         load_project_config,
     )
@@ -318,10 +322,42 @@ def validate_package(package_dir: Path) -> dict[str, Any]:
         expected_enable_internet=runtime_settings["enable_internet"],
         expected_machine_shape=runtime_settings.get("machine_shape"),
     )
+    sources = effective_kaggle_sources(experiment_config, package_dir.name)
+    for key, expected in sources.items():
+        actual = metadata.get(key, [])
+        if not isinstance(actual, list) or actual != expected:
+            errors.append(
+                f"{key} does not match effective config: expected {expected}, got {actual!r}"
+            )
+
+    competition_slug = get_nested(project_config, "competition.slug")
+    options_path = package_dir / "prepare-options.json"
+    if options_path.is_file():
+        try:
+            options = json.loads(options_path.read_text())
+        except json.JSONDecodeError as exc:
+            raise ValueError(f"invalid preparation options: {options_path}: {exc}") from exc
+        override = options.get("competition_slug_override") if isinstance(options, dict) else None
+        if not isinstance(override, str) or is_todo(override):
+            raise ValueError(
+                "prepare-options.json competition_slug_override must be a non-empty string"
+            )
+        competition_slug = override
+    if not is_todo(competition_slug) and metadata.get("competition_sources") != [competition_slug]:
+        errors.append(
+            "competition_sources does not match project config or recorded preparation override: "
+            f"expected {[competition_slug]}, got {metadata.get('competition_sources')!r}"
+        )
     code_file = metadata.get("code_file")
     notebook_path: Path | None = None
     if not isinstance(code_file, str) or not code_file:
         errors.append("code_file is empty")
+    elif (
+        Path(code_file).is_absolute()
+        or ".." in Path(code_file).parts
+        or not (package_dir / code_file).resolve().is_relative_to(package_dir.resolve())
+    ):
+        errors.append(f"code_file must stay inside the package: {code_file}")
     elif not (package_dir / code_file).is_file():
         errors.append(f"code_file does not exist in package: {code_file}")
     else:

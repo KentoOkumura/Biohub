@@ -5,7 +5,7 @@
 - 仮説要約: TODO
 - 変更点要約: TODO
 - リスク: TODO
-- 次: TODO
+- 次: [SESSION_NOTES.mdの次のアクション](SESSION_NOTES.md#次のアクション)
 
 ## 正の記録
 

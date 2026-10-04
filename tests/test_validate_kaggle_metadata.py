@@ -289,3 +289,136 @@ def test_validate_repository_package_rejects_current_source_changes(
 
     with pytest.raises(ValueError, match=expected_error):
         validate_package(package)
+
+
+@pytest.mark.parametrize("source_key", ["kernel_sources", "dataset_sources", "model_sources"])
+def test_validate_package_requires_configured_input_sources(tmp_path, source_key):
+    package = tmp_path / "inference"
+    package.mkdir()
+    (package / "config.yaml").write_text(
+        f"runtime:\n  kaggle:\n    inference:\n      {source_key}: [owner/required-input]\n"
+    )
+    _write_generated_notebook(package)
+    _write_metadata(package, **{source_key: []})
+    with pytest.raises(ValueError, match=f"{source_key} does not match"):
+        validate_package(package)
+
+
+@pytest.mark.parametrize("location", ["absolute", "parent", "symlink"])
+def test_validate_package_rejects_notebooks_outside_package(tmp_path, location):
+    package = tmp_path / "package"
+    package.mkdir()
+    _write_generated_notebook(package)
+    outside = tmp_path / "outside.ipynb"
+    outside.write_bytes((package / "notebook.ipynb").read_bytes())
+    if location == "absolute":
+        code_file = str(outside)
+    elif location == "parent":
+        code_file = "../outside.ipynb"
+    else:
+        (package / "link.ipynb").symlink_to(outside)
+        code_file = "link.ipynb"
+    _write_metadata(package, notebook_name=code_file)
+    with pytest.raises(ValueError, match="code_file must stay inside"):
+        validate_package(package)
+
+
+@pytest.mark.parametrize("override", [None, "alternate-competition"])
+def test_prepare_then_validate_records_competition_override_and_sources(tmp_path, override):
+    import shutil
+    import subprocess
+    import sys
+
+    repository = Path(__file__).resolve().parents[1]
+    root = tmp_path / "repo"
+    scripts = root / "scripts"
+    scripts.mkdir(parents=True)
+    for filename in (
+        "config_utils.py",
+        "prepare_kaggle_notebooks.py",
+        "validate_kaggle_metadata.py",
+    ):
+        shutil.copy2(repository / "scripts" / filename, scripts / filename)
+    (root / "project.yml").write_text(
+        "competition:\n  slug: project-competition\n  name: Test competition\n"
+        "metadata:\n  owner: owner\npaths:\n  experiments_dir: runs\n" + PROJECT_RUNTIME
+    )
+    experiment = root / "runs" / "exp123_test"
+    experiment.mkdir(parents=True)
+    (experiment / "config.yaml").write_text(
+        "runtime:\n  kaggle:\n"
+        "    kernel_sources: [owner/default-weights]\n"
+        "    inference_kernel_sources: [owner/legacy-weights]\n"
+        "    inference:\n"
+        "      kernel_sources: [owner/selected-weights]\n"
+        "      dataset_sources: [owner/required-dataset]\n"
+        "      model_sources: [owner/model/framework/variation/1]\n"
+    )
+    (experiment / "exp123_test_inference.ipynb").write_text(
+        json.dumps({"cells": [], "metadata": {}, "nbformat": 4, "nbformat_minor": 5})
+    )
+    command = [
+        sys.executable,
+        str(scripts / "prepare_kaggle_notebooks.py"),
+        "--experiment",
+        experiment.name,
+        "--notebook",
+        "inference",
+        "--strict",
+    ]
+    if override:
+        command.extend(["--competition-slug", override])
+    prepared = subprocess.run(command, cwd=root, text=True, capture_output=True)
+    assert prepared.returncode == 0, prepared.stderr
+    package = experiment / "kaggle" / "inference"
+    metadata_path = package / "kernel-metadata.json"
+    metadata = json.loads(metadata_path.read_text())
+    assert metadata["competition_sources"] == [override or "project-competition"]
+    assert metadata["kernel_sources"] == ["owner/selected-weights"]
+    assert metadata["dataset_sources"] == ["owner/required-dataset"]
+    assert metadata["model_sources"] == ["owner/model/framework/variation/1"]
+    options_path = package / "prepare-options.json"
+    if override:
+        assert json.loads(options_path.read_text()) == {"competition_slug_override": override}
+    else:
+        assert not options_path.exists()
+    validate_command = [
+        sys.executable,
+        str(scripts / "validate_kaggle_metadata.py"),
+        "--package-dir",
+        str(package),
+    ]
+    validated = subprocess.run(validate_command, cwd=root, text=True, capture_output=True)
+    assert validated.returncode == 0, validated.stderr
+    metadata["competition_sources"] = ["unrecorded-competition"]
+    metadata_path.write_text(json.dumps(metadata))
+    rejected = subprocess.run(validate_command, cwd=root, text=True, capture_output=True)
+    assert rejected.returncode != 0
+    assert "competition_sources does not match" in rejected.stderr
+
+
+@pytest.mark.parametrize(
+    ("runtime", "expected"),
+    [
+        ({"kernel_sources": ["owner/default"]}, ["owner/default"]),
+        (
+            {"kernel_sources": ["owner/default"], "inference_kernel_sources": ["owner/legacy"]},
+            ["owner/legacy"],
+        ),
+        (
+            {
+                "kernel_sources": ["owner/default"],
+                "inference_kernel_sources": ["owner/legacy"],
+                "inference": {"kernel_sources": []},
+            },
+            [],
+        ),
+    ],
+)
+def test_source_resolution_preserves_legacy_and_empty_override(runtime, expected):
+    from scripts.config_utils import effective_kaggle_sources
+
+    assert (
+        effective_kaggle_sources({"runtime": {"kaggle": runtime}}, "inference")["kernel_sources"]
+        == expected
+    )

@@ -181,6 +181,24 @@ def test_non_markdown_fragments_and_remote_urls_are_not_guessed(tmp_path, monkey
     assert errors == []
 
 
+def test_local_url_queries_do_not_bypass_file_and_heading_validation(tmp_path, monkeypatch):
+    errors = scan(
+        tmp_path,
+        monkeypatch,
+        {
+            "README.md": "[valid](target.md?plain=1#present)\n"
+            "[file](missing.md?raw=1)\n[heading](target.md?plain=1#absent)\n"
+            "[remote](https://example.com/missing.md?plain=1#absent)\n",
+            "target.md": "# Present\n",
+        },
+    )
+
+    assert errors == [
+        "README.md:2: missing local link target missing.md",
+        "README.md:3: missing Markdown fragment #absent in target.md",
+    ]
+
+
 def test_archived_destination_headings_are_checked_without_scanning_its_links(
     tmp_path, monkeypatch
 ):

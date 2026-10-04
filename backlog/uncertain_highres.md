@@ -36,9 +36,7 @@
 
 ## 観測事実と根拠
 
-- 実測済みの事実: 本候補の改善値は未取得。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
-  - [E03](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03): compute_loss55行、compute_detection_loss528行、detect_and_match620行、train_epoch794行。実学習も検出候補を使う。
-  - [E04](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e04): 診断用sample holdout、3epochs、batch16、T4x2、allocator変更と時間制約。主CV/OOFは未取得。
+- 実測済みの事実: 本候補の改善値は未取得。着想時の共通根拠は、2026-09-10調査の[E03: 学習コードの確認](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e03)、[E04: 当時の実行・評価状況](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e04)を参照する。これらは本候補の改善効果や現在の評価状況を示すものではない。
 - 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI12。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
 - 利用する保存済み生成物とSHA: 公開モデルと比較基準の所在・版は[現行の比較基準](KAGGLE_DIRECTION.md#現行の比較基準)を参照する。本候補に必要な予測・特徴の所在とSHAは「先行条件 / 依存」に対応する生成物の取得時に記録する。過去調査の入力は[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)にある。
 - 仮定: Assumption: 同じ計算の再実行を減らし難しい場所へ計算を割けば、12時間内で長い時間窓や高解像度を使えるようになり、最終精度を上げられる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。

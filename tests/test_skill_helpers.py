@@ -307,7 +307,7 @@ def test_credential_checker_rejects_oauth_for_api_token_clients(
     credential_dir = tmp_path / ".kaggle"
     credential_dir.mkdir()
     oauth_file = credential_dir / "credentials.json"
-    oauth_file.write_text("{}")
+    oauth_file.write_text('{"refresh_token": "dummy-oauth-refresh"}')
     oauth_file.chmod(0o600)
 
     monkeypatch.setenv("HOME", str(tmp_path))
