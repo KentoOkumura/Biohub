@@ -3,7 +3,7 @@ title: exp043を受けた過去のtracker改善実験の再評価
 date: '2026-09-24'
 types: [survey]
 hypotheses: [HYP-20260910-01, HYP-20260910-04, HYP-20260910-10, HYP-20260910-11, HYP-20260910-12]
-experiments: [exp016, exp018, exp019, exp024, exp025, exp027, exp028, exp029, exp030, exp031, exp032, exp033, exp034, exp035, exp036, exp037, exp038, exp039, exp040, exp041, exp043]
+experiments: [exp016, exp018, exp019, exp024, exp025_frame_self_attention, exp025_kalman_hungarian_links, exp027, exp028, exp029, exp030, exp031, exp032, exp033, exp034, exp035, exp036, exp037, exp038, exp039, exp040, exp041, exp043]
 topics: [tracking, validation, experiment-review]
 status: final
 summary: 不採用6件と関連実験を再点検。同じ実装の再実行を強く支持する証拠はない。検出得点による回収候補の選択、近傍移動に対する残差の学習は用途を変更する候補。x138入力の対照と最終接続への伝達を同じ実験内で測る。

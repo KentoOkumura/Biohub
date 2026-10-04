@@ -7,6 +7,8 @@ import tempfile
 import time
 from pathlib import Path
 
+import pytest
+
 SCRIPT = (
     Path(__file__).resolve().parents[1]
     / ".agents"
@@ -130,3 +132,90 @@ def test_monitor_rejects_ambiguous_submission_ref() -> None:
         assert "ambiguous" in str(exc)
     else:
         raise AssertionError("ambiguous submission refs must be rejected")
+
+
+@pytest.mark.parametrize(
+    "status,error,expected_code",
+    [
+        ("SubmissionStatus.ERROR", "Notebook exceeded allowed runtime", 3),
+        ("runtime_limit_exceeded", "", 3),
+        ("notebook_unhandled_error", "", 3),
+        ("failed", "", 3),
+        ("cancelled", "", 3),
+        ("canceled", "", 3),
+        ("", "Notebook failed", 3),
+        ("complete", "Notebook failed", 3),
+        ("SubmissionStatus.COMPLETE", "", 0),
+    ],
+)
+def test_monitor_stops_on_terminal_result_after_pending(
+    tmp_path, monkeypatch, status, error, expected_code
+) -> None:
+    log_path = tmp_path / "monitor.log"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            str(SCRIPT),
+            "exp123_test",
+            "--competition",
+            "test-competition",
+            "--submission-ref",
+            "111",
+            "--log-file",
+            str(log_path),
+        ],
+    )
+    responses = iter(
+        [
+            [{"ref": "111", "status": "pending"}],
+            [
+                {
+                    "ref": "111",
+                    "status": status,
+                    "errorDescription": error,
+                    "publicScore": "0.9" if expected_code == 0 else "",
+                }
+            ],
+        ]
+    )
+    monkeypatch.setattr(MONITOR, "run_submissions", lambda competition: next(responses))
+    sleeps = []
+    monkeypatch.setattr(MONITOR.time, "sleep", sleeps.append)
+
+    assert MONITOR.main() == expected_code
+    assert sleeps == [300]
+    log = log_path.read_text()
+    assert "submission-status: pending" in log
+    assert "timeout" not in log
+    if error:
+        assert f"error: {error}" in log
+
+
+def test_monitor_does_not_stop_for_another_refs_failure(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            str(SCRIPT),
+            "exp123_test",
+            "--competition",
+            "test-competition",
+            "--submission-ref",
+            "111",
+            "--log-file",
+            str(tmp_path / "monitor.log"),
+        ],
+    )
+    responses = iter(
+        [
+            [{"ref": "222", "status": "error"}],
+            [{"ref": "111", "status": "complete", "publicScore": "0.9"}],
+        ]
+    )
+    monkeypatch.setattr(MONITOR, "run_submissions", lambda competition: next(responses))
+    sleeps = []
+    monkeypatch.setattr(MONITOR.time, "sleep", sleeps.append)
+
+    assert MONITOR.main() == 0
+    assert sleeps == [300]

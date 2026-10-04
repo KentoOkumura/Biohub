@@ -6,7 +6,7 @@
 - 対応する上位仮説: `HYP-20260910-05`
 - 関連する上位仮説: なし。依存は先行検証の条件であり、主仮説を複数にしない。
 - 作成日: 2026-09-10
-- 最終更新日: 2026-09-12
+- 最終更新日: 2026-10-04
 - 依頼原文: 「この結果も踏まえて精度向上の仮説をできるだけ考えてください」「backlog/に記載するんではないですか？」「続きを実行してください」
 - 期待する成果: FOCUSの中心を教師に使うの成立条件と反証可能な一変更の比較を具体化する。
 - 親実験 / 比較対象: [exp002の設定](../experiments/exp002_unet3d_expandable_segments/config.yaml)と[requirements](../experiments/exp002_unet3d_expandable_segments/requirements.md)を構成の参照先とする。sample holdoutは診断用であり主評価へ流用しない。構成の参照版は確定。主評価には学習から除いた胚の新しい予測が必要であり、現在の両胚を使う重みを独立予測の代用にはしない。
@@ -36,14 +36,10 @@
 
 ## 観測事実と根拠
 
-- 実測済みの事実: 本候補の改善値は未取得。根拠は次の既存集計・静的コード確認・参加者報告であり、効果の実証ではない。
-  - [E01](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e01): 公開0.94前後の推論構成、proxyの相違、FOCUSと局所化のdiscussion。スコアはページ表示と自己報告を区別。
-  - [E02](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02): 133318注釈node、推定総nodeに対する比率2.82%、2胚、151分裂、完全annotation maskなし。
-  - [E07](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e07): FOCUS密教師と位置補正は参加者の研究報告。確立したKaggle改善効果とは未確認。
-  - [E08](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e08): 9月10日一次実装README確認。segmentationからのtracking等の参照先。Biohubでの性能優位やcheckpoint来歴は未検証。
-- 根拠ファイル / 一次資料: 上記出典と[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)のI05。実験の数値は[metrics](../experiments/exp002_unet3d_expandable_segments/metrics.json)を参照する。
-- 利用する保存済み生成物とSHA: 精度比較に使える独立予測・候補cache・重みは未取得。これらのSHAは生成・取得後に記録する作業であり、ユーザーが値を選ぶ事項ではない。人工例と静的コード調査には重みを要しない。今回の調査入力のSHAは[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)に保存する。
-- 仮定: Assumption: FOCUS-3Dなどの高価な予測を直接提出に使うより、確認可能な密な中心・短い軌跡を教師として小さなモデルへ移す方が、疎ラベルと12時間制約の両方に対応できる。 この候補で実現できるかは未検証。画像由来の推論入力だけを使い、未知の注釈や完全maskを存在すると仮定しない。
+- 実測済みの事実: 本候補の改善値は未取得。共通の観測事実・一次資料は[仮説調査のE01](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e01)、[E02](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e02)、[E07](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e07)、[E08](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#e08)を参照する。参加者報告・静的確認と本コンペでの効果実証を区別する。
+- 根拠ファイル / 一次資料: [I05の共通仮説と教師案](../docs/surveys/biohub-accuracy-hypotheses_20260910.md#i05-密な検出軌跡を小さなモデルの教師として使う)、[統合仮説の原記録](../studies/biohub_accuracy_ideas_20260910/idea_portfolio.json)、[既存実験の数値](../experiments/exp002_unet3d_expandable_segments/metrics.json)。
+- 利用する保存済み生成物とSHA: 独立予測・候補cache・重みは未取得。人工例と静的コード調査は重み不要。調査入力のSHAは[引き継ぎ記録](../studies/biohub_accuracy_ideas_20260910/backlog_handoff.json)、今後取得する証拠は[再現性の記録](../docs/06_reproducibility.md#記録する証拠)を参照する。
+- 仮定: I05の教師転用の仮説を本候補で検証する。候補固有の教師と損失は下記に記し、未知の注釈・完全maskを利用可能とは仮定しない。
 
 ## この候補が直接検証する仮説と範囲
 
@@ -95,10 +91,10 @@
 
 ## リスク
 
-- leakage / validation: 学習から除いた胚の予測が未取得。2胚の結果を繰り返し見て選ぶと探索結果になる。教師・内部予測・校正を含めた全工程の分割を記録する。
-- hidden test: 推論は画像と利用可能なmetadataのみ。動画間の位置共有や絶対時刻を仮定せず、隣接時刻の辺へ戻せない欠測は直接skip edgeとして提出しない。
-- runtime / memory: 非公開テスト全件のT4 2基・12時間内完了は未確認。学習費用と推論費用を分け、最悪例と上限を設計時に測る。
-- 再現性: source、重み、分割、教師、候補、設定、評価器の版とSHAを実験化時に固定する。現在の参照設定だけから同一結果を保証しない。
+- leakage / validation: 学習から除いた胚の予測は未取得。[リーク確認](../docs/03_validation.md#リークチェックリスト)に従う。
+- hidden test: [推論入力の制約](../docs/04_data.md#推論入力の制約)に従う。
+- runtime / memory: 非公開テスト全件の費用は未実測。[計算予算](KAGGLE_DIRECTION.md#今後の学習方針)と[提出推論の上限](KAGGLE_DIRECTION.md#承認済みの進め方)に従い、学習・推論を分けて最大入力で測る。
+- 再現性: [記録する証拠](../docs/06_reproducibility.md#記録する証拠)に従う。
 
 ## 調査・実行時に確認する事項
 

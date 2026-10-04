@@ -2,13 +2,11 @@
 
 ## 目的
 
-exp025の恒等初期化Model Bへ学習可能な物理距離biasを1設定だけ追加し、2fold×3epochでexp033の保存済みpair対照と比較できるKaggle train notebookを作る。
+exp025の恒等初期化Model Bへ学習可能な物理距離biasを追加する効果を検証する。比較条件の改訂と実施範囲は[requirements.md](requirements.md)と[result.md](result.md)を参照する。
 
 ## 現在の作業
 
-- 作業内容: 実装と局所検証。
-- ブロック要因: なし。
-- 次: 距離bias実装、test、notebook再生成、静的検証。
+学習と結果回収は終了した。[ユーザーの完了判断](result.md#ユーザー判断)に従い、最終graph評価は実行せず本実験を閉じている。数値と実行証拠は[metrics.json](metrics.json)を参照する。
 
 ## コマンドログ
 
@@ -22,7 +20,7 @@ exp025の恒等初期化Model Bへ学習可能な物理距離biasを1設定だ�
 - 実行: backlog移行直後のstrategy documents検査は通過。後続の全体再検査は並行追加されたexp035_velocity_featuresがHYP-20260910-10表に未登録のため失敗し、exp034行とは無関係。
 - Kaggle kernelのpush、学習実行、graph replay、submissionは未実行。
 
-## 変更点
+## 2026-09-22 改訂前の変更点
 
 - 各Self-Attention headへ物理距離の負の二乗biasと非負の学習可能係数を追加する。
 - fold別distance scaleはexp033の学習側最近傍距離中央値へ固定する。
@@ -31,7 +29,7 @@ exp025の恒等初期化Model Bへ学習可能な物理距離biasを1設定だ�
 
 設定と再現性方針はconfig.yaml、実行後の構造化結果はmetrics.jsonへ記録する。
 
-## 予定コマンド
+## 2026-09-22 初回実行前の予定コマンド
 
 - make validate-exp EXP=exp034_frame_self_attention_distance_bias
 - make check-exp EXP=exp034_frame_self_attention_distance_bias
@@ -42,9 +40,9 @@ Kaggle実行が承認された場合だけ、prepare後のmetadataを確認し�
 
 ## 次のアクション
 
-1. 実装差分と未実行範囲をレビューする。
-2. Kaggle実行が指示された場合だけtrain kernelをpushする。
-3. 実行後に両foldのpair gateを判定する。
+追加実行は行わず、[結果と未検証範囲](result.md)を後続の検討へ引き継ぐ。pair gateは契約改訂で廃止済みであり、再開条件として用いない。
+
+## 実行と判断の履歴
 
 ### 2026-09-22T09:39:48+09:00 Kaggle push前確認
 

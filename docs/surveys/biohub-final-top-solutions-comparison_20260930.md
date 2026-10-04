@@ -7,7 +7,7 @@ hypotheses: []
 experiments:
 - exp013
 - exp016
-- exp025
+- exp025_frame_self_attention
 - exp034
 - exp042
 - exp043

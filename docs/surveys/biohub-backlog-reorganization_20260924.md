@@ -3,7 +3,7 @@ title: Biohub バックログの統合・分割と優先度再評価
 date: '2026-09-24'
 types: [survey]
 hypotheses: [HYP-20260910-01, HYP-20260910-02, HYP-20260910-03, HYP-20260910-04, HYP-20260910-06, HYP-20260910-07, HYP-20260910-09, HYP-20260910-10, HYP-20260910-11, HYP-20260910-12, HYP-20260910-14, HYP-20260915-01, HYP-20260920-03]
-experiments: [exp013, exp016, exp023, exp025, exp028, exp029, exp032, exp035, exp036, exp037, exp038, exp039, exp040, exp041, exp043, exp044]
+experiments: [exp013, exp016, exp023, exp025_kalman_hungarian_links, exp028, exp029, exp032, exp035, exp036, exp037, exp038, exp039, exp040, exp041, exp043, exp044]
 topics: [backlog, tracking, validation]
 status: final
 summary: 76候補を74候補へ整理し26件の優先度を変更。教師診断と座標補正の残課題を統合し、位置変更を局所graph選択から分離。tracker内部追加を保留し、作用段階の診断・接続候補保持・検出回収を優先。

@@ -6,6 +6,10 @@ exp015の固定公開画像feature cacheからprimary `SimpleNodeTransformer`だ
 
 ## 現在の作業
 
+評価と結果回収は終了し、ユーザーの完了判断を記録済み。[結果と比較基準の扱い](result.md)に従って後続実験へ引き継ぐ。数値と実行証拠は[metrics.json](metrics.json)を参照する。
+
+## 2026-09-18 version 5実行中の作業記録
+
 - 作業内容: Kaggle CPU Notebook `kentookumura/exp016-frozen-image-encoder-official-eval` version 5で、回収済み199動画のILP graphへ固定graph repairと公式評価を実行中である。
 - ブロック要因: なし。入力199件、40 batch、receipt、primary・secondary・DeepCenter重みを検証済みで、固定graph repairが進行中である。2件の実測から全体は約6〜7時間の見込みで、12時間gate内である。
 - 次: 15分間隔のheartbeat `exp016公式評価の監視`でversion 5を監視し、完了後にKaggle outputを取得して公式指標、199最終graph、実行receipt、SHAを検証・記録する。

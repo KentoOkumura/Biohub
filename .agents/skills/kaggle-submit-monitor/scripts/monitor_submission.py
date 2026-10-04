@@ -17,6 +17,14 @@ import yaml
 
 PENDING_STATUSES = {"pending", "running", "queued", "submitting"}
 COMPLETE_STATUSES = {"complete", "completed", "finished", "scored"}
+FAILED_STATUSES = {
+    "failed",
+    "error",
+    "notebook_unhandled_error",
+    "runtime_limit_exceeded",
+    "cancelled",
+    "canceled",
+}
 REPO_ROOT = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
@@ -68,9 +76,11 @@ def first_value(row: dict[str, str], names: list[str]) -> str:
 
 
 def classify_status(row: dict[str, str]) -> str:
-    raw = first_value(row, ["status", "Status", "errorDescription"]).strip().lower()
-    if "." in raw:
-        raw = raw.rsplit(".", 1)[-1]
+    raw = first_value(row, ["status"]).strip().lower().rsplit(".", 1)[-1]
+    if raw in FAILED_STATUSES:
+        return raw
+    if first_value(row, ["errorDescription"]).strip():
+        return "error"
     if not raw:
         public_score = first_value(row, ["publicScore", "score"])
         return "complete" if public_score else "unknown"
@@ -81,14 +91,10 @@ def classify_status(row: dict[str, str]) -> str:
     return raw
 
 
-def select_submission(
-    rows: list[dict[str, str]], submission_ref: str
-) -> dict[str, str] | None:
+def select_submission(rows: list[dict[str, str]], submission_ref: str) -> dict[str, str] | None:
     expected = submission_ref.strip()
     matches = [
-        row
-        for row in rows
-        if first_value(row, ["ref", "submissionId", "id"]).strip() == expected
+        row for row in rows if first_value(row, ["ref", "submissionId", "id"]).strip() == expected
     ]
     if len(matches) > 1:
         raise ValueError(f"submission ref is ambiguous: {expected}")
@@ -109,6 +115,9 @@ def row_summary(name: str, row: dict[str, str], start: float) -> tuple[bool, str
         f"publicScore: {public_score or '-'}, privateScore: {private_score or '-'}, "
         f"submitted: {submitted_at or '-'}, ref: {ref or '-'}"
     )
+    error = first_value(row, ["errorDescription"]).strip()
+    if error:
+        line += f", error: {error}"
     return complete, line
 
 
@@ -229,6 +238,8 @@ def main() -> int:
                 print(line, flush=True)
                 if complete:
                     return 0
+                if classify_status(selected) in FAILED_STATUSES:
+                    return 3
             if args.once:
                 return 1
 

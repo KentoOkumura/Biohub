@@ -11,7 +11,7 @@
 - この実験だけで上位仮説を判断できるか: いいえ。
 - 上位仮説の判断に残る検証: 実画像への移行、合成痕跡の識別可能性、分裂の生成と系譜整合、`synthetic_divisions`、`division_lookalikes`、`masked_video_pretrain`の比較。
 - 親実験: [`exp005_embryo_holdout_batch8`](../exp005_embryo_holdout_batch8/)。batch size 8で成立したouter fold、モデル、基本教師、基本loss、3 epochs、推論、decode、公式評価を比較基準にする。
-- 根拠 / 一次資料 / 参照実装: 移行前の`backlog/deformation_pairs.md`の内容を本書へ移した。[未決事項調査](../../docs/surveys/biohub-backlog-readiness_20260910.md#deformation_pairs)、[仮説調査I07](../../docs/surveys/biohub-accuracy-hypotheses_20260910.md#i07--hyp-20260910-07)、[exp005要件](../exp005_embryo_holdout_batch8/requirements.md)、[exp005設定](../exp005_embryo_holdout_batch8/config.yaml)、[exp003で照合した公式評価](../exp003_official_metric_audit/result.md)を継続参照する。
+- 根拠 / 一次資料 / 参照実装: 移行前の`backlog/deformation_pairs.md`の内容を本書へ移した。[未決事項調査](../../docs/surveys/biohub-backlog-readiness_20260910.md#deformation_pairs)、[仮説調査I07](../../docs/surveys/biohub-accuracy-hypotheses_20260910.md#i07-対応関係が分かる画像変形と合成分裂で教師を増やす)、[exp005要件](../exp005_embryo_holdout_batch8/requirements.md)、[exp005設定](../exp005_embryo_holdout_batch8/config.yaml)、[exp003で照合した公式評価](../exp003_official_metric_audit/result.md)を継続参照する。
 - 固定するもの: exp005のouter fold、内部split、seed 42、モデル本体、細胞中心・接続の教師とloss、batch size 8、3 epochs、checkpoint selector、推論、decode、閾値、整数線形計画の費用、公式評価を固定する。
 - 変更するもの: outer学習胚の勾配更新用windowの50%へ、物理座標上の滑らかで折り返しのない3D変形を1個生成する。元画像と変形画像の対応する特徴vectorへcosine距離の補助lossを重み0.1で追加する。
 - 最小の反証可能な検証: active variant 1、outer 2fold、各3 epochsを学習し、exp005の保存済み結果をcontrolとして外側199動画の公式指標を比較する。変形なしの別controlは再学習しないため、run間の確率差を限界として併記する。

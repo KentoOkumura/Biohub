@@ -24,7 +24,7 @@
 
 - 2026-09-20T02:32:32.954252+00:00: `make push-kaggle-train EXP=exp025_frame_self_attention` が成功し、canonical train kernel v1をpush。Kaggle学習が開始された。model manifest・指標は未取得。
 
-## 学習・推論の費用境界
+## 2026-09-20 学習開始時の費用境界
 
 - 初期active: Model A/Bの2構成、各1 config、2 outer fold、計4 tracker学習、booster 0。現行control再学習は無効。保存済みexp016を精度参照に使い、実行条件差に注意する。
 - 現行controlを追加する場合: 3構成×2foldで計6 tracker学習となり、追加は2 tracker学習。runtime benchmarkで費用を測る前にcontrolのGPU train pushはしない。
@@ -39,9 +39,9 @@
 
 ## 次のアクション
 
-1. Kaggle GPU quotaとActive Sessionsを確認し、A/B trainの費用を測る。
-2. 現行control再学習が必要なら、追加GPU費用を提示してユーザー承認を得る。
-3. 学習結果を `metrics.json` に記録し、前段指標と費用gateを満たす場合だけvariant別graph推論・公式評価へ進む。
+[結果と残る検証](result.md)を基に、実験の完了・採否と全graph評価へ進むかについてユーザー判断を待つ。学習と隣接2フレーム評価の数値・実行証拠は[metrics.json](metrics.json)を参照する。
+
+## 2026-09-20 学習と結果回収の履歴
 
 - 2026-09-20 02:45 UTC: train kernel v1は4構成のbenchmark完了後、12時間gateで学習前に停止。保存済み `benchmark_summary.json` はA fold0/1=13,536.6/16,616.9秒、B fold0/1=14,641.7/19,703.6秒、合計64,498.7秒（17.92時間）を保守的に予測。A単独8.38時間、B単独9.54時間の予測なので、fold・seed・3 epoch・初期化・損失を固定してA/Bを別Notebookで実行する。v1 outputは `/tmp/kaggle-output/exp025-v1/benchmark_summary.json` に取得。
 - 2026-09-20 02:46 UTC: A専用kernel push前に `uv run kaggle quota --format json` でGPU使用7.33/45時間、Kaggle残37.67時間、repo週30時間上限の残22.67時間、refresh 2026-09-26 00:00 UTCを確認。生成metadataはT4 GPU有効、TPU・Internet無効。Model Aの2fold×3 epochだけを実行し、保守的予測8.38時間はNotebook 12時間gateとrepo残余内。Bは別kernel push前に再確認する。

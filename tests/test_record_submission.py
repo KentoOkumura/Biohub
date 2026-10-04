@@ -281,8 +281,11 @@ def test_missing_canonical_ref_never_falls_back_to_experiment_score() -> None:
         )
 
 
+@pytest.mark.parametrize(
+    "status", ["runtime_limit_exceeded", "SubmissionStatus.ERROR", " CANCELLED "]
+)
 def test_failed_legacy_ref_rejects_unrelated_experiment_score(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, status: str
 ) -> None:
     history = tmp_path / "SUBMISSIONS.md"
     history.write_text(
@@ -299,7 +302,7 @@ def test_failed_legacy_ref_rejects_unrelated_experiment_score(
                 "-",
                 "-",
                 "111",
-                "submission_status=runtime_limit_exceeded",
+                f"submission_status={status}",
             ]
         )
         + "\n"

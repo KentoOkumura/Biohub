@@ -6,9 +6,7 @@ exp006の2fold checkpointをhidden testの全動画へ適用し、検出確率�
 
 ## 現在の作業
 
-- 作業内容: Kaggle inference version 1のsubmission ref `56182729`は採点完了し、Public LB `0.693`を記録済み。
-- ブロック要因: なし。
-- 次: exp006の再現性実験を継続し、exp009の採否はユーザー判断を待つ。
+推論・提出・採点の記録は終了した。[結果](result.md)を基に実験の採否判断を待つ。後継の再現性実験は[exp010の途中停止判断](../exp010_exp006_deterministic_replay/result.md)に従い、追加実行を行わない。
 
 ## コマンドログ
 
@@ -49,5 +47,4 @@ make submit-check EXP=exp009_exp006_twofold_ensemble SUBMISSION=/tmp/kaggle-outp
 
 ## 次のアクション
 
-1. exp006の決定論的な後継実験を継続する。
-2. exp009の採用・保留・不採用はユーザー判断を待つ。
+[結果とユーザー判断](result.md)を参照し、exp009の採否判断を待つ。追加実行の予定はない。

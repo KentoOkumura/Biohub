@@ -1,6 +1,10 @@
 # exp031_frame_self_attention_spatial セッションノート
 
-## 目的と現在の作業
+## 現在の作業
+
+学習・隣接2フレーム評価・結果回収は終了した。[結果とユーザー判断](result.md)に従い、全graph推論を保留し、実験の採否・完了と追加評価の判断を待つ。実装した範囲と未検証事項も同記録を参照する。
+
+## 2026-09-20 実装時点の目的と計画
 
 - 2026-09-20: ユーザーの `frame_self_attention_spatialを実装してください` を、設計済み `frame_self_attention` の実験化承認として受けた。
 - exp016を親に新規実験を作り、実験内model sourceとtrain/inference Notebook sourceを実装した。
@@ -19,7 +23,7 @@
 - `jupytext --to ipynb` と `--test` をtrain/inferenceに実行。再変換後に最終確認する。
 - `graph_inference.patch_exp015_source` を実sourceへ適用してsetup/replayの構文を確認。構成選択はreplay側に置いた。
 
-## Kaggle実行前のgate
+## 2026-09-20 学習開始前のgate
 
 1. Kaggle実行quotaを確認し、control再学習の明示承認を得る。Active Sessions数はCLIで取得できず、push前gateには用いない。
 2. 学習Notebook内で代表的なcell数と最大のcell数を含む64 windowをvariant/foldごとに測定する。保守的な総学習時間が12時間を超えたらフル学習を停止する。

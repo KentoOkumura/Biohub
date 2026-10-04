@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import re
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import date, datetime
 from pathlib import Path
@@ -22,7 +23,8 @@ BEGIN_MARKER = "<!-- BEGIN AUTO SURVEY INDEX -->"
 END_MARKER = "<!-- END AUTO SURVEY INDEX -->"
 ALLOWED_STATUSES = {"draft", "final", "superseded"}
 TAG_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
-EXPERIMENT_PATTERN = re.compile(r"^exp\d+$")
+EXPERIMENT_SHORT_PATTERN = re.compile(r"^exp[A-Za-z]?\d+$")
+EXPERIMENT_PATTERN = re.compile(r"^exp[A-Za-z]?\d+(?:_[a-zA-Z0-9_-]+)?$")
 HYPOTHESIS_PATTERN = re.compile(r"^HYP-\d{8}-\d{2}$")
 HYPOTHESIS_FIND_PATTERN = re.compile(r"HYP-\d{8}-\d{2}")
 PLACEHOLDER_PATTERN = re.compile(
@@ -180,7 +182,33 @@ def _validate_embedded_snapshot(path: Path) -> None:
         )
 
 
-def load_report(path: Path) -> SurveyReport:
+def validate_experiment_references(
+    experiments: Sequence[str], *, experiments_dir: Path | None = None
+) -> None:
+    """Accept legacy short IDs, but require full names for duplicate numbers."""
+    invalid = [value for value in experiments if not EXPERIMENT_PATTERN.fullmatch(value)]
+    if invalid:
+        raise ValueError(
+            "experiments must be IDs such as exp238 or directory names such as "
+            f"exp238_selector: {', '.join(invalid)}"
+        )
+    if experiments_dir is None:
+        experiments_dir = configured_project_path("paths.experiments_dir", "experiments", root=ROOT)
+    for value in experiments:
+        if not EXPERIMENT_SHORT_PATTERN.fullmatch(value):
+            continue
+        matches = sorted(
+            path.name
+            for path in experiments_dir.glob(f"{value}_*")
+            if path.is_dir() and EXPERIMENT_PATTERN.fullmatch(path.name)
+        )
+        if len(matches) > 1:
+            raise ValueError(
+                f"ambiguous experiment ID {value}; use full directory names: {', '.join(matches)}"
+            )
+
+
+def load_report(path: Path, *, experiments_dir: Path | None = None) -> SurveyReport:
     metadata, body = _document_parts(path)
     _validate_embedded_snapshot(path)
     title = _required_text(metadata, "title", path)
@@ -201,19 +229,15 @@ def load_report(path: Path) -> SurveyReport:
 
     invalid_types = [value for value in types if not TAG_PATTERN.fullmatch(value)]
     invalid_topics = [value for value in topics if not TAG_PATTERN.fullmatch(value)]
-    invalid_experiments = [
-        value for value in experiments if not EXPERIMENT_PATTERN.fullmatch(value)
-    ]
     invalid_hypotheses = [value for value in hypotheses if not HYPOTHESIS_PATTERN.fullmatch(value)]
     if invalid_types:
         raise ValueError(f"{path}: invalid types: {', '.join(invalid_types)}")
     if invalid_topics:
         raise ValueError(f"{path}: invalid topics: {', '.join(invalid_topics)}")
-    if invalid_experiments:
-        raise ValueError(
-            f"{path}: experiments must be short ids such as exp238: "
-            f"{', '.join(invalid_experiments)}"
-        )
+    try:
+        validate_experiment_references(experiments, experiments_dir=experiments_dir)
+    except ValueError as error:
+        raise ValueError(f"{path}: {error}") from error
     if invalid_hypotheses:
         raise ValueError(
             f"{path}: hypotheses must use HYP-YYYYMMDD-NN: {', '.join(invalid_hypotheses)}"

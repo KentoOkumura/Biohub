@@ -28,6 +28,11 @@
 - サンプル提出: node行とedge行を同じ10列CSVに格納する。全test datasetを含める。
 - 公式出典: [Data Description](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/data)、[Evaluation](https://www.kaggle.com/competitions/biohub-cell-tracking-during-development/overview/evaluation)
 
+## 推論入力の制約
+
+- 推論で利用できるのは対象動画の画像と利用可能なmetadata。正解の中心・接続・細胞数を入力として使わず、動画間の位置・細胞の共有や絶対時刻の対応を仮定しない。
+- 欠測を扱う内部表現と提出graphを区別する。隣接時刻の辺へ戻せない接続を、時点を飛ばすedgeとして直接提出しない。提出形式は[検証方針](03_validation.md#validatorと評価の区別)のvalidatorで確認する。
+
 ## EDA メモ
 
 - Kaggle Notebookで画像chunkを開かずmetadataだけを監査した。trainは199 sample、胚IDは`44b6`と`6bba`の2個で、sample数はそれぞれ71と128。

@@ -30,8 +30,9 @@ HISTORY_INTRO = (
     "CV/LBは`record-submission`が`metrics.json`の`submissions[submission ref]`から"
     "取得します。複数の提出を実験全体のスコアで上書きしません。メモ欄に横断比較用の"
     "最終値を置く場合は、Kaggle submissionの採点状態を`submission_status`、"
-    "Notebook全体の実行時間を`notebook_runtime_seconds`、提出から採点確定までの"
-    "所要時間を`scoring_elapsed_minutes`で記録します。Notebook内の部分処理時間は"
+    "Notebook全体の実行時間を`notebook_runtime_seconds`、採点所要時間を"
+    "`scoring_elapsed_minutes`で記録します。時間の起点は`AGENTS.md`の規約に従い、"
+    "起点が異なる過去の記録は`scoring_elapsed_basis`を保持します。Notebook内の部分処理時間は"
     "処理名を付けた`*_elapsed_seconds`とし、意味が曖昧な`status`、`runtime`は"
     "使いません。\n\n"
 )
@@ -187,10 +188,15 @@ def known_submission_refs(experiment: str, metrics: dict[str, Any]) -> set[str]:
     return refs
 
 
+def submission_status_from_notes(notes: str) -> str | None:
+    match = re.search(r"(?:^|;\s*)submission_status\s*=\s*([^;]+)", notes, flags=re.IGNORECASE)
+    return match.group(1).strip() if match else None
+
+
 def initial_submission_scores(
     experiment: str, submission_ref: str, metrics: dict[str, Any]
 ) -> dict[str, Any]:
-    """Migrate only scores already attributable to this exact ref."""
+    """Migrate scores and scoring state already attributable to this exact ref."""
     keys = ("cv", "public_lb", "private_lb")
     if SUBMISSIONS_PATH.is_file():
         existing = find_submission_row(SUBMISSIONS_PATH.read_text().splitlines(), submission_ref)
@@ -207,11 +213,18 @@ def initial_submission_scores(
                         scores[key] = float(value)
                     except ValueError:
                         scores[key] = value
+            status = submission_status_from_notes(cells[11])
+            if status:
+                scores["submission_status"] = status
             return scores
     if not metrics.get("submissions") and known_submission_refs(experiment, metrics) == {
         submission_ref
     }:
-        return {key: metrics.get(key) for key in keys}
+        record = {key: metrics.get(key) for key in keys}
+        for key in ("submission_status", "error_description"):
+            if key in metrics:
+                record[key] = metrics[key]
+        return record
     return dict.fromkeys(keys)
 
 
@@ -240,19 +253,26 @@ def submission_record(
     if SUBMISSIONS_PATH.is_file():
         existing = find_submission_row(SUBMISSIONS_PATH.read_text().splitlines(), submission_ref)
         if existing is not None:
-            status = re.search(r"(?:^|;\s*)submission_status=([^;]+)", existing[1][11])
-            if status and status.group(1).lower() in FAILED_SUBMISSION_STATUSES:
-                if any(metrics.get(key) is not None for key in ("public_lb", "private_lb")):
-                    raise SystemExit(
-                        "cannot assign experiment-wide scores to a failed submission; "
-                        "use record-exp --submission-ref first"
-                    )
+            status = submission_status_from_notes(existing[1][11])
+            try:
+                validate_submission_scores(
+                    {
+                        "submission_status": status,
+                        "public_lb": metrics.get("public_lb"),
+                        "private_lb": metrics.get("private_lb"),
+                    }
+                )
+            except ValueError as exc:
+                raise SystemExit(
+                    "cannot assign experiment-wide scores to a failed submission; "
+                    "use record-exp --submission-ref first"
+                ) from exc
     # Legacy single-submission experiments retain their established workflow.
     return metrics
 
 
 def validate_submission_scores(record: dict[str, Any]) -> None:
-    status = str(record.get("submission_status", "")).lower().rsplit(".", 1)[-1]
+    status = str(record.get("submission_status", "")).strip().lower().rsplit(".", 1)[-1]
     if status in FAILED_SUBMISSION_STATUSES or record.get("error_description"):
         if any(record.get(key) is not None for key in ("public_lb", "private_lb")):
             raise ValueError("failed submissions must have null public_lb and private_lb")

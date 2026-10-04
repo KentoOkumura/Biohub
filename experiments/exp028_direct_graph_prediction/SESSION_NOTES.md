@@ -6,6 +6,10 @@
 
 ## 現在の作業
 
+学習・隣接2フレーム評価・結果回収は終了した。[結果とユーザー判断](result.md)に従い、全graph推論は保留し、実験の採否・完了判断を待つ。数値と実行証拠は[metrics.json](metrics.json)を参照する。
+
+## 2026-09-20 実装時点の計画
+
 - 2026-09-20: ユーザーが娘ごとの親選択と主催者の既知接続だけの損失、2-frame先行評価を選択。全graphではsecondary・順逆融合・ILPを接続選択から外し、固定graph repairだけを適用する。
 - 実行予定: active variant 1、model/config 1、fold 2、booster 0、control再学習なし。公開検出器と画像encoderを再学習しない。
 - 実装: exp028を作成し、候補の根拠と判断履歴をrequirementsへ移管。Jupytext形式のtrain/inference Notebook、未知を損失から除く教師、親子数制約、早期gateを実装。
@@ -21,9 +25,7 @@
 
 ## 次のアクション
 
-1. private train NotebookのKaggle push・GPU実行について明示承認を受ける。auto-review却下を迂回しない。
-2. 承認後、train Notebookで小規模benchmark後に2-foldを実行する。
-3. 同じ2-frame単位の保存済み対照を復元し、gateの根拠を記録する。成立時だけinferenceを有効化する。
+[結果と残る検証](result.md)を基に、ユーザーの採否・完了判断を待つ。全graph推論の条件は成立していない。
 
 ## Kaggle train push前のresource確認
 

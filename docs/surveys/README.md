@@ -6,6 +6,7 @@
 
 - 人間が読む完了レポートは`docs/surveys/*.md`を正とします。
 - 上位仮説を直接扱うレポートはfront matterの`hypotheses`に`HYP-YYYYMMDD-NN`を記録し、本文にも判断対象と結論を記載します。
+- front matterの`experiments`は既存の短いID（例: `exp043`）と実験ディレクトリ名の両方を使えます。同じ番号のディレクトリが複数ある場合は、本文で参照する実験の完全な名前を記録します。例えば`exp025_frame_self_attention`と`exp025_kalman_hungarian_links`は別項目として索引化し、両方を扱うレポートには両方を指定します。曖昧な`exp025`だけの指定は検証で拒否します。
 - 調査コードと生の表・図は`studies/`、実験実装・実行記録・公式結果は`experiments/`に残し、レポートからリンクします。
 - 同じテーマの追調査は原則として既存レポートを更新し、新しい問い・証拠範囲・結論になる場合だけ新しいレポートを作ります。
 
@@ -17,8 +18,17 @@
 
 ## 作成・完了手順
 
+1. 同じ問いの既存レポートをこの索引で確認し、新規作成が必要ならdraftを生成します。対象がある場合は`EXTRA_ARGS`に`--hypothesis HYP-YYYYMMDD-NN`、`--experiment expXXX_name`を追加します。複数件は各オプションを繰り返します。
+
 ```bash
 task new-survey-report SURVEY_TITLE="調査タイトル" SURVEY_SLUG="report-slug" EXTRA_ARGS="--type survey --topic topic"
+```
+
+2. 生成されたレポートの本文を完成させ、front matterの`summary`を実際の結論へ置き換えます。本文・summaryのplaceholderをなくし、証拠へのリンクと判断できない範囲を確認します。`hypotheses`と本文の「対応する上位仮説」を一致させ、対象なしの場合は本文に`なし`を記録します。`experiments`も本文が参照する実験と一致させます。
+3. 調査内容が完成してからfront matterを`status: final`へ変更します。これは調査レポートの完成を表し、実験や上位仮説の採否判断の代わりにはしません。途中で作業を止める場合は`draft`を維持します。
+4. 索引を再生成し、完了検証を実行します。`validate-surveys`は未完了のdraftが残っている場合も失敗します。draftを含む作業途中の構造・索引確認には`validate-template`を使い、完了検証と区別します。
+
+```bash
 task update-survey-index
 task validate-surveys
 ```
@@ -29,13 +39,13 @@ task validate-surveys
 | 日付 | レポート | 種類 | 上位仮説 | 実験 | トピック | 状態 | 後継 | 一行要約 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2026-10-02 | [Biohub 上位解法を伏せた発想評価](biohub-source-hidden-idea-evaluation_20261002.md) | `analysis` | - | - | `idea-generation`, `winning-solutions`, `validation` | `final` | - | 公開前のGit記録と現行skillから会話履歴なしの2コンテキストで生成。16項目の具体的一致は最終案Aが2・Bが1、優先5案は両方1。表現変更は出たが、上位解法の教師・処理順・再選択まで広く具体化できた証拠にはならなかった。 |
-| 2026-09-30 | [Biohub 終了後の上位解法と自分の解法の比較](biohub-final-top-solutions-comparison_20260930.md) | `survey` | - | `exp013`, `exp016`, `exp025`, `exp034`, `exp042`, `exp043`, `exp050`, `exp052`, `exp053` | `winning-solutions`, `tracking`, `architecture`, `validation` | `final` | - | 10月2日に1・2・4・7・9・10・11・16・17位を追記し、上位15解法を15枚の説明図とモデル構成表で比較。状態・位置予測、辺attention、複数回のILP、弱いtrack回収、完成graphの修正と自分の解法との差を整理。 |
+| 2026-09-30 | [Biohub 終了後の上位解法と自分の解法の比較](biohub-final-top-solutions-comparison_20260930.md) | `survey` | - | `exp013`, `exp016`, `exp025_frame_self_attention`, `exp034`, `exp042`, `exp043`, `exp050`, `exp052`, `exp053` | `winning-solutions`, `tracking`, `architecture`, `validation` | `final` | - | 10月2日に1・2・4・7・9・10・11・16・17位を追記し、上位15解法を15枚の説明図とモデル構成表で比較。状態・位置予測、辺attention、複数回のILP、弱いtrack回収、完成graphの修正と自分の解法との差を整理。 |
 | 2026-09-26 | [Biohub tracker後の接続・分裂・修復処理の改善案](biohub-post-tracker-ideas_20260926.md) | `survey` | `HYP-20260910-03`, `HYP-20260910-06`, `HYP-20260910-09`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12` | `exp042`, `exp043`, `exp045`, `exp046`, `exp047`, `exp048`, `exp049`, `exp050`, `exp051` | `tracking`, `postprocessing`, `validation` | `final` | - | trackerを固定し、候補得点の再接続への受け渡し、分裂前後の局所graph、欠落経路の選択、実誤りによるgraph修正、競合する修復の同時選択を提案。exp050・051の未測定結果を前提にせず、公開LBと条件付きtrain評価を分ける。 |
 | 2026-09-25 | [Biohub 公開上位Notebookの再調査とx138重みの取得](biohub-public-notebooks-followup_20260925.md) | `survey` | `HYP-20260910-12` | `exp043` | `public-notebooks`, `tracking`, `validation` | `final` | - | 新たな上位Notebookはx138と同じ0.953で、コード構文・入力Dataset版・公開出力SHAが一致。前回403だった作者の座標補正重みを今回は取得できたため、exp043の自前重みとの比較が可能になった。 |
-| 2026-09-24 | [exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-04`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12` | `exp016`, `exp018`, `exp019`, `exp024`, `exp025`, `exp027`, `exp028`, `exp029`, `exp030`, `exp031`, `exp032`, `exp033`, `exp034`, `exp035`, `exp036`, `exp037`, `exp038`, `exp039`, `exp040`, `exp041`, `exp043` | `tracking`, `validation`, `experiment-review` | `final` | - | 不採用6件と関連実験を再点検。同じ実装の再実行を強く支持する証拠はない。検出得点による回収候補の選択、近傍移動に対する残差の学習は用途を変更する候補。x138入力の対照と最終接続への伝達を同じ実験内で測る。 |
+| 2026-09-24 | [exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-04`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12` | `exp016`, `exp018`, `exp019`, `exp024`, `exp025_frame_self_attention`, `exp025_kalman_hungarian_links`, `exp027`, `exp028`, `exp029`, `exp030`, `exp031`, `exp032`, `exp033`, `exp034`, `exp035`, `exp036`, `exp037`, `exp038`, `exp039`, `exp040`, `exp041`, `exp043` | `tracking`, `validation`, `experiment-review` | `final` | - | 不採用6件と関連実験を再点検。同じ実装の再実行を強く支持する証拠はない。検出得点による回収候補の選択、近傍移動に対する残差の学習は用途を変更する候補。x138入力の対照と最終接続への伝達を同じ実験内で測る。 |
 | 2026-09-24 | [Biohubの過去情報利用を見直す次実験案](biohub-tracking-next-ideas_20260923.md) | `survey` | `HYP-20260910-02`, `HYP-20260910-03`, `HYP-20260910-04`, `HYP-20260910-10`, `HYP-20260910-11` | `exp016`, `exp029`, `exp035`, `exp037`, `exp038`, `exp040`, `exp041`, `exp043` | `tracking`, `architecture`, `validation` | `final` | - | exp043の中心補正とPublic LBを受け12案を再評価。5案は維持し、同じ新入力の公開tracker対照と位置・接続の作用確認を先行。分裂比較学習は条件付き本命。exp040は旧実装の未達と損失修正後未測定を反映。 |
 | 2026-09-24 | [BiohubのILPと最終グラフ選択を学習する改善案](biohub-ilp-learning-alternatives_20260924.md) | `survey` | `HYP-20260910-11`, `HYP-20260910-12` | `exp015`, `exp028`, `exp029`, `exp043` | `tracking`, `structured-prediction`, `validation` | `final` | - | ILPの費用学習、グラフの直接選択、後段の局所修正を比較。共有接続得点と分裂の構造比較を提案し、候補回収と最終出力への効果伝達を確認する。 |
-| 2026-09-24 | [Biohub バックログの統合・分割と優先度再評価](biohub-backlog-reorganization_20260924.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-02`, `HYP-20260910-03`, `HYP-20260910-04`, `HYP-20260910-06`, `HYP-20260910-07`, `HYP-20260910-09`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12`, `HYP-20260910-14`, `HYP-20260915-01`, `HYP-20260920-03` | `exp013`, `exp016`, `exp023`, `exp025`, `exp028`, `exp029`, `exp032`, `exp035`, `exp036`, `exp037`, `exp038`, `exp039`, `exp040`, `exp041`, `exp043`, `exp044` | `backlog`, `tracking`, `validation` | `final` | - | 76候補を74候補へ整理し26件の優先度を変更。教師診断と座標補正の残課題を統合し、位置変更を局所graph選択から分離。tracker内部追加を保留し、作用段階の診断・接続候補保持・検出回収を優先。 |
+| 2026-09-24 | [Biohub バックログの統合・分割と優先度再評価](biohub-backlog-reorganization_20260924.md) | `survey` | `HYP-20260910-01`, `HYP-20260910-02`, `HYP-20260910-03`, `HYP-20260910-04`, `HYP-20260910-06`, `HYP-20260910-07`, `HYP-20260910-09`, `HYP-20260910-10`, `HYP-20260910-11`, `HYP-20260910-12`, `HYP-20260910-14`, `HYP-20260915-01`, `HYP-20260920-03` | `exp013`, `exp016`, `exp023`, `exp025_kalman_hungarian_links`, `exp028`, `exp029`, `exp032`, `exp035`, `exp036`, `exp037`, `exp038`, `exp039`, `exp040`, `exp041`, `exp043`, `exp044` | `backlog`, `tracking`, `validation` | `final` | - | 76候補を74候補へ整理し26件の優先度を変更。教師診断と座標補正の残課題を統合し、位置変更を局所graph選択から分離。tracker内部追加を保留し、作用段階の診断・接続候補保持・検出回収を優先。 |
 | 2026-09-23 | [Trackastraの部分注釈への適用と既存追跡処理の互換性](biohub-trackastra-association-design_20260923.md) | `survey` | `HYP-20260910-10` | `exp016`, `exp040` | `tracking`, `architecture`, `validation` | `final` | - | 6時点の対応学習には部分教師と確率入力adapterが必要。既存softmaxへの接続は対応なし確率を消す。ユーザーが公式実装標準規模・primary単体の設計を確定し、実験契約へ移行。 |
 | 2026-09-23 | [Biohub 公開0.953 Notebookと従来0.946構成の差分](biohub-public-0953-differences_20260923.md) | `survey` | `HYP-20260910-12` | `exp013`, `exp016` | `public-notebooks`, `tracking`, `validation` | `final` | - | 公開x138のBest Public Scoreは0.953。既存3重みに加えて学習済み座標補正モデルを使い、トラッカー入力も変更する。近傍移動量による再接続・検出点の再追加・欠落補完も追加。Geometric Fusionは0.948で後処理探索が中心。 |
 | 2026-09-23 | [Biohub exp041の過去特徴cross-attentionが改善しなかった理由](biohub-exp041-past-feature-analysis_20260923.md) | `survey` | `HYP-20260910-10` | `exp016`, `exp037`, `exp041` | `architecture`, `tracking`, `validation` | `final` | - | 過去3時点の全候補を点ごとに集約し、現在の接続損失だけで学ぶ構造の限界を考察。対応・移動の情報が保持されず競合候補の識別に寄与しなかった可能性を、確定した実装特性と分けて整理した。 |
@@ -91,7 +101,8 @@ task validate-surveys
 | `exp019` | [exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md) |
 | `exp023` | [Biohub バックログの統合・分割と優先度再評価](biohub-backlog-reorganization_20260924.md)<br>[Biohubのグラフ直接予測と分裂学習の改善案](biohub-direct-graph-learning-ideas_20260921.md) |
 | `exp024` | [exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md) |
-| `exp025` | [Biohub 終了後の上位解法と自分の解法の比較](biohub-final-top-solutions-comparison_20260930.md)<br>[exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md)<br>[Biohub バックログの統合・分割と優先度再評価](biohub-backlog-reorganization_20260924.md) |
+| `exp025_frame_self_attention` | [Biohub 終了後の上位解法と自分の解法の比較](biohub-final-top-solutions-comparison_20260930.md)<br>[exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md) |
+| `exp025_kalman_hungarian_links` | [exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md)<br>[Biohub バックログの統合・分割と優先度再評価](biohub-backlog-reorganization_20260924.md) |
 | `exp027` | [exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md)<br>[Biohubのグラフ直接予測と分裂学習の改善案](biohub-direct-graph-learning-ideas_20260921.md)<br>[Biohub exp027の3時点attention予備結果の原因考察](biohub-exp027-three-frame-analysis_20260920.md) |
 | `exp028` | [exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md)<br>[BiohubのILPと最終グラフ選択を学習する改善案](biohub-ilp-learning-alternatives_20260924.md)<br>[Biohub バックログの統合・分割と優先度再評価](biohub-backlog-reorganization_20260924.md)<br>[Biohubのグラフ直接予測と分裂学習の改善案](biohub-direct-graph-learning-ideas_20260921.md) |
 | `exp029` | [exp043を受けた過去のtracker改善実験の再評価](biohub-exp043-tracker-reassessment_20260924.md)<br>[Biohubの過去情報利用を見直す次実験案](biohub-tracking-next-ideas_20260923.md)<br>[BiohubのILPと最終グラフ選択を学習する改善案](biohub-ilp-learning-alternatives_20260924.md)<br>[Biohub バックログの統合・分割と優先度再評価](biohub-backlog-reorganization_20260924.md)<br>[Biohubのグラフ直接予測と分裂学習の改善案](biohub-direct-graph-learning-ideas_20260921.md) |

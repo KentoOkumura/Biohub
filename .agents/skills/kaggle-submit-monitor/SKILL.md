@@ -32,7 +32,12 @@ nohup uv run python .agents/skills/kaggle-submit-monitor/scripts/monitor_submiss
 ```
 
 5. 一時ログのパスと`tail -f`コマンドを報告する。一時ログをGitへ追加しない。
-6. スコアが確定したら、まず`task record-exp EXP=expXXX SUBMISSION_REF=... PUBLIC_LB=...`（Private LB判明後は`PRIVATE_LB=...`も指定）を実行する。次に`task record-submission EXP=expXXX SUBMISSION=/path/to/submission.csv SUBMISSION_REF=...`を実行し、同じrefは既存行を更新する。code competitionのoutputをローカル取得していない場合は、Kaggle側で対象ファイルを確認してから`SUBMISSION=submission.csv EXTRA_ARGS="--allow-missing-file"`を指定する。submission ref、提出日時、scoring status、score確定までの所要時間の詳細な時系列は`SESSION_NOTES.md`を正とし、`SUBMISSIONS.md`には横断比較に必要な最終スナップショットだけを記録する。スナップショットのキーは`submission_status`と`scoring_elapsed_minutes`を使い、Kaggle Notebook実行時間とsubmission scoring所要時間を混同しない。結果の解釈は`result.md`へ記録する。
+6. スコアが確定したら、まず`task record-exp EXP=expXXX SUBMISSION_REF=... PUBLIC_LB=... EXTRA_ARGS="--submission-status complete"`（Private LB判明後は`PRIVATE_LB=...`も指定）を実行する。次に`task record-submission EXP=expXXX SUBMISSION=/path/to/submission.csv SUBMISSION_REF=...`を実行し、同じrefは既存行を更新する。code competitionのoutputをローカル取得していない場合は、Kaggle側で対象ファイルを確認してから`SUBMISSION=submission.csv EXTRA_ARGS="--allow-missing-file"`を指定する。submission ref、提出日時、scoring status、score確定までの所要時間の詳細な時系列は`SESSION_NOTES.md`を正とし、`SUBMISSIONS.md`には横断比較に必要な最終スナップショットだけを記録する。スナップショットのキーは`submission_status`と`scoring_elapsed_minutes`を使い、Kaggle Notebook実行時間とsubmission scoring所要時間を混同しない。結果の解釈は`result.md`へ記録する。
+
+採点が失敗・取消で終了した場合も、そのrefと失敗理由を`SESSION_NOTES.md`へ記録する。
+`record-exp`へ同じ`SUBMISSION_REF`と`EXTRA_ARGS="--submission-status <取得した失敗状態>"`を渡し、
+`PUBLIC_LB=null PRIVATE_LB=null`を指定して失敗状態と未採点の値を保持する。
+その後、`record-submission`で同じrefを記録する。別refのスコアを補わない。
 
 ## 出力契約
 
@@ -41,5 +46,13 @@ nohup uv run python .agents/skills/kaggle-submit-monitor/scripts/monitor_submiss
 ```text
 [EXP_NAME] scoring-elapsed: X min, submission-status: complete, publicScore: Y, privateScore: Z
 ```
+
+正常完了では終了コード0を返す。`error`、`failed`、`notebook_unhandled_error`、
+`runtime_limit_exceeded`、`cancelled` / `canceled`、または`errorDescription`を検出した場合は、
+失敗状態と取得できた理由をログへ残して終了コード3で直ちに終了する。
+`pending`などの処理中状態とref未検出では監視を続ける。`--once`で未完了の場合は1、
+`--once`でのCLIエラーとrefの曖昧さは2、timeoutは124を返す。
+通常監視中のCLIエラーはログへ記録し、timeoutまで再試行する。
+`scoring-elapsed`はこの監視の開始からの経過時間であり、記録時の時間の扱いは`AGENTS.md`に従う。
 
 ユーザーが明示的に依頼しない限り、代理で submit しない。このスキルは監視と記録だけを行う。

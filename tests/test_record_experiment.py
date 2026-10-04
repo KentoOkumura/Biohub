@@ -209,6 +209,7 @@ def test_first_private_update_migrates_same_ref_history_without_erasing_scores(
         "cv": 0.45,
         "public_lb": 0.942,
         "private_lb": 0.919,
+        "submission_status": "complete",
     }
     assert metrics["public_lb"] == 0.938
     record_scores(metrics, score_args(submission_ref="111", private_lb="0.920"))
@@ -269,3 +270,64 @@ def test_multiple_legacy_refs_cannot_supply_individual_scores(tmp_path, monkeypa
     metrics = {"public_lb": 0.942, "evidence": [{"submission_ref": 111}, {"submission_ref": 222}]}
     record_scores(metrics, score_args(submission_ref="111", private_lb="0.919"))
     assert metrics["submissions"]["111"]["public_lb"] is None
+
+
+@pytest.mark.parametrize("score_key", ["public_lb", "private_lb"])
+@pytest.mark.parametrize("status", ["runtime_limit_exceeded", "SubmissionStatus.ERROR"])
+def test_legacy_failure_state_survives_first_ref_update(
+    tmp_path, monkeypatch, score_key, status
+) -> None:
+    history = tmp_path / "SUBMISSIONS.md"
+    history.write_text(
+        record_submission.render_table_row(
+            [
+                "v001",
+                "2026-01-01",
+                "exp123_test",
+                "submission.csv",
+                "-",
+                "-",
+                "-",
+                "-",
+                "-",
+                "-",
+                "111",
+                f"submission_status={status}",
+            ]
+        )
+        + "\n"
+    )
+    monkeypatch.setattr(record_submission, "SUBMISSIONS_PATH", history)
+    original = {"status": "running", "public_lb": 0.8}
+    metrics = original.copy()
+    with pytest.raises(ValueError, match="failed submissions"):
+        record_scores(metrics, score_args(submission_ref="111", **{score_key: "0.9"}))
+
+    # A metadata-only migration retains failure and never inherits the top score.
+    metrics = original.copy()
+    record_scores(metrics, score_args(submission_ref="111"))
+    assert metrics["submissions"]["111"] == {
+        "cv": None,
+        "public_lb": None,
+        "private_lb": None,
+        "submission_status": status,
+    }
+    assert {key: metrics[key] for key in original} == original
+    assert record_submission.submission_record("exp123_test", "111", metrics)[score_key] is None
+    with pytest.raises(ValueError, match="failed submissions"):
+        record_scores(metrics, score_args(submission_ref="111", **{score_key: "0.9"}))
+
+
+def test_unique_legacy_failure_metadata_survives_without_history(tmp_path, monkeypatch) -> None:
+    monkeypatch.setattr(record_submission, "SUBMISSIONS_PATH", tmp_path / "absent.md")
+    metrics = {
+        "public_lb": None,
+        "evidence": {"submission_ref": 111},
+        "submission_status": "SubmissionStatus.ERROR",
+        "error_description": "Notebook exceeded allowed runtime",
+    }
+    record_scores(metrics, score_args(submission_ref="111"))
+    assert metrics["submissions"]["111"]["submission_status"] == "SubmissionStatus.ERROR"
+    assert metrics["submissions"]["111"]["error_description"] == metrics["error_description"]
+    with pytest.raises(ValueError, match="failed submissions"):
+        record_scores(metrics, score_args(submission_ref="111", private_lb="0.9"))

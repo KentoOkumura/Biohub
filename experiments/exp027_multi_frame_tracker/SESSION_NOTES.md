@@ -20,11 +20,9 @@
 
 ## 次のアクション
 
-1. Kaggle train packageの内容・metadata、GPU quotaを確認する。
-2. 4 trackerのruntime benchmark gateを含むtrain NotebookをKaggleで実行し、model manifestと両胚別診断を記録する。
-3. 前段診断が `requirements.md` の条件を満たす場合だけ、同じexpで固定graph推論を実装・実行する。
+予備比較と追加診断は終了し、ユーザーの完了判断を記録済み。[結果とユーザー判断](result.md)に従い、全graph推論は保留し、残る検証を後続実験へ引き継ぐ。
 
-## 実行予定のコマンド
+## 2026-09-20 初回実行前の予定コマンド
 
 ```bash
 make prepare-kaggle-notebooks EXP=exp027_multi_frame_tracker EXTRA_ARGS="--notebook train --run-on-push"

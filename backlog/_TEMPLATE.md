@@ -71,6 +71,8 @@
 
 ## リスク
 
+共通の評価・データ・計算予算・再現性の規約は、対応するdocsまたは現在の学習方針へリンクする。ここには候補固有の危険と未確認事項を記録し、共通規約の長文を複製しない。
+
 - leakage / validation: TODO
 - hidden test: TODO
 - runtime / memory: TODO

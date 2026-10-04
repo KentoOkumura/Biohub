@@ -6,6 +6,10 @@ exp005と同じ2方向の胚holdout・batch size 8構成をseed 314159で再学�
 
 ## 現在の作業
 
+推論・結果回収・検証は終了した。[結果とユーザー判断](result.md)に従い、実験の完了・採否判断を待つ。数値と実行証拠は[metrics.json](metrics.json)を参照する。
+
+## 2026-09-12 inference完了前の作業記録
+
 - 作業内容: Kaggle inference version 1をpushし、199動画の推論とexp005とのseed比較を実行中。
 - 実行状態: 2026-09-12T08:54:40+09:00にKaggleで`RUNNING`を確認した。
 - 次: 完了後にoutputを取得し、公式指標、prediction差、誤差相関、生成物SHAを検証して記録する。
@@ -195,7 +199,7 @@ PYTHONDONTWRITEBYTECODE=1 UV_CACHE_DIR=/tmp/uv-cache uv run kaggle quota --forma
 - 2-seed融合、submission、Public LBは本実験から除外した。
 - 親augmentationが完全固定されないため、厳密なseed-only因果比較ではないことを記録した。
 
-## 次のアクション
+## 2026-09-12 inference完了前の予定
 
 1. exp006 inference version 1の完了または失敗を確認する。
 2. 完了後にoutputを取得し、199動画、欠落、公式指標、prediction差、誤差相関、生成物SHAを検証する。

@@ -12,6 +12,7 @@ from update_survey_index import (
     SURVEYS_DIR,
     TAG_PATTERN,
     update_index,
+    validate_experiment_references,
 )
 
 TEMPLATE_PATH = ROOT / "templates" / "survey" / "report.md"
@@ -25,7 +26,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--slug", required=True, help="Filename slug without date or extension")
     parser.add_argument("--type", action="append", dest="types", default=[])
     parser.add_argument("--hypothesis", action="append", dest="hypotheses", default=[])
-    parser.add_argument("--experiment", action="append", dest="experiments", default=[])
+    parser.add_argument(
+        "--experiment",
+        action="append",
+        dest="experiments",
+        default=[],
+        help="Experiment ID or full directory name; use full names for duplicate numbers",
+    )
     parser.add_argument("--topic", action="append", dest="topics", default=[])
     parser.add_argument("--summary", default="TODO", help="One-line conclusion for the index")
     parser.add_argument("--date", default=date.today().isoformat(), help="YYYY-MM-DD")
@@ -61,6 +68,7 @@ def main() -> None:
     types = _validate(args.types, TAG_PATTERN, "type")
     hypotheses = _validate(args.hypotheses, HYPOTHESIS_PATTERN, "hypothesis")
     experiments = _validate(args.experiments, EXPERIMENT_PATTERN, "experiment")
+    validate_experiment_references(experiments)
     topics = _validate(args.topics, TAG_PATTERN, "topic")
     if not types:
         raise SystemExit("at least one --type is required")
