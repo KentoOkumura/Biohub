@@ -8,6 +8,7 @@
 - `04_data.md`: データ構造、EDA、リスク。
 - `05_workflow.md`: 実験、記録、提出の手順。
 - `06_reproducibility.md`: seed、並列処理、GPU/CPU、Kaggle bootstrap、SHA記録の再現性ガード。
+- [evaluation_comparison.md](evaluation_comparison.md): 保存済みの評価指標を、比較条件・ファイルハッシュ・処理単位を照合して比較する手順。
 - `agent-playbooks.md`: 作業内容から利用するskillを選ぶための参照入口。
 - `glossary.md`: コンペや実験管理で使う用語。
 - 未着手候補と戦略索引はリポジトリ直下の [`backlog/`](../backlog/) に置く。

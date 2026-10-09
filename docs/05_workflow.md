@@ -36,6 +36,10 @@ Kaggle Notebookの公式評価とlocal smokeの扱い、およびsubmissionの�
 
 ## 記録と判断
 
+実験を採用する判断と、次の実験の比較対象へ昇格させる判断を区別します。採用時に既存の指示から明らかであれば、今後の対照を据え置くか更新するか、対象の予測パイプラインと理由を`result.md`のユーザー判断へ記録します。重要な選択が未確定なら採用済みの事実を保って未決とし、最高のPublic/Private LBへ自動で切り替えません。現在の方針への反映は`kaggle-strategy`へ渡し、過去の実験の親や当時の比較契約は書き換えません。
+
 実験記録の各ファイルの役割、実験status、ユーザー判断の規則は`AGENTS.md`を正とします。このworkflowでは、スコア確定時に`record-exp`へ`SUBMISSION_REF`を渡して提出別の値を先に記録し、その後、同じ`SUBMISSION_REF`の`record-submission`で値を再入力せず提出履歴を更新します。実験全体の代表スコアを変更するときだけ、refなしの`record-exp`で明示的に記録します。
 
-再現性の証拠と rerun 方針は `docs/06_reproducibility.md` を参照します。実験前の文献・公開Notebook調査、単一実験の完了分析、実験横断の完了調査は `docs/surveys/` に保存し、`docs/surveys/README.md` を検索入口にします。
+コンペ終了・Private LB公開後の提出結果照合は[kaggle-submit-monitor](../.agents/skills/kaggle-submit-monitor/SKILL.md#コンペ終了private-lb公開後の結果照合)を使い、当時の選択と終了後の分析を分けて記録します。
+
+再現性の証拠、長い評価の保存・再開、共通処理の同梱、rerun 方針は `docs/06_reproducibility.md` を参照します。実験前の文献・公開Notebook調査、単一実験の完了分析、実験横断の完了調査は `docs/surveys/` に保存し、`docs/surveys/README.md` を検索入口にします。

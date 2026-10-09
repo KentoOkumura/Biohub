@@ -73,6 +73,8 @@ make validate-template
 make validate-exp EXP=expXXX_name EXTRA_ARGS="--allow-todo"
 ```
 
+実験全体のスコア一覧は`task compare-exp`、同一処理単位の評価済み指標の差分は`task compare-evaluations`を使います。後者の入力・比較条件と、公式集約値との違いは[評価結果の比較](docs/evaluation_comparison.md)を参照してください。
+
 ## このテンプレートで管理するもの
 
 | 領域 | 管理する内容 |

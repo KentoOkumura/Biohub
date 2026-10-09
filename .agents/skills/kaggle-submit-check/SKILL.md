@@ -41,6 +41,16 @@ uv run python .agents/skills/kaggle-submit-check/scripts/check_submission.py PAT
    - `WARN`: ユーザーがリスクを受け入れる場合のみ提出してよい。
    - `FAIL`: 提出しない。正確な修正方法を示す。
 
+## Code competitionの入力差し替え検証
+
+提出経路を新規実装、または入力処理を変更したときは、公式の入力契約に照らして、公開例から変わり得るID、順序、件数、入力配置などを選んで確認する。任意の変化をすべて許容するのではなく、そのコンペで保証される構造と可変部分を区別する。
+
+- 保存済みの小規模入力または契約を満たすテスト用の入力を使い、実際のNotebookの推論入口から入力列挙、モデル選択、予測、出力保存、コンペ固有の形式検証まで通す。補助関数だけのテストやsourceの文字列検査で代用しない。
+- 高価なモデル呼出しは既知の小規模出力を返すstubへ置き換えられるが、検証したい入力処理・モデル選択・出力処理は本番コードを使う。未知ID、複数単位、並べ替えなど該当するケースで欠落・重複・参照切れがないことを確かめ、固定行数の提出では実行時sampleとの整列も確認する。
+- 既存テストが同じ契約を検証していれば再利用する。検証した入力条件、置き換えた処理、未検証範囲を記録し、stubによる成功をモデル精度・hidden testの完走・時間制限内実行の保証にしない。local smokeの実行条件とテスト配置は`AGENTS.md`に従う。
+
+提出前は対応テストの結果を確認する。既存のCSV・metadata validatorのPASSは、この入力差し替え検証を実行したことを意味しない。
+
 ## リポジトリ内の提出フロー
 
 Kaggle 実験リポジトリ内で作業する場合:
@@ -84,4 +94,4 @@ task record-submission EXP=expXXX SUBMISSION=submission.csv SUBMISSION_REF=12345
 - Zip: member、hidden file、nested path、含まれる CSV があればその内容を検証する。
 - Kaggle Notebook: 正のpackage validatorで`kernel-metadata.json`、Notebookの存在、bootstrapとsourceの整合性、internet/GPU flagsを検証する。期待するoutput fileの存在・内容はmetadataだけでは証明できないため、Kaggle実行後のfiles一覧・UIまたは取得済みoutputで別に確認する。
 
-このスキルは提出前検証に集中する。アップロード済みの提出を監視する場合だけ `kaggle-submit-monitor` を使う。
+このスキルは提出前検証に集中する。アップロード済みの提出監視、またはコンペ終了・Private LB公開後の結果照合は[kaggle-submit-monitor](../kaggle-submit-monitor/SKILL.md)を使う。

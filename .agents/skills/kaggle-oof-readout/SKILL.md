@@ -11,7 +11,7 @@ Use this skill to turn saved out-of-fold (OOF) predictions into a repeatable dia
 
 1. Use `kaggle-review-exp` for the experiment lifecycle and record contract.
 2. Read saved OOF predictions instead of retraining when possible.
-3. Declare the ID, target, prediction, group, bucket, and feature columns explicitly. Do not assume a competition schema.
+3. Declare the evaluation unit, metric, and ID/group columns before choosing a helper. For row-level predictions, also declare target, prediction, bucket, and feature columns. Do not assume a competition schema or replace its metric with regression error.
 4. Keep the split and preprocessing fold-safe. Any cache joined to OOF rows must have one row per declared ID unless the contract says otherwise.
 5. Save source paths and SHA-256 values with the readout.
 6. Record interpretation and non-use constraints in `result.md` or a completed report under `docs/surveys/`.
@@ -38,7 +38,7 @@ Feature importance or correlation alone is not evidence that a router, post-proc
 
 ## Bundled helper
 
-The helper is schema-parameterized:
+The helper accepts explicit column names but computes regression diagnostics (RMSE, MAE, signed error, and squared error). Use it only when those quantities answer the question. For classification, ranking, detection, tracking, or another structured output, first use the competition's evaluator or a verified task-specific implementation. Preserve unknown labels and the metric's aggregation rules; do not treat unannotated items as negatives.
 
 ```bash
 uv run python .agents/skills/kaggle-oof-readout/scripts/oof_readout.py \
@@ -53,6 +53,12 @@ uv run python .agents/skills/kaggle-oof-readout/scripts/oof_readout.py \
 ```
 
 Use `--compare-prediction-column` to compare two prediction columns. Use `--feature-cache` to join separately stored features by ID. The helper writes overall metrics, optional group and bucket summaries, feature quantile metrics, and a JSON summary with input SHA values.
+
+## Comparing evaluated outputs
+
+Use `task compare-evaluations` for two already evaluated per-unit metric tables. Follow [the comparison manifest and command reference](../../../docs/evaluation_comparison.md) to declare the evaluation conditions, input hashes, metric directions, and expected coverage. This supports task-specific metrics without embedding a particular competition in this skill. A mismatch is a reason to report the missing evidence, not to retrain automatically or silently compare only the intersection.
+
+Report group differences and improvement/degradation counts alongside the scope of the evaluation. Per-unit means are diagnostic summaries, not automatically the official aggregate. For a change inside a multi-stage pipeline, compare the affected output and the final output when both are available; a local improvement may disappear during later selection or post-processing. This analysis does not replace any progression conditions in the experiment contract.
 
 ## Recording
 

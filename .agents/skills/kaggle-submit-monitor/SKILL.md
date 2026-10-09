@@ -1,6 +1,6 @@
 ---
 name: kaggle-submit-monitor
-description: "`kaggle competitions submit` 後の特定の Kaggle submission ref を監視する。特に scoring が長い code competition 向け。監視開始からscore確定までの経過時間、LB/public score、submission log の tail、実験名とsubmission refを対応付けた提出履歴の記録を求められたときに使う。"
+description: "Kaggle submission refを固定した採点監視と結果記録、コンペ終了・Private LB公開後の提出結果照合に使う。特に採点の長いcode competitionで、経過時間、LB、実験とsubmission refを対応付けた履歴を記録する。"
 ---
 
 # Kaggle 提出監視
@@ -38,6 +38,15 @@ nohup uv run python .agents/skills/kaggle-submit-monitor/scripts/monitor_submiss
 `record-exp`へ同じ`SUBMISSION_REF`と`EXTRA_ARGS="--submission-status <取得した失敗状態>"`を渡し、
 `PUBLIC_LB=null PRIVATE_LB=null`を指定して失敗状態と未採点の値を保持する。
 その後、`record-submission`で同じrefを記録する。別refのスコアを補わない。
+
+## コンペ終了・Private LB公開後の結果照合
+
+終了後の結果整理を依頼された場合や、監視中の対象refにPrivate LBが公開された場合に使う。新しい提出や継続監視の予約は行わない。
+
+1. `kaggle-platform`の読取手順で対象コンペの提出一覧・必要な詳細を取得し、`SUBMISSIONS.md`と各実験の提出別記録をsubmission refで照合する。終了後の全体整理では比較対象と採用候補も含め、未登録refは実験との対応を確認してから記録する。
+2. 確認できたrefの最終採点状態とPublic/Private LBを上記手順6と同じ順序で更新する。Private LBだけが新たに判明した場合も同じrefへ`PRIVATE_LB`を渡し、既存の提出行を更新する。空欄・取得失敗を0や別refの値で補わず、既存の取得済み値と矛盾する場合は確認する。
+3. 当時選んだ提出・採否と、Private公開後の分析を区別する。観測日と根拠を追記し、最良Privateの提出を当時の選択へ後から置き換えない。代表スコア、実験status、今後の比較対象も自動では変更しない。
+4. 同じrefに対応する検証値・Public/Privateの関係を確認し、比較できる範囲と未取得の対照を示す。複数実験を横断した結論を保存する場合は`kaggle-strategy`と`docs/surveys/README.md`へ引き渡す。結果の取得自体を追加チューニングや採否変更の承認とみなさない。
 
 ## 出力契約
 

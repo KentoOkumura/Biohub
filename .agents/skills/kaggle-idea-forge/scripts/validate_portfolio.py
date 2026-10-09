@@ -57,7 +57,7 @@ def nonempty_string(value: object) -> bool:
     return isinstance(value, str) and bool(value.strip())
 
 
-def validate(payload: object) -> list[str]:
+def validate_legacy(payload: object) -> list[str]:
     errors: list[str] = []
     if not isinstance(payload, dict):
         return ["root must be a JSON object"]
@@ -207,6 +207,116 @@ def validate(payload: object) -> list[str]:
     return errors
 
 
+V3_CARD_FIELDS = (
+    "id", "title", "hypothesis", "basis", "changed_mechanism", "key_unknown",
+)
+V3_EXPERIMENT_FIELDS = (
+    "input_target_output_loss_decode", "comparison", "preserved_mechanism",
+    "evaluation_limitations", "decision_rules", "inference_contract",
+)
+
+
+def require_strings(record: dict, fields: tuple[str, ...], prefix: str) -> list[str]:
+    return [
+        f"{prefix}.{field} must be a non-empty string"
+        for field in fields if not nonempty_string(record.get(field))
+    ]
+
+
+def string_list(value: object) -> bool:
+    return isinstance(value, list) and all(nonempty_string(item) for item in value)
+
+
+def validate_v3(payload: dict) -> list[str]:
+    errors = require_strings(
+        payload,
+        ("task_summary", "evidence_cutoff", "data_exploration", "selection_notes"),
+        "root",
+    )
+    if not string_list(payload.get("allowed_sources")):
+        errors.append("allowed_sources must be a string list")
+    if "assumptions" in payload and not string_list(payload["assumptions"]):
+        errors.append("assumptions must be a string list")
+    for field in ("closure_ledger", "rejected"):
+        if field in payload and (
+            not isinstance(payload[field], list)
+            or not all(isinstance(item, dict) for item in payload[field])
+        ):
+            errors.append(f"{field} must be an object list")
+
+    cards = payload.get("idea_cards")
+    if not isinstance(cards, list) or not cards:
+        errors.append("idea_cards must be a non-empty list")
+        cards = []
+    ids: set[str] = set()
+    for index, card in enumerate(cards):
+        prefix = f"idea_cards[{index}]"
+        if not isinstance(card, dict):
+            errors.append(f"{prefix} must be an object")
+            continue
+        errors.extend(require_strings(card, V3_CARD_FIELDS, prefix))
+        idea_id = card.get("id")
+        if nonempty_string(idea_id):
+            if idea_id in ids:
+                errors.append("idea card ids must be unique")
+            ids.add(idea_id)
+
+    portfolio = payload.get("portfolio")
+    if not isinstance(portfolio, list):
+        errors.append("portfolio must be a list")
+        portfolio = []
+    selected: set[str] = set()
+    for index, entry in enumerate(portfolio):
+        prefix = f"portfolio[{index}]"
+        if not isinstance(entry, dict):
+            errors.append(f"{prefix} must be an object")
+            continue
+        errors.extend(require_strings(entry, ("idea_id", "why"), prefix))
+        idea_id = entry.get("idea_id")
+        if nonempty_string(idea_id):
+            if idea_id not in ids:
+                errors.append(f"{prefix}.idea_id not found in cards: {idea_id!r}")
+            if idea_id in selected:
+                errors.append("portfolio idea ids must be unique")
+            selected.add(idea_id)
+        experiment = entry.get("experiment")
+        if not isinstance(experiment, dict):
+            errors.append(f"{prefix}.experiment must be an object")
+            continue
+        exp_prefix = f"{prefix}.experiment"
+        errors.extend(require_strings(experiment, V3_EXPERIMENT_FIELDS, exp_prefix))
+        if "resource_limits" in experiment:
+            errors.extend(require_strings(experiment, ("resource_limits",), exp_prefix))
+        if "dependencies" in experiment and not string_list(experiment["dependencies"]):
+            errors.append(f"{exp_prefix}.dependencies must be a string list")
+        diagnostics = experiment.get("diagnostics", [])
+        if not isinstance(diagnostics, list):
+            errors.append(f"{exp_prefix}.diagnostics must be a list")
+            continue
+        for diag_index, diagnostic in enumerate(diagnostics):
+            diag_prefix = f"{exp_prefix}.diagnostics[{diag_index}]"
+            if not isinstance(diagnostic, dict):
+                errors.append(f"{diag_prefix} must be an object")
+                continue
+            errors.extend(require_strings(
+                diagnostic,
+                ("check", "decision_if_pass", "decision_if_fail", "cannot_refute"),
+                diag_prefix,
+            ))
+    return errors
+
+
+def validate(payload: object) -> list[str]:
+    if not isinstance(payload, dict):
+        return ["root must be a JSON object"]
+    version = payload.get("schema_version", "1")
+    if version == "3":
+        return validate_v3(payload)
+    if isinstance(version, str) and version in {"1", "2"}:
+        return validate_legacy(payload)
+    return [f"unsupported schema_version: {version!r}"]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("portfolio", type=Path)
@@ -227,7 +337,6 @@ def main() -> int:
         "PASS: "
         f"schema v{payload.get('schema_version', '1')}, "
         f"{len(payload['idea_cards'])} cards, "
-        f"{len({c['mechanism_family'] for c in payload['idea_cards']})} families, "
         f"{len(payload['portfolio'])} portfolio entries"
     )
     return 0

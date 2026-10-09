@@ -82,7 +82,7 @@ make new-exp EXP=expXXX_title SOURCE=experiments/expYYY_parent
 4. 明らかに再利用できるコードでない限り、実装は実験フォルダ内に置く。
    - 実験固有のロジックは `experiments/expXXX_title/` に置く。
    - 実験固有のテストは`experiments/expXXX_title/tests/`に置く。複数実験やリポジトリ全体の契約を検証するテストだけをルートの`tests/`に置く。
-   - 共通 utility は `src/` に置く。
+   - 共通 utility は `src/` に置く。次に変更する処理からの共通化とKaggle実行packageへの同梱は[再現性ガード](../../../docs/06_reproducibility.md#共通処理とnotebookへの同梱)に従う。
    - その場限りの調査コードと生の表・図は `studies/` に置く。通常の実験結果と証拠の解釈は `result.md` に記録し、独立した完了分析レポートを作る場合は、対象が単一実験でも実験横断でも `docs/surveys/` にメタデータ付きで保存する。
    - hyperparameter、route、系譜は `config.yaml` に置く。
    - `experiment.route` は最終予測を生成するパイプラインが分かる小文字の識別子にする。コンペ固有の手法名をテンプレート側で列挙せず、詳細は`lineage.diff_summary`と`SESSION_NOTES.md`に記録する。
@@ -195,6 +195,7 @@ task test-exp EXP=expXXX_title
 
 - 学習完了時は、推論に必要なモデル、前処理状態、特徴量名と順序、variant / mode / fold、ファイル形式、相対パス、SHA が保存され、model manifest から同じ実験の inference notebook が再学習なしで解決・読み込みできることを確認する。
 - logs や notebook 表示に CV、fold 別 score、variant/config、保存先パスが不足している場合は、まず notebook 側の表示を改善し、解消していない証拠不足を記録する。実行済みNotebookから追加証拠を取得するかの判断は`kaggle-platform`に従う。
+- 長い評価を分割・再開する場合は[長い評価の保存と再開](../../../docs/06_reproducibility.md#長い評価の保存と再開)に従い、単位ごとの採点・制約検査と、Kaggleで実際に取得できる出力を設計する。未取得や欠落を含む集計で全体の改善を主張しない。
 
 固定画像特徴からトラッカーだけを学習する実験では、inference Notebookのprepare・push前に[AGENTS.mdの前段評価](../../../AGENTS.md#常時品質基準)を行う。`requirements.md`で事前に定めた対照・指標・続行条件と学習側の外側胚評価を照合し、数値を`metrics.json`、続行または保留の理由を`SESSION_NOTES.md`、単体評価の解釈と公式scoreの未計測範囲を`result.md`へ記録する。条件に届かない場合は全graph推論を自動で開始しない。単体指標で変更の効果を測れない場合は事前に定めた別の早期診断を使う。ユーザーが全graph実行を明示した場合も、取得可能な単体指標と進行理由を記録して進める。
 
@@ -208,6 +209,7 @@ train CV が良かった候補を推論化または提出する場合も、同�
 - hidden testに存在する入力と保存済みmodel manifest / model生成物だけで、特徴量生成から予測までを完結させる。train-only列、ローカル専用cache、公開testの保存済み予測に依存しない。
 - 公開test固有のID、SHA、行数、予測値に基づく分岐、ゲート、fallbackを本番推論に入れない。公開例との一致やSHA検査を診断用に残す場合は、hidden testで不一致になることを正常とし、推論を中断しない。
 - 公開例の小さなtestではなく、hidden testの可変なgroup数・行数を前提にメモリと実行時間を設計する。必要に応じてgroup単位の逐次処理、chunking、上限付き並列度を使う。
+- 入力差し替えへの対応を新規実装・変更した場合は、[kaggle-submit-checkの入力差し替え検証](../kaggle-submit-check/SKILL.md#code-competitionの入力差し替え検証)に従い、実際の推論入口から出力までを小規模入力で確認する。既存の対応テストを再利用し、全実験に一律のケース追加やGPU実行を要求しない。
 
 Kaggle output をローカルに取得した場合だけ、`kaggle-submit-check` の手順で提出形式を確認する。
 
@@ -221,7 +223,7 @@ local smoke に必要な入力、依存関係、生成物がローカルに揃�
    - 「検証中の仮説」またはアイデアバックログ節の変更が必要な場合は、上位仮説ID、候補、根拠、非使用条件、移行状態を`kaggle-strategy`へ引き渡す。このskillから直接変更しない。
    - 通常の実験結果と証拠の解釈だけなら`result.md`で完結させる。独立した完了分析レポートを作る場合は、対象が単一実験でも実験横断でも`docs/surveys/README.md`の手順を使う。
    - 旧形式READMEとstatusの移行時対応も`AGENTS.md`に従い、一括変換しない。
-   - 記録更新後は[AGENTS.mdの運用ルール](../../../AGENTS.md#運用ルール)に従い、README・SESSION_NOTESの現行案内と正本を照合する。
+   - 記録更新後は[AGENTS.mdの運用ルール](../../../AGENTS.md#運用ルール)に従い、README・SESSION_NOTESの現行案内と正本を照合する。採用と今後の比較対象の更新は[workflowの記録と判断](../../../docs/05_workflow.md#記録と判断)に従って区別する。
 
 ```bash
 task update-summary

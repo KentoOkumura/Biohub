@@ -55,6 +55,7 @@ uv run python .agents/skills/kaggle-strategy/scripts/collect_strategy_context.py
 - 現在のフェーズと、フェーズ認識のずれ。
 - route別の基準と現時点のベスト結果、信頼度、根拠ファイル。
 - CV/LB の一貫性評価。
+- 独立したCV、条件付き評価、単体診断の区別。同一条件の指標表があれば[評価結果の比較](../../../docs/evaluation_comparison.md)を使い、比較条件が違う数値やPublicの小差だけで順位付けしない。Private公開後の未反映値は`kaggle-submit-monitor`の終了後照合手順へ引き渡し、当時の判断と事後の観測を分ける。
 - 主な失敗パターンと、明確に効かなかったこと。
 - 次に試す手堅い実験。
 - 当たれば大きい高リスク実験。

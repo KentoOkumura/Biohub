@@ -34,6 +34,23 @@ test入力からstochasticな特徴や候補を再生成する実験では、次
 - push 前は`push-kaggle-notebook`が呼ぶvalidatorで、現在の正のNotebook・設定と生成package、bootstrap ZIPのmanifest・内容が一致することを確認する。不一致ならpushせず、対象notebookについて`prepare-kaggle-notebooks`を再実行する。runtime resource、quota、TPU、Active Sessionsに関するpush前手順は[`kaggle-platform`](../.agents/skills/kaggle-platform/SKILL.md)を正とし、この文書には複製しない。
 - v1 が設定不整合で失敗した場合は、同じ canonical kernel id に v2 として再 pushする。原因、修正、再実行コマンドは`SESSION_NOTES.md`、失敗・成功したkernel versionと生成物SHAは`metrics.json`へ分担して残す。
 
+## 長い評価の保存と再開
+
+再実行の損失が大きく、比較条件を保って分割できる評価で使う。短い処理まで分割や再開機構を必須にしない。事前の時間予測を追加せず、既存の資源上限と実行中の進捗を使う。
+
+- `requirements.md`で比較条件を保つ処理単位と集約方法を決める。各単位の処理後に採点・制約検査を行い、予測、指標または全体指標を再計算できる情報、入力・設定・source・重み・評価器の版とSHA、完了範囲を保存する。全体を必要とする指標を単位別scoreの単純平均で代用しない。
+- KaggleのERROR終了では途中ファイルを取得できない場合がある。ファイルへの逐次保存だけで回収可能と判断せず、小分けに完了するNotebookなど、実際にoutputを取得できる単位を設計する。保存場所・出力取得方法は`kaggle-platform`に従い、取得可能になった成果物を確認する。
+- 実行後は予定した単位、完了、失敗、未実施を照合する。取得できた成功分だけの集計を全体評価と呼ばず、比較には両条件が揃った範囲と欠落範囲を示す。分割実行の完了と実験全体の完了判断を区別する。
+- 再開時は入力・設定・版・SHAと制約検査結果を照合し、一致した完了単位だけを再利用する。不一致・破損・未保存の単位を完了扱いにせず、再計算の対象とする。比較条件を変えた結果を旧条件の続きとして混ぜない。
+
+実行証拠は`metrics.json`から保存した単位別生成物へ参照し、停止・再開の経緯は`SESSION_NOTES.md`、欠落が結論に与える限界は`result.md`へ記録する。保存済み生成物の検査と、追跡対象sourceだけで実行するテストの区別は`AGENTS.md`に従う。
+
+## 共通処理とNotebookへの同梱
+
+複数実験で使う同じ処理は、次にその処理を変更するときに共通化を検討する。過去の実験を一括で書き換えず、移す範囲の入力・出力・失敗時の扱いを検証してから`src/`を使う。コンペ固有の処理をテンプレート共通コードへ持ち込まない。
+
+Kaggleで使う共通処理は、上記のbootstrapまたはself-contained Notebookへの必要部分の展開で、実行packageに含まれることを確認する。生成元と同梱物の一致を検証し、ローカルcheckoutや兄弟実験への暗黙のimportに依存させない。自己完結したNotebookの構成は`kaggle-review-exp`に従う。
+
 ## 記録する証拠
 
 再現性を主張する実験では、少なくとも次を`metrics.json`の`evidence`へ機械可読に残す。値を得たコマンド、時刻、途中経過だけを`SESSION_NOTES.md`へ記録する。

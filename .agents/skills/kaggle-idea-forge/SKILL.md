@@ -1,195 +1,78 @@
 ---
 name: kaggle-idea-forge
-description: Kaggleの停滞時や次実験の発想時に、利用可能なデータ・既存実験・失敗証拠・計算制約から、parameter tuningに偏らない複数の問題表現、情報源、候補生成、融合、data generation、validation案を独立生成し、互いに異なる反証可能な実験案の組へまとめる。上位解法級の非連続なアイデア探索、失敗した情報の別用途での再評価、候補多様性の設計、参照元を隠した過去時点の記録による着想評価に使う。通常の実験優先順位整理だけならkaggle-strategyを使う。
+description: Kaggleの仮説生成や停滞時に、実データの探索、保存済みの誤差分析、関連手法から、現在のモデルに縛られない実験案を作る。入力、教師、出力、損失、推論方法、処理単位を見直し、中核を実際に比較する案へ具体化する。参照元を隠した着想評価にも使う。既存候補の優先順位整理だけならkaggle-strategyを使う。
 ---
 
 # Kaggle Idea Forge
 
-既存backlogの微修正ではなく、taskの表現と情報の使い方を組み替えた実験案を作る。実装や採用判断は行わず、反証可能なidea portfolioを`kaggle-strategy`へ渡す。
+実データから解き方を広げ、試す価値のある仮説と、その中核を保つ比較を作る。探索と実験の共通原則は`AGENTS.md`の「仮説の探索と実験の進め方」に従う。JSONのfield名はこのリポジトリ内の管理用語であり、手法の説明には入力・教師・出力・損失・推論方法を使う。
 
-backtickで示すfield名や分類値は、このskillのJSON schemaと作業順を管理するためのリポジトリ内の管理用語であり、一般的な手法名ではない。ユーザー向けの回答では、入力、予測対象、モデル出力、損失、推論方法、処理単位、検証条件、計算条件を先に平易に説明し、必要な場合だけ管理用語を括弧内に添える。
+## 入口
 
-## 入力契約
+- 課題、公式指標、提出形式、学習時と推論時に使える情報、データの依存単位、証拠の時点を確認する。
+- 現在の学習方針、固定対象、確定した資源上限、締切、実験化の承認範囲を引き継ぐ。
+- 既存のEDA（探索的データ分析）、OOF（各行の所属foldを学習に使わない予測）の分析、基準モデルと検証分割の有無を調べる。欠損を仮定で埋めない。
+- 生データを探索する場合、または既存EDAの適用範囲を判断する場合は[data-exploration.md](references/data-exploration.md)を読む。予測がなくても探索を始められる。
 
-最初に次を確認する。不足しても推測で埋めず、`missing`としてideaのconfidenceを下げる。
+## 1. データと課題から案を広げる
 
-- task、metric、提出・推論形式
-- train/testで利用可能な入力とhidden-test制約
-- evidence cutoff
-- trusted baselineとCV split
-- 既存signal、予測、OOF、model、cache
-- positive evidenceとnegative evidence
-- compute、runtime、deadline、submission budget
+詳細な実験履歴や現在の候補の順位を読む前に、課題とデータから案を短く書く。現在のモデル・候補生成を前提にしない設計も検討する。初期案の件数を固定しない。EDAで得た発見から仮説を作ってよく、先に仮説を決めることを探索の条件にしない。
 
-source-hidden評価が指定された場合は、ユーザーが許可したpacketだけを読む。repo探索、Web、後続実験、writeup、survey、他runの出力を読まない。許可sourceを最終出力に列挙する。
+以下は発想を広げる問いであり、全項目の実行・案の作成・採用を義務にしない。成立しない問いのために追加分析を続けない。
 
-## ワークフロー
+- **評価と教師**: ラベルはどう作られ、何が未観測か。モデルの学習対象と公式指標が数える誤りは一致するか。教師・損失・重み付けを変える根拠はあるか。
+- **表現と処理単位**: 点予測で失う候補や不確実性は何か。分布、集合、順位、関係の予測や、複数対象の共同予測で何を保持できるか。
+- **情報の使い方**: 弱い特徴や予測にも、参照、条件付け、候補、事前分布として役立つ条件はないか。同じ個体・群・系列の観測を使えるか。使える範囲外の処理はどうするか。
+- **データ生成**: 観測された不変性を保つ変形は何か。下流モデルが入力にする中間予測の誤りを学習時にも再現できるか。誤差分布を仮定する場合は実測と分け、予測の学習漏洩を避ける。
+- **候補と推論**: 正解を含む候補があることと、正解を知らずに選べることを区別する。候補を早く一つに絞ることで失う情報や、融合・共同選択で変わる判断は何か。
+- **検証と計算方法**: 検証分割は本番の群・時点・利用可能情報を再現するか。既知の実行上の制約を解消すれば試せる手法はあるか。
 
-### 1. Taskを圧縮する
+別分野や過去コンペの仕組みを転用する余地も考える。新しい文献調査が必要なら`kaggle-survey-papers`を使い、入力・教師・評価条件のどこが対応するかを示す。観測事実からの案と、文献または明示した仮定からの案を区別する。
 
-モデル名を出す前に、次のtask cardを作る。
+独立した発想が必要な場合は、利用可能なfresh subagentに課題・データの観測・必要最小限の制約を渡して発想を依頼できる。期待解や他の案の順位は渡さない。subagentなしでも異なる問いから案を作れる。独立案を組み合わせる際は、増える情報と必要な処理を具体化する。
 
-1. 予測対象とmetricが罰する誤り。
-2. 推論時に既知、未知、部分的に既知の量。
-3. sample、row、group、sequence、graph、fieldなどの依存単位。
-4. current outputが捨てている不確実性。
-5. 保存すべきdomain invariantと、許される変形。
-6. hiddenで変わり得るavailability、size、distribution、runtime。
+## 2. 過去の証拠と照合する
 
-詳細な実験履歴を読む前に、task cardだけから6件の`task_first`案を作る。少なくとも2件はcurrent point predictorと既存candidateを使わない。各案はmodel名ではなく`input -> target/objective -> output -> decode`で記述する。後で証拠と矛盾して棄却してよいが、このpassを既存backlogで置き換えない。
+関連する過去の実験だけを読み、入力情報、表現、使い方、融合・推論方法、検証条件、実行範囲を照合する。同じ情報を別の用途で使う案まで、単一実装の失敗から棄却しない。
 
-### 2. 構造的opportunity probeを実行する
+失敗に残る有用な結果も確認する。例えば、特定の群での改善、候補に正解が残る割合、他モデルと異なる誤りは、使い方を変える根拠になり得る。逆に、候補集合に正解が存在する場合の上限を、そのまま実現可能な改善と解釈しない。
 
-すべてのtaskで次を検討し、該当しない場合も理由を記録する。固有手法を決め打ちせず、task/dataから成立条件を導く。
+漏洩、推論時に存在しない入力、教師の誤り、既知の実行制約との矛盾は解消すべき前提条件として扱う。新しい表現が有効か、共同選択で最終指標が改善するかは本実験で判別する問いであり、事前に改善を証明することを要求しない。
 
-#### A. Same-entity context
+## 3. 本命の比較を選び、そこだけ具体化する
 
-推論対象と同じentity/group/sequenceに、label、観測、履歴、support setが部分的に与えられるか確認する。存在する場合は、単なる特徴集約だけでなく次を比較する。
+類似案を統合し、実際に比較する価値のある代替案を残す。初期案・最終案・選択案の件数や分類枠を固定しない。件数を満たすための再発想や、弱い案の採用は行わない。一方、全部が現在のモデルの微調整なら、別の解き方を検討した内容と、それでも継続する理由を説明する。
 
-- global referenceと同じ座標系のentity-specific referenceまたはcalibration domainを作る。
-- observation model、matching representation、conditioner、test-time adapterの各roleへ移す。
-- entity contextのcoverage内とcoverage外を分け、global referenceまたはanchorへのfallbackを固定する。
-- contextが短い、欠損、範囲外、重複する場合のavailability testを作る。
+未選択案は、仮説、根拠または仮定、変更する仕組み、主要な未知事項までに留める。全案に実験契約や非該当欄を作らない。選択理由は、仮説の重要性、中核を検証できるか、結果によって次の行動が変わるかを中心に説明する。
 
-#### B. Imperfect-intermediate training
+選んだ本命について、次を接続する。
 
-model、candidate selector、refinerが別modelの予測やscoreを入力に使う場合、training時の中間入力が推論時より過度に正確でないか確認する。該当する場合は1枚の閉じた案として次を接続する。
+- 入力、教師・予測対象、出力、損失、推論方法。
+- 比較対象、共通の検証分割、実験の対象範囲。
+- 規模を縮小しても保持する中核と、その比較では判断できないこと。
+- 支持・反証・判断不能の判定と、その後の行動。
+- 推論時の入力と出力の契約、必要な依存入力。
 
-1. OOFで中間予測の誤差振幅、自己相関、bias、欠損、mode inversionを測る。
-2. ground truthまたはclean intermediateから、それらを再現するcorrupted conditioningを生成する。
-3. corrupted conditioningから修正するmodelをpretrainする。
-4. real OOF-like conditioningで短くfine-tuneし、clean held-groupだけで評価する。
-5. copy-through、corruption mismatch、推論時runtimeをkill条件にする。
+教師の作り方、目的関数、処理順、評価との接続が曖昧な本命では、小さい実例で入力から教師・出力・評価量までを手計算または短い検算で追う。実例がなければ仮定を明示した人工例を使う。未知の教師や競合する選択が関係する場合はその扱いも確かめ、結果を比較説明または参照先に残す。これは仕組みの整合性の確認であり、改善の事前証明や全案共通の着手条件にはしない。
 
-通常のinput noise、selector score augmentation、residual stackのいずれか一つだけではこのprobeを完了したと数えない。
+中核を保つ最初の比較を決める。共同選択や融合の仮説なら、小規模でもその処理と最終評価まで通す。互いに依存する中核部品は初回にまとめて比較でき、寄与を分ける追加実験は結果を見て必要なものに絞る。予備診断を加える場合は、結果で変わる行動と、そこからは反証できない効果を記す。OOFや推論の動作確認を一律の段階順序にしない。実行環境や事前評価・続行条件に既存の規定がある場合は、`AGENTS.md`と承認済みの実験契約を優先する。
 
-#### C. Invariant discovery
+## 出力と引き継ぎ
 
-既知の座標、保存則、単位、boundary condition、symmetryから、targetと既知量の組合せ候補を列挙する。名称だけで仮定せず、trainでvariance、微分、boundary誤差を測るcheap EDAを先に置く。支持された関係だけを次へ使う。
-
-- invariantを保存するaugmentation。
-- invariant空間のtargetまたはstate。
-- constraint loss、projection、candidate prior。
-- 観測だけを意図的に壊すcalibration/shift corruption。
-
-`preserved_invariants`には、保存する量、意図的に壊す量、再計算が必要な入力を明記する。
-
-### 3. Negative evidenceの範囲を限定する
-
-各失敗を次のtupleで記録する。
-
-`(signal, representation, role, fusion, validation regime, compute regime)`
-
-必ず次を分ける。
-
-- 実装した具体案だけを棄却できる証拠。
-- 同じ使い方をした複数の実装まで棄却できる証拠。
-- 異なる使い方での独立検証または既知の制約との矛盾により、情報や仕組み自体を棄却できる証拠。
-
-negative result内のpositive submetric、oracle headroom、特定bucket、coverage、誤差非相関性を抽出する。一つでも残ればfamily全体を閉じない。
-
-### 4. 独立した発想passを作る
-
-利用可能ならfresh subagentを使い、各agentへtask cardと必要最小限の証拠だけを渡す。互いの案、期待解、上位解法、main agentの結論は渡さない。subagentを使えない場合も、以下を順番に独立生成し、前passの順位を次passへ見せない。
-
-#### Pass A: representation
-
-- current point targetをdistribution、set、ranking、structured object、latent state、pairwise relationへ置き換えられないか。
-- local predictionをgroup全体のjoint predictionへ変えたとき保持できる情報は何か。
-- model brandを選ぶ前に、input tensor、target、loss、decodeを定義する。
-- 少なくとも5案を出し、parameter変更は禁止する。
-
-#### Pass B: information and invariance
-
-- 各signalを`target / observation / reference / candidate / prior / feature / conditioner / augmenter / gate / calibrator`の別roleへ移す。
-- direct predictorとして弱いsignalを捨てず、どの条件で情報を持つかを問う。
-- same-entity contextがある場合、entity-specific referenceとcoverage fallbackを少なくとも1案作る。
-- domain invariantを保つsynthetic exampleと、deploymentで実際に起きるerrorを再現するcorruptionを作る。
-- model-generated intermediateを下流modelが使う場合、corrupted conditioningからtrustを学ぶpretrain/refine案を少なくとも1案作る。
-- 少なくとも5案を出す。
-
-#### Pass C: candidate and uncertainty
-
-- point estimate前の候補集合、score、posterior、member disagreementを保持できないか。
-- candidate単体精度、truth bracketing、oracle coverage、residual correlation、target-free selectabilityを分離する。
-- hard top-1、soft fusion、conditional gateを別案として比較する。
-- 候補の多様性を`observation / reference / representation / dynamics / decoder / seed`で記録し、seedだけが違う集合を多様と数えない。
-- 弱いが非相関な候補を残す基準と、point化前にsoftに融合する案を作る。
-- 少なくとも5案を出す。
-
-#### Pass D: validation and compute
-
-- CVが本番と異なり得るgroup size、availability、distance、time、tail、domainを列挙する。
-- oracleで到達不能なparameterizationを実装前に落とす。
-- computeを増やす案だけでなく、高速化によって初めて探索可能になるalgorithmを考える。
-- hidden unitあたりruntime、peak memory、determinism、offline availabilityを扱う。
-- 少なくとも4案を出す。
-
-### 5. Cross-pollinationする
-
-独立passを匿名化してから、次の問いで組み合わせる。
-
-- 強いrepresentationに、別passのobservationまたはpriorを入れると何が増えるか。
-- oracle coverageがあるがselectabilityが弱い候補を、point化せずconditionerやuncertaintyとして使えないか。
-- 平均では弱いsignalを、disagreementまたはavailabilityで条件付けできないか。
-- 現在の100倍速で実行できるなら、どの近似を外せるか。
-- current bestを利用禁止にした場合、別の推論objectをどう構成するか。
-
-類似案を統合して10–14枚のidea cardにする。少なくとも4 mechanism familiesを残し、parameter-only案は最大2枚とする。
-
-### 6. Adversarial gateを通す
-
-ideatorと異なるcontextまたはroleで、各cardを次から壊す。
-
-- leakage、same-OOF selection、train-only input
-- public/example固有artifact、hidden cardinality
-- CV splitと本番availability/domainの不一致
-- oracle coverageとtarget-free selectabilityの混同
-- tail、worst group、fold variance
-- runtime、memory、offline dependency、stochastic reproducibility
-- closest past failureとの差がparameterだけ
-
-危険案は採点せずrejectする。family全体をrejectせず、棄却されたtupleとreopen条件を返す。
-
-### 7. Portfolioを選ぶ
-
-top 5は次の5枠をすべて覆う。弱い案をquotaだけで採用せず、hard gateを通る案がない枠は未解決として報告して発想passへ戻る。
-
-1. `representation`: joint object、distribution、set、latent stateなどへの表現変更。
-2. `information`: same-entity/global reference、observation、conditionerなどのrole変更。
-3. `data_generation`: invariant-preserving syntheticまたはimperfect-intermediate training。
-4. `candidate_generation`または`fusion_uncertainty`: 多様な候補、soft fusion、conditional uncertainty。
-5. `validation`または`compute_enabler`: hidden shift、causal ablation、探索を解禁する高速化。
-
-top 5の少なくとも1件は`task_first`、少なくとも1件は`representation_change`とする。平均scoreだけで一列にせず、次のslotを使う。
-
-- `safe`: 既存証拠が強く、cheap testが明確。
-- `exploration`: confidenceは低いが構造的upsideが大きい。
-- `orthogonal`: anchorとの誤差非相関性を狙う。
-- `compute_enabler`: 後続探索を解禁する。
-
-各案を`cheap proxy -> full OOF -> inference smoke`の順にし、各stageのkill criterionを事前固定する。compute案は、解禁する下流algorithmとend-to-end accuracy runをaccept条件へ結び付ける。
-
-## 出力
-
-[portfolio-schema.md](references/portfolio-schema.md)のJSON schemaに従い、指定先へ`idea_portfolio.json`を保存する。人間向け回答ではtop 5比較、reject理由、未解決入力を短く示す。
-
-保存後は次を実行する。
+通常の壁打ちでは案と選択理由を短く返す。保存を依頼された場合や、別の担当への引き継ぎ・着想評価に機械処理が必要な場合は[portfolio-schema.md](references/portfolio-schema.md)のv3で`idea_portfolio.json`を指定先へ保存する。旧版の記録は書き換えない。
 
 ```bash
 uv run python .agents/skills/kaggle-idea-forge/scripts/validate_portfolio.py idea_portfolio.json
 ```
 
-validatorの構造PASSはideaの科学的妥当性を証明しない。source-hidden評価では、agentに期待解や採点rubricを渡さず、別のjudgeが後からmechanism recallと安全性を採点する。
+構造検証のPASSは科学的妥当性や実行承認を意味しない。入力や基準モデルが欠けていても、可能な範囲で仮説を示し、比較設計に足りない情報を分ける。比較不能な状態を改善の実証として扱わない。
 
-idea portfolioの作成だけでは、候補を採用、実験化、またはバックログへ追加しない。このskillでは `backlog/KAGGLE_DIRECTION.md` の「検証中の仮説」「アイデアバックログ」節と `backlog/` を作成・更新・削除しない。ユーザーが選んだ候補の「バックログ化」「バックログへ追加」を明示的に依頼した場合は、同じターンで `kaggle-strategy` を使い、選択したidea card、根拠、reject理由、未解決入力を引き渡す。portfolioに不足項目があれば推測せず、未決事項として引き渡す。採番、実験ディレクトリと`requirements.md`の作成、実装、Kaggle実行は別のユーザー承認を必要とする。
+このskillでは`backlog/`を変更しない。バックログ化の依頼があれば同じターンで`kaggle-strategy`へ選択案、根拠、採らなかった案と理由、未知事項を渡す。実験化の承認後は`kaggle-review-exp`を使う。発想だけの依頼から実装、学習、push、submissionへ進めない。
 
-## 停止条件
+## 参照元を隠した着想評価
 
-- taskまたは推論時availabilityが不明で、leakage判定ができない。
-- trusted baseline/CVがなく、改善仮説を比較できない。
-- source-hidden指定なのに許可sourceの境界が曖昧。
-- 全案がparameter-only、または同一mechanism familyに偏る。
-- top案にcheap test、kill criterion、hidden inference contractがない。
+許可された入力だけを読み、許可外のrepo探索、Web、後続実験、上位解法、他runの出力を読まない。許可範囲が曖昧な場合は確認する。生データ探索を含む評価か、文書からの発想だけの評価かを明示し、実際に読んだデータ・実行した分析・使えなかった情報を記録する。
 
-停止時は不足入力だけを返し、実装、実験作成、push、submissionを行わない。
+期待解や採点基準を発想担当に渡さず、出力を見る前に採点基準を固定し、別contextで後から判定する。skill改訂の効果を調べる場合は、可能ならskillなし・変更前・変更後を複数回比較する。改訂の根拠に使わなかったコンペまたは時点の入力も使い、モデル、許可情報、生データへのアクセス、時間・計算量の上限、評価条件を揃える。未実施なら構造検証だけで改訂の有効性を主張しない。
+
+上位解法との一致数は補助指標とし、教師・目的・処理順まで具体化できたかを確かめる。通常運用では中核を保った比較の実施、共通条件での改善と学び、本命の初回比較までの実際の経過時間を確認する。

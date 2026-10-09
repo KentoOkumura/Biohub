@@ -156,6 +156,10 @@ record-exp:
 compare-exp:
 	.venv/bin/python scripts/compare_experiments.py $(EXTRA_ARGS)
 
+.PHONY: compare-evaluations
+compare-evaluations:
+	.venv/bin/python scripts/compare_evaluation_results.py $(EXTRA_ARGS)
+
 update-summary:
 	.venv/bin/python scripts/update_experiment_summary.py
 
